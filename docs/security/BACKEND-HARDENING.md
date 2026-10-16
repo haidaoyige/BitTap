@@ -7,7 +7,7 @@
 | 项目 | 实施内容 | 验证及边界 |
 | --- | --- | --- |
 | BTA-06 运行时依赖 | bitcoinj 0.17.1、BC 1.86、Guava 33.7.2、protobuf 4.36.2、SLF4J 2.0.17；移除旧 OkHttp/Okio 的传递运行时依赖；适配 bitcoinj 包名与公钥 API | 实际运行时 15 个 Maven 坐标经 OSV 查询为 0 命中；不能推论不存在未知漏洞。CG1/2/3、压缩 BIP38、四类地址与 Taproot 向量回归；独立 Python 校验另见报告 |
-| BTA-07 干净构建 | 补齐两份 JUnit BOM module 和升级依赖的 SHA-256；保持 strict，不增加信任豁免 | 34 个新增校验条目逐一对照官方 Maven Central 的 checksum 或文件；空依赖缓存完整构建成功，无外部 JUnit POM-only 绕过 |
+| BTA-07 干净构建 | 补齐两份 JUnit BOM module 和升级依赖的 SHA-256；保持 strict，不增加信任豁免 | 34 个新增 Maven Central 校验条目逐一复核；另从 Google 官方镜像核对 1 个 Linux aapt2 文件摘要；空依赖缓存完整构建成功，无外部 JUnit POM-only 绕过 |
 | BTA-08 发布来源 | 无发布密钥的 CI、固定 JDK/SDK/Gradle/action commit、独立 APK 内容和恢复 ZIP 比较、本机原证书签名及签名 manifest、CODEOWNERS | 工具与流程已加入；远端 CI 和完整候选签发需按最终提交执行后记录。**主分支强制保护未启用**：当前个人私有仓库 API 返回 403，要求 GitHub Pro 或公开仓库。未更改可见性、协作者权限或购买套餐 |
 | BTA-09 CLI 读取 | 仅允许不跟随符号链接的普通文件；实际读取沿用 1026 字节上限；打开及读取有 10 秒期限，阻塞线程为 daemon | 6 项单元测试；额外以 32 MiB JVM 子进程检查 `/dev/zero`、FIFO、1 MiB 文件，均拒绝且未内存溢出。异常文件系统仍可能消耗期限以内的时间 |
 | BTA-10 许可证 | APK assets 与恢复 ZIP 附完整 LICENSE/NOTICE、逐依赖文本、原 JAR 告知、CycloneDX SBOM、文件摘要和作用域 | 实际 APK/ZIP 检查许可内容；13 个外部恢复 JAR 与清单 SHA-256 一致；新组件无已审查许可登记则构建失败。历史 docs 告知不冒充本轮二进制清单 |
@@ -18,6 +18,7 @@
 - 空依赖缓存 strict 构建：100 个任务执行成功；62 core + 14 app + 6 recovery 单元测试通过，lintDebug 无问题。
 - 发布工具对抗检查：5 项通过，覆盖 APK 内容替换、空归档、manifest 篡改及错误证书。
 - [运行时公告查询](backend-hardening/dependency-audit.json) 记录查询时刻与所用 SBOM 的摘要。
+- [Linux aapt2 校验](backend-hardening/linux-aapt2-verification.json) 支持 CI 的 Linux 构建；无跳过依赖校验。
 - [新增校验值复核](backend-hardening/new-checksum-verification.json) 记录官方来源和实际结果。
 - [本机构建环境](backend-hardening/environment.json) 中 sourceCommit 是测试开始时的基线 HEAD；最终源提交以 CI 和候选 manifest 为准。
 - 历史发布的 0.5.0 APK 不因提交这些修复而自动更新。
