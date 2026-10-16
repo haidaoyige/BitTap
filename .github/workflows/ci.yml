@@ -15,9 +15,9 @@ jobs:
     name: Verify source and unsigned release
     runs-on: ubuntu-22.04
     timeout-minutes: 30
-    env:
-      GRADLE_USER_HOME: ${{ runner.temp }}/bittap-clean-gradle
     steps:
+      - name: Use a fresh per-run Gradle home
+        run: echo "GRADLE_USER_HOME=$RUNNER_TEMP/bittap-clean-gradle" >> "$GITHUB_ENV"
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
