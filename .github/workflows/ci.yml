@@ -31,7 +31,7 @@ jobs:
       - name: Verify wrapper and record environment
         run: python tools/check_environment.py --output build/ci/build-environment.json
       - name: Install pinned Android SDK components
-        run: sdkmanager 'platforms;android-35' 'build-tools;35.0.0'
+        run: '"$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" ''platforms;android-35'' ''build-tools;35.0.0'''
       - name: Install hashed independent verification tools
         run: python -m pip install --require-hashes -r tools/requirements-verification.txt
       - name: Clean-cache strict build and tests (no release credentials)
