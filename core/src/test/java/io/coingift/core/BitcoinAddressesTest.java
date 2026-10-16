@@ -6,9 +6,9 @@ import java.math.BigInteger;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import org.bitcoinj.core.Bech32;
-import org.bitcoinj.core.ECKey;
-import org.bitcoinj.core.SegwitAddress;
+import org.bitcoinj.base.Bech32;
+import org.bitcoinj.crypto.ECKey;
+import org.bitcoinj.base.SegwitAddress;
 import org.bitcoinj.params.MainNetParams;
 
 public class BitcoinAddressesTest {
@@ -38,7 +38,7 @@ public class BitcoinAddressesTest {
     }
     @Test public void oddAndEvenYUseSameXOnlyTaprootInternalKey(){
         BitcoinAddresses one=BitcoinAddresses.fromKey(WalletCrypto.publicKeyOf(scalar(BigInteger.ONE)));
-        BitcoinAddresses opposite=BitcoinAddresses.fromKey(WalletCrypto.publicKeyOf(scalar(ECKey.CURVE.getN().subtract(BigInteger.ONE))));
+        BitcoinAddresses opposite=BitcoinAddresses.fromKey(WalletCrypto.publicKeyOf(scalar(CurveParameters.SECP256K1.getN().subtract(BigInteger.ONE))));
         assertEquals(one.taproot,opposite.taproot);
         assertNotEquals(one.nativeSegwit,opposite.nativeSegwit);
         assertNotEquals(one.legacy,opposite.legacy);
@@ -66,10 +66,11 @@ public class BitcoinAddressesTest {
     @Test public void exportKnownScalarsForIndependentAddressAndSpendKeyVerification() throws Exception {
         // Public known scalars only; no production keys are exported or logged.
         StringBuilder rows=new StringBuilder();
-        for(BigInteger k:new BigInteger[]{BigInteger.ONE,BigInteger.TWO,BigInteger.valueOf(3),ECKey.CURVE.getN().subtract(BigInteger.ONE)}){
+        for(BigInteger k:new BigInteger[]{BigInteger.ONE,BigInteger.TWO,BigInteger.valueOf(3),CurveParameters.SECP256K1.getN().subtract(BigInteger.ONE)}){
             byte[] raw=scalar(k);BitcoinAddresses a=BitcoinAddresses.fromKey(WalletCrypto.publicKeyOf(raw));
             rows.append(WalletCrypto.hex(raw)).append('\t').append(a.legacy).append('\t').append(a.nestedSegwit).append('\t').append(a.nativeSegwit).append('\t').append(a.taproot).append('\n');
         }
-        Files.createDirectories(Path.of("build"));Files.writeString(Path.of("build/address-fixtures.tsv"),rows,StandardCharsets.US_ASCII);
+        Path output=Path.of(System.getProperty("bittap.fixtureDir", "build"), "address-fixtures.tsv");
+        Files.createDirectories(output.getParent());Files.writeString(output,rows,StandardCharsets.US_ASCII);
     }
 }

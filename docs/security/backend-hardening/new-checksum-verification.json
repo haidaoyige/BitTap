@@ -1,0 +1,240 @@
+[
+  {
+    "coordinate": "com.google.errorprone:error_prone_annotations:2.50.0",
+    "artifact": "error_prone_annotations-2.50.0.jar",
+    "sha256": "4667724877f1d37a689202da191e23efa7657c62eef93ccdac406eccfe5cdd0a",
+    "source": "https://repo.maven.apache.org/maven2/com/google/errorprone/error_prone_annotations/2.50.0/error_prone_annotations-2.50.0.jar.sha256",
+    "verified": true
+  },
+  {
+    "coordinate": "com.google.errorprone:error_prone_annotations:2.50.0",
+    "artifact": "error_prone_annotations-2.50.0.pom",
+    "sha256": "71a0680d277324bab46bec4b00f6f111c1b794a931d0d8cda79bcb9246982f92",
+    "source": "https://repo.maven.apache.org/maven2/com/google/errorprone/error_prone_annotations/2.50.0/error_prone_annotations-2.50.0.pom.sha256",
+    "verified": true
+  },
+  {
+    "coordinate": "com.google.errorprone:error_prone_parent:2.50.0",
+    "artifact": "error_prone_parent-2.50.0.pom",
+    "sha256": "abf45a019db125b50ff55134ec2af94ae3519761038adf0a60b9bd7b4b8b6254",
+    "source": "https://repo.maven.apache.org/maven2/com/google/errorprone/error_prone_parent/2.50.0/error_prone_parent-2.50.0.pom.sha256",
+    "verified": true
+  },
+  {
+    "coordinate": "com.google.guava:failureaccess:1.0.3",
+    "artifact": "failureaccess-1.0.3.jar",
+    "sha256": "cbfc3906b19b8f55dd7cfd6dfe0aa4532e834250d7f080bd8d211a3e246b59cb",
+    "source": "https://repo.maven.apache.org/maven2/com/google/guava/failureaccess/1.0.3/failureaccess-1.0.3.jar",
+    "verified": true
+  },
+  {
+    "coordinate": "com.google.guava:failureaccess:1.0.3",
+    "artifact": "failureaccess-1.0.3.pom",
+    "sha256": "c54beff37f6d42d43e14722d54a522c9ad51ef97fc5b79277e62a3ebf882f3bb",
+    "source": "https://repo.maven.apache.org/maven2/com/google/guava/failureaccess/1.0.3/failureaccess-1.0.3.pom",
+    "verified": true
+  },
+  {
+    "coordinate": "com.google.guava:guava:33.7.2-android",
+    "artifact": "guava-33.7.2-android.jar",
+    "sha256": "b949fe975a32421c1a2633c07a4f1578b462f2f467668aa0a4023c5ff7c4a808",
+    "source": "https://repo.maven.apache.org/maven2/com/google/guava/guava/33.7.2-android/guava-33.7.2-android.jar.sha256",
+    "verified": true
+  },
+  {
+    "coordinate": "com.google.guava:guava:33.7.2-android",
+    "artifact": "guava-33.7.2-android.module",
+    "sha256": "95696fe70d074292b62bc730168a37925aff88add17d3ef028ec774dd9cd8836",
+    "source": "https://repo.maven.apache.org/maven2/com/google/guava/guava/33.7.2-android/guava-33.7.2-android.module.sha256",
+    "verified": true
+  },
+  {
+    "coordinate": "com.google.guava:guava:33.7.2-android",
+    "artifact": "guava-33.7.2-jre.jar",
+    "sha256": "b530942257fb935f8b2cfaa5f8eb5bd59c555fd8e8d01b8ce98912e077ea606c",
+    "source": "https://repo.maven.apache.org/maven2/com/google/guava/guava/33.7.2-jre/guava-33.7.2-jre.jar.sha256",
+    "verified": true
+  },
+  {
+    "coordinate": "com.google.guava:guava-parent:33.4.0-android",
+    "artifact": "guava-parent-33.4.0-android.pom",
+    "sha256": "7220ede61026596fbc720ee4b93246fa2d14f328058532b59ef053de397c7d83",
+    "source": "https://repo.maven.apache.org/maven2/com/google/guava/guava-parent/33.4.0-android/guava-parent-33.4.0-android.pom",
+    "verified": true
+  },
+  {
+    "coordinate": "com.google.guava:guava-parent:33.7.2-android",
+    "artifact": "guava-parent-33.7.2-android.pom",
+    "sha256": "336126e77147a7bb849750b972f53870577b7427e0ff37d68aca1d1a728a6eb2",
+    "source": "https://repo.maven.apache.org/maven2/com/google/guava/guava-parent/33.7.2-android/guava-parent-33.7.2-android.pom.sha256",
+    "verified": true
+  },
+  {
+    "coordinate": "com.google.j2objc:j2objc-annotations:3.1",
+    "artifact": "j2objc-annotations-3.1.jar",
+    "sha256": "84d3a150518485f8140ea99b8a985656749629f6433c92b80c75b36aba3b099b",
+    "source": "https://repo.maven.apache.org/maven2/com/google/j2objc/j2objc-annotations/3.1/j2objc-annotations-3.1.jar.sha256",
+    "verified": true
+  },
+  {
+    "coordinate": "com.google.j2objc:j2objc-annotations:3.1",
+    "artifact": "j2objc-annotations-3.1.pom",
+    "sha256": "14570838500034fc1b47c8205ce1c9d6b255c1ccdd2d1afdcdcbf75e89b24a33",
+    "source": "https://repo.maven.apache.org/maven2/com/google/j2objc/j2objc-annotations/3.1/j2objc-annotations-3.1.pom.sha256",
+    "verified": true
+  },
+  {
+    "coordinate": "com.google.protobuf:protobuf-bom:4.36.2",
+    "artifact": "protobuf-bom-4.36.2.pom",
+    "sha256": "d6592abaa335e02502854e23f5425a6af4abfaa580ad44dd63d2a07f6a396645",
+    "source": "https://repo.maven.apache.org/maven2/com/google/protobuf/protobuf-bom/4.36.2/protobuf-bom-4.36.2.pom",
+    "verified": true
+  },
+  {
+    "coordinate": "com.google.protobuf:protobuf-javalite:4.36.2",
+    "artifact": "protobuf-javalite-4.36.2.jar",
+    "sha256": "8f4f93d08cb37130ecb0bc69d376d7d27c36ff04ddb1bb27430b06caa9fa062e",
+    "source": "https://repo.maven.apache.org/maven2/com/google/protobuf/protobuf-javalite/4.36.2/protobuf-javalite-4.36.2.jar",
+    "verified": true
+  },
+  {
+    "coordinate": "com.google.protobuf:protobuf-javalite:4.36.2",
+    "artifact": "protobuf-javalite-4.36.2.pom",
+    "sha256": "c84538e48562849ee3ad5df5f00b45ec77bc7c0512f6cbfb42234890329f4f48",
+    "source": "https://repo.maven.apache.org/maven2/com/google/protobuf/protobuf-javalite/4.36.2/protobuf-javalite-4.36.2.pom",
+    "verified": true
+  },
+  {
+    "coordinate": "com.google.protobuf:protobuf-parent:4.36.2",
+    "artifact": "protobuf-parent-4.36.2.pom",
+    "sha256": "aca76fe571fc9045367d14e45a6fad85e2a6b8f1f5b411d2a386df089e2111b2",
+    "source": "https://repo.maven.apache.org/maven2/com/google/protobuf/protobuf-parent/4.36.2/protobuf-parent-4.36.2.pom",
+    "verified": true
+  },
+  {
+    "coordinate": "org.bitcoinj:bitcoinj-core:0.17.1",
+    "artifact": "bitcoinj-core-0.17.1.jar",
+    "sha256": "df1db0249949d57f3ad68f7bbc39eba41e1f16e426f5b72ebdc0037caea006dc",
+    "source": "https://repo.maven.apache.org/maven2/org/bitcoinj/bitcoinj-core/0.17.1/bitcoinj-core-0.17.1.jar",
+    "verified": true
+  },
+  {
+    "coordinate": "org.bitcoinj:bitcoinj-core:0.17.1",
+    "artifact": "bitcoinj-core-0.17.1.pom",
+    "sha256": "927a1e12f1dffb22e67a2a9877ae020784b8874b3dfcbbcd98e14f25f41251c1",
+    "source": "https://repo.maven.apache.org/maven2/org/bitcoinj/bitcoinj-core/0.17.1/bitcoinj-core-0.17.1.pom",
+    "verified": true
+  },
+  {
+    "coordinate": "org.bouncycastle:bcprov-jdk15to18:1.86",
+    "artifact": "bcprov-jdk15to18-1.86.jar",
+    "sha256": "fc50334d4d87b4272e72fa95ca748ead05bdef02ef760a5b13f64ffee317cd81",
+    "source": "https://repo.maven.apache.org/maven2/org/bouncycastle/bcprov-jdk15to18/1.86/bcprov-jdk15to18-1.86.jar.sha256",
+    "verified": true
+  },
+  {
+    "coordinate": "org.bouncycastle:bcprov-jdk15to18:1.86",
+    "artifact": "bcprov-jdk15to18-1.86.pom",
+    "sha256": "af3f44f2c8bd90d10d0ebbc3c2f26b5d9b54588543a57cd879465f3dc4f1eef0",
+    "source": "https://repo.maven.apache.org/maven2/org/bouncycastle/bcprov-jdk15to18/1.86/bcprov-jdk15to18-1.86.pom.sha256",
+    "verified": true
+  },
+  {
+    "coordinate": "org.jspecify:jspecify:1.0.1",
+    "artifact": "jspecify-1.0.1.jar",
+    "sha256": "070d75f261fe4c5b8202508366715f7f2d4660f88c8ef7e6d3575e48c9683b66",
+    "source": "https://repo.maven.apache.org/maven2/org/jspecify/jspecify/1.0.1/jspecify-1.0.1.jar",
+    "verified": true
+  },
+  {
+    "coordinate": "org.jspecify:jspecify:1.0.1",
+    "artifact": "jspecify-1.0.1.module",
+    "sha256": "6835d6ac762a99c85e6c3ba6c942be2c6997aaec98f07dedfe9917dae22bda96",
+    "source": "https://repo.maven.apache.org/maven2/org/jspecify/jspecify/1.0.1/jspecify-1.0.1.module",
+    "verified": true
+  },
+  {
+    "coordinate": "org.junit:junit-bom:5.10.2",
+    "artifact": "junit-bom-5.10.2.module",
+    "sha256": "de23b114b3e4119a8fe6eb17bed5a3852816698bace67071579d6d927ebb080a",
+    "source": "https://repo.maven.apache.org/maven2/org/junit/junit-bom/5.10.2/junit-bom-5.10.2.module.sha256",
+    "verified": true
+  },
+  {
+    "coordinate": "org.junit:junit-bom:5.9.2",
+    "artifact": "junit-bom-5.9.2.module",
+    "sha256": "ab137ba5a8e32c9b066bf9126a1c76dd5614b724ba5c0b02549772b5e9f4cf1f",
+    "source": "https://repo.maven.apache.org/maven2/org/junit/junit-bom/5.9.2/junit-bom-5.9.2.module.sha256",
+    "verified": true
+  },
+  {
+    "coordinate": "org.slf4j:slf4j-api:2.0.16",
+    "artifact": "slf4j-api-2.0.16.jar",
+    "sha256": "a12578dde1ba00bd9b816d388a0b879928d00bab3c83c240f7013bf4196c579a",
+    "source": "https://repo.maven.apache.org/maven2/org/slf4j/slf4j-api/2.0.16/slf4j-api-2.0.16.jar",
+    "verified": true
+  },
+  {
+    "coordinate": "org.slf4j:slf4j-api:2.0.16",
+    "artifact": "slf4j-api-2.0.16.pom",
+    "sha256": "b1a00f5b1c4dbe62b805d65d23911a6f77063889d7cb1e86fe8389d6190473f7",
+    "source": "https://repo.maven.apache.org/maven2/org/slf4j/slf4j-api/2.0.16/slf4j-api-2.0.16.pom",
+    "verified": true
+  },
+  {
+    "coordinate": "org.slf4j:slf4j-api:2.0.17",
+    "artifact": "slf4j-api-2.0.17.jar",
+    "sha256": "7b751d952061954d5abfed7181c1f645d336091b679891591d63329c622eb832",
+    "source": "https://repo.maven.apache.org/maven2/org/slf4j/slf4j-api/2.0.17/slf4j-api-2.0.17.jar",
+    "verified": true
+  },
+  {
+    "coordinate": "org.slf4j:slf4j-api:2.0.17",
+    "artifact": "slf4j-api-2.0.17.pom",
+    "sha256": "150c40287f7cecdc21b9380caac98e928c4f33c023db6b348df1c5ac977026bf",
+    "source": "https://repo.maven.apache.org/maven2/org/slf4j/slf4j-api/2.0.17/slf4j-api-2.0.17.pom",
+    "verified": true
+  },
+  {
+    "coordinate": "org.slf4j:slf4j-bom:2.0.16",
+    "artifact": "slf4j-bom-2.0.16.pom",
+    "sha256": "0566048ec825cdf28758620af64d9e14ae38a9cd8748dd6fafa6df4a4194c279",
+    "source": "https://repo.maven.apache.org/maven2/org/slf4j/slf4j-bom/2.0.16/slf4j-bom-2.0.16.pom",
+    "verified": true
+  },
+  {
+    "coordinate": "org.slf4j:slf4j-bom:2.0.17",
+    "artifact": "slf4j-bom-2.0.17.pom",
+    "sha256": "f78d27b642b4b886eb839fc102b5cd9fe7f30f37599ffe68185be4e1609031e9",
+    "source": "https://repo.maven.apache.org/maven2/org/slf4j/slf4j-bom/2.0.17/slf4j-bom-2.0.17.pom",
+    "verified": true
+  },
+  {
+    "coordinate": "org.slf4j:slf4j-nop:2.0.17",
+    "artifact": "slf4j-nop-2.0.17.jar",
+    "sha256": "3716f83649ec66161a2edefd4f49df34d1dd1c51cdcf941996c6987260f0a829",
+    "source": "https://repo.maven.apache.org/maven2/org/slf4j/slf4j-nop/2.0.17/slf4j-nop-2.0.17.jar",
+    "verified": true
+  },
+  {
+    "coordinate": "org.slf4j:slf4j-nop:2.0.17",
+    "artifact": "slf4j-nop-2.0.17.pom",
+    "sha256": "e5e548dce8c1c979138a7e96ca354510fa0ce103f0a6df53a1f5b25e9298b9b2",
+    "source": "https://repo.maven.apache.org/maven2/org/slf4j/slf4j-nop/2.0.17/slf4j-nop-2.0.17.pom",
+    "verified": true
+  },
+  {
+    "coordinate": "org.slf4j:slf4j-parent:2.0.16",
+    "artifact": "slf4j-parent-2.0.16.pom",
+    "sha256": "09a0b4cc814d7274616c9b16d4c0fd9aaf1ecc813334de5131e547271b1982e5",
+    "source": "https://repo.maven.apache.org/maven2/org/slf4j/slf4j-parent/2.0.16/slf4j-parent-2.0.16.pom",
+    "verified": true
+  },
+  {
+    "coordinate": "org.slf4j:slf4j-parent:2.0.17",
+    "artifact": "slf4j-parent-2.0.17.pom",
+    "sha256": "95cd71e852dfdb29126e58b7b939d57ec2b2e6024391852e0b545dee082bbf3b",
+    "source": "https://repo.maven.apache.org/maven2/org/slf4j/slf4j-parent/2.0.17/slf4j-parent-2.0.17.pom",
+    "verified": true
+  }
+]

@@ -16,7 +16,9 @@ public class BitTapNextTest {
         String text=cg3("03 - 長期储蓄");WalletCrypto crypto=new WalletCrypto();WalletCrypto.Metadata m=crypto.inspect(text);
         assertEquals(3,m.version);assertEquals("03 - 長期储蓄",m.note);assertNotNull(m.addresses);
         try(WalletCrypto.Unlocked key=crypto.decrypt(text,password())){assertEquals(m.note,key.note);assertTrue(key.addresses.sameAs(m.addresses));assertEquals("KwDiBf89QgGbjEhKnhXJuH7LrciVrZi3qYjgd9M7rFU73sVHnoWn",key.wif());}
-        Files.writeString(Path.of("build/cg3-scalar-one.txt"),text,StandardCharsets.US_ASCII);
+        Path fixture=Path.of(System.getProperty("bittap.fixtureDir", "build"), "cg3-scalar-one.txt");
+        Files.createDirectories(fixture.getParent());
+        Files.writeString(fixture,text,StandardCharsets.US_ASCII);
     }
     @Test public void noteTamperingFailsAuthentication()throws Exception{
         String text=cg3("one");byte[] raw=Base64.getUrlDecoder().decode(text.substring(4));raw[raw.length-48-1]='x';String changed="CG3:"+Base64.getUrlEncoder().withoutPadding().encodeToString(raw);

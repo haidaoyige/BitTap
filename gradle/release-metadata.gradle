@@ -1,0 +1,83 @@
+import groovy.json.JsonOutput
+import groovy.json.JsonSlurper
+import org.gradle.api.artifacts.component.ModuleComponentIdentifier
+import java.security.MessageDigest
+import java.util.zip.ZipFile
+
+// The inventory follows resolved runtime JARs, not historical verification entries.
+def metadataRoot = layout.buildDirectory.dir('release-metadata')
+def bundledAssets = layout.buildDirectory.dir('generated/release-assets')
+tasks.register('generateReleaseMetadata') {
+    description = 'Build an exact runtime SBOM and complete offline license bundle.'
+    outputs.upToDateWhen { false }
+    outputs.dir(metadataRoot)
+    outputs.dir(bundledAssets)
+    doLast {
+        def registry = new JsonSlurper().parse(file('licenses/dependencies.json'))
+        def artifacts = [:]
+        [android:project(':app').configurations.releaseRuntimeClasspath,
+         recovery:project(':recovery').configurations.runtimeClasspath].each { scope, configuration ->
+            configuration.resolvedConfiguration.resolvedArtifacts.each { artifact ->
+                if (artifact.id.componentIdentifier instanceof ModuleComponentIdentifier) {
+                    def id=artifact.moduleVersion.id
+                    def key="${id.group}:${id.name}:${id.version}:${artifact.file.name}".toString()
+                    if (!artifacts.containsKey(key)) artifacts[key]=[artifact:artifact,scopes:[]]
+                    artifacts[key].scopes.add(scope)
+                }
+            }
+        }
+        def destination=bundledAssets.get().asFile
+        delete(destination)
+        def licenses=new File(destination,'licenses');licenses.mkdirs()
+        copy { from file('LICENSE');from file('NOTICE');into licenses }
+        copy { from file('licenses');exclude 'dependencies.json';into new File(licenses,'texts') }
+        def inventory=[], components=[]
+        artifacts.sort().each { artifactKey, resolved ->
+            def artifact=resolved.artifact
+            def id=artifact.moduleVersion.id
+            // Guava's Gradle metadata can select its JVM JAR from an Android component.
+            // Describe the actual Maven binary rather than mislabeling that variant.
+            def binaryVersion=id.version
+            if (id.group=='com.google.guava' && id.name=='guava')
+                binaryVersion=artifact.file.name.substring('guava-'.length(),artifact.file.name.length()-4)
+            def coordinate="${id.group}:${id.name}:${binaryVersion}".toString()
+            def entry=registry["${id.group}:${id.name}".toString()]
+            if (entry==null || !file("licenses/${entry.text}").isFile())
+                throw new GradleException("Missing reviewed license for ${coordinate}")
+            byte[] contents=artifact.file.bytes
+            def checksum=MessageDigest.getInstance('SHA-256').digest(contents).encodeHex().toString()
+            def embedded=[]
+            new ZipFile(artifact.file).withCloseable { zip ->
+                zip.entries().each { member ->
+                    def name=member.name.tokenize('/').last().toLowerCase(Locale.ROOT)
+                    if (!member.directory && !name.endsWith('.class') && name.matches('(license|licence|notice|copying|copyright)([._-].*)?')) {
+                        def safe=member.name.replaceAll('[^A-Za-z0-9._-]','_')
+                        def target=new File(licenses,"artifacts/${artifact.file.name}/${safe}")
+                        target.parentFile.mkdirs()
+                        zip.getInputStream(member).withCloseable { input -> target.bytes=input.bytes }
+                        embedded.add("artifacts/${artifact.file.name}/${safe}".toString())
+                    }
+                }
+            }
+            inventory.add([coordinate:coordinate,filename:artifact.file.name,scopes:resolved.scopes.sort(),sha256:checksum,license:entry.license,
+                licenseText:"texts/${entry.text}",upstream:entry.upstream,embeddedNotices:embedded.sort()])
+            components.add([type:'library',group:id.group,name:id.name,version:binaryVersion,
+                'bom-ref':artifactKey,purl:"pkg:maven/${id.group}/${id.name}@${binaryVersion}".toString(),
+                properties:[[name:'bittap:artifact-filename',value:artifact.file.name],
+                            [name:'bittap:distributions',value:resolved.scopes.sort().join(',')]],
+                hashes:[[alg:'SHA-256',content:checksum]],licenses:[[license:[name:entry.license]]]])
+        }
+        def output=metadataRoot.get().asFile;output.mkdirs()
+        def index=JsonOutput.prettyPrint(JsonOutput.toJson(inventory))+'\n'
+        new File(output,'runtime-inventory.json').text=index
+        new File(licenses,'runtime-inventory.json').text=index
+        def sbom=JsonOutput.prettyPrint(JsonOutput.toJson([
+            bomFormat:'CycloneDX',specVersion:'1.6',version:1,
+            metadata:[component:[type:'application',name:'BitTap',version:project(':app').android.defaultConfig.versionName]],
+            components:components]))+'\n'
+        new File(output,'sbom.cdx.json').text=sbom
+        new File(destination,'sbom.cdx.json').text=sbom
+        copy { from file('docs/THIRD_PARTY.md');into licenses }
+        logger.lifecycle("Generated SBOM and license notices for ${inventory.size()} runtime artifacts")
+    }
+}

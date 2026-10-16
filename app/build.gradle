@@ -1,4 +1,6 @@
 plugins { id 'com.android.application' }
+// Explicit, unsigned reconstruction for CI comparison; never a distributable APK.
+def unsignedVerification = providers.gradleProperty('bittapUnsignedVerification').orNull == 'true'
 def releaseSigning = [
     storeFile: System.getenv('BITNFC_RELEASE_STORE_FILE'),
     storePassword: System.getenv('BITNFC_RELEASE_STORE_PASSWORD'),
@@ -8,6 +10,7 @@ def releaseSigning = [
 android {
     namespace 'io.coingift.android'
     compileSdk 35
+    buildToolsVersion '35.0.0'
     defaultConfig {
         applicationId 'io.coingift.android'
         minSdk 28
@@ -35,16 +38,21 @@ android {
         release {
             debuggable false
             minifyEnabled false
-            signingConfig signingConfigs.release
+            if (!unsignedVerification) signingConfig signingConfigs.release
         }
     }
     bundle { language { enableSplit = false } }
-    packaging { resources.excludes += ['META-INF/DEPENDENCIES','META-INF/LICENSE*','META-INF/NOTICE*','META-INF/*.kotlin_module'] }
+    sourceSets.main.assets.srcDir(rootProject.layout.buildDirectory.dir('generated/release-assets'))
+    packaging {
+        resources.excludes += ['META-INF/DEPENDENCIES','META-INF/*.kotlin_module']
+        resources.merges += ['META-INF/LICENSE*','META-INF/NOTICE*']
+    }
 }
+tasks.named('preBuild') { dependsOn rootProject.tasks.named('generateReleaseMetadata') }
 // Never silently produce an unsigned APK or fall back to the debug signing identity.
 gradle.taskGraph.whenReady { graph ->
     if (graph.hasTask(':app:packageRelease') || graph.hasTask(':app:packageReleaseAndroidTest')) {
-        if (releaseSigning.values().any { !it })
+        if (!unsignedVerification && releaseSigning.values().any { !it })
             throw new GradleException('Release signing requires BITNFC_RELEASE_STORE_FILE, STORE_PASSWORD, KEY_ALIAS and KEY_PASSWORD environment variables.')
     }
 }
@@ -52,5 +60,5 @@ dependencies {
     implementation project(':core')
     implementation 'com.google.zxing:core:3.5.3'
     testImplementation 'junit:junit:4.13.2'
-    runtimeOnly 'org.slf4j:slf4j-nop:1.7.36'
+    runtimeOnly 'org.slf4j:slf4j-nop:2.0.17'
 }

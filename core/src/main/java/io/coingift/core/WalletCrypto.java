@@ -13,11 +13,11 @@ import java.util.Base64;
 import javax.crypto.Cipher;
 import javax.crypto.spec.GCMParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
-import org.bitcoinj.core.ECKey;
-import org.bitcoinj.core.Base58;
-import org.bitcoinj.core.LegacyAddress;
+import org.bitcoinj.crypto.ECKey;
+import org.bitcoinj.base.Base58;
+import org.bitcoinj.base.LegacyAddress;
 import org.bitcoinj.core.NetworkParameters;
-import org.bitcoinj.core.SegwitAddress;
+import org.bitcoinj.base.SegwitAddress;
 import org.bitcoinj.crypto.BIP38PrivateKey;
 import org.bitcoinj.params.MainNetParams;
 import org.bouncycastle.crypto.generators.SCrypt;
@@ -276,7 +276,7 @@ public final class WalletCrypto {
     static boolean isValidKey(byte[] key) {
         if (key == null || key.length != 32) return false;
         BigInteger value = new BigInteger(1, key);
-        return value.signum() > 0 && value.compareTo(ECKey.CURVE.getN()) < 0;
+        return value.signum() > 0 && value.compareTo(CurveParameters.SECP256K1.getN()) < 0;
     }
     static void requireValidKey(byte[] key) { if (!isValidKey(key)) throw new IllegalArgumentException("无效的 BTC 私钥"); }
     static ECKey publicKeyOf(byte[] privateKey) {

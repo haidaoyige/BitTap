@@ -1,0 +1,81 @@
+name: CI
+on:
+  push:
+    branches: [main, 'codex/**']
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  verify:
+    name: Verify source and unsigned release
+    runs-on: ubuntu-22.04
+    timeout-minutes: 30
+    env:
+      GRADLE_USER_HOME: ${{ runner.temp }}/bittap-clean-gradle
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-java@b843ebf9b913146b38da2eaa7aeddf76074ae1ad # v6.1.0
+        with:
+          distribution: temurin
+          java-version: '17.0.18+8'
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: '3.12'
+      - name: Verify wrapper and record environment
+        run: python tools/check_environment.py --output build/ci/build-environment.json
+      - name: Install pinned Android SDK components
+        run: sdkmanager 'platforms;android-35' 'build-tools;35.0.0'
+      - name: Install hashed independent verification tools
+        run: python -m pip install --require-hashes -r tools/requirements-verification.txt
+      - name: Clean-cache strict build and tests (no release credentials)
+        run: >-
+          ./gradlew --no-daemon --max-workers=2 --dependency-verification strict
+          :core:test :recovery:test :app:testDebugUnitTest
+          :app:assembleDebug :app:lintDebug :app:assembleRelease :recovery:distZip
+          -PbittapUnsignedVerification=true
+      - name: Independent crypto, addresses and release-tool tamper checks
+        run: |
+          python tools/check_interop.py
+          python tools/check_addresses.py
+          python -m unittest discover -s tools/tests -v
+      - name: Check actual packaged licenses and runtime JARs
+        run: >-
+          python tools/verify_release_contents.py
+          --apk app/build/outputs/apk/release/app-release-unsigned.apk
+          --recovery recovery/build/distributions/bittap-recover.zip
+      - name: Scan actual runtime coordinates against OSV
+        run: >-
+          python tools/audit_dependencies.py --sbom build/release-metadata/sbom.cdx.json
+          --output build/ci/dependency-audit.json
+      - name: Upload unsigned comparison artifact (not an installable release)
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: unsigned-${{ github.sha }}
+          path: |
+            app/build/outputs/apk/release/app-release-unsigned.apk
+            recovery/build/distributions/bittap-recover.zip
+          if-no-files-found: error
+          retention-days: 14
+      - name: Upload validation records
+        if: always()
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: validation-${{ github.sha }}
+          path: |
+            build/ci/
+            build/release-metadata/
+            core/build/test-results/
+            recovery/build/test-results/
+            app/build/test-results/
+            app/build/reports/lint-results-debug.*
+            docs/INTEROP-RESULT.txt
+            docs/ADDRESS-INTEROP-RESULT.txt
+          if-no-files-found: warn
+          retention-days: 14

@@ -1,0 +1,10 @@
+BitTap
+Copyright 2026 BitTap contributors.
+
+This distribution includes third-party software. The licenses/ directory (APK:
+assets/licenses/) contains applicable license texts, upstream notices, and the
+exact resolved runtime inventory. sbom.cdx.json identifies bundled components.
+
+Bitcoin glyph source: Bitcoin Design. Lucide/Feather icon notices are retained
+in the Android application assets and the source distribution. Names and marks
+do not imply endorsement. See docs/THIRD_PARTY.md for details.

@@ -1,8 +1,6 @@
 package io.coingift.core;
 
 import java.io.Console;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
 import java.nio.file.Path;
 
 /** Portable offline recovery; passwords are accepted only through the non-echoing terminal prompt. */
@@ -14,8 +12,7 @@ public final class RecoveryCli {
                 System.err.println("Usage: bittap-recover --inspect|--decrypt encrypted-backup.txt");System.exit(2);
             }
             Path path=Path.of(args[1]);
-            if(Files.size(path)>WalletCrypto.MAX_TEXT_LENGTH+2)throw new IllegalArgumentException("Backup too large");
-            String encrypted=Files.readString(path,StandardCharsets.UTF_8).trim();
+            String encrypted=BackupInput.read(path);
             WalletCrypto crypto=new WalletCrypto();
             if(args[0].equals("--inspect")) {
                 if(encrypted.startsWith("6P")){System.out.println("BIP38: funding address type is not recorded; decrypt to inspect derived addresses.");return;}

@@ -19,3 +19,7 @@ private-keys/
 local-dev/
 credentials.json
 release-artifacts/
+
+# Python verification bytecode
+__pycache__/
+*.pyc

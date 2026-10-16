@@ -12,7 +12,7 @@ import java.util.Base64;
 import javax.crypto.Cipher;
 import javax.crypto.spec.GCMParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
-import org.bitcoinj.core.ECKey;
+import org.bitcoinj.crypto.ECKey;
 import org.bouncycastle.crypto.generators.SCrypt;
 
 public class WalletCryptoTest {
@@ -129,7 +129,7 @@ public class WalletCryptoTest {
     @Test public void exportPublicTestFixtureForIndependentRecovery()throws Exception{
         // Public scalar 1, public test password; never a real user key or backup.
         String fixture=new WalletCrypto().encrypt(one(),password(),WalletCrypto.Network.MAINNET);
-        java.nio.file.Path out=java.nio.file.Path.of("build/interop-fixture.txt");
+        java.nio.file.Path out=java.nio.file.Path.of(System.getProperty("bittap.fixtureDir", "build"), "interop-fixture.txt");
         java.nio.file.Files.createDirectories(out.getParent());
         java.nio.file.Files.writeString(out,fixture,StandardCharsets.US_ASCII);
     }

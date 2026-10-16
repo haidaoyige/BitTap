@@ -1,12 +1,14 @@
 """Independent recovery of public known-scalar CG3, CG2 and pre-0.4 CG1 fixtures."""
-import base64,hashlib,pathlib
+import base64,hashlib,pathlib,os
 from cryptography.hazmat.primitives.ciphers.aead import AESGCM
 from cryptography.hazmat.primitives.asymmetric import ec
 from cryptography.hazmat.primitives.serialization import Encoding,PublicFormat
 from cryptography.exceptions import InvalidTag
 root=pathlib.Path(__file__).resolve().parents[1]
-expected=(root/'core/build/address-fixtures.tsv').read_text().splitlines()[0].split('\t')
-for path,version in [(root/'core/build/interop-fixture.txt',2),(root/'core/src/test/resources/cg1-scalar-one.txt',1),(root/'core/build/cg3-scalar-one.txt',3)]:
+build=pathlib.Path(os.environ['BITTAP_BUILD_ROOT'])/'_core' if os.environ.get('BITTAP_BUILD_ROOT') else root/'core/build'
+if not __debug__: raise RuntimeError('Verification must run without Python optimization')
+expected=(build/'address-fixtures.tsv').read_text().splitlines()[0].split('\t')
+for path,version in [(build/'interop-fixture.txt',2),(root/'core/src/test/resources/cg1-scalar-one.txt',1),(build/'cg3-scalar-one.txt',3)]:
  text=path.read_text().strip()
  assert text.startswith(f'CG{version}:')
  data=base64.urlsafe_b64decode(text[4:]+'='*((-len(text[4:]))%4))

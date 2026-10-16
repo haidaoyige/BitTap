@@ -1,0 +1,18 @@
+// Optional network route, not a verification bypass. Both endpoints are Google-owned.
+settingsEvaluated { settings ->
+    def configure = { repositories ->
+        repositories.clear()
+        repositories.maven {
+            url = uri('https://redirector.gvt1.com/edgedl/android/maven2/')
+            content {
+                includeGroupByRegex 'com\\.android(\\..*)?'
+                includeGroupByRegex 'androidx(\\..*)?'
+                includeGroupByRegex 'com\\.google\\.testing\\.platform(\\..*)?'
+                includeGroupByRegex 'com\\.google\\.android(\\..*)?'
+            }
+        }
+        repositories.mavenCentral()
+    }
+    configure(settings.pluginManagement.repositories)
+    configure(settings.dependencyResolutionManagement.repositories)
+}

@@ -1,3 +1,13 @@
 plugins {
     id 'com.android.application' version '8.9.2' apply false
 }
+apply from: 'gradle/release-metadata.gradle'
+allprojects {
+    def isolatedRoot=System.getenv('BITTAP_BUILD_ROOT')
+    if (isolatedRoot) layout.buildDirectory.set(new File(isolatedRoot,path==':'?'_root':path.replace(':','_')))
+    tasks.withType(JavaCompile).configureEach { options.encoding = 'UTF-8' }
+    tasks.withType(AbstractArchiveTask).configureEach {
+        preserveFileTimestamps = false
+        reproducibleFileOrder = true
+    }
+}

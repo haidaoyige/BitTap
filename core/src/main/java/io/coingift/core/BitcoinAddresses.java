@@ -3,11 +3,11 @@ package io.coingift.core;
 import java.math.BigInteger;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
-import org.bitcoinj.core.ECKey;
-import org.bitcoinj.core.LegacyAddress;
-import org.bitcoinj.core.SegwitAddress;
-import org.bitcoinj.core.Sha256Hash;
-import org.bitcoinj.core.Utils;
+import org.bitcoinj.crypto.ECKey;
+import org.bitcoinj.base.LegacyAddress;
+import org.bitcoinj.base.SegwitAddress;
+import org.bitcoinj.base.Sha256Hash;
+import org.bouncycastle.crypto.digests.RIPEMD160Digest;
 import org.bitcoinj.params.MainNetParams;
 import org.bitcoinj.script.ScriptBuilder;
 import org.bouncycastle.math.ec.ECPoint;
@@ -52,12 +52,19 @@ public final class BitcoinAddresses {
             && nativeSegwit.equals(other.nativeSegwit) && taproot.equals(other.taproot);
     }
 
+    private static byte[] hash160(byte[] input) {
+        byte[] sha=Sha256Hash.hash(input), result=new byte[20];
+        RIPEMD160Digest digest=new RIPEMD160Digest();
+        digest.update(sha,0,sha.length);digest.doFinal(result,0);
+        return result;
+    }
+
     static BitcoinAddresses fromKey(ECKey key) {
         if (!key.isCompressed()) throw new IllegalArgumentException("地址需要压缩公钥");
         MainNetParams net=MainNetParams.get();
         String legacy=LegacyAddress.fromKey(net,key).toString();
         byte[] redeemScript=ScriptBuilder.createP2WPKHOutputScript(key).getProgram();
-        String nested=LegacyAddress.fromScriptHash(net,Utils.sha256hash160(redeemScript)).toString();
+        String nested=LegacyAddress.fromScriptHash(net,hash160(redeemScript)).toString();
         String nativeSegwit=SegwitAddress.fromKey(net,key).toString();
 
         // BIP341 key-only output: lift_x chooses the even-Y internal point.
@@ -68,8 +75,8 @@ public final class BitcoinAddresses {
         byte[] preimage=new byte[96];
         System.arraycopy(tag,0,preimage,0,32);System.arraycopy(tag,0,preimage,32,32);System.arraycopy(x,0,preimage,64,32);
         BigInteger tweak=new BigInteger(1,Sha256Hash.hash(preimage));
-        if (tweak.compareTo(ECKey.CURVE.getN())>=0) throw new IllegalArgumentException("Taproot tweak 超出有效范围");
-        ECPoint output=point.add(ECKey.CURVE.getG().multiply(tweak)).normalize();
+        if (tweak.compareTo(CurveParameters.SECP256K1.getN())>=0) throw new IllegalArgumentException("Taproot tweak 超出有效范围");
+        ECPoint output=point.add(CurveParameters.SECP256K1.getG().multiply(tweak)).normalize();
         if (output.isInfinity()) throw new IllegalArgumentException("Taproot 输出公钥无效");
         byte[] program=Arrays.copyOfRange(output.getEncoded(true),1,33);
         // bitcoinj uses Bech32m for version 1, as required by BIP350.

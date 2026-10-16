@@ -6,6 +6,12 @@
 
 本项目尚未完成独立资金安全审计，实体 NFC 和真实手机相机仍需验收。历史风险记录见 [0.4.0 安全评审](docs/SECURITY-REVIEW-0.4.0.md)，当前实现及清理边界见 [实现说明](docs/BITTAP-IMPLEMENTATION.md)。功能测试通过不代表已适合正式保管资金。
 
+## 未发布的后台安全修订
+
+本分支针对 BTA-06～11 做后台修订，不改变 Android 页面的文案、布局与操作步骤：升级运行时依赖并检查公告；补齐严格依赖校验；CLI 输入按实际字节限长并拒绝设备/管道；APK 和恢复包内附完整许可证及 SBOM；建立私有 Issue 安全报告政策；增加无签名密钥的独立 CI 构建与本机签名校验工具。
+
+修复与验证边界见 [后台修订记录](docs/security/BACKEND-HARDENING.md)。BTA-01～05 尚未在该分支实现；BTA-08 的主分支强制保护受当前 GitHub 私有仓库套餐限制。历史 `v0.5.0` 发布附件不包含这些修订。
+
 ## V0.5.0
 
 独立仓库：[haidaoyige/BitTap](https://github.com/haidaoyige/BitTap)（私有，仅授权账号可见）。签名 APK、离线恢复工具与 SHA-256 摘要位于 [V0.5.0 Release](https://github.com/haidaoyige/BitTap/releases/tag/v0.5.0)。
@@ -82,10 +88,10 @@
 
 ## 编译与本机验证
 
-需要 JDK 17、Android SDK 35 / build-tools 35.0.0，在 `local.properties` 配置 `sdk.dir`。首次编译下载依赖，APK 运行不需要网络。
+可核验构建固定使用 Temurin 17.0.18+8、Gradle 8.11.1、Android SDK 35 / build-tools 35.0.0，在 `local.properties` 配置 `sdk.dir`。首次编译下载依赖，APK 运行不需要网络。
 
 ```sh
-./gradlew :core:test :app:testDebugUnitTest :app:assembleDebug :app:lintDebug :recovery:distZip
+./gradlew --dependency-verification strict :core:test :recovery:test :app:testDebugUnitTest :app:assembleDebug :app:lintDebug :recovery:distZip
 ```
 
 设备交互测试仅使用公开已知标量和测试密码，不向生产 APK 添加测试入口：
@@ -99,7 +105,7 @@ adb shell am instrument -w io.coingift.android.test/io.coingift.android.SmokeRun
 
 验证结果和硬件待验项见 [docs/VALIDATION.md](docs/VALIDATION.md)。应用 ID 保持 `io.coingift.android`；同签名版本可覆盖安装，调试包与发行包使用不同签名，不能互相覆盖。切换前请先保存旧钱包的加密备份。
 
-发行构建使用独立签名，须通过环境变量提供 `BITNFC_RELEASE_STORE_FILE`、`BITNFC_RELEASE_STORE_PASSWORD`、`BITNFC_RELEASE_KEY_ALIAS`、`BITNFC_RELEASE_KEY_PASSWORD`，然后运行 `./gradlew :app:assembleRelease :app:lintRelease`。缺少签名配置会停止打包；不会使用调试签名或交付未签名 APK。发行包关闭调试，不包含测试入口；签名私钥和密码由维护者单独保管，不放入仓库、APK 或源码分发包。发布与实机测试说明见 [docs/release/README.md](docs/release/README.md)。
+发行构建使用独立签名，须通过环境变量提供 `BITNFC_RELEASE_STORE_FILE`、`BITNFC_RELEASE_STORE_PASSWORD`、`BITNFC_RELEASE_KEY_ALIAS`、`BITNFC_RELEASE_KEY_PASSWORD`，通过下方发布说明的 `tools/build_release.py` 复核成功的独立 CI 构建后签发候选包。直接执行 Gradle 构建只用于本机测试，不构成发布来源验证。缺少签名配置会停止打包；不会使用调试签名或交付未签名 APK。发行包关闭调试，不包含测试入口；签名私钥和密码由维护者单独保管，不放入仓库、APK 或源码分发包。发布与实机测试说明见 [docs/release/README.md](docs/release/README.md)。
 
 ## 独立离线恢复
 

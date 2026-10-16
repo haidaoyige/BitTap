@@ -1,0 +1,27 @@
+[
+  {
+    "file": "Protobuf-BSD.txt",
+    "source": "https://raw.githubusercontent.com/protocolbuffers/protobuf/v36.2/LICENSE",
+    "sha256": "6e5e117324afd944dcf67f36cf329843bc1a92229a8cd9bb573d7a83130fea7d"
+  },
+  {
+    "file": "JCIP-NOTICE.html",
+    "source": "https://jcip.net/annotations/doc/net/jcip/annotations/package-summary.html",
+    "sha256": "c59d1d6d84401a592d61c371e61417199c2a231b90b1ebbb2bff865f130a568d"
+  },
+  {
+    "file": "Bouncy-Castle.html",
+    "source": "https://www.bouncycastle.org/licence.html",
+    "sha256": "2831d401b398e73b37c336336cc798b50263cb4855026d5cda6c4d6ad8117927"
+  },
+  {
+    "file": "JCIP-CC-BY-2.5.html",
+    "source": "https://api.github.com/repos/creativecommons/cc-legal-tools-data/git/blobs/932e87b4ce5ca4912855cbac148882a2f8973c7b",
+    "sha256": "7d9dd741a629ecd106d847eee3bf9c9fb856d28e55a9a1b0caa422984d9d90db"
+  },
+  {
+    "file": "SLF4J-MIT.txt",
+    "source": "https://repo.maven.apache.org/maven2/org/slf4j/slf4j-api/2.0.17/slf4j-api-2.0.17.jar!/META-INF/LICENSE.txt",
+    "sha256": "4e7f90c86ab51278228bce153122f1d8df30149d13ce9ef524c8444a84c32dcc"
+  }
+]

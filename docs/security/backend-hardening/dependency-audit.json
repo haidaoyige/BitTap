@@ -1,0 +1,68 @@
+{
+  "source": "https://api.osv.dev/v1/querybatch",
+  "queriedAt": "2026-10-16T17:38:46.322177+00:00",
+  "sbomSha256": "f8fda7bd6945fe0c04cfd80b5e9e0973e7fba601d3a8a997f60a816e20f60899",
+  "scope": "resolved runtime components only; no private source uploaded",
+  "results": [
+    {
+      "coordinate": "com.google.code.findbugs:jsr305:3.0.2",
+      "advisories": []
+    },
+    {
+      "coordinate": "com.google.errorprone:error_prone_annotations:2.50.0",
+      "advisories": []
+    },
+    {
+      "coordinate": "com.google.guava:failureaccess:1.0.3",
+      "advisories": []
+    },
+    {
+      "coordinate": "com.google.guava:guava:33.7.2-android",
+      "advisories": []
+    },
+    {
+      "coordinate": "com.google.guava:guava:33.7.2-jre",
+      "advisories": []
+    },
+    {
+      "coordinate": "com.google.guava:listenablefuture:9999.0-empty-to-avoid-conflict-with-guava",
+      "advisories": []
+    },
+    {
+      "coordinate": "com.google.j2objc:j2objc-annotations:3.1",
+      "advisories": []
+    },
+    {
+      "coordinate": "com.google.protobuf:protobuf-javalite:4.36.2",
+      "advisories": []
+    },
+    {
+      "coordinate": "com.google.zxing:core:3.5.3",
+      "advisories": []
+    },
+    {
+      "coordinate": "net.jcip:jcip-annotations:1.0",
+      "advisories": []
+    },
+    {
+      "coordinate": "org.bitcoinj:bitcoinj-core:0.17.1",
+      "advisories": []
+    },
+    {
+      "coordinate": "org.bouncycastle:bcprov-jdk15to18:1.86",
+      "advisories": []
+    },
+    {
+      "coordinate": "org.jspecify:jspecify:1.0.1",
+      "advisories": []
+    },
+    {
+      "coordinate": "org.slf4j:slf4j-api:2.0.17",
+      "advisories": []
+    },
+    {
+      "coordinate": "org.slf4j:slf4j-nop:2.0.17",
+      "advisories": []
+    }
+  ]
+}

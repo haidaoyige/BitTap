@@ -2,16 +2,36 @@
 
 Application source: Apache License 2.0 (see LICENSE). No OneKey code or assets used.
 
-Pinned direct runtime dependencies:
+## Current runtime baseline (unreleased security hardening)
 
-- bitcoinj 0.16.5 — Apache-2.0, https://github.com/bitcoinj/bitcoinj
-- Bouncy Castle bcprov-jdk15to18 1.83 — Bouncy Castle License (MIT-style), https://www.bouncycastle.org/licence.html
+- bitcoinj 0.17.1 — Apache-2.0, https://github.com/bitcoinj/bitcoinj
+- Bouncy Castle bcprov-jdk15to18 1.86 — Bouncy Castle License, https://www.bouncycastle.org/licence.html
+- Guava 33.7.2 (Android/JRE variants) — Apache-2.0, https://github.com/google/guava
+- protobuf-javalite 4.36.2 — BSD-3-Clause, https://github.com/protocolbuffers/protobuf
 - ZXing core 3.5.3 — Apache-2.0, https://github.com/zxing/zxing
-- SLF4J 1.7.36 — MIT, https://www.slf4j.org/license.html
+- SLF4J 2.0.17 — MIT, https://www.slf4j.org/license.html
 
-bitcoinj transitive runtime dependencies include Guava, protobuf-javalite, OkHttp, Okio and associated annotation libraries. Their own license texts remain in the recovery distribution's dependency JARs. A resolved runtime dependency report and extracted license notices accompany the delivered build. Android package resource duplicate exclusion does not waive their license obligations.
+The resolved runtime inventory, rather than this summary or historical Gradle
+verification entries, determines shipped dependencies. The APK embeds
+`assets/sbom.cdx.json` and `assets/licenses/`; the offline recovery distribution
+contains the same SBOM/license bundle plus top-level LICENSE and NOTICE. Both
+include full reviewed license texts and available dependency-JAR notices.
+JCIP annotations are CC-BY-2.5 (attribution retained), not public domain.
+The reviewed source registry is `licenses/dependencies.json`; provenance for
+vendored fallback texts is in `licenses/SOURCES.json`. A build fails for a new
+runtime component without a reviewed license entry.
 
-Build/test tooling: Gradle 8.11.1, Android Gradle Plugin 8.9.2, JDK 17, Android SDK 35, JUnit 4.13.2. Build tools are separate from the app and do not run on the recipient's phone. Official download checksums are checked for the toolchain archives. Building does not constitute a security audit of these dependencies.
+`generateReleaseMetadata` records actual JAR filenames, SHA-256 and distribution
+scopes, including Guava's separately selected JVM binary. Release checks compare
+all external recovery JAR hashes with the packaged inventory. Old OkHttp/Okio
+versions are no longer part of the resolved runtime; historical notices under
+`docs/third-party-notices/` are retained solely for prior releases.
+
+Build/test tooling: Gradle 8.11.1, Android Gradle Plugin 8.9.2, Temurin
+17.0.18+8, Android SDK 35 / build-tools 35.0.0, JUnit 4.13.2. Build tools do not
+run on the recipient's phone. Wrapper/toolchain hashes, pinned CI action commits
+and hashed independent verification dependencies are in `tools/`. Building and
+an advisory scan do not constitute a security audit of these dependencies.
 
 ## BitNFC mark (0.4.0)
 

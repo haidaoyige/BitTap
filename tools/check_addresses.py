@@ -1,5 +1,6 @@
 """Independent reference check of public test scalars only; never reads user secrets."""
 import hashlib
+import os
 from pathlib import Path
 from cryptography.hazmat.primitives.asymmetric import ec
 from cryptography.hazmat.primitives.serialization import Encoding, PublicFormat
@@ -42,8 +43,10 @@ def witness(version,program):
     chk^=1 if version==0 else 0x2bc830a3
     return hrp+'1'+''.join(CHARSET[x] for x in data+[(chk>>(5*(5-i)))&31 for i in range(6)])
 
+build=Path(os.environ['BITTAP_BUILD_ROOT'])/'_core' if os.environ.get('BITTAP_BUILD_ROOT') else ROOT/'core/build'
+if not __debug__: raise RuntimeError('Verification must run without Python optimization')
 count=0
-for row in (ROOT/'core/build/address-fixtures.tsv').read_text().splitlines():
+for row in (build/'address-fixtures.tsv').read_text().splitlines():
     raw,legacy,nested,native,taproot=row.split('\t');k=int(raw,16)
     pub=public(k);pkh=hash160(pub)
     assert b58check(0,pkh)==legacy
@@ -60,6 +63,7 @@ for row in (ROOT/'core/build/address-fixtures.tsv').read_text().splitlines():
     spend=((k if y%2==0 else ORDER-k)+tweak)%ORDER
     assert spend!=0 and point(spend)==output
     count+=1
+if count == 0: raise ValueError('No public address fixtures verified')
 report=f'Independent Python address verification PASS: {count} public scalar fixtures; P2PKH, P2SH-P2WPKH, P2WPKH and BIP341 key-only P2TR match; original scalars recover matching Taproot spending keys. No user keys read.\n'
 (ROOT/'docs/ADDRESS-INTEROP-RESULT.txt').write_text(report)
 print(report.strip())

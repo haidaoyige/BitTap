@@ -1,4 +1,19 @@
 plugins { id 'application' }
 java { sourceCompatibility = JavaVersion.VERSION_17; targetCompatibility = JavaVersion.VERSION_17 }
-dependencies { implementation project(':core'); runtimeOnly 'org.slf4j:slf4j-nop:1.7.36' }
+dependencies {
+    implementation project(':core')
+    runtimeOnly 'org.slf4j:slf4j-nop:2.0.17'
+    testImplementation 'junit:junit:4.13.2'
+}
 application { mainClass = 'io.coingift.core.RecoveryCli'; applicationName = 'bittap-recover' }
+distributions.main.contents {
+    from(rootProject.file('LICENSE'))
+    from(rootProject.file('NOTICE'))
+    from(rootProject.layout.buildDirectory.dir('generated/release-assets'))
+}
+tasks.named('distZip') {
+    archiveFileName = 'bittap-recover.zip'
+    dependsOn rootProject.tasks.named('generateReleaseMetadata')
+}
+tasks.named('distTar') { dependsOn rootProject.tasks.named('generateReleaseMetadata') }
+tasks.named('installDist') { dependsOn rootProject.tasks.named('generateReleaseMetadata') }

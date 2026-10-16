@@ -1,0 +1,13 @@
+{
+  "jdkDistribution": "Temurin",
+  "jdkRuntime": "17.0.18+8",
+  "jdkMajor": 17,
+  "gradle": "8.11.1",
+  "gradleZipSha256": "f397b287023acdba1e9f6fc5ea72d22dd63669d59ed4a289a29b1a76eee151c6",
+  "wrapperJarSha256": "2db75c40782f5e8ba1fc278a5574bab070adccb2d21ca5a6e5ed840888448046",
+  "androidCompileSdk": 35,
+  "androidBuildTools": "35.0.0",
+  "agp": "8.9.2",
+  "ciRunner": "ubuntu-22.04",
+  "apkCertificateSha256": "58b6613e32239ddf229066fa6bdf1b77579ade691a5d29b5bf621341a3c2b85a"
+}
