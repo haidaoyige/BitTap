@@ -24,10 +24,15 @@ def add(a,b):
     slope=((3*x*x)*pow(2*y,-1,FIELD) if a==b else (v-y)*pow(u-x,-1,FIELD))%FIELD
     nx=(slope*slope-x-u)%FIELD
     return nx,(slope*(x-nx)-y)%FIELD
+OPENSSL_VERSION=subprocess.check_output(['openssl','version'],text=True).strip()
 def ripemd160(data):
     # Some hosted Python/OpenSSL builds omit RIPEMD-160 from hashlib.
     # Use the runner's system OpenSSL, independently of the app's BC implementation.
-    digest=subprocess.check_output(['openssl','dgst','-ripemd160','-binary'],input=data)
+    # Ubuntu 22.04's OpenSSL 3.0.2 exposes this Bitcoin-required digest only
+    # through its legacy provider. Select it for this public-fixture command,
+    # without changing system configuration or the app's cryptographic policy.
+    providers=['-provider','legacy'] if OPENSSL_VERSION.startswith('OpenSSL 3.') else []
+    digest=subprocess.check_output(['openssl','dgst',*providers,'-ripemd160','-binary'],input=data)
     if len(digest)!=20:raise ValueError('System OpenSSL did not return RIPEMD-160')
     return digest
 def hash160(b):return ripemd160(hashlib.sha256(b).digest())
