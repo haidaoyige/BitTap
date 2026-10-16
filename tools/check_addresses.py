@@ -1,6 +1,7 @@
 """Independent reference check of public test scalars only; never reads user secrets."""
 import hashlib
 import os
+import subprocess
 from pathlib import Path
 from cryptography.hazmat.primitives.asymmetric import ec
 from cryptography.hazmat.primitives.serialization import Encoding, PublicFormat
@@ -23,7 +24,13 @@ def add(a,b):
     slope=((3*x*x)*pow(2*y,-1,FIELD) if a==b else (v-y)*pow(u-x,-1,FIELD))%FIELD
     nx=(slope*slope-x-u)%FIELD
     return nx,(slope*(x-nx)-y)%FIELD
-def hash160(b):return hashlib.new('ripemd160',hashlib.sha256(b).digest()).digest()
+def ripemd160(data):
+    # Some hosted Python/OpenSSL builds omit RIPEMD-160 from hashlib.
+    # Use the runner's system OpenSSL, independently of the app's BC implementation.
+    digest=subprocess.check_output(['openssl','dgst','-ripemd160','-binary'],input=data)
+    if len(digest)!=20:raise ValueError('System OpenSSL did not return RIPEMD-160')
+    return digest
+def hash160(b):return ripemd160(hashlib.sha256(b).digest())
 def b58check(version,payload):
     raw=bytes([version])+payload
     raw+=hashlib.sha256(hashlib.sha256(raw).digest()).digest()[:4]
@@ -45,6 +52,8 @@ def witness(version,program):
 
 build=Path(os.environ['BITTAP_BUILD_ROOT'])/'_core' if os.environ.get('BITTAP_BUILD_ROOT') else ROOT/'core/build'
 if not __debug__: raise RuntimeError('Verification must run without Python optimization')
+if ripemd160(b'').hex()!='9c1185a5c5e9fc54612808977ee8f548b2258d31':
+    raise ValueError('System OpenSSL failed the published RIPEMD-160 empty-input vector')
 count=0
 for row in (build/'address-fixtures.tsv').read_text().splitlines():
     raw,legacy,nested,native,taproot=row.split('\t');k=int(raw,16)
