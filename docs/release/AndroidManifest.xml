@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:versionCode="6"
+    android:versionName="0.4.0"
+    android:compileSdkVersion="35"
+    android:compileSdkVersionCodename="15"
+    package="io.coingift.android"
+    platformBuildVersionCode="35"
+    platformBuildVersionName="15">
+
+    <uses-sdk
+        android:minSdkVersion="28"
+        android:targetSdkVersion="35" />
+
+    <uses-permission
+        android:name="android.permission.NFC" />
+
+    <uses-feature
+        android:name="android.hardware.nfc"
+        android:required="false" />
+
+    <application
+        android:theme="@ref/0x7f030000"
+        android:label="@ref/0x7f020000"
+        android:icon="@ref/0x7f01000b"
+        android:allowBackup="false"
+        android:extractNativeLibs="false"
+        android:fullBackupContent="false"
+        android:usesCleartextTraffic="false"
+        android:dataExtractionRules="@ref/0x7f040000">
+
+        <activity
+            android:name="io.coingift.android.MainActivity"
+            android:exported="true"
+            android:windowSoftInputMode="0x10">
+
+            <intent-filter>
+
+                <action
+                    android:name="android.intent.action.MAIN" />
+
+                <category
+                    android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+    </application>
+</manifest>

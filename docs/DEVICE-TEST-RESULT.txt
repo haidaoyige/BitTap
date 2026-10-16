@@ -1,0 +1,2 @@
+PASS: 88 device assertions; public-fixture UI/NDEF/lifecycle/backup/multi-card flows.
+

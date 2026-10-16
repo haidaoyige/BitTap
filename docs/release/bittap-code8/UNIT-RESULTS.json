@@ -1,0 +1,96 @@
+{
+  "core": [
+    {
+      "name": "io.coingift.core.FormatAndWorkflowTest",
+      "tests": "9",
+      "skipped": "0",
+      "failures": "0",
+      "errors": "0",
+      "timestamp": "2026-10-16T07:31:53",
+      "hostname": "iandeMacBook-Air.local",
+      "time": "0.498"
+    },
+    {
+      "name": "io.coingift.core.WalletCryptoTest",
+      "tests": "21",
+      "skipped": "0",
+      "failures": "0",
+      "errors": "0",
+      "timestamp": "2026-10-16T07:31:56",
+      "hostname": "iandeMacBook-Air.local",
+      "time": "2.171"
+    },
+    {
+      "name": "io.coingift.core.PasswordStrengthTest",
+      "tests": "6",
+      "skipped": "0",
+      "failures": "0",
+      "errors": "0",
+      "timestamp": "2026-10-16T07:31:53",
+      "hostname": "iandeMacBook-Air.local",
+      "time": "0.003"
+    },
+    {
+      "name": "io.coingift.core.BitTapNextTest",
+      "tests": "11",
+      "skipped": "0",
+      "failures": "0",
+      "errors": "0",
+      "timestamp": "2026-10-16T07:31:51",
+      "hostname": "iandeMacBook-Air.local",
+      "time": "1.171"
+    },
+    {
+      "name": "io.coingift.core.BitcoinAddressesTest",
+      "tests": "9",
+      "skipped": "0",
+      "failures": "0",
+      "errors": "0",
+      "timestamp": "2026-10-16T07:31:52",
+      "hostname": "iandeMacBook-Air.local",
+      "time": "0.223"
+    },
+    {
+      "name": "io.coingift.core.SecurityReviewTest",
+      "tests": "6",
+      "skipped": "0",
+      "failures": "0",
+      "errors": "0",
+      "timestamp": "2026-10-16T07:31:53",
+      "hostname": "iandeMacBook-Air.local",
+      "time": "2.287"
+    }
+  ],
+  "android": [
+    {
+      "name": "io.coingift.android.QrImageFilesTest",
+      "tests": "6",
+      "skipped": "0",
+      "failures": "0",
+      "errors": "0",
+      "timestamp": "2026-10-16T08:52:41",
+      "hostname": "iandeMacBook-Air.local",
+      "time": "0.003"
+    },
+    {
+      "name": "io.coingift.android.NtagProtectionTest",
+      "tests": "4",
+      "skipped": "0",
+      "failures": "0",
+      "errors": "0",
+      "timestamp": "2026-10-16T08:52:41",
+      "hostname": "iandeMacBook-Air.local",
+      "time": "0.002"
+    },
+    {
+      "name": "io.coingift.android.QrCodeEncoderTest",
+      "tests": "4",
+      "skipped": "0",
+      "failures": "0",
+      "errors": "0",
+      "timestamp": "2026-10-16T08:52:41",
+      "hostname": "iandeMacBook-Air.local",
+      "time": "0.114"
+    }
+  ]
+}

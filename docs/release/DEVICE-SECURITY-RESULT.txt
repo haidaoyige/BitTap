@@ -1,0 +1,11 @@
+debuggable=false
+RNG provider=AndroidOpenSSL, algorithm=SHA1PRNG
+ciphertext retained after verified backup=true
+ciphertext present in saved instance state=false
+previously saved Bundle still contains ciphertext=false
+plaintext scalar exists before copy/display/QR=true
+default masked UI contains WIF=false
+accessibility/UiAutomation reads displayed WIF while FLAG_SECURE remains set=true
+30-second mask callback retains plaintext scalar=true
+AUDIT REPRODUCTION PASS: 15 assertions. Observations do not constitute a complete release audit.
+

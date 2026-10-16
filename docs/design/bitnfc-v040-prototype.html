@@ -1,0 +1,279 @@
+<div id="cg04-prototype">
+  <style>
+    #cg04-prototype{--cg-ink:light-dark(#28221c,#f5eee5);--cg-sub:light-dark(#786b5d,#bcae9e);--cg-paper:light-dark(#fffcf7,#201b16);--cg-white:light-dark(#fff,#29231d);--cg-line:light-dark(#ece3d7,#493b2d);--cg-soft:light-dark(#fff0db,#3b2a18);--cg-brand:light-dark(#f7931a,#ffa439);--cg-brandtext:light-dark(#a34b00,#ffb766);--cg-onbrand:light-dark(#2c1907,#2c1907);--cg-error:light-dark(#a24035,#f3aaa1);--cg-radius:18px;color:var(--cg-ink);font-family:Inter,-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;font-size:14px;line-height:1.55;color-scheme:light dark}
+    #cg04-prototype *{box-sizing:border-box}
+    #cg04-prototype button,#cg04-prototype input,#cg04-prototype textarea{font:inherit}
+    #cg04-prototype button{cursor:inherit}
+    #cg04-prototype .cg-previewbar{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin:4px 0 18px;padding-right:90px;font-size:12px;color:var(--cg-sub)}
+    #cg04-prototype .cg-previewbar strong{font-weight:500;color:var(--cg-ink);letter-spacing:.08em}
+    #cg04-prototype .cg-stage{display:grid;grid-template-columns:minmax(145px,205px) minmax(0,370px);justify-content:center;align-items:start;gap:34px;padding:24px 14px 30px;min-height:824px}
+    #cg04-prototype .cg-journey{padding-top:26px;align-self:start}
+    #cg04-prototype .cg-journey small{display:block;color:var(--cg-sub);font-size:11px;letter-spacing:.12em;margin:0 0 12px}
+    #cg04-prototype .cg-journey h3{margin:0 0 6px;font-size:20px;font-weight:500;letter-spacing:-.04em}
+    #cg04-prototype .cg-route{margin:24px 0 0;display:grid;gap:5px}
+    #cg04-prototype .cg-route label{margin:0 0 4px;font-size:12px;color:var(--cg-sub)}
+    #cg04-prototype .cg-route button{border:0;background:transparent;text-align:left;min-height:39px;padding:9px 10px;border-radius:9px;color:var(--cg-sub);display:flex;align-items:center;gap:10px;font-size:13px}
+    #cg04-prototype .cg-route button[aria-current=step]{background:var(--cg-soft);color:var(--cg-ink);font-weight:500}
+    #cg04-prototype .cg-route button span{font-size:11px;opacity:.65;font-variant-numeric:tabular-nums}
+    #cg04-prototype .cg-entry{border:0;background:transparent;color:var(--cg-sub);padding:10px;font-size:12px;text-align:left;margin-top:18px;min-height:40px}
+    #cg04-prototype .cg-phone{position:relative;width:100%;max-width:370px;border:1px solid var(--cg-line);border-radius:32px;background:var(--cg-paper);padding:0 0 12px;box-shadow:0 16px 40px light-dark(#6e3d120a,#0003);overflow:hidden}
+    #cg04-prototype .cg-status{height:40px;display:flex;justify-content:space-between;align-items:center;padding:0 23px;font-size:11px;font-weight:500;color:var(--cg-ink)}
+    #cg04-prototype .cg-status .cg-statusicons{display:flex;gap:5px;align-items:center}
+    #cg04-prototype .cg-status svg{width:13px;height:13px;stroke-width:1.8}
+    #cg04-prototype .cg-main{padding:0 24px 18px;min-height:688px;display:flex;flex-direction:column;position:relative}
+    #cg04-prototype .cg-toolbar{height:42px;display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
+    #cg04-prototype .cg-wordmark{display:flex;align-items:center;gap:8px;font-size:14px;font-weight:500;letter-spacing:-.02em;white-space:nowrap}
+    #cg04-prototype .cg-mark{display:block;width:32px;height:32px;flex-shrink:0}
+    #cg04-prototype .cg-cardmark{display:block;width:40px;height:40px;flex-shrink:0}
+    #cg04-prototype .cg-scanstage .cg-cardmark{width:25px;height:25px}
+    #cg04-prototype .cg-iconbutton{width:36px;min-height:36px;display:grid;place-items:center;border:0;background:transparent;color:var(--cg-sub);border-radius:12px;padding:8px}
+    #cg04-prototype .cg-iconbutton svg{width:19px;height:19px;stroke-width:1.6}
+    #cg04-prototype .cg-toolbar small{font-size:11px;color:var(--cg-sub)}
+    #cg04-prototype .cg-homehero{padding:23px 0 13px}
+    #cg04-prototype .cg-eyebrow{display:flex;align-items:center;gap:6px;color:var(--cg-sub);font-size:11px;letter-spacing:.06em;margin-bottom:14px}
+    #cg04-prototype .cg-eyebrow svg{width:13px;height:13px}
+    #cg04-prototype h1,#cg04-prototype h2,#cg04-prototype h3,#cg04-prototype p{margin:0}
+    #cg04-prototype .cg-homehero h1{font-size:34px;font-weight:500;line-height:1.3;letter-spacing:-.06em}
+    #cg04-prototype .cg-homehero p{font-size:13px;color:var(--cg-sub);margin-top:12px}
+    #cg04-prototype .cg-cardstage{height:190px;display:grid;place-items:center;position:relative}
+    #cg04-prototype .cg-gift{width:208px;height:128px;border-radius:16px;background:var(--cg-brand);color:var(--cg-onbrand);padding:18px 20px;display:flex;flex-direction:column;justify-content:space-between;box-shadow:0 13px 20px light-dark(#c36a161f,#0003);transform:rotate(-7deg);position:relative}
+    #cg04-prototype .cg-gift:after{content:"";position:absolute;inset:7px;border:1px solid currentColor;opacity:.12;border-radius:11px}
+    #cg04-prototype .cg-gifthead{display:flex;align-items:center;justify-content:space-between;font-size:12px;letter-spacing:.06em}
+    #cg04-prototype .cg-gifthead svg{width:18px;height:18px;stroke-width:1.4}
+    #cg04-prototype .cg-giftbottom{display:flex;align-items:end;justify-content:space-between;font-size:10px;letter-spacing:.1em;opacity:.8}
+    #cg04-prototype .cg-giftbottom>span{white-space:nowrap}
+    #cg04-prototype .cg-bitcoin{font-size:36px;line-height:1}
+    #cg04-prototype .cg-lockfloat{position:absolute;right:29px;bottom:28px;width:46px;height:46px;border-radius:16px;background:var(--cg-white);box-shadow:0 5px 16px light-dark(#7a41110d,#0003);display:grid;place-items:center;color:var(--cg-brandtext);transform:rotate(5deg)}
+    #cg04-prototype .cg-lockfloat svg{width:21px;height:21px;stroke-width:1.5}
+    #cg04-prototype .cg-homeactions{display:grid;gap:12px;margin-top:auto;padding-top:14px}
+    #cg04-prototype .cg-homeaction{width:100%;border:1px solid var(--cg-line);background:var(--cg-white);color:var(--cg-ink);padding:17px 16px;border-radius:var(--cg-radius);display:flex;gap:12px;align-items:center;text-align:left;min-height:78px}
+    #cg04-prototype .cg-homeaction.primary{background:var(--cg-brand);color:var(--cg-onbrand);border-color:transparent}
+    #cg04-prototype .cg-homeaction .cg-actionicon{width:26px;display:grid;place-items:center}
+    #cg04-prototype .cg-homeaction svg{width:20px;height:20px;stroke-width:1.6;flex-shrink:0}
+    #cg04-prototype .cg-homeaction div:nth-child(2){flex:1}
+    #cg04-prototype .cg-homeaction strong{display:block;font-size:16px;font-weight:500;margin-bottom:3px}
+    #cg04-prototype .cg-homeaction small{font-size:11px;opacity:.72;display:block}
+    #cg04-prototype .cg-local{font-size:11px;color:var(--cg-sub);display:flex;gap:5px;align-items:center;justify-content:center;margin-top:20px}
+    #cg04-prototype .cg-local svg{width:12px;height:12px}
+    #cg04-prototype .cg-homebar{height:4px;width:100px;background:var(--cg-ink);opacity:.7;border-radius:5px;margin:0 auto}
+    #cg04-prototype .cg-progress{display:flex;gap:5px;margin:4px 0 27px}
+    #cg04-prototype .cg-progress span{height:3px;flex:1;border-radius:2px;background:var(--cg-line)}
+    #cg04-prototype .cg-progress .passed{background:var(--cg-brand)}
+    #cg04-prototype .cg-kicker{font-size:11px;color:var(--cg-sub);margin-bottom:8px;letter-spacing:.08em}
+    #cg04-prototype .cg-title{font-size:27px;font-weight:500;line-height:1.35;letter-spacing:-.05em;margin:0 0 10px}
+    #cg04-prototype .cg-desc{color:var(--cg-sub);font-size:13px;line-height:1.7;margin-bottom:24px}
+    #cg04-prototype .cg-fields{display:grid;gap:17px;margin-top:12px}
+    #cg04-prototype .cg-field label{display:block;font-size:12px;margin-bottom:8px;font-weight:500}
+    #cg04-prototype .cg-inputwrap{background:var(--cg-white);border:1px solid var(--cg-line);border-radius:14px;display:flex;align-items:center;min-height:54px}
+    #cg04-prototype .cg-inputwrap:focus-within{outline:2px solid var(--cg-brand);outline-offset:2px}
+    #cg04-prototype .cg-inputwrap input{border:0;outline:0;background:transparent;width:100%;min-width:0;padding:14px 15px;color:var(--cg-ink);font-size:16px;border-radius:14px}
+    #cg04-prototype .cg-inputwrap .cg-iconbutton{margin-right:5px;flex-shrink:0}
+    #cg04-prototype .cg-fieldnote{margin-top:8px;font-size:11px;color:var(--cg-sub);line-height:1.65}
+    #cg04-prototype .cg-passwordnote{display:flex;align-items:start;gap:9px;margin-top:23px;padding:14px;background:var(--cg-soft);border-radius:12px;font-size:12px;color:var(--cg-sub)}
+    #cg04-prototype .cg-passwordnote svg{width:15px;height:15px;flex-shrink:0;margin-top:2px}
+    #cg04-prototype .cg-actions{margin-top:auto;padding-top:28px;display:grid;gap:10px}
+    #cg04-prototype .cg-primary,#cg04-prototype .cg-secondary{width:100%;border:0;border-radius:14px;min-height:51px;padding:13px 16px;font-size:14px;font-weight:500;display:flex;align-items:center;justify-content:center;gap:9px;background:var(--cg-brand);color:var(--cg-onbrand)}
+    #cg04-prototype .cg-secondary{background:var(--cg-white);border:1px solid var(--cg-line);color:var(--cg-ink)}
+    #cg04-prototype .cg-primary svg,#cg04-prototype .cg-secondary svg{width:17px;height:17px;stroke-width:1.7}
+    #cg04-prototype button:disabled{opacity:.55;cursor:default}
+    #cg04-prototype .cg-primary:disabled{cursor:wait}
+    #cg04-prototype .cg-textbutton{display:flex;align-items:center;justify-content:center;gap:6px;min-height:40px;padding:8px;border:0;background:transparent;color:var(--cg-sub);font-size:12px}
+    #cg04-prototype .cg-textbutton svg{width:14px;height:14px}
+    #cg04-prototype .cg-footnote{font-size:11px;color:var(--cg-sub);text-align:center;line-height:1.6;margin-top:12px}
+    #cg04-prototype .cg-info{padding:16px;border-radius:var(--cg-radius);background:var(--cg-white);border:1px solid var(--cg-line);margin:0 0 15px}
+    #cg04-prototype .cg-infohead{display:flex;align-items:center;justify-content:space-between;font-size:11px;color:var(--cg-sub);margin-bottom:11px}
+    #cg04-prototype .cg-infohead span:last-child{color:var(--cg-brandtext)}
+    #cg04-prototype .cg-address{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:13px;letter-spacing:.015em;overflow-wrap:anywhere;line-height:1.7}
+    #cg04-prototype .cg-infobottom{margin-top:9px;display:flex;align-items:center;justify-content:space-between;color:var(--cg-sub);font-size:11px}
+    #cg04-prototype .cg-inlinecopy{border:0;padding:4px 0 4px 10px;min-height:28px;background:transparent;color:var(--cg-brandtext);font-size:11px;display:flex;gap:4px;align-items:center}
+    #cg04-prototype .cg-inlinecopy svg{width:12px;height:12px}
+    #cg04-prototype .cg-scanstage{height:194px;display:grid;place-items:center;position:relative;margin:0 0 10px}
+    #cg04-prototype .cg-scanring{position:absolute;width:178px;height:178px;border:1px solid var(--cg-line);border-radius:50%}
+    #cg04-prototype .cg-scanring:before{content:"";position:absolute;inset:17px;border:1px solid var(--cg-line);border-radius:50%;opacity:.7}
+    #cg04-prototype .cg-scanstage .cg-gift{width:131px;height:84px;padding:12px;transform:rotate(-10deg);border-radius:12px}
+    #cg04-prototype .cg-scanstage .cg-gift:after{inset:5px;border-radius:8px}
+    #cg04-prototype .cg-scanstage .cg-gifthead{font-size:10px}
+    #cg04-prototype .cg-scanstage .cg-giftbottom{font-size:8px;letter-spacing:.02em;gap:4px}
+    #cg04-prototype .cg-scanstage .cg-bitcoin{font-size:22px}
+    #cg04-prototype .cg-scancaption{text-align:center;font-size:12px;color:var(--cg-sub);margin:0 0 20px}
+    #cg04-prototype .cg-scanstatus{display:flex;gap:6px;align-items:center;justify-content:center;font-size:11px;color:var(--cg-brandtext)}
+    #cg04-prototype .cg-dot{width:5px;height:5px;border-radius:50%;background:currentColor}
+    #cg04-prototype .cg-checklist{display:grid;gap:12px;margin:13px 0 0;font-size:12px;color:var(--cg-sub)}
+    #cg04-prototype .cg-checklist div{display:flex;align-items:center;gap:8px}
+    #cg04-prototype .cg-checklist svg{width:15px;height:15px;color:var(--cg-brandtext)}
+    #cg04-prototype .cg-successicon{width:58px;height:58px;border-radius:21px;background:var(--cg-soft);color:var(--cg-brandtext);display:grid;place-items:center;margin:20px 0 22px}
+    #cg04-prototype .cg-successicon svg{width:27px;height:27px;stroke-width:1.6}
+    #cg04-prototype [data-cg-screen=revealed] .cg-successicon{width:42px;height:42px;border-radius:15px;margin:7px 0 14px}
+    #cg04-prototype [data-cg-screen=revealed] .cg-successicon svg{width:21px;height:21px}
+    #cg04-prototype [data-cg-screen=revealed] .cg-desc{margin-bottom:18px}
+    #cg04-prototype [data-cg-screen=revealed] .cg-secret{margin-top:3px;padding:15px}
+    #cg04-prototype [data-cg-screen=revealed] .cg-actions{padding-top:20px}
+    #cg04-prototype .cg-notice{font-size:12px;color:var(--cg-sub);line-height:1.8;border-left:2px solid var(--cg-brand);padding-left:12px;margin-top:7px}
+    #cg04-prototype .cg-filechoices{display:grid;gap:12px;margin-top:4px}
+    #cg04-prototype .cg-segment{display:flex;padding:4px;background:var(--cg-soft);border-radius:12px;gap:4px;margin:6px 0 20px}
+    #cg04-prototype .cg-segment button{border:0;flex:1;background:transparent;color:var(--cg-sub);padding:10px 8px;border-radius:9px;font-size:12px}
+    #cg04-prototype .cg-segment button.active{background:var(--cg-white);color:var(--cg-ink);box-shadow:0 2px 5px light-dark(#79420b10,#0002)}
+    #cg04-prototype .cg-secret{background:var(--cg-white);border:1px solid var(--cg-line);border-radius:var(--cg-radius);padding:17px;margin-top:17px}
+    #cg04-prototype .cg-secretlabel{display:flex;align-items:center;justify-content:space-between;color:var(--cg-sub);font-size:11px}
+    #cg04-prototype .cg-secretvalue{font-family:ui-monospace,SFMono-Regular,monospace;letter-spacing:2px;font-size:17px;overflow-wrap:anywhere;margin:13px 0 3px}
+    #cg04-prototype .cg-secretvalue.is-shown{font-size:12px;letter-spacing:0;line-height:1.8}
+    #cg04-prototype .cg-privatelinks{display:flex;gap:8px;margin-top:12px}
+    #cg04-prototype .cg-privatelinks button{flex:1;min-height:43px}
+    #cg04-prototype .cg-error{color:var(--cg-error);font-size:12px;min-height:19px;margin-top:10px}
+    #cg04-prototype .cg-modalshade{position:absolute;inset:40px 0 0;background:light-dark(#34200f2b,#0007);border-radius:0 0 32px 32px;display:flex;align-items:flex-end;z-index:5}
+    #cg04-prototype .cg-sheet{background:var(--cg-white);padding:12px 23px 27px;width:100%;border-radius:25px 25px 29px 29px;box-shadow:0 -8px 30px light-dark(#79420b10,#0003)}
+    #cg04-prototype .cg-grabber{width:31px;height:4px;background:var(--cg-line);border-radius:5px;margin:0 auto 23px}
+    #cg04-prototype .cg-sheet h3{font-size:22px;font-weight:500;line-height:1.4;margin-bottom:10px;letter-spacing:-.035em}
+    #cg04-prototype .cg-sheet p{font-size:12px;color:var(--cg-sub);line-height:1.8;margin:0 0 20px}
+    #cg04-prototype .cg-sheet .cg-actions{padding-top:16px}
+    #cg04-prototype .cg-recoverylist{list-style:none;padding:0;margin:20px 0 8px;display:grid;gap:18px}
+    #cg04-prototype .cg-recoverylist li{display:grid;grid-template-columns:22px minmax(0,1fr);column-gap:10px;align-items:start}
+    #cg04-prototype .cg-recoverynumber{display:grid;place-items:center;width:22px;height:22px;border-radius:7px;background:var(--cg-soft);color:var(--cg-brandtext);font-size:11px;font-weight:500}
+    #cg04-prototype .cg-recoverylist h4{font-size:13px;line-height:1.65;font-weight:500;margin:0;color:var(--cg-ink)}
+    #cg04-prototype .cg-recoverylist p{margin:5px 0 0;font-size:12px;line-height:1.8;color:var(--cg-sub)}
+    #cg04-prototype .cg-recoverylist strong{font-weight:500;color:var(--cg-ink)}
+    #cg04-prototype .cg-detailrow{padding:12px 0;border-bottom:1px solid var(--cg-line);font-size:12px}
+    #cg04-prototype .cg-detailrow strong{font-weight:500;display:flex;justify-content:space-between;margin-bottom:5px}
+    #cg04-prototype .cg-detailrow .cg-address{color:var(--cg-sub);font-size:11px}
+    #cg04-prototype .cg-toast{position:absolute;top:92px;left:22px;right:22px;background:var(--cg-ink);color:var(--cg-paper);z-index:8;text-align:center;font-size:12px;padding:13px;border-radius:12px;box-shadow:0 4px 14px light-dark(#79420b18,#0004)}
+    #cg04-prototype .cg-qr{width:164px;height:164px;margin:10px auto 17px;display:grid;grid-template-columns:repeat(21,1fr);gap:0;background:#fff;border:10px solid #fff}
+    #cg04-prototype .cg-qr i{background:#fff;display:block}
+    #cg04-prototype .cg-qr i.filled{background:#28221c}
+    #cg04-prototype textarea{width:100%;border:1px solid var(--cg-line);background:var(--cg-white);color:var(--cg-ink);border-radius:14px;padding:14px;font-size:13px;resize:vertical;min-height:130px;overflow-wrap:anywhere}
+    #cg04-prototype .cg-density-compact .cg-main{padding-left:20px;padding-right:20px}
+    #cg04-prototype .cg-density-compact .cg-desc{margin-bottom:17px}
+    #cg04-prototype .cg-density-compact .cg-info{padding:13px}
+    @media(max-width:620px){#cg04-prototype .cg-stage{grid-template-columns:minmax(0,370px);gap:18px;padding:16px 5px 24px;min-height:1028px}#cg04-prototype .cg-journey{order:2;padding:0 8px;display:grid;grid-template-columns:1fr 1fr;column-gap:12px}#cg04-prototype .cg-journey>small,#cg04-prototype .cg-journey>h3{display:none}#cg04-prototype .cg-route{margin:0;gap:0}#cg04-prototype .cg-route button{min-height:34px;padding:6px 8px;font-size:11px}#cg04-prototype .cg-route label{font-size:11px;margin-left:8px}#cg04-prototype .cg-entry{grid-column:1/-1;margin:2px 0 0;padding:5px 8px;min-height:28px;font-size:11px}#cg04-prototype .cg-phone{order:1;border-radius:26px}#cg04-prototype .cg-main{padding-left:20px;padding-right:20px}#cg04-prototype .cg-homehero h1{font-size:32px}}
+    @media(prefers-reduced-motion:no-preference){#cg04-prototype .cg-sheet{animation:cg-sheet-in .22s ease-out}@keyframes cg-sheet-in{from{transform:translateY(18px)}to{transform:translateY(0)}}}
+  </style>
+  <div class="cg-previewbar"><strong>BITNFC / 0.4.0</strong><span>交互原型 · 仅示例，勿填真实密码</span></div>
+  <div class="viz-carousel viz-dotted-background" aria-label="BitNFC 交互方案" data-previous-label="上一个方案" data-next-label="下一个方案">
+    <section data-variant="分步引导" aria-label="分步引导方案"><div class="cg-stage" data-stage="guided"></div></section>
+    <section data-variant="直接开始" aria-label="直接开始方案" hidden><div class="cg-stage" data-stage="direct"></div></section>
+  </div>
+  <script>
+  (()=>{
+    const root=document.getElementById('cg04-prototype');
+    const brandLogo='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxNjAgMTYwIiBmaWxsPSJub25lIj4KICA8dGl0bGU+Qml0TkZDPC90aXRsZT4KICA8ZGVzYz5PcmlnaW5hbCBCaXRjb2luIGdseXBoIHdpdGggdHdvIGNvbnRhY3RsZXNzIE5GQyBhcmNzLjwvZGVzYz4KICA8cmVjdCB3aWR0aD0iMTYwIiBoZWlnaHQ9IjE2MCIgcng9IjM2IiBmaWxsPSIjZjc5MzFhIi8+CiAgPGcgaWQ9ImJpdGNvaW4tZ2x5cGgiIHRyYW5zZm9ybT0idHJhbnNsYXRlKC0xNyAwKSBzY2FsZSgxLjEyKSIgZmlsbD0iI2ZmZiI+CiAgICA8cGF0aCBkPSJNNDguMzExMDAwOCw4NC4zNzVjLS4zOTIwMDIxLjk3MjAwMDEtMS4zODUwMDIxLDIuNDMwOTk5OC0zLjYyMTAwMjIsMS44NzY5OTg5LjA3OTAwMjQuMTEzOTk4NC01Ljc0NDk5ODktMS40MzI5OTg3LTUuNzQ0OTk4OS0xLjQzMjk5ODdsLTMuOTE5OTk4Miw5LjA0MTAwMDQsMTAuMjc5OTk4OCwyLjU2Mjk5NTljMS45MTA5OTkzLjQ3OTAwMzksMy43ODc5OTgyLjk3OTAwMzksNS42MzIsMS40NTMwMDI5bC0zLjI2NzAwMjEsMTMuMTI2OTk4OSw3Ljg5MTAwMjcsMS45NjkwMDE4LDMuMjM2OTk5NS0xMi45ODY5OTk1YzIuMTU4MDAwOS41ODM5OTk2LDQuMjUsMS4xMjUsNi4yOTgwMDAzLDEuNjM0MDAyN2wtMy4yMjYwMDE3LDEyLjkyNTk5NDksNy44OTk5OTc3LDEuOTY5MDAxOCwzLjI3MDAwNDMtMTMuMTAxOTk3NGMxMy40NzI5OTk2LDIuNTQ3OTk2NSwyMy42MDM5OTYzLDEuNTE5OTk2NiwyNy44NjU5OTczLTEwLjY2MzAwMiwzLjQzNzAwNDEtOS44MDk5OTc2LS4xNjk5OTgyLTE1LjQ2OTAwMTgtNy4yNTc5OTU2LTE5LjE2MDAwMzcsNS4xNjA5OTU1LTEuMTg5OTk0OCw5LjA1MDk5NDktNC41ODU5OTg1LDEwLjA4Nzk5NzQtMTEuNTk3OTk1OCwxLjQzMjk5ODctOS41ODIwMDA3LTUuODYyOTk5LTE0LjczMTAwMjgtMTUuODM3OTk3NC0xOC4xNjY5OTk4bDMuMjM1MDAwNi0xMi45NzgwMDA2LTcuODk5MDAyMS0xLjk2ODk5OTktMy4xNTEwMDEsMTIuNjM1OTk5N2MtMi4wNzkwMDI0LS41MTgwMDE2LTQuMjA5OTk5MS0xLjAwNjAwMDUtNi4zMzEwMDEzLTEuNDg5MDAyMmwzLjE3MDk5NzYtMTIuNzE5OTk3NC03Ljg5Mzk5NzItMS45NjkwMDE4LTMuMjM4OTk4NCwxMi45NzYwMDE3LTE1LjkzMDk5OTgtMy45NDU5OTkxLTIuMTAyMDAxMiw4LjQzNjk5NjVzNS44NjEwMDAxLDEuMzQzMDAyMyw1LjczNjk5OTUsMS40MjcwMDJjMy4yMDAwMDA4Ljc5ODk5OTgsMy43NzcwMDA0LDIuOTE2MDAwNCwzLjY4MDk5OTgsNC41OTQwMDE4bC04Ljg2Mzk5ODQsMzUuNTUxOTk4MVpNODUuNjg2OTk2NSw4Ny4zMDIwMDJjLTIuNDQ0MDAwMiw5LjgxMDk5Ny0xOC45NTk5OTkxLDQuNTA2OTk2Mi0yNC4zMTc5OTcsMy4xNzU5OTQ5bDQuMzM4MDAxMy0xNy4zODg5OTk5YzUuMzU0OTk1NywxLjMzNTAwNjcsMjIuNTI5OTk4OCwzLjk4MTAwMjgsMTkuOTc5OTk1NywxNC4yMTMwMDUxWk04OC4xMjY5OTg5LDYxLjg0OTk5ODVjLTIuMjI1OTk3OSw4LjkyNDAwMzYtMTUuOTc0OTk4NSw0LjM4ODk5OTktMjAuNDM0OTk3NiwzLjI3NzAwMDRsMy45MzE5OTkyLTE1Ljc3MTk5OTRjNC40NTg5OTk2LDEuMTExOTk5NSwxOC44MjM5OTc1LDMuMTg3MDAwMywxNi41MDI5OTg0LDEyLjQ5NDk5ODlaIi8+CiAgPC9nPgogIDxnIGlkPSJuZmMtYXJjcyIgc3Ryb2tlPSIjZmZmIiBzdHJva2Utd2lkdGg9IjguNSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIj4KICAgIDxwYXRoIGQ9Ik0xMTMuMjk0IDU5LjkyNiBBMzAgMzAgMCAwIDEgMTEzLjI5NCAxMDAuMDc0Ii8+CiAgICA8cGF0aCBkPSJNMTI3LjQxNCA0Ny4yMTMgQTQ5IDQ5IDAgMCAxIDEyNy40MTQgMTEyLjc4NyIvPgogIDwvZz4KPC9zdmc+Cg==';
+    const whiteBrandLogo='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxNjAgMTYwIiBmaWxsPSJub25lIj4KICA8dGl0bGU+Qml0TkZDPC90aXRsZT4KICA8ZGVzYz5PcmlnaW5hbCBCaXRjb2luIGdseXBoIHdpdGggdHdvIGNvbnRhY3RsZXNzIE5GQyBhcmNzLjwvZGVzYz4KICAKICA8ZyBpZD0iYml0Y29pbi1nbHlwaCIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoLTE3IDApIHNjYWxlKDEuMTIpIiBmaWxsPSIjZmZmIj4KICAgIDxwYXRoIGQ9Ik00OC4zMTEwMDA4LDg0LjM3NWMtLjM5MjAwMjEuOTcyMDAwMS0xLjM4NTAwMjEsMi40MzA5OTk4LTMuNjIxMDAyMiwxLjg3Njk5ODkuMDc5MDAyNC4xMTM5OTg0LTUuNzQ0OTk4OS0xLjQzMjk5ODctNS43NDQ5OTg5LTEuNDMyOTk4N2wtMy45MTk5OTgyLDkuMDQxMDAwNCwxMC4yNzk5OTg4LDIuNTYyOTk1OWMxLjkxMDk5OTMuNDc5MDAzOSwzLjc4Nzk5ODIuOTc5MDAzOSw1LjYzMiwxLjQ1MzAwMjlsLTMuMjY3MDAyMSwxMy4xMjY5OTg5LDcuODkxMDAyNywxLjk2OTAwMTgsMy4yMzY5OTk1LTEyLjk4Njk5OTVjMi4xNTgwMDA5LjU4Mzk5OTYsNC4yNSwxLjEyNSw2LjI5ODAwMDMsMS42MzQwMDI3bC0zLjIyNjAwMTcsMTIuOTI1OTk0OSw3Ljg5OTk5NzcsMS45NjkwMDE4LDMuMjcwMDA0My0xMy4xMDE5OTc0YzEzLjQ3Mjk5OTYsMi41NDc5OTY1LDIzLjYwMzk5NjMsMS41MTk5OTY2LDI3Ljg2NTk5NzMtMTAuNjYzMDAyLDMuNDM3MDA0MS05LjgwOTk5NzYtLjE2OTk5ODItMTUuNDY5MDAxOC03LjI1Nzk5NTYtMTkuMTYwMDAzNyw1LjE2MDk5NTUtMS4xODk5OTQ4LDkuMDUwOTk0OS00LjU4NTk5ODUsMTAuMDg3OTk3NC0xMS41OTc5OTU4LDEuNDMyOTk4Ny05LjU4MjAwMDctNS44NjI5OTktMTQuNzMxMDAyOC0xNS44Mzc5OTc0LTE4LjE2Njk5OThsMy4yMzUwMDA2LTEyLjk3ODAwMDYtNy44OTkwMDIxLTEuOTY4OTk5OS0zLjE1MTAwMSwxMi42MzU5OTk3Yy0yLjA3OTAwMjQtLjUxODAwMTYtNC4yMDk5OTkxLTEuMDA2MDAwNS02LjMzMTAwMTMtMS40ODkwMDIybDMuMTcwOTk3Ni0xMi43MTk5OTc0LTcuODkzOTk3Mi0xLjk2OTAwMTgtMy4yMzg5OTg0LDEyLjk3NjAwMTctMTUuOTMwOTk5OC0zLjk0NTk5OTEtMi4xMDIwMDEyLDguNDM2OTk2NXM1Ljg2MTAwMDEsMS4zNDMwMDIzLDUuNzM2OTk5NSwxLjQyNzAwMmMzLjIwMDAwMDguNzk4OTk5OCwzLjc3NzAwMDQsMi45MTYwMDA0LDMuNjgwOTk5OCw0LjU5NDAwMThsLTguODYzOTk4NCwzNS41NTE5OTgxWk04NS42ODY5OTY1LDg3LjMwMjAwMmMtMi40NDQwMDAyLDkuODEwOTk3LTE4Ljk1OTk5OTEsNC41MDY5OTYyLTI0LjMxNzk5NywzLjE3NTk5NDlsNC4zMzgwMDEzLTE3LjM4ODk5OTljNS4zNTQ5OTU3LDEuMzM1MDA2NywyMi41Mjk5OTg4LDMuOTgxMDAyOCwxOS45Nzk5OTU3LDE0LjIxMzAwNTFaTTg4LjEyNjk5ODksNjEuODQ5OTk4NWMtMi4yMjU5OTc5LDguOTI0MDAzNi0xNS45NzQ5OTg1LDQuMzg4OTk5OS0yMC40MzQ5OTc2LDMuMjc3MDAwNGwzLjkzMTk5OTItMTUuNzcxOTk5NGM0LjQ1ODk5OTYsMS4xMTE5OTk1LDE4LjgyMzk5NzUsMy4xODcwMDAzLDE2LjUwMjk5ODQsMTIuNDk0OTk4OVoiLz4KICA8L2c+CiAgPGcgaWQ9Im5mYy1hcmNzIiBzdHJva2U9IiNmZmYiIHN0cm9rZS13aWR0aD0iOC41IiBzdHJva2UtbGluZWNhcD0icm91bmQiPgogICAgPHBhdGggZD0iTTExMy4yOTQgNTkuOTI2IEEzMCAzMCAwIDAgMSAxMTMuMjk0IDEwMC4wNzQiLz4KICAgIDxwYXRoIGQ9Ik0xMjcuNDE0IDQ3LjIxMyBBNDkgNDkgMCAwIDEgMTI3LjQxNCAxMTIuNzg3Ii8+CiAgPC9nPgo8L3N2Zz4K';
+    const icon=(name)=>`<i data-lucide="${name}" aria-hidden="true"></i>`;
+    const demoAddress='bc1q ···· w7kn 8c2m ···· 7a2f';
+    const demoBackup='CG1:〔演示加密备份，不包含真实私钥〕';
+    const demoPrivate='Kx〔演示私钥，仅供查看流程〕9f';
+    const settings={radius:18,density:'舒展',writeCase:'空白卡片',decryptCase:'正常解密'};
+    const states={};
+    const copy=(v)=>{v.toast='已复制 · 原型演示';render(v);setTimeout(()=>{v.toast='';render(v)},1700)};
+    const gift=()=>`<div class="cg-gift"><div class="cg-gifthead"><span>BitNFC</span>${icon('nfc')}</div><div class="cg-giftbottom"><img class="cg-cardmark" src="${whiteBrandLogo}" alt="BitNFC 标志"><span>BITCOIN · OFFLINE</span></div></div>`;
+    const btn=(text,action,kind='primary',ico='',disabled=false)=>`<button type="button" class="cg-${kind} cursor-interaction" data-action="${action}"${disabled?' disabled':''}>${ico?icon(ico):''}${text}</button>`;
+    const link=(text,action,ico='')=>`<button type="button" class="cg-textbutton cursor-interaction" data-action="${action}">${ico?icon(ico):''}${text}</button>`;
+    const esc=s=>String(s).replace(/[&"<>]/g,c=>({'&':'&amp;','"':'&quot;','<':'&lt;','>':'&gt;'}[c]));
+    const field=(label,key,confirm=false)=>{const v=states[key.split('-')[0]];const value=v&&v.inputs[key]!==undefined?v.inputs[key]:'BitNFC-demo-only';return `<div class="cg-field"><label for="${key}">${label}</label><div class="cg-inputwrap"><input id="${key}" type="password" autocomplete="off" spellcheck="false" value="${esc(value)}" aria-label="${label}"><button type="button" class="cg-iconbutton cursor-interaction" data-action="eye" data-for="${key}" aria-label="显示${label}">${icon('eye-off')}</button></div>${confirm?'':'<div class="cg-fieldnote">至少 6 个字符，建议使用更长的独立密码。</div>'}</div>`};
+    const address=(claimed=false,more=false)=>`<div class="cg-info"><div class="cg-infohead"><span>${claimed?'卡片收款地址':'收款地址'}</span><span>${claimed?'待解密核验':'原生 SegWit · 推荐'}</span></div><div class="cg-address">${demoAddress}</div><div class="cg-infobottom">${more?`<button type="button" class="cg-inlinecopy cursor-interaction" data-action="addresses" style="padding-left:0">其他收款地址${icon('chevron-down')}</button>`:'<span>BTC 主网</span>'}<button type="button" class="cg-inlinecopy cursor-interaction" data-action="copy-address">${icon('copy')}复制地址</button></div></div>`;
+    const progress=(n)=>`<div class="cg-progress" aria-label="第 ${n} 步，共 3 步">${[1,2,3].map(i=>`<span class="${i<=n?'passed':''}"></span>`).join('')}</div>`;
+    const scan=()=>`<div class="cg-scanstage"><div class="cg-scanring"></div>${gift()}</div>`;
+    const local=()=>`<div class="cg-local">${icon('wifi-off')}仅在本机处理，无需联网</div>`;
+    const routes=(v)=>`<aside class="cg-journey"><small>交互流程</small><h3>${v.direct?'直接开始':'一步一步来'}</h3><div class="cg-route"><label>制作冷钱包</label>${[['password','01','设置密码'],['write','02','写入卡片'],['done','03','完成与备份']].map(([s,n,t])=>`<button type="button" data-jump="${s}" aria-current="${v.screen===s?'step':'false'}" class="cursor-interaction"><span>${n}</span>${t}</button>`).join('')}</div><div class="cg-route"><label>读取冷钱包</label>${[['read','01','读取卡片'],['unlock','02','输入密码'],['revealed','03','恢复私钥']].map(([s,n,t])=>`<button type="button" data-jump="${s}" aria-current="${v.screen===s?'step':'false'}" class="cursor-interaction"><span>${n}</span>${t}</button>`).join('')}</div><button type="button" class="cg-entry cursor-interaction" data-jump="home">← 返回${v.direct?'起始页':'首页'}</button></aside>`;
+    function header(v){
+      if(v.screen==='home')return `<div class="cg-toolbar"><div class="cg-wordmark"><img class="cg-mark" src="${brandLogo}" alt="">BitNFC</div><button type="button" class="cg-iconbutton cursor-interaction" data-action="help" aria-label="使用说明">${icon('circle-help')}</button></div>`;
+      return `<div class="cg-toolbar"><button type="button" class="cg-iconbutton cursor-interaction" data-action="back" aria-label="返回">${icon('arrow-left')}</button><small>${['password','write','done'].includes(v.screen)?'制作冷钱包':'读取冷钱包'}</small><button type="button" class="cg-iconbutton cursor-interaction" data-action="help" aria-label="使用说明">${icon('circle-help')}</button></div>`;
+    }
+    function content(v){
+      const s=v.screen;
+      if(s==='home')return `<div class="cg-homehero"><div class="cg-eyebrow">${icon('wifi-off')}离线制作 · 密码保护</div><h1>用一张 NFC 卡，<br>保管自己的 BTC。</h1><p>离线生成私钥，加密存入卡片。</p></div><div class="cg-cardstage">${gift()}<div class="cg-lockfloat">${icon('lock-keyhole')}</div></div><div class="cg-homeactions"><button type="button" class="cg-homeaction primary cursor-interaction" data-action="make"><div class="cg-actionicon">${icon('plus')}</div><div><strong>制作冷钱包</strong><small>设置密码，写入 NFC 卡片</small></div>${icon('arrow-up-right')}</button><button type="button" class="cg-homeaction cursor-interaction" data-action="read"><div class="cg-actionicon">${icon('scan-line')}</div><div><strong>读取冷钱包</strong><small>贴卡或导入备份，恢复私钥</small></div>${icon('arrow-up-right')}</button></div>${local()}`;
+      if(s==='password')return `${v.direct?`<div class="cg-segment"><button type="button" class="active cursor-interaction" data-action="make">制作冷钱包</button><button type="button" data-action="read" class="cursor-interaction">读取 / 解密</button></div>`:progress(1)}<div class="cg-kicker">${v.direct?'新建一张卡片':'第 1 步 / 设置密码'}</div><h2 class="cg-title">先设一个解密密码</h2><p class="cg-desc">以后读取这张卡片时，<br>用它恢复你的私钥。</p><div class="cg-fields">${field('设置密码',v.id+'-pass')}${field('再次输入密码',v.id+'-confirm',true)}</div><div class="cg-passwordnote">${icon('key-round')}<span>密码无法重置，请妥善保存，并与 NFC 卡片分开保管。</span></div><div class="cg-error" role="alert">${v.error||''}</div><div class="cg-actions">${btn(v.busy?'正在生成并加密…':'生成冷钱包','generate','primary','arrow-right')}</div><div class="cg-footnote">每次生成一把独立私钥</div>`;
+      if(s==='write')return `${v.duplicate?'':progress(2)}<div class="cg-kicker">${v.duplicate?'钱包副本 / 第 '+(v.cardCount+1)+' 张卡片':'第 2 步 / 写入卡片'}</div><h2 class="cg-title">${v.duplicate?'写入另一张 NFC 卡':'把冷钱包装进卡片'}</h2><p class="cg-desc">${v.duplicate?'请换一张可写的 NFC 卡片。<br>保存同一钱包，地址和密码不变。':'准备一张可写的 NFC 卡片。<br>整个过程，请保持卡片贴合。'}</p>${scan()}<div class="cg-scancaption">贴近手机背面的 NFC 感应区</div>${address(false,true)}<div class="cg-actions">${btn('开始写卡','scan-write','primary','nfc')}${link(v.backup?'再次保存加密备份':'先保存加密备份','backup')}</div>`;
+      if(s==='done')return `${progress(3)}<div class="cg-successicon">${icon('check')}</div><div class="cg-kicker">第 3 步 / 完成与备份</div><h2 class="cg-title">${v.backup?'冷钱包制作完成':'最后一步，保存备份'}</h2><p class="cg-desc">${v.cardCount>1?'同一钱包已写入 '+v.cardCount+' 张 NFC 卡，均已读回核对。':'卡片已写入，并已读回核对。'}</p>${address(false,true)}<div class="cg-checklist"><div>${icon('circle-check')}生成时恢复校验通过</div><div>${icon('circle-check')}NFC 写入后读回一致</div><div>${icon(v.backup?'circle-check':'circle-dashed')}${v.backup?'加密备份文件已保存':'请先保存加密备份文件'}</div></div><div class="cg-actions">${btn(v.backup?'完成，返回首页':'保存加密备份','finish-backup','primary',v.backup?'check':'download')}${btn('写入另一张 NFC 卡','write-another','secondary','nfc')}</div><div class="cg-footnote">${v.backup?'多张卡片保存同一个钱包，使用相同密码。':'保存备份后，可继续写入其他 NFC 卡片。'}</div>`;
+      if(s==='read')return `${v.direct?`<div class="cg-segment"><button type="button" data-action="make" class="cursor-interaction">制作冷钱包</button><button type="button" class="active cursor-interaction" data-action="read">读取 / 解密</button></div>`:''}<div class="cg-kicker">读取冷钱包</div><h2 class="cg-title">贴近卡片，就从这里开始</h2><p class="cg-desc">读取卡片不会显示私钥。<br>解密时还需要你的密码。</p>${scan()}<div class="cg-scancaption">将 NFC 卡片贴近手机背面</div><div class="cg-scanstatus"><span class="cg-dot"></span>${v.busy?'正在读取卡片…':'准备读取'}</div><div class="cg-actions">${btn(v.busy?'正在读取…':'读取 NFC 卡片','scan-read','primary','nfc')}${link('没有卡片？粘贴加密文本','paste','clipboard-paste')}${link('打开加密备份文件','file','file-up')}</div>${local()}`;
+      if(s==='paste')return `<div class="cg-kicker">从加密备份恢复</div><h2 class="cg-title">粘贴加密文本</h2><p class="cg-desc">支持 BitNFC 加密备份，<br>以及主网压缩公钥的 BIP38 密文。</p><textarea aria-label="加密备份文本" spellcheck="false">${demoBackup}</textarea><div class="cg-actions">${btn('读取备份','accept-backup','primary','arrow-right')}${link('改为读取 NFC 卡片','read')}</div><div class="cg-footnote">不要在这里输入明文私钥或助记词。</div>`;
+      if(s==='unlock')return `<div class="cg-successicon">${icon('lock-keyhole')}</div><div class="cg-kicker">${v.verify?'最后一次恢复验证':'已读取加密数据'}</div><h2 class="cg-title">${v.verify?'输入密码，解锁冷钱包':'冷钱包已读取'}</h2><p class="cg-desc">${v.verify?'请输入刚才设置的密码，<br>确认这张卡片能正常恢复。':'四种收款地址可直接查看和复制。<br>恢复私钥时，再输入解密密码。'}</p>${address(true,true)}${field('卡片解密密码',v.id+'-unlock')}<div class="cg-error" role="alert">${v.error||''}</div><div class="cg-actions">${btn(v.busy?'正在解密并核对地址…':'解密冷钱包','decrypt','primary','unlock-keyhole')}${link('换一张卡片 / 备份','read')}</div>${local()}`;
+      if(s==='revealed')return `<div class="cg-successicon">${icon('unlock-keyhole')}</div><div class="cg-kicker">密码与地址核验通过</div><h2 class="cg-title">冷钱包已解锁</h2><p class="cg-desc">导入自己的钱包，核对实际充值地址。</p>${address(false,true)}<div class="cg-secret"><div class="cg-secretlabel"><span>钱包私钥</span><button type="button" class="cg-inlinecopy cursor-interaction" data-action="secret">${icon(v.reveal?'eye-off':'eye')}${v.reveal?'隐藏':'显示'}</button></div><div class="cg-secretvalue ${v.reveal?'is-shown':''}">${v.reveal?demoPrivate:'•••• •••• •••• ••••'}</div><div class="cg-privatelinks">${link('私钥二维码','qr','qr-code')}${link('如何转出 BTC','restore-help','circle-help')}</div></div><div class="cg-actions">${btn('复制私钥','copy-private','primary','copy')}${link('隐藏并退出','exit','lock-keyhole')}</div><div class="cg-footnote">私钥等同于资金控制权，请勿发送给他人。</div>`;
+      return '';
+    }
+    function modal(v){
+      if(!v.sheet)return '';
+      let inner='';
+      if(v.sheet==='scanning')inner=`<h3>${v.scanType==='write'?'请贴卡，先检查卡片':'请贴卡，读取冷钱包'}</h3><p>将卡片贴近手机背面的 NFC 感应区。</p>${scan()}<div class="cg-scanstatus"><span class="cg-dot"></span>等待识别卡片…</div><div class="cg-actions">${link('取消','cancel-sheet')}</div>`;
+      if(v.sheet==='card-ready')inner=`<h3>${settings.writeCase==='已有内容'?'这张卡片已有内容':'卡片已就绪'}</h3><p>${settings.writeCase==='已有内容'?'继续写入会覆盖卡片原有内容。请确认这张卡片可以覆盖。':'可写状态与容量检查通过。确认后，请再次贴回同一张卡片。'}</p><div class="cg-detailrow"><strong><span>本次操作</span><span>${settings.writeCase==='已有内容'?'覆盖并写入':v.duplicate?'写入同一钱包的副本':'写入新冷钱包'}</span></strong></div><div class="cg-detailrow"><strong><span>写入后核验</span><span>自动读回</span></strong></div><div class="cg-actions">${btn(settings.writeCase==='已有内容'?'确认覆盖并写入':'确认写入','write-confirm')}${link('取消，保留原内容','cancel-sheet')}</div>`;
+      if(v.sheet==='writing')inner=`<h3>正在写入并核对</h3><p>请保持卡片贴合，完成前不要移开。</p>${scan()}<div class="cg-scanstatus"><span class="cg-dot"></span>写入 → 读回 → 核对内容</div>`;
+      if(v.sheet==='write-error'){
+        const desc=settings.writeCase==='容量不足'?['这张卡片容量不足','没有写入任何新数据。请换一张容量足够的卡片后重试。']:settings.writeCase==='NFC 关闭'?['请先开启 NFC','开启手机 NFC 后，返回这里继续。当前冷钱包会保留。']:['卡片移开，尚未确认完成','写入可能没有完成。请先重新读取卡片，确认数据后再重试。'];
+        inner=`<h3>${desc[0]}</h3><p>${desc[1]}</p><div class="cg-actions">${btn(settings.writeCase==='NFC 关闭'?'去开启 NFC':settings.writeCase==='容量不足'?'换一张卡片':'重新检测卡片',settings.writeCase==='NFC 关闭'?'enable-nfc':'retry-write')}${link('先保存加密备份','backup')}${link('返回','cancel-sheet')}</div>`;
+      }
+      if(v.sheet==='backup')inner=`<h3>${v.pendingCopy?'先保存备份，再继续写卡':'保存加密备份'}</h3><p>${v.pendingCopy?'保存备份文件后，将自动进入另一张 NFC 卡的写入流程。备份里不包含密码，请分开保管。':'卡片损坏或遗失后，可用备份和密码恢复。请保存一份备份文件，再完成制作。备份里不包含密码，请分开保管。'}</p><div class="cg-info"><div class="cg-infohead"><span>BitNFC 加密备份</span><span>CG1</span></div><div class="cg-address">CG1:····················</div></div><div class="cg-actions">${btn(v.pendingCopy?'保存备份并继续':'保存为文件','save-backup','primary','file-down')}${btn('复制加密文本','copy-backup','secondary','copy')}${link('返回','cancel-sheet')}</div>`;
+      if(v.sheet==='addresses')inner=`<h3>其他收款地址</h3><p>${v.screen==='unlock'?'以下为卡片记录的四种公开地址，可直接查看和复制；尚未与私钥核对，解密后将自动核验。':'四种地址共用一把私钥，余额分别记录。使用时请核对实际收款地址。'}</p>${[['原生 SegWit','bc1q ···· 7a2f','推荐'],['Legacy','1 ···· 9m3k',''],['嵌套 SegWit','3 ···· 5h8v',''],['Taproot','bc1p ···· 6d2r','需确认恢复兼容']].map(([a,b,c])=>`<div class="cg-detailrow"><strong><span>${a}</span><span style="font-size:11px;color:var(--cg-sub)">${c}</span></strong><div class="cg-address">${b}</div><button type="button" class="cg-inlinecopy cursor-interaction" data-action="copy-address">${icon('copy')}复制地址</button></div>`).join('')}<div class="cg-actions">${btn('知道了','cancel-sheet','secondary')}</div>`;
+      if(v.sheet==='qr')inner=`<h3>用自己的钱包扫描</h3><p>二维码等同于私钥，不要截图或发给他人。</p><div class="cg-qr" aria-label="不可用于导入的示例二维码">${qrCells()}</div><div class="cg-footnote">原型示例 · 不用于导入</div><div class="cg-actions">${btn('关闭二维码','cancel-sheet','secondary')}</div>`;
+      if(v.sheet==='help')inner=`<h3>你的卡片，你来掌握</h3><p>制作时设置密码，并把加密私钥写入 NFC。读取时输入密码，即可恢复私钥。</p><div class="cg-checklist"><div>${icon('wifi-off')}加解密在本机完成，无需联网</div><div>${icon('key-round')}密码无法重置，请单独保管</div><div>${icon('scan-line')}NFC 卡片可以被复制</div></div><div class="cg-notice" style="margin-top:20px">这张卡是密钥的存储载体，App 不查询余额或发送 BTC。</div><div class="cg-actions">${btn('知道了','cancel-sheet','secondary')}</div>`;
+      if(v.sheet==='restore-help')inner=`<h3>如何转出 BTC</h3><ol class="cg-recoverylist"><li><span class="cg-recoverynumber" aria-hidden="true">1</span><div><h4>使用支持 WIF 的钱包</h4><p>本工具导出的是 BTC 主网 WIF 格式私钥。请使用支持该格式及对应地址类型的钱包。不清楚操作时，可向 AI 咨询步骤，<strong>切勿提供私钥或私钥二维码</strong>。</p></div></li><li><span class="cg-recoverynumber" aria-hidden="true">2</span><div><h4>尽快转入新钱包</h4><p>复制或导入私钥会增加泄露风险。建议尽快将全部 BTC 转入已完成备份的新钱包，确认到账后，停止使用旧地址收款。</p></div></li><li><span class="cg-recoverynumber" aria-hidden="true">3</span><div><h4>余额不符时，核对地址类型</h4><p>请确认钱包识别出的地址与实际存币地址一致，并检查地址类型及钱包同步状态。</p></div></li></ol><div class="cg-actions">${btn('知道了','cancel-sheet','secondary')}</div>`;
+      if(v.sheet==='restart')inner=`<h3>制作另一张卡片？</h3><p>开始前，请确认上一张卡片的加密备份和密码已保存。</p><div class="cg-actions">${btn('已保存，开始制作','restart-confirm')}${link('继续保留当前卡片','cancel-sheet')}</div>`;
+      if(v.sheet==='file')inner=`<h3>打开加密备份文件</h3><p>选择你之前保存的 BitNFC 备份。</p><div class="cg-info"><div class="cg-infohead"><span>演示文件</span><span>TXT</span></div><div>bitnfc-mainnet-7a2f.txt</div></div><div class="cg-actions">${btn('打开这份备份','accept-backup','primary','file-check')}${link('取消','cancel-sheet')}</div>`;
+      return `<div class="cg-modalshade" role="presentation"><section class="cg-sheet" role="dialog" aria-modal="true" aria-label="操作确认"><div class="cg-grabber"></div>${inner}</section></div>`;
+    }
+    function qrCells(){let cells='';for(let y=0;y<21;y++)for(let x=0;x<21;x++){let finder=null;for(const [a,b] of [[0,0],[14,0],[0,14]])if(x>=a&&x<a+7&&y>=b&&y<b+7){const i=x-a,j=y-b;finder=i===0||i===6||j===0||j===6||(i>=2&&i<=4&&j>=2&&j<=4)}const fill=finder===null?((x*17+y*13+x*y)%7<3):finder;cells+=`<i class="${fill?'filled':''}"></i>`}return cells}
+    function render(v){
+      v.stage.dataset.cgScreen=v.screen;
+      v.stage.classList.toggle('cg-density-compact',settings.density==='紧凑');
+      v.stage.innerHTML=routes(v)+`<div class="cg-phone" aria-label="${v.direct?'直接开始':'分步引导'}手机原型"><div class="cg-status"><span>9:41</span><span class="cg-statusicons">${icon('signal')}${icon('wifi')}${icon('battery-full')}</span></div><div class="cg-main">${header(v)}${content(v)}</div><div class="cg-homebar"></div>${modal(v)}${v.toast?`<div class="cg-toast" role="status">${v.toast}</div>`:''}</div>`;
+      v.stage.querySelectorAll('[data-jump]').forEach(b=>b.onclick=()=>go(v,b.dataset.jump));
+      v.stage.querySelectorAll('[data-action]').forEach(b=>b.onclick=()=>act(v,b.dataset.action,b));
+      v.stage.querySelectorAll('input').forEach(input=>input.oninput=()=>{v.inputs[input.id]=input.value});
+      v.stage.querySelectorAll('.cg-primary').forEach(b=>{if(v.busy&&!['scan-write','write-confirm'].includes(b.dataset.action))b.disabled=true});
+      if(globalThis.lucide)lucide.createIcons({root:v.stage,attrs:{width:16,height:16}});
+    }
+    function remember(v){if(window.openai&&window.openai.setWidgetState)window.openai.setWidgetState({modelContent:{prototype:'BitNFC 0.4.0',scheme:v.direct?'直接开始':'分步引导',screen:v.screen,writeCase:settings.writeCase,decryptCase:settings.decryptCase,cardCount:v.cardCount},privateContent:{id:v.id,screen:v.screen,backup:v.backup,duplicate:v.duplicate,cardCount:v.cardCount}}).catch(()=>{})}
+    function go(v,s){v.token++;v.busy=false;v.error='';v.pendingCopy=false;v.sheet=null;v.reveal=false;if(s==='home')v.duplicate=false;v.screen=s==='home'&&v.direct?'password':s;render(v);remember(v)}
+    function later(v,ms,fn){const token=v.token;setTimeout(()=>{if(v.token===token)fn()},ms)}
+    function scanWrite(v){v.sheet='scanning';v.scanType='write';render(v);later(v,850,()=>{v.sheet=['容量不足','NFC 关闭'].includes(settings.writeCase)?'write-error':'card-ready';render(v)})}
+    function scanRead(v){v.sheet='scanning';v.scanType='read';render(v);later(v,900,()=>go(v,'unlock'))}
+    function act(v,a,b){
+      if(a==='eye'){const inp=v.stage.querySelector('#'+b.dataset.for);if(inp){const shown=inp.type==='password';inp.type=shown?'text':'password';b.setAttribute('aria-label',shown?'隐藏密码':'显示密码');b.innerHTML=icon(shown?'eye':'eye-off');if(globalThis.lucide)lucide.createIcons({root:b,attrs:{width:16,height:16}})}return}
+      if(a==='make'){v.verify=false;go(v,'password');return}
+      if(a==='read'){v.verify=false;go(v,'read');return}
+      if(a==='home'){if(v.screen==='done'&&!v.backup){v.sheet='backup';render(v);return}v.verify=false;go(v,'home');return}
+      if(a==='back'){if(v.screen==='done'){if(!v.backup){v.sheet='backup';render(v)}else go(v,'home');return}if(v.screen==='write'&&v.duplicate){v.duplicate=false;go(v,'done');return}go(v,({write:'password',unlock:'read',revealed:'unlock',paste:'read'})[v.screen]||'home');return}
+      if(a==='generate'){
+        const p=v.stage.querySelector('#'+v.id+'-pass').value,q=v.stage.querySelector('#'+v.id+'-confirm').value;
+        if(p.length<6||!p.trim()){v.error='请设置至少 6 个字符的密码。';render(v);return}
+        if(p!==q){v.error='两次密码不一致，请重新确认。';render(v);return}
+        v.demoPassword=p;v.busy=true;v.error='';render(v);later(v,700,()=>{v.backup=false;v.duplicate=false;v.cardCount=0;go(v,'write')});return;
+      }
+      if(a==='scan-write'){scanWrite(v);return}
+      if(a==='retry-write'){settings.writeCase='空白卡片';scanWrite(v);return}
+      if(a==='enable-nfc'){settings.writeCase='空白卡片';v.sheet=null;v.toast='NFC 已开启 · 原型演示';render(v);later(v,1500,()=>{v.toast='';render(v)});return}
+      if(a==='write-confirm'){v.sheet='writing';render(v);later(v,950,()=>{if(settings.writeCase==='卡片移开'){v.sheet='write-error';render(v)}else{v.cardCount=Math.max(v.cardCount,v.duplicate?1:0)+1;v.duplicate=false;go(v,'done')}});return}
+      if(a==='scan-read'){scanRead(v);return}
+      if(a==='accept-backup'){go(v,'unlock');return}
+      if(a==='decrypt'){
+        const input=v.stage.querySelector('#'+v.id+'-unlock');
+        if(!input.value){v.error='请输入卡片解密密码。';render(v);return}
+        const matches=input.value===v.demoPassword;
+        v.busy=true;v.error='';render(v);later(v,750,()=>{v.busy=false;if(!matches||settings.decryptCase!=='正常解密'){v.error=!matches||settings.decryptCase==='密码错误'?'密码不正确，请重新输入。':'数据验证未通过，请重新读卡或使用备份。';render(v)}else if(v.verify){v.verify=false;go(v,'done');v.toast='恢复验证通过';render(v);later(v,1600,()=>{v.toast='';render(v)})}else go(v,'revealed')});return;
+      }
+      if(a==='secret'){v.reveal=!v.reveal;render(v);if(v.reveal)later(v,30000,()=>{v.reveal=false;render(v)});return}
+      if(a==='copy-address'||a==='copy-private'){copy(v);return}
+      if(a==='finish-backup'){if(v.backup)go(v,'home');else{v.sheet='backup';render(v)}return}
+      if(a==='write-another'){if(!v.backup){v.pendingCopy=true;v.sheet='backup';render(v);return}v.cardCount=Math.max(v.cardCount,1);v.duplicate=true;go(v,'write');return}
+      if(a==='save-backup'){const continueCopy=v.pendingCopy;v.backup=true;v.pendingCopy=false;v.sheet=null;if(continueCopy){v.cardCount=Math.max(v.cardCount,1);v.duplicate=true;go(v,'write')}v.toast='加密备份文件已保存 · 原型演示';render(v);later(v,1600,()=>{v.toast='';render(v)});remember(v);return}
+      if(a==='copy-backup'){v.toast='加密文本已复制，请继续保存备份文件 · 原型演示';render(v);later(v,1600,()=>{v.toast='';render(v)});return}
+      if(a==='restart-confirm'){v.backup=false;go(v,'password');return}
+      if(a==='cancel-sheet'){v.token++;v.pendingCopy=false;v.sheet=null;render(v);return}
+      if(a==='exit'){v.reveal=false;go(v,'home');return}
+      if(a==='paste'){go(v,'paste');return}
+      if(['backup','addresses','qr','help','restore-help','restart','file'].includes(a)){v.sheet=a;render(v);if(a==='qr')later(v,60000,()=>{v.sheet=null;render(v)});return}
+    }
+    root.querySelectorAll('[data-stage]').forEach(stage=>{
+      const id=stage.dataset.stage;const direct=id==='direct';
+      const v={id,stage,direct,screen:direct?'password':'home',sheet:null,error:'',busy:false,reveal:false,backup:false,duplicate:false,pendingCopy:false,cardCount:0,toast:'',verify:false,token:0,inputs:{},demoPassword:'BitNFC-demo-only'};states[id]=v;render(v);
+      if(globalThis.Tweak){
+        const t=new Tweak({container:stage,onChange:()=>{root.style.setProperty('--cg-radius',settings.radius+'px');Object.values(states).forEach(render)}});
+        t.addSlider(settings,'radius',{label:'卡片圆角',min:8,max:26,step:2,unit:'px'});
+        t.addSelect(settings,'density',{label:'页面留白',options:['舒展','紧凑']});
+        t.addSelect(settings,'writeCase',{label:'写卡情境',options:['空白卡片','已有内容','容量不足','卡片移开','NFC 关闭']});
+        t.addSelect(settings,'decryptCase',{label:'解密情境',options:['正常解密','密码错误','数据损坏']});
+      }
+    });
+    function restore(data){const p=data&&data.privateContent;if(!p||!states[p.id])return;const allowed=['home','password','write','done','read','paste','unlock','revealed'];if(!allowed.includes(p.screen))return;const v=states[p.id];v.screen=p.screen;v.backup=!!p.backup;v.pendingCopy=false;v.duplicate=!!p.duplicate&&p.screen==='write';v.cardCount=Number.isInteger(p.cardCount)&&p.cardCount>=0?p.cardCount:0;v.sheet=null;v.reveal=false;render(v)}
+    restore(window.openai&&window.openai.widgetState);
+    window.addEventListener('openai:set_globals',e=>restore(e.detail&&e.detail.globals&&e.detail.globals.widgetState));
+  })();
+  </script>
+</div>

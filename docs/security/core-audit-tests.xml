@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="io.coingift.core.SecurityReviewTest" tests="6" skipped="0" failures="0" errors="0" timestamp="2026-10-15T07:15:35" hostname="iandeMacBook-Air.local" time="2.158">
+  <properties/>
+  <testcase name="decryptedScalarExistsBeforeAnyWifExportAndCloseWipesOwnedArray" classname="io.coingift.core.SecurityReviewTest" time="0.12"/>
+  <testcase name="authenticatedOutOfRangeScalarsNeverReturnAnUnlockedKey" classname="io.coingift.core.SecurityReviewTest" time="0.289"/>
+  <testcase name="freshCreationsUseDifferentKeysSaltsAndNonces" classname="io.coingift.core.SecurityReviewTest" time="1.353"/>
+  <testcase name="publicClaimsCanBeReplacedBeforeAuthenticationEvenThoughDecryptionRejects" classname="io.coingift.core.SecurityReviewTest" time="0.112"/>
+  <testcase name="parserHandlesEveryTruncationAndMutatedUntrustedPayloads" classname="io.coingift.core.SecurityReviewTest" time="0.107"/>
+  <testcase name="currentSixDigitPolicyAllowsOfflineDictionaryRecovery" classname="io.coingift.core.SecurityReviewTest" time="0.177"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

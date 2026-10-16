@@ -1,0 +1,5229 @@
+{
+  "GHSA-3cqm-mf7h-prrj": {
+    "id": "GHSA-3cqm-mf7h-prrj",
+    "summary": "Square OkHttp can accept the wrong certificate",
+    "details": "In verifyHostName of OkHostnameVerifier.java, there is a possible way to accept a certificate for the wrong domain due to improperly used crypto. This could lead to remote information disclosure with no additional execution privileges needed. User interaction is not needed for exploitation. Product: AndroidVersions: Android-8.1 Android-9 Android-10 Android-11 Android ID: A-171980069",
+    "aliases": [
+      "A-171980069",
+      "ASB-A-171980069",
+      "CVE-2021-0341"
+    ],
+    "modified": "2026-09-10T03:49:29.393060511Z",
+    "published": "2022-05-24T17:41:45Z",
+    "database_specific": {
+      "github_reviewed_at": "2025-11-13T16:34:06Z",
+      "nvd_published_at": "2021-02-10T17:15:00Z",
+      "cwe_ids": [
+        "CWE-295"
+      ],
+      "severity": "HIGH",
+      "github_reviewed": true
+    },
+    "references": [
+      {
+        "type": "ADVISORY",
+        "url": "https://nvd.nist.gov/vuln/detail/CVE-2021-0341"
+      },
+      {
+        "type": "WEB",
+        "url": "https://github.com/square/okhttp/issues/6724"
+      },
+      {
+        "type": "WEB",
+        "url": "https://github.com/square/okhttp/pull/6741"
+      },
+      {
+        "type": "WEB",
+        "url": "https://github.com/square/okhttp/commit/f574ea2f5259d9040f264ddeb582fb1ce563f10c"
+      },
+      {
+        "type": "PACKAGE",
+        "url": "https://github.com/square/okhttp"
+      },
+      {
+        "type": "WEB",
+        "url": "https://source.android.com/security/bulletin/2021-02-01"
+      }
+    ],
+    "affected": [
+      {
+        "package": {
+          "name": "com.squareup.okhttp3:okhttp",
+          "ecosystem": "Maven",
+          "purl": "pkg:maven/com.squareup.okhttp3/okhttp"
+        },
+        "ranges": [
+          {
+            "type": "ECOSYSTEM",
+            "events": [
+              {
+                "introduced": "0"
+              },
+              {
+                "fixed": "4.9.2"
+              }
+            ]
+          }
+        ],
+        "versions": [
+          "3.0.0",
+          "3.0.0-RC1",
+          "3.0.1",
+          "3.1.0",
+          "3.1.1",
+          "3.1.2",
+          "3.10.0",
+          "3.11.0",
+          "3.12.0",
+          "3.12.1",
+          "3.12.10",
+          "3.12.11",
+          "3.12.12",
+          "3.12.13",
+          "3.12.2",
+          "3.12.3",
+          "3.12.4",
+          "3.12.5",
+          "3.12.6",
+          "3.12.7",
+          "3.12.8",
+          "3.12.9",
+          "3.13.0",
+          "3.13.1",
+          "3.14.0",
+          "3.14.1",
+          "3.14.2",
+          "3.14.3",
+          "3.14.4",
+          "3.14.5",
+          "3.14.6",
+          "3.14.7",
+          "3.14.8",
+          "3.14.9",
+          "3.2.0",
+          "3.3.0",
+          "3.3.1",
+          "3.4.0",
+          "3.4.0-RC1",
+          "3.4.1",
+          "3.4.2",
+          "3.5.0",
+          "3.6.0",
+          "3.7.0",
+          "3.8.0",
+          "3.8.1",
+          "3.9.0",
+          "3.9.1",
+          "4.0.0",
+          "4.0.0-RC1",
+          "4.0.0-RC2",
+          "4.0.0-RC3",
+          "4.0.0-alpha01",
+          "4.0.0-alpha02",
+          "4.0.1",
+          "4.1.0",
+          "4.1.1",
+          "4.2.0",
+          "4.2.1",
+          "4.2.2",
+          "4.3.0",
+          "4.3.1",
+          "4.4.0",
+          "4.4.1",
+          "4.5.0",
+          "4.5.0-RC1",
+          "4.6.0",
+          "4.7.0",
+          "4.7.1",
+          "4.7.2",
+          "4.8.0",
+          "4.8.1",
+          "4.9.0",
+          "4.9.1"
+        ],
+        "database_specific": {
+          "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/05/GHSA-3cqm-mf7h-prrj/GHSA-3cqm-mf7h-prrj.json"
+        }
+      }
+    ],
+    "schema_version": "1.9.0",
+    "severity": [
+      {
+        "type": "CVSS_V3",
+        "score": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:N/A:N"
+      }
+    ]
+  },
+  "GHSA-574f-3g2m-x479": {
+    "id": "GHSA-574f-3g2m-x479",
+    "summary": "Bouncy Castle for Java GOST 28147 CTR mode reuses keystream after 255 blocks",
+    "details": "The GOST 28147-2015 CTR mode implementation (`G3413CTRBlockCipher`) in the Legion of the Bouncy Castle BC-JAVA `bcprov` core module only increments the final byte of the counter, so the counter wraps after 255 blocks and the keystream is reused. Reusing CTR keystream allows an attacker who can observe two ciphertexts produced with the same key/IV to recover the XOR of the plaintexts, breaking confidentiality. Affects BC-JAVA from 1.59 before 1.84 (with backported fixes in 1.80.2 and 1.81.1).",
+    "aliases": [
+      "CVE-2025-14813"
+    ],
+    "modified": "2026-09-24T15:30:06.452617383Z",
+    "published": "2026-04-17T18:31:50Z",
+    "database_specific": {
+      "github_reviewed_at": "2026-06-30T19:45:20Z",
+      "nvd_published_at": "2026-04-15T10:16:38Z",
+      "cwe_ids": [
+        "CWE-323",
+        "CWE-327"
+      ],
+      "severity": "CRITICAL",
+      "github_reviewed": true
+    },
+    "references": [
+      {
+        "type": "ADVISORY",
+        "url": "https://nvd.nist.gov/vuln/detail/CVE-2025-14813"
+      },
+      {
+        "type": "WEB",
+        "url": "https://github.com/bcgit/bc-java/commit/b42574345414e4b7c8051b16fa1fafe01c29871f"
+      },
+      {
+        "type": "WEB",
+        "url": "https://github.com/bcgit/bc-java/commit/701686cb0184cd9ae103c801b3581fdf95c6d4f3"
+      },
+      {
+        "type": "WEB",
+        "url": "https://access.redhat.com/errata/RHSA-2026:11720"
+      },
+      {
+        "type": "WEB",
+        "url": "https://access.redhat.com/errata/RHSA-2026:60248"
+      },
+      {
+        "type": "WEB",
+        "url": "https://access.redhat.com/errata/RHSA-2026:60249"
+      },
+      {
+        "type": "WEB",
+        "url": "https://access.redhat.com/errata/RHSA-2026:60250"
+      },
+      {
+        "type": "WEB",
+        "url": "https://access.redhat.com/errata/RHSA-2026:60251"
+      },
+      {
+        "type": "WEB",
+        "url": "https://access.redhat.com/errata/RHSA-2026:60252"
+      },
+      {
+        "type": "WEB",
+        "url": "https://access.redhat.com/errata/RHSA-2026:60254"
+      },
+      {
+        "type": "WEB",
+        "url": "https://access.redhat.com/errata/RHSA-2026:60256"
+      },
+      {
+        "type": "WEB",
+        "url": "https://access.redhat.com/errata/RHSA-2026:60259"
+      },
+      {
+        "type": "WEB",
+        "url": "https://access.redhat.com/errata/RHSA-2026:66488"
+      },
+      {
+        "type": "WEB",
+        "url": "https://access.redhat.com/security/cve/CVE-2025-14813"
+      },
+      {
+        "type": "WEB",
+        "url": "https://bugzilla.redhat.com/show_bug.cgi?id=2458640"
+      },
+      {
+        "type": "PACKAGE",
+        "url": "https://github.com/bcgit/bc-java"
+      },
+      {
+        "type": "WEB",
+        "url": "https://github.com/bcgit/bc-java/wiki/CVE%E2%80%902025%E2%80%9014813"
+      },
+      {
+        "type": "WEB",
+        "url": "https://security.access.redhat.com/data/csaf/v2/vex/2025/cve-2025-14813.json"
+      },
+      {
+        "type": "WEB",
+        "url": "https://access.redhat.com/errata/RHSA-2026:11721"
+      },
+      {
+        "type": "WEB",
+        "url": "https://access.redhat.com/errata/RHSA-2026:13631"
+      },
+      {
+        "type": "WEB",
+        "url": "https://access.redhat.com/errata/RHSA-2026:14272"
+      },
+      {
+        "type": "WEB",
+        "url": "https://access.redhat.com/errata/RHSA-2026:14276"
+      },
+      {
+        "type": "WEB",
+        "url": "https://access.redhat.com/errata/RHSA-2026:17668"
+      },
+      {
+        "type": "WEB",
+        "url": "https://access.redhat.com/errata/RHSA-2026:18054"
+      },
+      {
+        "type": "WEB",
+        "url": "https://access.redhat.com/errata/RHSA-2026:18055"
+      },
+      {
+        "type": "WEB",
+        "url": "https://access.redhat.com/errata/RHSA-2026:18059"
+      },
+      {
+        "type": "WEB",
+        "url": "https://access.redhat.com/errata/RHSA-2026:21772"
+      },
+      {
+        "type": "WEB",
+        "url": "https://access.redhat.com/errata/RHSA-2026:24977"
+      },
+      {
+        "type": "WEB",
+        "url": "https://access.redhat.com/errata/RHSA-2026:53644"
+      },
+      {
+        "type": "WEB",
+        "url": "https://access.redhat.com/errata/RHSA-2026:53645"
+      },
+      {
+        "type": "WEB",
+        "url": "https://access.redhat.com/errata/RHSA-2026:53646"
+      },
+      {
+        "type": "WEB",
+        "url": "https://access.redhat.com/errata/RHSA-2026:53806"
+      },
+      {
+        "type": "WEB",
+        "url": "https://access.redhat.com/errata/RHSA-2026:60239"
+      },
+      {
+        "type": "WEB",
+        "url": "https://access.redhat.com/errata/RHSA-2026:60246"
+      },
+      {
+        "type": "WEB",
+        "url": "https://access.redhat.com/errata/RHSA-2026:60247"
+      }
+    ],
+    "affected": [
+      {
+        "package": {
+          "name": "org.bouncycastle:bcprov-jdk14",
+          "ecosystem": "Maven",
+          "purl": "pkg:maven/org.bouncycastle/bcprov-jdk14"
+        },
+        "ranges": [
+          {
+            "type": "ECOSYSTEM",
+            "events": [
+              {
+                "introduced": "1.59"
+              },
+              {
+                "last_affected": "1.80.1"
+              }
+            ]
+          }
+        ],
+        "versions": [
+          "1.59",
+          "1.60",
+          "1.61",
+          "1.62",
+          "1.63",
+          "1.64",
+          "1.65",
+          "1.67",
+          "1.68",
+          "1.69",
+          "1.70",
+          "1.71",
+          "1.72",
+          "1.73",
+          "1.74",
+          "1.75",
+          "1.76",
+          "1.77",
+          "1.78",
+          "1.78.1",
+          "1.79",
+          "1.80"
+        ],
+        "database_specific": {
+          "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2026/04/GHSA-574f-3g2m-x479/GHSA-574f-3g2m-x479.json"
+        }
+      },
+      {
+        "package": {
+          "name": "org.bouncycastle:bcprov-jdk15to18",
+          "ecosystem": "Maven",
+          "purl": "pkg:maven/org.bouncycastle/bcprov-jdk15to18"
+        },
+        "ranges": [
+          {
+            "type": "ECOSYSTEM",
+            "events": [
+              {
+                "introduced": "1.59"
+              },
+              {
+                "last_affected": "1.80.1"
+              }
+            ]
+          }
+        ],
+        "versions": [
+          "1.63",
+          "1.64",
+          "1.65",
+          "1.66",
+          "1.67",
+          "1.68",
+          "1.69",
+          "1.70",
+          "1.71",
+          "1.72",
+          "1.73",
+          "1.74",
+          "1.75",
+          "1.76",
+          "1.77",
+          "1.78",
+          "1.78.1",
+          "1.79",
+          "1.80"
+        ],
+        "database_specific": {
+          "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2026/04/GHSA-574f-3g2m-x479/GHSA-574f-3g2m-x479.json"
+        }
+      },
+      {
+        "package": {
+          "name": "org.bouncycastle:bcprov-jdk18on",
+          "ecosystem": "Maven",
+          "purl": "pkg:maven/org.bouncycastle/bcprov-jdk18on"
+        },
+        "ranges": [
+          {
+            "type": "ECOSYSTEM",
+            "events": [
+              {
+                "introduced": "1.59"
+              },
+              {
+                "fixed": "1.80.2"
+              }
+            ]
+          }
+        ],
+        "versions": [
+          "1.71",
+          "1.71.1",
+          "1.72",
+          "1.73",
+          "1.74",
+          "1.75",
+          "1.76",
+          "1.77",
+          "1.78",
+          "1.78.1",
+          "1.79",
+          "1.80"
+        ],
+        "database_specific": {
+          "last_known_affected_version_range": "<= 1.80.1",
+          "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2026/04/GHSA-574f-3g2m-x479/GHSA-574f-3g2m-x479.json"
+        }
+      },
+      {
+        "package": {
+          "name": "org.bouncycastle:bcprov-debug-jdk14",
+          "ecosystem": "Maven",
+          "purl": "pkg:maven/org.bouncycastle/bcprov-debug-jdk14"
+        },
+        "ranges": [
+          {
+            "type": "ECOSYSTEM",
+            "events": [
+              {
+                "introduced": "1.59"
+              },
+              {
+                "last_affected": "1.80.1"
+              }
+            ]
+          }
+        ],
+        "versions": [
+          "1.59",
+          "1.60",
+          "1.64",
+          "1.68",
+          "1.69",
+          "1.70",
+          "1.71",
+          "1.72",
+          "1.73",
+          "1.74",
+          "1.78",
+          "1.79",
+          "1.80"
+        ],
+        "database_specific": {
+          "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2026/04/GHSA-574f-3g2m-x479/GHSA-574f-3g2m-x479.json"
+        }
+      },
+      {
+        "package": {
+          "name": "org.bouncycastle:bcprov-debug-jdk15to18",
+          "ecosystem": "Maven",
+          "purl": "pkg:maven/org.bouncycastle/bcprov-debug-jdk15to18"
+        },
+        "ranges": [
+          {
+            "type": "ECOSYSTEM",
+            "events": [
+              {
+                "introduced": "1.59"
+              },
+              {
+                "last_affected": "1.80.1"
+              }
+            ]
+          }
+        ],
+        "versions": [
+          "1.64",
+          "1.68",
+          "1.69",
+          "1.70",
+          "1.71",
+          "1.72",
+          "1.73",
+          "1.74",
+          "1.75",
+          "1.76",
+          "1.77",
+          "1.78",
+          "1.78.1",
+          "1.79"
+        ],
+        "database_specific": {
+          "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2026/04/GHSA-574f-3g2m-x479/GHSA-574f-3g2m-x479.json"
+        }
+      },
+      {
+        "package": {
+          "name": "org.bouncycastle:bcprov-debug-jdk18on",
+          "ecosystem": "Maven",
+          "purl": "pkg:maven/org.bouncycastle/bcprov-debug-jdk18on"
+        },
+        "ranges": [
+          {
+            "type": "ECOSYSTEM",
+            "events": [
+              {
+                "introduced": "1.59"
+              },
+              {
+                "last_affected": "1.80.1"
+              }
+            ]
+          }
+        ],
+        "versions": [
+          "1.71",
+          "1.72",
+          "1.73",
+          "1.74",
+          "1.75",
+          "1.76",
+          "1.77",
+          "1.78",
+          "1.78.1",
+          "1.79"
+        ],
+        "database_specific": {
+          "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2026/04/GHSA-574f-3g2m-x479/GHSA-574f-3g2m-x479.json"
+        }
+      },
+      {
+        "package": {
+          "name": "org.bouncycastle:bcprov-ext-jdk14",
+          "ecosystem": "Maven",
+          "purl": "pkg:maven/org.bouncycastle/bcprov-ext-jdk14"
+        },
+        "ranges": [
+          {
+            "type": "ECOSYSTEM",
+            "events": [
+              {
+                "introduced": "1.59"
+              },
+              {
+                "last_affected": "1.78.1"
+              }
+            ]
+          }
+        ],
+        "versions": [
+          "1.60",
+          "1.64",
+          "1.65",
+          "1.67",
+          "1.68",
+          "1.69",
+          "1.70",
+          "1.71",
+          "1.72",
+          "1.73",
+          "1.75",
+          "1.76",
+          "1.78",
+          "1.78.1"
+        ],
+        "database_specific": {
+          "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2026/04/GHSA-574f-3g2m-x479/GHSA-574f-3g2m-x479.json"
+        }
+      },
+      {
+        "package": {
+          "name": "org.bouncycastle:bcprov-ext-jdk15to18",
+          "ecosystem": "Maven",
+          "purl": "pkg:maven/org.bouncycastle/bcprov-ext-jdk15to18"
+        },
+        "ranges": [
+          {
+            "type": "ECOSYSTEM",
+            "events": [
+              {
+                "introduced": "1.59"
+              },
+              {
+                "last_affected": "1.78.1"
+              }
+            ]
+          }
+        ],
+        "versions": [
+          "1.64",
+          "1.67",
+          "1.68",
+          "1.69",
+          "1.70",
+          "1.71",
+          "1.72",
+          "1.73",
+          "1.74",
+          "1.75",
+          "1.76",
+          "1.77",
+          "1.78",
+          "1.78.1"
+        ],
+        "database_specific": {
+          "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2026/04/GHSA-574f-3g2m-x479/GHSA-574f-3g2m-x479.json"
+        }
+      },
+      {
+        "package": {
+          "name": "org.bouncycastle:bcprov-ext-jdk18on",
+          "ecosystem": "Maven",
+          "purl": "pkg:maven/org.bouncycastle/bcprov-ext-jdk18on"
+        },
+        "ranges": [
+          {
+            "type": "ECOSYSTEM",
+            "events": [
+              {
+                "introduced": "1.59"
+              },
+              {
+                "last_affected": "1.78.1"
+              }
+            ]
+          }
+        ],
+        "versions": [
+          "1.71",
+          "1.72",
+          "1.73",
+          "1.74",
+          "1.75",
+          "1.76",
+          "1.77",
+          "1.78",
+          "1.78.1"
+        ],
+        "database_specific": {
+          "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2026/04/GHSA-574f-3g2m-x479/GHSA-574f-3g2m-x479.json"
+        }
+      },
+      {
+        "package": {
+          "name": "org.bouncycastle:bcprov-ext-debug-jdk14",
+          "ecosystem": "Maven",
+          "purl": "pkg:maven/org.bouncycastle/bcprov-ext-debug-jdk14"
+        },
+        "ranges": [
+          {
+            "type": "ECOSYSTEM",
+            "events": [
+              {
+                "introduced": "1.59"
+              },
+              {
+                "last_affected": "1.74"
+              }
+            ]
+          }
+        ],
+        "versions": [
+          "1.60",
+          "1.68",
+          "1.69",
+          "1.70",
+          "1.71",
+          "1.72",
+          "1.73",
+          "1.74"
+        ],
+        "database_specific": {
+          "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2026/04/GHSA-574f-3g2m-x479/GHSA-574f-3g2m-x479.json"
+        }
+      },
+      {
+        "package": {
+          "name": "org.bouncycastle:bcprov-ext-debug-jdk15to18",
+          "ecosystem": "Maven",
+          "purl": "pkg:maven/org.bouncycastle/bcprov-ext-debug-jdk15to18"
+        },
+        "ranges": [
+          {
+            "type": "ECOSYSTEM",
+            "events": [
+              {
+                "introduced": "1.59"
+              },
+              {
+                "last_affected": "1.77"
+              }
+            ]
+          }
+        ],
+        "versions": [
+          "1.68",
+          "1.69",
+          "1.70",
+          "1.71",
+          "1.72",
+          "1.73",
+          "1.74",
+          "1.75",
+          "1.76",
+          "1.77"
+        ],
+        "database_specific": {
+          "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2026/04/GHSA-574f-3g2m-x479/GHSA-574f-3g2m-x479.json"
+        }
+      },
+      {
+        "package": {
+          "name": "org.bouncycastle:bcprov-ext-debug-jdk18on",
+          "ecosystem": "Maven",
+          "purl": "pkg:maven/org.bouncycastle/bcprov-ext-debug-jdk18on"
+        },
+        "ranges": [
+          {
+            "type": "ECOSYSTEM",
+            "events": [
+              {
+                "introduced": "1.59"
+              },
+              {
+                "last_affected": "1.77"
+              }
+            ]
+          }
+        ],
+        "versions": [
+          "1.71",
+          "1.72",
+          "1.73",
+          "1.74",
+          "1.75",
+          "1.76",
+          "1.77"
+        ],
+        "database_specific": {
+          "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2026/04/GHSA-574f-3g2m-x479/GHSA-574f-3g2m-x479.json"
+        }
+      },
+      {
+        "package": {
+          "name": "org.bouncycastle:bcprov-jdk14",
+          "ecosystem": "Maven",
+          "purl": "pkg:maven/org.bouncycastle/bcprov-jdk14"
+        },
+        "versions": [
+          "1.81.0"
+        ],
+        "database_specific": {
+          "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2026/04/GHSA-574f-3g2m-x479/GHSA-574f-3g2m-x479.json"
+        }
+      },
+      {
+        "package": {
+          "name": "org.bouncycastle:bcprov-jdk15to18",
+          "ecosystem": "Maven",
+          "purl": "pkg:maven/org.bouncycastle/bcprov-jdk15to18"
+        },
+        "versions": [
+          "1.81.0"
+        ],
+        "database_specific": {
+          "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2026/04/GHSA-574f-3g2m-x479/GHSA-574f-3g2m-x479.json"
+        }
+      },
+      {
+        "package": {
+          "name": "org.bouncycastle:bcprov-jdk18on",
+          "ecosystem": "Maven",
+          "purl": "pkg:maven/org.bouncycastle/bcprov-jdk18on"
+        },
+        "ranges": [
+          {
+            "type": "ECOSYSTEM",
+            "events": [
+              {
+                "introduced": "1.81.0"
+              },
+              {
+                "fixed": "1.81.1"
+              }
+            ]
+          }
+        ],
+        "versions": [
+          "1.81",
+          "1.81.0"
+        ],
+        "database_specific": {
+          "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2026/04/GHSA-574f-3g2m-x479/GHSA-574f-3g2m-x479.json"
+        }
+      },
+      {
+        "package": {
+          "name": "org.bouncycastle:bcprov-debug-jdk14",
+          "ecosystem": "Maven",
+          "purl": "pkg:maven/org.bouncycastle/bcprov-debug-jdk14"
+        },
+        "versions": [
+          "1.81.0"
+        ],
+        "database_specific": {
+          "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2026/04/GHSA-574f-3g2m-x479/GHSA-574f-3g2m-x479.json"
+        }
+      },
+      {
+        "package": {
+          "name": "org.bouncycastle:bcprov-debug-jdk15to18",
+          "ecosystem": "Maven",
+          "purl": "pkg:maven/org.bouncycastle/bcprov-debug-jdk15to18"
+        },
+        "versions": [
+          "1.81.0"
+        ],
+        "database_specific": {
+          "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2026/04/GHSA-574f-3g2m-x479/GHSA-574f-3g2m-x479.json"
+        }
+      },
+      {
+        "package": {
+          "name": "org.bouncycastle:bcprov-debug-jdk18on",
+          "ecosystem": "Maven",
+          "purl": "pkg:maven/org.bouncycastle/bcprov-debug-jdk18on"
+        },
+        "versions": [
+          "1.81.0"
+        ],
+        "database_specific": {
+          "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2026/04/GHSA-574f-3g2m-x479/GHSA-574f-3g2m-x479.json"
+        }
+      },
+      {
+        "package": {
+          "name": "org.bouncycastle:bcprov-jdk14",
+          "ecosystem": "Maven",
+          "purl": "pkg:maven/org.bouncycastle/bcprov-jdk14"
+        },
+        "ranges": [
+          {
+            "type": "ECOSYSTEM",
+            "events": [
+              {
+                "introduced": "1.82"
+              },
+              {
+                "fixed": "1.84"
+              }
+            ]
+          }
+        ],
+        "versions": [
+          "1.82",
+          "1.83"
+        ],
+        "database_specific": {
+          "last_known_affected_version_range": "<= 1.83",
+          "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2026/04/GHSA-574f-3g2m-x479/GHSA-574f-3g2m-x479.json"
+        }
+      },
+      {
+        "package": {
+          "name": "org.bouncycastle:bcprov-jdk15to18",
+          "ecosystem": "Maven",
+          "purl": "pkg:maven/org.bouncycastle/bcprov-jdk15to18"
+        },
+        "ranges": [
+          {
+            "type": "ECOSYSTEM",
+            "events": [
+              {
+                "introduced": "1.82"
+              },
+              {
+                "fixed": "1.84"
+              }
+            ]
+          }
+        ],
+        "versions": [
+          "1.82",
+          "1.83"
+        ],
+        "database_specific": {
+          "last_known_affected_version_range": "<= 1.83",
+          "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2026/04/GHSA-574f-3g2m-x479/GHSA-574f-3g2m-x479.json"
+        }
+      },
+      {
+        "package": {
+          "name": "org.bouncycastle:bcprov-jdk18on",
+          "ecosystem": "Maven",
+          "purl": "pkg:maven/org.bouncycastle/bcprov-jdk18on"
+        },
+        "ranges": [
+          {
+            "type": "ECOSYSTEM",
+            "events": [
+              {
+                "introduced": "1.82"
+              },
+              {
+                "fixed": "1.84"
+              }
+            ]
+          }
+        ],
+        "versions": [
+          "1.82",
+          "1.83"
+        ],
+        "database_specific": {
+          "last_known_affected_version_range": "<= 1.83",
+          "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2026/04/GHSA-574f-3g2m-x479/GHSA-574f-3g2m-x479.json"
+        }
+      },
+      {
+        "package": {
+          "name": "org.bouncycastle:bcprov-debug-jdk14",
+          "ecosystem": "Maven",
+          "purl": "pkg:maven/org.bouncycastle/bcprov-debug-jdk14"
+        },
+        "ranges": [
+          {
+            "type": "ECOSYSTEM",
+            "events": [
+              {
+                "introduced": "1.82"
+              },
+              {
+                "fixed": "1.84"
+              }
+            ]
+          }
+        ],
+        "versions": [
+          "1.82",
+          "1.83"
+        ],
+        "database_specific": {
+          "last_known_affected_version_range": "<= 1.83",
+          "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2026/04/GHSA-574f-3g2m-x479/GHSA-574f-3g2m-x479.json"
+        }
+      },
+      {
+        "package": {
+          "name": "org.bouncycastle:bcprov-debug-jdk15to18",
+          "ecosystem": "Maven",
+          "purl": "pkg:maven/org.bouncycastle/bcprov-debug-jdk15to18"
+        },
+        "ranges": [
+          {
+            "type": "ECOSYSTEM",
+            "events": [
+              {
+                "introduced": "1.82"
+              },
+              {
+                "fixed": "1.84"
+              }
+            ]
+          }
+        ],
+        "versions": [
+          "1.82",
+          "1.83"
+        ],
+        "database_specific": {
+          "last_known_affected_version_range": "<= 1.83",
+          "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2026/04/GHSA-574f-3g2m-x479/GHSA-574f-3g2m-x479.json"
+        }
+      },
+      {
+        "package": {
+          "name": "org.bouncycastle:bcprov-debug-jdk18on",
+          "ecosystem": "Maven",
+          "purl": "pkg:maven/org.bouncycastle/bcprov-debug-jdk18on"
+        },
+        "ranges": [
+          {
+            "type": "ECOSYSTEM",
+            "events": [
+              {
+                "introduced": "1.82"
+              },
+              {
+                "fixed": "1.84"
+              }
+            ]
+          }
+        ],
+        "versions": [
+          "1.82",
+          "1.83"
+        ],
+        "database_specific": {
+          "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2026/04/GHSA-574f-3g2m-x479/GHSA-574f-3g2m-x479.json",
+          "last_known_affected_version_range": "<= 1.83"
+        }
+      },
+      {
+        "package": {
+          "name": "org.bouncycastle:bcprov-debug-jdk15on",
+          "ecosystem": "Maven",
+          "purl": "pkg:maven/org.bouncycastle/bcprov-debug-jdk15on"
+        },
+        "ranges": [
+          {
+            "type": "ECOSYSTEM",
+            "events": [
+              {
+                "introduced": "0"
+              },
+              {
+                "last_affected": "1.7.0"
+              }
+            ]
+          }
+        ],
+        "database_specific": {
+          "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2026/04/GHSA-574f-3g2m-x479/GHSA-574f-3g2m-x479.json"
+        }
+      },
+      {
+        "package": {
+          "name": "org.bouncycastle:bcprov-jdk15on",
+          "ecosystem": "Maven",
+          "purl": "pkg:maven/org.bouncycastle/bcprov-jdk15on"
+        },
+        "ranges": [
+          {
+            "type": "ECOSYSTEM",
+            "events": [
+              {
+                "introduced": "0"
+              },
+              {
+                "last_affected": "1.7.0"
+              }
+            ]
+          }
+        ],
+        "database_specific": {
+          "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2026/04/GHSA-574f-3g2m-x479/GHSA-574f-3g2m-x479.json"
+        }
+      }
+    ],
+    "schema_version": "1.9.0",
+    "severity": [
+      {
+        "type": "CVSS_V3",
+        "score": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:N/A:N"
+      },
+      {
+        "type": "CVSS_V4",
+        "score": "CVSS:4.0/AV:L/AC:L/AT:N/PR:N/UI:N/VC:H/VI:H/VA:N/SC:H/SI:H/SA:N/RE:M/U:Red"
+      }
+    ]
+  },
+  "GHSA-5mg8-w23w-74h3": {
+    "id": "GHSA-5mg8-w23w-74h3",
+    "summary": "Information Disclosure in Guava",
+    "details": "A temp directory creation vulnerability exists in Guava prior to version 32.0.0 allowing an attacker with access to the machine to potentially access data in a temporary directory created by the Guava `com.google.common.io.Files.createTempDir()`. The permissions granted to the directory created default to the standard unix-like /tmp ones, leaving the files open. Maintainers recommend explicitly changing the permissions after the creation of the directory, or removing uses of the vulnerable method.",
+    "aliases": [
+      "CVE-2020-8908",
+      "SNYK-JAVA-COMGOOGLEGUAVA-1015415"
+    ],
+    "modified": "2026-09-10T03:49:26.651391253Z",
+    "published": "2021-03-25T17:04:19Z",
+    "database_specific": {
+      "nvd_published_at": "2020-12-10T23:15:00Z",
+      "cwe_ids": [
+        "CWE-173",
+        "CWE-200",
+        "CWE-378",
+        "CWE-732"
+      ],
+      "severity": "LOW",
+      "github_reviewed": true,
+      "github_reviewed_at": "2021-03-25T17:01:09Z"
+    },
+    "references": [
+      {
+        "type": "ADVISORY",
+        "url": "https://nvd.nist.gov/vuln/detail/CVE-2020-8908"
+      },
+      {
+        "type": "WEB",
+        "url": "https://github.com/google/guava/issues/4011"
+      },
+      {
+        "type": "WEB",
+        "url": "https://github.com/google/guava/issues/4011#issuecomment-1578991974"
+      },
+      {
+        "type": "WEB",
+        "url": "https://github.com/google/guava/commit/feb83a1c8fd2e7670b244d5afd23cba5aca43284"
+      },
+      {
+        "type": "WEB",
+        "url": "https://github.com/google/guava/commit/fec0dbc4634006a6162cfd4d0d09c962073ddf40"
+      },
+      {
+        "type": "WEB",
+        "url": "https://lists.apache.org/thread.html/rd5d58088812cf8e677d99b07f73c654014c524c94e7fedbdee047604@%3Ctorque-dev.db.apache.org%3E"
+      },
+      {
+        "type": "WEB",
+        "url": "https://lists.apache.org/thread.html/rd5d58088812cf8e677d99b07f73c654014c524c94e7fedbdee047604%40%3Ctorque-dev.db.apache.org%3E"
+      },
+      {
+        "type": "WEB",
+        "url": "https://lists.apache.org/thread.html/rd2704306ec729ccac726e50339b8a8f079515cc29ccb77713b16e7c5@%3Cissues.hive.apache.org%3E"
+      },
+      {
+        "type": "WEB",
+        "url": "https://lists.apache.org/thread.html/rd2704306ec729ccac726e50339b8a8f079515cc29ccb77713b16e7c5%40%3Cissues.hive.apache.org%3E"
+      },
+      {
+        "type": "WEB",
+        "url": "https://lists.apache.org/thread.html/rd01f5ff0164c468ec7abc96ff7646cea3cce6378da2e4aa29c6bcb95@%3Cgithub.arrow.apache.org%3E"
+      },
+      {
+        "type": "WEB",
+        "url": "https://lists.apache.org/thread.html/rd01f5ff0164c468ec7abc96ff7646cea3cce6378da2e4aa29c6bcb95%40%3Cgithub.arrow.apache.org%3E"
+      },
+      {
+        "type": "WEB",
+        "url": "https://lists.apache.org/thread.html/rcafc3a637d82bdc9a24036b2ddcad1e519dd0e6f848fcc3d606fd78f@%3Cdev.hive.apache.org%3E"
+      },
+      {
+        "type": "WEB",
+        "url": "https://lists.apache.org/thread.html/rcafc3a637d82bdc9a24036b2ddcad1e519dd0e6f848fcc3d606fd78f%40%3Cdev.hive.apache.org%3E"
+      },
+      {
+        "type": "WEB",
+        "url": "https://lists.apache.org/thread.html/rc607bc52f3507b8b9c28c6a747c3122f51ac24afe80af2a670785b97@%3Cissues.geode.apache.org%3E"
+      },
+      {
+        "type": "WEB",
+        "url": "https://lists.apache.org/thread.html/rc607bc52f3507b8b9c28c6a747c3122f51ac24afe80af2a670785b97%40%3Cissues.geode.apache.org%3E"
+      },
+      {
+        "type": "WEB",
+        "url": "https://lists.apache.org/thread.html/rc2dbc4633a6eea1fcbce6831876cfa17b73759a98c65326d1896cb1a@%3Ctorque-dev.db.apache.org%3E"
+      },
+      {
+        "type": "WEB",
+        "url": "https://lists.apache.org/thread.html/rc2dbc4633a6eea1fcbce6831876cfa17b73759a98c65326d1896cb1a%40%3Ctorque-dev.db.apache.org%3E"
+      },
+      {
+        "type": "WEB",
+        "url": "https://lists.apache.org/thread.html/rbc7642b9800249553f13457e46b813bea1aec99d2bc9106510e00ff3@%3Ctorque-dev.db.apache.org%3E"
+      },
+      {
+        "type": "WEB",
+        "url": "https://lists.apache.org/thread.html/rbc7642b9800249553f13457e46b813bea1aec99d2bc9106510e00ff3%40%3Ctorque-dev.db.apache.org%3E"
+      },
+      {
+        "type": "WEB",
+        "url": "https://lists.apache.org/thread.html/rb8c0f1b7589864396690fe42a91a71dea9412e86eec66dc85bbacaaf@%3Ccommits.cxf.apache.org%3E"
+      },
+      {
+        "type": "WEB",
+        "url": "https://lists.apache.org/thread.html/rb8c0f1b7589864396690fe42a91a71dea9412e86eec66dc85bbacaaf%40%3Ccommits.cxf.apache.org%3E"
+      },
+      {
+        "type": "WEB",
+        "url": "https://lists.apache.org/thread.html/rb2364f4cf4d274eab5a7ecfaf64bf575cedf8b0173551997c749d322@%3Cgitbox.hive.apache.org%3E"
+      },
+      {
+        "type": "WEB",
+        "url": "https://lists.apache.org/thread.html/rb2364f4cf4d274eab5a7ecfaf64bf575cedf8b0173551997c749d322%40%3Cgitbox.hive.apache.org%3E"
+      },
+      {
+        "type": "WEB",
+        "url": "https://lists.apache.org/thread.html/ra7ab308481ee729f998691e8e3e02e93b1dedfc98f6b1cd3d86923b3@%3Cyarn-issues.hadoop.apache.org%3E"
+      },
+      {
+        "type": "WEB",
+        "url": "https://www.oracle.com/security-alerts/cpuoct2021.html"
+      },
+      {
+        "type": "WEB",
+        "url": "https://www.oracle.com/security-alerts/cpujan2022.html"
+      },
+      {
+        "type": "WEB",
+        "url": "https://www.oracle.com/security-alerts/cpuapr2022.html"
+      },
+      {
+        "type": "WEB",
+        "url": "https://www.oracle.com/security-alerts/cpuApr2021.html"
+      },
+      {
+        "type": "WEB",
+        "url": "https://www.oracle.com//security-alerts/cpujul2021.html"
+      },
+      {
+        "type": "WEB",
+        "url": "https://snyk.io/vuln/SNYK-JAVA-COMGOOGLEGUAVA-1015415"
+      },
+      {
+        "type": "WEB",
+        "url": "https://security.netapp.com/advisory/ntap-20220210-0003"
+      },
+      {
+        "type": "WEB",
+        "url": "https://lists.apache.org/thread.html/rfc27e2727a20a574f39273e0432aa97486a332f9b3068f6ac1346594@%3Cdev.myfaces.apache.org%3E"
+      },
+      {
+        "type": "WEB",
+        "url": "https://lists.apache.org/thread.html/rfc27e2727a20a574f39273e0432aa97486a332f9b3068f6ac1346594%40%3Cdev.myfaces.apache.org%3E"
+      },
+      {
+        "type": "WEB",
+        "url": "https://lists.apache.org/thread.html/rf9f0fa84b8ae1a285f0210bafec6de2a9eba083007d04640b82aa625@%3Cissues.geode.apache.org%3E"
+      },
+      {
+        "type": "WEB",
+        "url": "https://lists.apache.org/thread.html/rf9f0fa84b8ae1a285f0210bafec6de2a9eba083007d04640b82aa625%40%3Cissues.geode.apache.org%3E"
+      },
+      {
+        "type": "WEB",
+        "url": "https://lists.apache.org/thread.html/rf00b688ffa620c990597f829ff85fdbba8bf73ee7bfb34783e1f0d4e@%3Cyarn-dev.hadoop.apache.org%3E"
+      },
+      {
+        "type": "WEB",
+        "url": "https://lists.apache.org/thread.html/rf00b688ffa620c990597f829ff85fdbba8bf73ee7bfb34783e1f0d4e%40%3Cyarn-dev.hadoop.apache.org%3E"
+      },
+      {
+        "type": "WEB",
+        "url": "https://lists.apache.org/thread.html/reebbd63c25bc1a946caa419cec2be78079f8449d1af48e52d47c9e85@%3Cissues.geode.apache.org%3E"
+      },
+      {
+        "type": "WEB",
+        "url": "https://lists.apache.org/thread.html/reebbd63c25bc1a946caa419cec2be78079f8449d1af48e52d47c9e85%40%3Cissues.geode.apache.org%3E"
+      },
+      {
+        "type": "WEB",
+        "url": "https://lists.apache.org/thread.html/re120f6b3d2f8222121080342c5801fdafca2f5188ceeb3b49c8a1d27@%3Cyarn-issues.hadoop.apache.org%3E"
+      },
+      {
+        "type": "WEB",
+        "url": "https://lists.apache.org/thread.html/re120f6b3d2f8222121080342c5801fdafca2f5188ceeb3b49c8a1d27%40%3Cyarn-issues.hadoop.apache.org%3E"
+      },
+      {
+        "type": "WEB",
+        "url": "https://lists.apache.org/thread.html/rd7e12d56d49d73e2b8549694974b07561b79b05455f7f781954231bf@%3Cdev.pig.apache.org%3E"
+      },
+      {
+        "type": "WEB",
+        "url": "https://lists.apache.org/thread.html/rd7e12d56d49d73e2b8549694974b07561b79b05455f7f781954231bf%40%3Cdev.pig.apache.org%3E"
+      },
+      {
+        "type": "WEB",
+        "url": "https://lists.apache.org/thread.html/ra7ab308481ee729f998691e8e3e02e93b1dedfc98f6b1cd3d86923b3%40%3Cyarn-issues.hadoop.apache.org%3E"
+      },
+      {
+        "type": "WEB",
+        "url": "https://lists.apache.org/thread.html/r4776f62dfae4a0006658542f43034a7fc199350e35a66d4e18164ee6%40%3Ccommits.cxf.apache.org%3E"
+      },
+      {
+        "type": "WEB",
+        "url": "https://lists.apache.org/thread.html/r3dd8881de891598d622227e9840dd7c2ef1d08abbb49e9690c7ae1bc@%3Cissues.geode.apache.org%3E"
+      },
+      {
+        "type": "WEB",
+        "url": "https://lists.apache.org/thread.html/r3dd8881de891598d622227e9840dd7c2ef1d08abbb49e9690c7ae1bc%40%3Cissues.geode.apache.org%3E"
+      },
+      {
+        "type": "WEB",
+        "url": "https://lists.apache.org/thread.html/r3c3b33ee5bef0c67391d27a97cbfd89d44f328cf072b601b58d4e748@%3Ccommits.pulsar.apache.org%3E"
+      },
+      {
+        "type": "WEB",
+        "url": "https://lists.apache.org/thread.html/r3c3b33ee5bef0c67391d27a97cbfd89d44f328cf072b601b58d4e748%40%3Ccommits.pulsar.apache.org%3E"
+      },
+      {
+        "type": "WEB",
+        "url": "https://lists.apache.org/thread.html/r2fe45d96eea8434b91592ca08109118f6308d60f6d0e21d52438cfb4@%3Cdev.drill.apache.org%3E"
+      },
+      {
+        "type": "WEB",
+        "url": "https://lists.apache.org/thread.html/r2fe45d96eea8434b91592ca08109118f6308d60f6d0e21d52438cfb4%40%3Cdev.drill.apache.org%3E"
+      },
+      {
+        "type": "WEB",
+        "url": "https://lists.apache.org/thread.html/r294be9d31c0312d2c0837087204b5d4bf49d0552890e6eec716fa6a6@%3Cyarn-issues.hadoop.apache.org%3E"
+      },
+      {
+        "type": "WEB",
+        "url": "https://lists.apache.org/thread.html/r294be9d31c0312d2c0837087204b5d4bf49d0552890e6eec716fa6a6%40%3Cyarn-issues.hadoop.apache.org%3E"
+      },
+      {
+        "type": "WEB",
+        "url": "https://lists.apache.org/thread.html/r215b3d50f56faeb2f9383505f3e62faa9f549bb23e8a9848b78a968e@%3Ccommits.ws.apache.org%3E"
+      },
+      {
+        "type": "WEB",
+        "url": "https://lists.apache.org/thread.html/r215b3d50f56faeb2f9383505f3e62faa9f549bb23e8a9848b78a968e%40%3Ccommits.ws.apache.org%3E"
+      },
+      {
+        "type": "WEB",
+        "url": "https://lists.apache.org/thread.html/r161b87f8037bbaff400194a63cd2016c9a69f5949f06dcc79beeab54@%3Cdev.drill.apache.org%3E"
+      },
+      {
+        "type": "WEB",
+        "url": "https://lists.apache.org/thread.html/r161b87f8037bbaff400194a63cd2016c9a69f5949f06dcc79beeab54%40%3Cdev.drill.apache.org%3E"
+      },
+      {
+        "type": "WEB",
+        "url": "https://lists.apache.org/thread.html/r07ed3e4417ad043a27bee7bb33322e9bfc7d7e6d1719b8e3dfd95c14@%3Cdev.drill.apache.org%3E"
+      },
+      {
+        "type": "WEB",
+        "url": "https://lists.apache.org/thread.html/r07ed3e4417ad043a27bee7bb33322e9bfc7d7e6d1719b8e3dfd95c14%40%3Cdev.drill.apache.org%3E"
+      },
+      {
+        "type": "WEB",
+        "url": "https://lists.apache.org/thread.html/r037fed1d0ebde50c9caf8d99815db3093c344c3f651c5a49a09824ce@%3Cdev.drill.apache.org%3E"
+      },
+      {
+        "type": "WEB",
+        "url": "https://lists.apache.org/thread.html/r007add131977f4f576c232b25e024249a3d16f66aad14a4b52819d21@%3Ccommon-issues.hadoop.apache.org%3E"
+      },
+      {
+        "type": "WEB",
+        "url": "https://lists.apache.org/thread.html/r007add131977f4f576c232b25e024249a3d16f66aad14a4b52819d21%40%3Ccommon-issues.hadoop.apache.org%3E"
+      },
+      {
+        "type": "PACKAGE",
+        "url": "https://github.com/google/guava"
+      },
+      {
+        "type": "WEB",
+        "url": "https://lists.apache.org/thread.html/r841c5e14e1b55281523ebcde661ece00b38a0569e00ef5e12bd5f6ba@%3Cissues.maven.apache.org%3E"
+      },
+      {
+        "type": "WEB",
+        "url": "https://lists.apache.org/thread.html/r841c5e14e1b55281523ebcde661ece00b38a0569e00ef5e12bd5f6ba%40%3Cissues.maven.apache.org%3E"
+      },
+      {
+        "type": "WEB",
+        "url": "https://lists.apache.org/thread.html/r7b0e81d8367264d6cad98766a469d64d11248eb654417809bfdacf09@%3Cyarn-issues.hadoop.apache.org%3E"
+      },
+      {
+        "type": "WEB",
+        "url": "https://lists.apache.org/thread.html/r7b0e81d8367264d6cad98766a469d64d11248eb654417809bfdacf09%40%3Cyarn-issues.hadoop.apache.org%3E"
+      },
+      {
+        "type": "WEB",
+        "url": "https://lists.apache.org/thread.html/r79e47ed555bdb1180e528420a7a2bb898541367a29a3bc6bbf0baf2c@%3Cissues.hive.apache.org%3E"
+      },
+      {
+        "type": "WEB",
+        "url": "https://lists.apache.org/thread.html/r79e47ed555bdb1180e528420a7a2bb898541367a29a3bc6bbf0baf2c%40%3Cissues.hive.apache.org%3E"
+      },
+      {
+        "type": "WEB",
+        "url": "https://lists.apache.org/thread.html/r68d86f4b06c808204f62bcb254fcb5b0432528ee8d37a07ef4bc8222@%3Ccommits.ws.apache.org%3E"
+      },
+      {
+        "type": "WEB",
+        "url": "https://lists.apache.org/thread.html/r68d86f4b06c808204f62bcb254fcb5b0432528ee8d37a07ef4bc8222%40%3Ccommits.ws.apache.org%3E"
+      },
+      {
+        "type": "WEB",
+        "url": "https://lists.apache.org/thread.html/r6874dfe26eefc41b7c9a5e4a0487846fc4accf8c78ff948b24a1104a@%3Cdev.drill.apache.org%3E"
+      },
+      {
+        "type": "WEB",
+        "url": "https://lists.apache.org/thread.html/r6874dfe26eefc41b7c9a5e4a0487846fc4accf8c78ff948b24a1104a%40%3Cdev.drill.apache.org%3E"
+      },
+      {
+        "type": "WEB",
+        "url": "https://lists.apache.org/thread.html/r5d61b98ceb7bba939a651de5900dbd67be3817db6bfcc41c6e04e199@%3Cyarn-issues.hadoop.apache.org%3E"
+      },
+      {
+        "type": "WEB",
+        "url": "https://lists.apache.org/thread.html/r5d61b98ceb7bba939a651de5900dbd67be3817db6bfcc41c6e04e199%40%3Cyarn-issues.hadoop.apache.org%3E"
+      },
+      {
+        "type": "WEB",
+        "url": "https://lists.apache.org/thread.html/r5b3d93dfdfb7708e796e8762ab40edbde8ff8add48aba53e5ea26f44@%3Cissues.geode.apache.org%3E"
+      },
+      {
+        "type": "WEB",
+        "url": "https://lists.apache.org/thread.html/r5b3d93dfdfb7708e796e8762ab40edbde8ff8add48aba53e5ea26f44%40%3Cissues.geode.apache.org%3E"
+      },
+      {
+        "type": "WEB",
+        "url": "https://lists.apache.org/thread.html/r58a8775205ab1839dba43054b09a9ab3b25b423a4170b2413c4067ac@%3Ccommon-issues.hadoop.apache.org%3E"
+      },
+      {
+        "type": "WEB",
+        "url": "https://lists.apache.org/thread.html/r58a8775205ab1839dba43054b09a9ab3b25b423a4170b2413c4067ac%40%3Ccommon-issues.hadoop.apache.org%3E"
+      },
+      {
+        "type": "WEB",
+        "url": "https://lists.apache.org/thread.html/r49549a8322f62cd3acfa4490d25bfba0be04f3f9ff4d14fe36199d27@%3Cyarn-dev.hadoop.apache.org%3E"
+      },
+      {
+        "type": "WEB",
+        "url": "https://lists.apache.org/thread.html/r49549a8322f62cd3acfa4490d25bfba0be04f3f9ff4d14fe36199d27%40%3Cyarn-dev.hadoop.apache.org%3E"
+      },
+      {
+        "type": "WEB",
+        "url": "https://lists.apache.org/thread.html/r4776f62dfae4a0006658542f43034a7fc199350e35a66d4e18164ee6@%3Ccommits.cxf.apache.org%3E"
+      }
+    ],
+    "affected": [
+      {
+        "package": {
+          "name": "com.google.guava:guava",
+          "ecosystem": "Maven",
+          "purl": "pkg:maven/com.google.guava/guava"
+        },
+        "ranges": [
+          {
+            "type": "ECOSYSTEM",
+            "events": [
+              {
+                "introduced": "0"
+              },
+              {
+                "fixed": "32.0.0-android"
+              }
+            ]
+          }
+        ],
+        "versions": [
+          "10.0",
+          "10.0-rc1",
+          "10.0-rc2",
+          "10.0-rc3",
+          "10.0.1",
+          "11.0",
+          "11.0-rc1",
+          "11.0.1",
+          "11.0.2",
+          "12.0",
+          "12.0-rc1",
+          "12.0-rc2",
+          "12.0.1",
+          "13.0",
+          "13.0-rc1",
+          "13.0-rc2",
+          "13.0.1",
+          "14.0",
+          "14.0-rc1",
+          "14.0-rc2",
+          "14.0-rc3",
+          "14.0.1",
+          "15.0",
+          "15.0-rc1",
+          "16.0",
+          "16.0-rc1",
+          "16.0.1",
+          "17.0",
+          "17.0-rc1",
+          "17.0-rc2",
+          "18.0",
+          "18.0-rc1",
+          "18.0-rc2",
+          "19.0",
+          "19.0-rc1",
+          "19.0-rc2",
+          "19.0-rc3",
+          "20.0",
+          "20.0-rc1",
+          "21.0",
+          "21.0-rc1",
+          "21.0-rc2",
+          "22.0",
+          "22.0-android",
+          "22.0-rc1",
+          "22.0-rc1-android",
+          "23.0",
+          "23.0-android",
+          "23.0-rc1",
+          "23.0-rc1-android",
+          "23.1-android",
+          "23.1-jre",
+          "23.2-android",
+          "23.2-jre",
+          "23.3-android",
+          "23.3-jre",
+          "23.4-android",
+          "23.4-jre",
+          "23.5-android",
+          "23.5-jre",
+          "23.6-android",
+          "23.6-jre",
+          "23.6.1-android",
+          "23.6.1-jre",
+          "24.0-android",
+          "24.0-jre",
+          "24.1-android",
+          "24.1-jre",
+          "24.1.1-android",
+          "24.1.1-jre",
+          "25.0-android",
+          "25.0-jre",
+          "25.1-android",
+          "25.1-jre",
+          "26.0-android",
+          "26.0-jre",
+          "27.0-android",
+          "27.0-jre",
+          "27.0.1-android",
+          "27.0.1-jre",
+          "27.1-android",
+          "27.1-jre",
+          "28.0-android",
+          "28.0-jre",
+          "28.1-android",
+          "28.1-jre",
+          "28.2-android",
+          "28.2-jre",
+          "29.0-android",
+          "29.0-jre",
+          "30.0-android",
+          "30.0-jre",
+          "30.1-android",
+          "30.1-jre",
+          "30.1.1-android",
+          "30.1.1-jre",
+          "31.0-android",
+          "31.0-jre",
+          "31.0.1-android",
+          "31.0.1-jre",
+          "31.1-android",
+          "31.1-jre",
+          "r03",
+          "r05",
+          "r06",
+          "r07",
+          "r08",
+          "r09"
+        ],
+        "database_specific": {
+          "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2021/03/GHSA-5mg8-w23w-74h3/GHSA-5mg8-w23w-74h3.json"
+        }
+      }
+    ],
+    "schema_version": "1.9.0",
+    "severity": [
+      {
+        "type": "CVSS_V3",
+        "score": "CVSS:3.1/AV:L/AC:L/PR:L/UI:N/S:U/C:L/I:N/A:N"
+      }
+    ]
+  },
+  "GHSA-4gg5-vx3j-xwc7": {
+    "id": "GHSA-4gg5-vx3j-xwc7",
+    "summary": "Protobuf Java vulnerable to Uncontrolled Resource Consumption",
+    "details": "A parsing issue similar to CVE-2022-3171, but with Message-Type Extensions in protobuf-java core and lite versions prior to 3.21.7, 3.20.3, 3.19.6 and 3.16.3 can lead to a denial of service attack. Inputs containing multiple instances of non-repeated embedded messages with repeated or unknown fields causes objects to be converted back-n-forth between mutable and immutable forms, resulting in potentially long garbage collection pauses. We recommend updating to the versions mentioned above.",
+    "aliases": [
+      "CVE-2022-3510"
+    ],
+    "modified": "2026-09-10T03:49:56.342397008Z",
+    "published": "2022-12-12T15:30:33Z",
+    "database_specific": {
+      "severity": "HIGH",
+      "github_reviewed": true,
+      "github_reviewed_at": "2022-12-12T22:34:26Z",
+      "nvd_published_at": "2022-12-12T13:15:00Z",
+      "cwe_ids": [
+        "CWE-400"
+      ]
+    },
+    "references": [
+      {
+        "type": "ADVISORY",
+        "url": "https://nvd.nist.gov/vuln/detail/CVE-2022-3510"
+      },
+      {
+        "type": "WEB",
+        "url": "https://github.com/protocolbuffers/protobuf/commit/db7c17803320525722f45c1d26fc08bc41d1bf48"
+      },
+      {
+        "type": "PACKAGE",
+        "url": "https://github.com/protocolbuffers/protobuf/tree/main/java"
+      }
+    ],
+    "affected": [
+      {
+        "package": {
+          "name": "com.google.protobuf:protobuf-java",
+          "ecosystem": "Maven",
+          "purl": "pkg:maven/com.google.protobuf/protobuf-java"
+        },
+        "ranges": [
+          {
+            "type": "ECOSYSTEM",
+            "events": [
+              {
+                "introduced": "3.0.0"
+              },
+              {
+                "fixed": "3.16.3"
+              }
+            ]
+          }
+        ],
+        "versions": [
+          "3.0.0",
+          "3.0.2",
+          "3.1.0",
+          "3.10.0",
+          "3.10.0-rc-1",
+          "3.11.0",
+          "3.11.0-rc-1",
+          "3.11.0-rc-2",
+          "3.11.1",
+          "3.11.3",
+          "3.11.4",
+          "3.12.0",
+          "3.12.0-rc-1",
+          "3.12.0-rc-2",
+          "3.12.1",
+          "3.12.2",
+          "3.12.4",
+          "3.13.0",
+          "3.13.0-rc-3",
+          "3.14.0",
+          "3.14.0-rc-1",
+          "3.14.0-rc-2",
+          "3.14.0-rc-3",
+          "3.15.0",
+          "3.15.0-rc-1",
+          "3.15.0-rc-2",
+          "3.15.1",
+          "3.15.2",
+          "3.15.3",
+          "3.15.4",
+          "3.15.5",
+          "3.15.6",
+          "3.15.7",
+          "3.15.8",
+          "3.16.0",
+          "3.16.0-rc-1",
+          "3.16.0-rc-2",
+          "3.16.1",
+          "3.2.0",
+          "3.2.0-rc.1",
+          "3.2.0rc2",
+          "3.3.0",
+          "3.3.1",
+          "3.4.0",
+          "3.5.0",
+          "3.5.1",
+          "3.6.0",
+          "3.6.1",
+          "3.7.0",
+          "3.7.0-rc1",
+          "3.7.1",
+          "3.8.0",
+          "3.8.0-rc-1",
+          "3.9.0",
+          "3.9.0-rc-1",
+          "3.9.1",
+          "3.9.2"
+        ],
+        "database_specific": {
+          "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/12/GHSA-4gg5-vx3j-xwc7/GHSA-4gg5-vx3j-xwc7.json"
+        }
+      },
+      {
+        "package": {
+          "name": "com.google.protobuf:protobuf-java",
+          "ecosystem": "Maven",
+          "purl": "pkg:maven/com.google.protobuf/protobuf-java"
+        },
+        "ranges": [
+          {
+            "type": "ECOSYSTEM",
+            "events": [
+              {
+                "introduced": "3.17.0"
+              },
+              {
+                "fixed": "3.19.6"
+              }
+            ]
+          }
+        ],
+        "versions": [
+          "3.17.0",
+          "3.17.1",
+          "3.17.2",
+          "3.17.3",
+          "3.18.0",
+          "3.18.0-rc-1",
+          "3.18.0-rc-2",
+          "3.18.1",
+          "3.18.2",
+          "3.18.3",
+          "3.19.0",
+          "3.19.0-rc-1",
+          "3.19.0-rc-2",
+          "3.19.1",
+          "3.19.2",
+          "3.19.3",
+          "3.19.4",
+          "3.19.5"
+        ],
+        "database_specific": {
+          "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/12/GHSA-4gg5-vx3j-xwc7/GHSA-4gg5-vx3j-xwc7.json"
+        }
+      },
+      {
+        "package": {
+          "name": "com.google.protobuf:protobuf-java",
+          "ecosystem": "Maven",
+          "purl": "pkg:maven/com.google.protobuf/protobuf-java"
+        },
+        "ranges": [
+          {
+            "type": "ECOSYSTEM",
+            "events": [
+              {
+                "introduced": "3.20.0"
+              },
+              {
+                "fixed": "3.20.3"
+              }
+            ]
+          }
+        ],
+        "versions": [
+          "3.20.0",
+          "3.20.1",
+          "3.20.1-rc-1",
+          "3.20.2"
+        ],
+        "database_specific": {
+          "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/12/GHSA-4gg5-vx3j-xwc7/GHSA-4gg5-vx3j-xwc7.json"
+        }
+      },
+      {
+        "package": {
+          "name": "com.google.protobuf:protobuf-java",
+          "ecosystem": "Maven",
+          "purl": "pkg:maven/com.google.protobuf/protobuf-java"
+        },
+        "ranges": [
+          {
+            "type": "ECOSYSTEM",
+            "events": [
+              {
+                "introduced": "3.21.0"
+              },
+              {
+                "fixed": "3.21.7"
+              }
+            ]
+          }
+        ],
+        "versions": [
+          "3.21.0",
+          "3.21.1",
+          "3.21.2",
+          "3.21.3",
+          "3.21.4",
+          "3.21.5",
+          "3.21.6"
+        ],
+        "database_specific": {
+          "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/12/GHSA-4gg5-vx3j-xwc7/GHSA-4gg5-vx3j-xwc7.json"
+        }
+      },
+      {
+        "package": {
+          "name": "com.google.protobuf:protobuf-javalite",
+          "ecosystem": "Maven",
+          "purl": "pkg:maven/com.google.protobuf/protobuf-javalite"
+        },
+        "ranges": [
+          {
+            "type": "ECOSYSTEM",
+            "events": [
+              {
+                "introduced": "3.0.0"
+              },
+              {
+                "fixed": "3.16.3"
+              }
+            ]
+          }
+        ],
+        "versions": [
+          "3.10.0",
+          "3.10.0-rc-1",
+          "3.11.0",
+          "3.11.0-rc-1",
+          "3.11.0-rc-2",
+          "3.11.1",
+          "3.11.3",
+          "3.11.4",
+          "3.12.0",
+          "3.12.0-rc-1",
+          "3.12.0-rc-2",
+          "3.12.1",
+          "3.12.2",
+          "3.12.4",
+          "3.13.0",
+          "3.13.0-rc-3",
+          "3.14.0",
+          "3.14.0-rc-1",
+          "3.14.0-rc-2",
+          "3.14.0-rc-3",
+          "3.15.0",
+          "3.15.0-rc-1",
+          "3.15.0-rc-2",
+          "3.15.1",
+          "3.15.2",
+          "3.15.3",
+          "3.15.4",
+          "3.15.5",
+          "3.15.6",
+          "3.15.7",
+          "3.15.8",
+          "3.16.0",
+          "3.16.0-rc-1",
+          "3.16.0-rc-2",
+          "3.16.1",
+          "3.8.0",
+          "3.8.0-rc-1",
+          "3.9.0",
+          "3.9.0-rc-1",
+          "3.9.1",
+          "3.9.2"
+        ],
+        "database_specific": {
+          "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/12/GHSA-4gg5-vx3j-xwc7/GHSA-4gg5-vx3j-xwc7.json"
+        }
+      },
+      {
+        "package": {
+          "name": "com.google.protobuf:protobuf-javalite",
+          "ecosystem": "Maven",
+          "purl": "pkg:maven/com.google.protobuf/protobuf-javalite"
+        },
+        "ranges": [
+          {
+            "type": "ECOSYSTEM",
+            "events": [
+              {
+                "introduced": "3.17.0"
+              },
+              {
+                "fixed": "3.19.6"
+              }
+            ]
+          }
+        ],
+        "versions": [
+          "3.17.0",
+          "3.17.1",
+          "3.17.2",
+          "3.17.3",
+          "3.18.0",
+          "3.18.0-rc-1",
+          "3.18.0-rc-2",
+          "3.18.1",
+          "3.18.2",
+          "3.18.3",
+          "3.19.0",
+          "3.19.0-rc-1",
+          "3.19.0-rc-2",
+          "3.19.1",
+          "3.19.2",
+          "3.19.3",
+          "3.19.4",
+          "3.19.5"
+        ],
+        "database_specific": {
+          "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/12/GHSA-4gg5-vx3j-xwc7/GHSA-4gg5-vx3j-xwc7.json"
+        }
+      },
+      {
+        "package": {
+          "name": "com.google.protobuf:protobuf-javalite",
+          "ecosystem": "Maven",
+          "purl": "pkg:maven/com.google.protobuf/protobuf-javalite"
+        },
+        "ranges": [
+          {
+            "type": "ECOSYSTEM",
+            "events": [
+              {
+                "introduced": "3.20.0"
+              },
+              {
+                "fixed": "3.20.3"
+              }
+            ]
+          }
+        ],
+        "versions": [
+          "3.20.0",
+          "3.20.1",
+          "3.20.1-rc-1",
+          "3.20.2"
+        ],
+        "database_specific": {
+          "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/12/GHSA-4gg5-vx3j-xwc7/GHSA-4gg5-vx3j-xwc7.json"
+        }
+      },
+      {
+        "package": {
+          "name": "com.google.protobuf:protobuf-javalite",
+          "ecosystem": "Maven",
+          "purl": "pkg:maven/com.google.protobuf/protobuf-javalite"
+        },
+        "ranges": [
+          {
+            "type": "ECOSYSTEM",
+            "events": [
+              {
+                "introduced": "3.21.0"
+              },
+              {
+                "fixed": "3.21.7"
+              }
+            ]
+          }
+        ],
+        "versions": [
+          "3.21.0",
+          "3.21.1",
+          "3.21.2",
+          "3.21.3",
+          "3.21.4",
+          "3.21.5",
+          "3.21.6"
+        ],
+        "database_specific": {
+          "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/12/GHSA-4gg5-vx3j-xwc7/GHSA-4gg5-vx3j-xwc7.json"
+        }
+      }
+    ],
+    "schema_version": "1.9.0",
+    "severity": [
+      {
+        "type": "CVSS_V3",
+        "score": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H"
+      }
+    ]
+  },
+  "GHSA-7g45-4rm6-3mm3": {
+    "id": "GHSA-7g45-4rm6-3mm3",
+    "summary": "Guava vulnerable to insecure use of temporary directory",
+    "details": "Use of Java's default temporary directory for file creation in `FileBackedOutputStream` in Google Guava versions 1.0 to 31.1 on Unix systems and Android Ice Cream Sandwich allows other users and apps on the machine with access to the default Java temporary directory to be able to access the files created by the class.\n\nEven though the security vulnerability is fixed in version 32.0.0, maintainers recommend using version 32.0.1 as version 32.0.0 breaks some functionality under Windows.",
+    "aliases": [
+      "CVE-2023-2976"
+    ],
+    "modified": "2026-09-10T03:49:53.859811124Z",
+    "published": "2023-06-14T18:30:38Z",
+    "database_specific": {
+      "github_reviewed": true,
+      "github_reviewed_at": "2023-06-14T21:01:07Z",
+      "nvd_published_at": "2023-06-14T18:15:09Z",
+      "cwe_ids": [
+        "CWE-379",
+        "CWE-552"
+      ],
+      "severity": "MODERATE"
+    },
+    "references": [
+      {
+        "type": "ADVISORY",
+        "url": "https://nvd.nist.gov/vuln/detail/CVE-2023-2976"
+      },
+      {
+        "type": "WEB",
+        "url": "https://github.com/google/guava/issues/2575"
+      },
+      {
+        "type": "WEB",
+        "url": "https://github.com/google/guava/issues/6532"
+      },
+      {
+        "type": "WEB",
+        "url": "https://github.com/google/guava/commit/feb83a1c8fd2e7670b244d5afd23cba5aca43284"
+      },
+      {
+        "type": "PACKAGE",
+        "url": "https://github.com/google/guava"
+      },
+      {
+        "type": "WEB",
+        "url": "https://github.com/google/guava/releases/tag/v32.0.0"
+      },
+      {
+        "type": "WEB",
+        "url": "https://security.netapp.com/advisory/ntap-20230818-0008"
+      },
+      {
+        "type": "WEB",
+        "url": "https://security.netapp.com/advisory/ntap-20241108-0002"
+      },
+      {
+        "type": "WEB",
+        "url": "https://www.intel.com/content/www/us/en/security-center/advisory/intel-sa-01006.html"
+      }
+    ],
+    "affected": [
+      {
+        "package": {
+          "name": "com.google.guava:guava",
+          "ecosystem": "Maven",
+          "purl": "pkg:maven/com.google.guava/guava"
+        },
+        "ranges": [
+          {
+            "type": "ECOSYSTEM",
+            "events": [
+              {
+                "introduced": "1.0"
+              },
+              {
+                "fixed": "32.0.0-android"
+              }
+            ]
+          }
+        ],
+        "versions": [
+          "10.0",
+          "10.0-rc1",
+          "10.0-rc2",
+          "10.0-rc3",
+          "10.0.1",
+          "11.0",
+          "11.0-rc1",
+          "11.0.1",
+          "11.0.2",
+          "12.0",
+          "12.0-rc1",
+          "12.0-rc2",
+          "12.0.1",
+          "13.0",
+          "13.0-rc1",
+          "13.0-rc2",
+          "13.0.1",
+          "14.0",
+          "14.0-rc1",
+          "14.0-rc2",
+          "14.0-rc3",
+          "14.0.1",
+          "15.0",
+          "15.0-rc1",
+          "16.0",
+          "16.0-rc1",
+          "16.0.1",
+          "17.0",
+          "17.0-rc1",
+          "17.0-rc2",
+          "18.0",
+          "18.0-rc1",
+          "18.0-rc2",
+          "19.0",
+          "19.0-rc1",
+          "19.0-rc2",
+          "19.0-rc3",
+          "20.0",
+          "20.0-rc1",
+          "21.0",
+          "21.0-rc1",
+          "21.0-rc2",
+          "22.0",
+          "22.0-android",
+          "22.0-rc1",
+          "22.0-rc1-android",
+          "23.0",
+          "23.0-android",
+          "23.0-rc1",
+          "23.0-rc1-android",
+          "23.1-android",
+          "23.1-jre",
+          "23.2-android",
+          "23.2-jre",
+          "23.3-android",
+          "23.3-jre",
+          "23.4-android",
+          "23.4-jre",
+          "23.5-android",
+          "23.5-jre",
+          "23.6-android",
+          "23.6-jre",
+          "23.6.1-android",
+          "23.6.1-jre",
+          "24.0-android",
+          "24.0-jre",
+          "24.1-android",
+          "24.1-jre",
+          "24.1.1-android",
+          "24.1.1-jre",
+          "25.0-android",
+          "25.0-jre",
+          "25.1-android",
+          "25.1-jre",
+          "26.0-android",
+          "26.0-jre",
+          "27.0-android",
+          "27.0-jre",
+          "27.0.1-android",
+          "27.0.1-jre",
+          "27.1-android",
+          "27.1-jre",
+          "28.0-android",
+          "28.0-jre",
+          "28.1-android",
+          "28.1-jre",
+          "28.2-android",
+          "28.2-jre",
+          "29.0-android",
+          "29.0-jre",
+          "30.0-android",
+          "30.0-jre",
+          "30.1-android",
+          "30.1-jre",
+          "30.1.1-android",
+          "30.1.1-jre",
+          "31.0-android",
+          "31.0-jre",
+          "31.0.1-android",
+          "31.0.1-jre",
+          "31.1-android",
+          "31.1-jre"
+        ],
+        "database_specific": {
+          "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2023/06/GHSA-7g45-4rm6-3mm3/GHSA-7g45-4rm6-3mm3.json"
+        }
+      }
+    ],
+    "schema_version": "1.9.0",
+    "severity": [
+      {
+        "type": "CVSS_V3",
+        "score": "CVSS:3.1/AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:N/A:N"
+      }
+    ]
+  },
+  "GHSA-735f-pc8j-v9w8": {
+    "id": "GHSA-735f-pc8j-v9w8",
+    "summary": "protobuf-java has potential Denial of Service issue",
+    "details": "### Summary\nWhen parsing unknown fields in the Protobuf Java Lite and Full library, a maliciously crafted message can cause a StackOverflow error and lead to a program crash.\n\nReporter: Alexis Challande, Trail of Bits Ecosystem Security Team <ecosystem@trailofbits.com>\n\nAffected versions: This issue affects all versions of both the Java full and lite Protobuf runtimes, as well as Protobuf for Kotlin and JRuby, which themselves use the Java Protobuf runtime.\n\n### Severity\n[CVE-2024-7254](https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2024-7254) **High** CVSS4.0 Score 8.7 (NOTE: there may be a delay in publication)\nThis is a potential Denial of Service. Parsing nested groups as unknown fields with DiscardUnknownFieldsParser or Java Protobuf Lite parser, or against Protobuf map fields, creates unbounded recursions that can be abused by an attacker.\n\n### Proof of Concept\nFor reproduction details, please refer to the unit tests (Protobuf Java [LiteTest](https://github.com/protocolbuffers/protobuf/blob/a037f28ff81ee45ebe008c64ab632bf5372242ce/java/lite/src/test/java/com/google/protobuf/LiteTest.java) and [CodedInputStreamTest](https://github.com/protocolbuffers/protobuf/blob/a037f28ff81ee45ebe008c64ab632bf5372242ce/java/core/src/test/java/com/google/protobuf/CodedInputStreamTest.java)) that identify the specific inputs that exercise this parsing weakness.\n\n### Remediation and Mitigation\nWe have been working diligently to address this issue and have released a mitigation that is available now. Please update to the latest available versions of the following packages:\n* protobuf-java (3.25.5, 4.27.5, 4.28.2)\n* protobuf-javalite (3.25.5, 4.27.5, 4.28.2)\n* protobuf-kotlin (3.25.5, 4.27.5, 4.28.2)\n* protobuf-kotlin-lite (3.25.5, 4.27.5, 4.28.2)\n* com-protobuf [JRuby gem only] (3.25.5, 4.27.5, 4.28.2)",
+    "aliases": [
+      "CVE-2024-7254"
+    ],
+    "modified": "2026-09-10T03:50:19.212518465Z",
+    "published": "2024-09-19T16:06:03Z",
+    "related": [
+      "RUSTSEC-2024-0437"
+    ],
+    "database_specific": {
+      "cwe_ids": [
+        "CWE-20",
+        "CWE-400",
+        "CWE-787"
+      ],
+      "severity": "HIGH",
+      "github_reviewed": true,
+      "github_reviewed_at": "2024-09-19T16:06:03Z",
+      "nvd_published_at": "2024-09-19T01:15:10Z"
+    },
+    "references": [
+      {
+        "type": "WEB",
+        "url": "https://github.com/protocolbuffers/protobuf/security/advisories/GHSA-735f-pc8j-v9w8"
+      },
+      {
+        "type": "ADVISORY",
+        "url": "https://nvd.nist.gov/vuln/detail/CVE-2024-7254"
+      },
+      {
+        "type": "WEB",
+        "url": "https://github.com/protocolbuffers/protobuf/commit/4728531c162f2f9e8c2ca1add713cfee2db6be3b"
+      },
+      {
+        "type": "WEB",
+        "url": "https://github.com/protocolbuffers/protobuf/commit/850fcce9176e2c9070614dab53537760498c926b"
+      },
+      {
+        "type": "WEB",
+        "url": "https://github.com/protocolbuffers/protobuf/commit/9a5f5fe752a20cbac2e722b06949ac985abdd534"
+      },
+      {
+        "type": "WEB",
+        "url": "https://github.com/protocolbuffers/protobuf/commit/ac9fb5b4c71b0dd80985b27684e265d1f03abf46"
+      },
+      {
+        "type": "WEB",
+        "url": "https://github.com/protocolbuffers/protobuf/commit/cc8b3483a5584b3301e3d43d17eb59704857ffaa"
+      },
+      {
+        "type": "WEB",
+        "url": "https://github.com/protocolbuffers/protobuf/commit/d6c82fc55a76481c676f541a255571e8950bb8c3"
+      },
+      {
+        "type": "PACKAGE",
+        "url": "https://github.com/protocolbuffers/protobuf"
+      },
+      {
+        "type": "WEB",
+        "url": "https://github.com/rubysec/ruby-advisory-db/blob/master/gems/google-protobuf/CVE-2024-7254.yml"
+      },
+      {
+        "type": "WEB",
+        "url": "https://security.netapp.com/advisory/ntap-20241213-0010"
+      },
+      {
+        "type": "WEB",
+        "url": "https://security.netapp.com/advisory/ntap-20250418-0006"
+      }
+    ],
+    "affected": [
+      {
+        "package": {
+          "name": "com.google.protobuf:protobuf-java",
+          "ecosystem": "Maven",
+          "purl": "pkg:maven/com.google.protobuf/protobuf-java"
+        },
+        "ranges": [
+          {
+            "type": "ECOSYSTEM",
+            "events": [
+              {
+                "introduced": "0"
+              },
+              {
+                "fixed": "3.25.5"
+              }
+            ]
+          }
+        ],
+        "versions": [
+          "2.0.1",
+          "2.0.3",
+          "2.1.0",
+          "2.2.0",
+          "2.3.0",
+          "2.4.0a",
+          "2.4.1",
+          "2.5.0",
+          "2.6.0",
+          "2.6.1",
+          "3.0.0",
+          "3.0.0-alpha-2",
+          "3.0.0-alpha-3",
+          "3.0.0-alpha-3.1",
+          "3.0.0-beta-1",
+          "3.0.0-beta-2",
+          "3.0.0-beta-3",
+          "3.0.0-beta-4",
+          "3.0.2",
+          "3.1.0",
+          "3.10.0",
+          "3.10.0-rc-1",
+          "3.11.0",
+          "3.11.0-rc-1",
+          "3.11.0-rc-2",
+          "3.11.1",
+          "3.11.3",
+          "3.11.4",
+          "3.12.0",
+          "3.12.0-rc-1",
+          "3.12.0-rc-2",
+          "3.12.1",
+          "3.12.2",
+          "3.12.4",
+          "3.13.0",
+          "3.13.0-rc-3",
+          "3.14.0",
+          "3.14.0-rc-1",
+          "3.14.0-rc-2",
+          "3.14.0-rc-3",
+          "3.15.0",
+          "3.15.0-rc-1",
+          "3.15.0-rc-2",
+          "3.15.1",
+          "3.15.2",
+          "3.15.3",
+          "3.15.4",
+          "3.15.5",
+          "3.15.6",
+          "3.15.7",
+          "3.15.8",
+          "3.16.0",
+          "3.16.0-rc-1",
+          "3.16.0-rc-2",
+          "3.16.1",
+          "3.16.3",
+          "3.17.0",
+          "3.17.0-rc-1",
+          "3.17.0-rc-2",
+          "3.17.1",
+          "3.17.2",
+          "3.17.3",
+          "3.18.0",
+          "3.18.0-rc-1",
+          "3.18.0-rc-2",
+          "3.18.1",
+          "3.18.2",
+          "3.18.3",
+          "3.19.0",
+          "3.19.0-rc-1",
+          "3.19.0-rc-2",
+          "3.19.1",
+          "3.19.2",
+          "3.19.3",
+          "3.19.4",
+          "3.19.5",
+          "3.19.6",
+          "3.2.0",
+          "3.2.0-rc.1",
+          "3.2.0rc2",
+          "3.20.0",
+          "3.20.0-rc-1",
+          "3.20.1",
+          "3.20.1-rc-1",
+          "3.20.2",
+          "3.20.3",
+          "3.21.0",
+          "3.21.0-rc-1",
+          "3.21.0-rc-2",
+          "3.21.1",
+          "3.21.10",
+          "3.21.11",
+          "3.21.12",
+          "3.21.2",
+          "3.21.3",
+          "3.21.4",
+          "3.21.5",
+          "3.21.6",
+          "3.21.7",
+          "3.21.8",
+          "3.21.9",
+          "3.22.0",
+          "3.22.0-RC1",
+          "3.22.0-RC3",
+          "3.22.1",
+          "3.22.2",
+          "3.22.3",
+          "3.22.4",
+          "3.22.5",
+          "3.23.0",
+          "3.23.0-RC2",
+          "3.23.0-RC3",
+          "3.23.1",
+          "3.23.2",
+          "3.23.3",
+          "3.23.4",
+          "3.24.0",
+          "3.24.0-RC1",
+          "3.24.0-RC2",
+          "3.24.0-RC3",
+          "3.24.1",
+          "3.24.2",
+          "3.24.3",
+          "3.24.4",
+          "3.25.0",
+          "3.25.0-RC1",
+          "3.25.0-RC2",
+          "3.25.1",
+          "3.25.2",
+          "3.25.3",
+          "3.25.4",
+          "3.3.0",
+          "3.3.1",
+          "3.4.0",
+          "3.5.0",
+          "3.5.1",
+          "3.6.0",
+          "3.6.1",
+          "3.7.0",
+          "3.7.0-rc1",
+          "3.7.1",
+          "3.8.0",
+          "3.8.0-rc-1",
+          "3.9.0",
+          "3.9.0-rc-1",
+          "3.9.1",
+          "3.9.2"
+        ],
+        "database_specific": {
+          "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2024/09/GHSA-735f-pc8j-v9w8/GHSA-735f-pc8j-v9w8.json"
+        }
+      },
+      {
+        "package": {
+          "name": "com.google.protobuf:protobuf-javalite",
+          "ecosystem": "Maven",
+          "purl": "pkg:maven/com.google.protobuf/protobuf-javalite"
+        },
+        "ranges": [
+          {
+            "type": "ECOSYSTEM",
+            "events": [
+              {
+                "introduced": "0"
+              },
+              {
+                "fixed": "3.25.5"
+              }
+            ]
+          }
+        ],
+        "versions": [
+          "3.10.0",
+          "3.10.0-rc-1",
+          "3.11.0",
+          "3.11.0-rc-1",
+          "3.11.0-rc-2",
+          "3.11.1",
+          "3.11.3",
+          "3.11.4",
+          "3.12.0",
+          "3.12.0-rc-1",
+          "3.12.0-rc-2",
+          "3.12.1",
+          "3.12.2",
+          "3.12.4",
+          "3.13.0",
+          "3.13.0-rc-3",
+          "3.14.0",
+          "3.14.0-rc-1",
+          "3.14.0-rc-2",
+          "3.14.0-rc-3",
+          "3.15.0",
+          "3.15.0-rc-1",
+          "3.15.0-rc-2",
+          "3.15.1",
+          "3.15.2",
+          "3.15.3",
+          "3.15.4",
+          "3.15.5",
+          "3.15.6",
+          "3.15.7",
+          "3.15.8",
+          "3.16.0",
+          "3.16.0-rc-1",
+          "3.16.0-rc-2",
+          "3.16.1",
+          "3.16.3",
+          "3.17.0",
+          "3.17.0-rc-1",
+          "3.17.0-rc-2",
+          "3.17.1",
+          "3.17.2",
+          "3.17.3",
+          "3.18.0",
+          "3.18.0-rc-1",
+          "3.18.0-rc-2",
+          "3.18.1",
+          "3.18.2",
+          "3.18.3",
+          "3.19.0",
+          "3.19.0-rc-1",
+          "3.19.0-rc-2",
+          "3.19.1",
+          "3.19.2",
+          "3.19.3",
+          "3.19.4",
+          "3.19.5",
+          "3.19.6",
+          "3.20.0",
+          "3.20.0-rc-1",
+          "3.20.1",
+          "3.20.1-rc-1",
+          "3.20.2",
+          "3.20.3",
+          "3.21.0",
+          "3.21.0-rc-1",
+          "3.21.0-rc-2",
+          "3.21.1",
+          "3.21.10",
+          "3.21.11",
+          "3.21.12",
+          "3.21.2",
+          "3.21.3",
+          "3.21.4",
+          "3.21.5",
+          "3.21.6",
+          "3.21.7",
+          "3.21.8",
+          "3.21.9",
+          "3.22.0",
+          "3.22.0-RC1",
+          "3.22.0-RC3",
+          "3.22.1",
+          "3.22.2",
+          "3.22.3",
+          "3.22.4",
+          "3.22.5",
+          "3.23.0",
+          "3.23.0-RC2",
+          "3.23.0-RC3",
+          "3.23.1",
+          "3.23.2",
+          "3.23.3",
+          "3.23.4",
+          "3.24.0",
+          "3.24.0-RC1",
+          "3.24.0-RC2",
+          "3.24.0-RC3",
+          "3.24.1",
+          "3.24.2",
+          "3.24.3",
+          "3.24.4",
+          "3.25.0",
+          "3.25.0-RC1",
+          "3.25.0-RC2",
+          "3.25.1",
+          "3.25.2",
+          "3.25.3",
+          "3.25.4",
+          "3.8.0",
+          "3.8.0-rc-1",
+          "3.9.0",
+          "3.9.0-rc-1",
+          "3.9.1",
+          "3.9.2"
+        ],
+        "database_specific": {
+          "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2024/09/GHSA-735f-pc8j-v9w8/GHSA-735f-pc8j-v9w8.json"
+        }
+      },
+      {
+        "package": {
+          "name": "com.google.protobuf:protobuf-kotlin",
+          "ecosystem": "Maven",
+          "purl": "pkg:maven/com.google.protobuf/protobuf-kotlin"
+        },
+        "ranges": [
+          {
+            "type": "ECOSYSTEM",
+            "events": [
+              {
+                "introduced": "0"
+              },
+              {
+                "fixed": "3.25.5"
+              }
+            ]
+          }
+        ],
+        "versions": [
+          "3.17.0",
+          "3.17.0-rc-2",
+          "3.17.1",
+          "3.17.2",
+          "3.17.3",
+          "3.18.0",
+          "3.18.0-rc-1",
+          "3.18.0-rc-2",
+          "3.18.1",
+          "3.18.2",
+          "3.18.3",
+          "3.19.0",
+          "3.19.0-rc-1",
+          "3.19.0-rc-2",
+          "3.19.1",
+          "3.19.2",
+          "3.19.3",
+          "3.19.4",
+          "3.19.5",
+          "3.19.6",
+          "3.20.0",
+          "3.20.0-rc-1",
+          "3.20.1",
+          "3.20.1-rc-1",
+          "3.20.2",
+          "3.20.3",
+          "3.21.0",
+          "3.21.0-rc-1",
+          "3.21.0-rc-2",
+          "3.21.1",
+          "3.21.10",
+          "3.21.11",
+          "3.21.12",
+          "3.21.2",
+          "3.21.3",
+          "3.21.4",
+          "3.21.5",
+          "3.21.6",
+          "3.21.7",
+          "3.21.8",
+          "3.21.9",
+          "3.22.0",
+          "3.22.0-RC1",
+          "3.22.0-RC3",
+          "3.22.1",
+          "3.22.2",
+          "3.22.3",
+          "3.22.4",
+          "3.22.5",
+          "3.23.0",
+          "3.23.0-RC2",
+          "3.23.0-RC3",
+          "3.23.1",
+          "3.23.2",
+          "3.23.3",
+          "3.23.4",
+          "3.24.0",
+          "3.24.0-RC1",
+          "3.24.0-RC2",
+          "3.24.0-RC3",
+          "3.24.1",
+          "3.24.2",
+          "3.24.3",
+          "3.24.4",
+          "3.25.0",
+          "3.25.0-RC1",
+          "3.25.0-RC2",
+          "3.25.1",
+          "3.25.2",
+          "3.25.3",
+          "3.25.4"
+        ],
+        "database_specific": {
+          "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2024/09/GHSA-735f-pc8j-v9w8/GHSA-735f-pc8j-v9w8.json"
+        }
+      },
+      {
+        "package": {
+          "name": "com.google.protobuf:protobuf-kotlin-lite",
+          "ecosystem": "Maven",
+          "purl": "pkg:maven/com.google.protobuf/protobuf-kotlin-lite"
+        },
+        "ranges": [
+          {
+            "type": "ECOSYSTEM",
+            "events": [
+              {
+                "introduced": "0"
+              },
+              {
+                "fixed": "3.25.5"
+              }
+            ]
+          }
+        ],
+        "versions": [
+          "3.17.0",
+          "3.17.0-rc-2",
+          "3.17.1",
+          "3.17.2",
+          "3.17.3",
+          "3.18.0",
+          "3.18.0-rc-1",
+          "3.18.0-rc-2",
+          "3.18.1",
+          "3.18.2",
+          "3.18.3",
+          "3.19.0",
+          "3.19.0-rc-1",
+          "3.19.0-rc-2",
+          "3.19.1",
+          "3.19.2",
+          "3.19.3",
+          "3.19.4",
+          "3.19.5",
+          "3.19.6",
+          "3.20.0",
+          "3.20.0-rc-1",
+          "3.20.1",
+          "3.20.1-rc-1",
+          "3.20.2",
+          "3.20.3",
+          "3.21.0",
+          "3.21.0-rc-1",
+          "3.21.0-rc-2",
+          "3.21.1",
+          "3.21.10",
+          "3.21.11",
+          "3.21.12",
+          "3.21.2",
+          "3.21.3",
+          "3.21.4",
+          "3.21.5",
+          "3.21.6",
+          "3.21.7",
+          "3.21.8",
+          "3.21.9",
+          "3.22.0",
+          "3.22.0-RC1",
+          "3.22.0-RC3",
+          "3.22.1",
+          "3.22.2",
+          "3.22.3",
+          "3.22.4",
+          "3.22.5",
+          "3.23.0",
+          "3.23.0-RC2",
+          "3.23.0-RC3",
+          "3.23.1",
+          "3.23.2",
+          "3.23.3",
+          "3.23.4",
+          "3.24.0",
+          "3.24.0-RC1",
+          "3.24.0-RC2",
+          "3.24.0-RC3",
+          "3.24.1",
+          "3.24.2",
+          "3.24.3",
+          "3.24.4",
+          "3.25.0",
+          "3.25.0-RC1",
+          "3.25.0-RC2",
+          "3.25.1",
+          "3.25.2",
+          "3.25.3",
+          "3.25.4"
+        ],
+        "database_specific": {
+          "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2024/09/GHSA-735f-pc8j-v9w8/GHSA-735f-pc8j-v9w8.json"
+        }
+      },
+      {
+        "package": {
+          "name": "google-protobuf",
+          "ecosystem": "RubyGems",
+          "purl": "pkg:gem/google-protobuf"
+        },
+        "ranges": [
+          {
+            "type": "ECOSYSTEM",
+            "events": [
+              {
+                "introduced": "0"
+              },
+              {
+                "fixed": "3.25.5"
+              }
+            ]
+          }
+        ],
+        "versions": [
+          "3.0.0",
+          "3.0.0.alpha.1.0",
+          "3.0.0.alpha.1.1",
+          "3.0.0.alpha.2.0",
+          "3.0.0.alpha.3",
+          "3.0.0.alpha.3.1.pre",
+          "3.0.0.alpha.4.0",
+          "3.0.0.alpha.5.0.3",
+          "3.0.0.alpha.5.0.4",
+          "3.0.0.alpha.5.0.5",
+          "3.0.0.alpha.5.0.5.1",
+          "3.0.2",
+          "3.1.0",
+          "3.1.0.0.pre",
+          "3.10.0.rc.1",
+          "3.10.1",
+          "3.11.0",
+          "3.11.0.rc.1",
+          "3.11.0.rc.2",
+          "3.11.1",
+          "3.11.2",
+          "3.11.3",
+          "3.11.4",
+          "3.12.0",
+          "3.12.0.rc.1",
+          "3.12.0.rc.2",
+          "3.12.1",
+          "3.12.2",
+          "3.12.4",
+          "3.13.0",
+          "3.13.0.rc.3",
+          "3.14.0",
+          "3.14.0.rc.1",
+          "3.14.0.rc.2",
+          "3.14.0.rc.3",
+          "3.15.0",
+          "3.15.0.rc.1",
+          "3.15.0.rc.2",
+          "3.15.1",
+          "3.15.2",
+          "3.15.3",
+          "3.15.4",
+          "3.15.5",
+          "3.15.6",
+          "3.15.7",
+          "3.15.8",
+          "3.16.0",
+          "3.16.0.rc.1",
+          "3.16.0.rc.2",
+          "3.17.0",
+          "3.17.0.rc.1",
+          "3.17.0.rc.2",
+          "3.17.1",
+          "3.17.2",
+          "3.17.3",
+          "3.18.0",
+          "3.18.0.rc.1",
+          "3.18.0.rc.2",
+          "3.18.1",
+          "3.18.2",
+          "3.18.3",
+          "3.19.0",
+          "3.19.0.rc.1",
+          "3.19.0.rc.2",
+          "3.19.1",
+          "3.19.2",
+          "3.19.3",
+          "3.19.4",
+          "3.19.5",
+          "3.19.6",
+          "3.2.0",
+          "3.2.0.1",
+          "3.2.0.2",
+          "3.2.1.pre",
+          "3.20.0",
+          "3.20.0.rc.1",
+          "3.20.0.rc.2",
+          "3.20.1",
+          "3.20.1.rc.1",
+          "3.20.2",
+          "3.20.3",
+          "3.21.0",
+          "3.21.0.rc.1",
+          "3.21.0.rc.2",
+          "3.21.1",
+          "3.21.10",
+          "3.21.11",
+          "3.21.12",
+          "3.21.2",
+          "3.21.3",
+          "3.21.4",
+          "3.21.5",
+          "3.21.6",
+          "3.21.7",
+          "3.21.8",
+          "3.21.9",
+          "3.22.0",
+          "3.22.0.rc.2",
+          "3.22.0.rc.3",
+          "3.22.1",
+          "3.22.2",
+          "3.22.3",
+          "3.22.5",
+          "3.23.0",
+          "3.23.0.rc.1",
+          "3.23.0.rc.2",
+          "3.23.0.rc.3",
+          "3.23.1",
+          "3.23.2",
+          "3.23.3",
+          "3.23.4",
+          "3.24.0",
+          "3.24.0.rc.2",
+          "3.24.0.rc.3",
+          "3.24.1",
+          "3.24.2",
+          "3.24.3",
+          "3.24.4",
+          "3.25.0",
+          "3.25.0.rc.1",
+          "3.25.0.rc.2",
+          "3.25.1",
+          "3.25.2",
+          "3.25.3",
+          "3.25.4",
+          "3.3.0",
+          "3.4.0.1",
+          "3.4.0.2",
+          "3.4.1.1",
+          "3.5.0",
+          "3.5.0.pre",
+          "3.5.1",
+          "3.5.1.1",
+          "3.5.1.2",
+          "3.6.0",
+          "3.6.1",
+          "3.7.0",
+          "3.7.0.rc.2",
+          "3.7.0.rc.3",
+          "3.7.1",
+          "3.8.0",
+          "3.8.0.rc.1",
+          "3.9.0",
+          "3.9.0.rc.1",
+          "3.9.1",
+          "3.9.2"
+        ],
+        "database_specific": {
+          "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2024/09/GHSA-735f-pc8j-v9w8/GHSA-735f-pc8j-v9w8.json"
+        }
+      },
+      {
+        "package": {
+          "name": "google-protobuf",
+          "ecosystem": "RubyGems",
+          "purl": "pkg:gem/google-protobuf"
+        },
+        "ranges": [
+          {
+            "type": "ECOSYSTEM",
+            "events": [
+              {
+                "introduced": "4.0.0.rc.1"
+              },
+              {
+                "fixed": "4.27.5"
+              }
+            ]
+          }
+        ],
+        "versions": [
+          "4.26.0",
+          "4.26.0.rc.1",
+          "4.26.0.rc.2",
+          "4.26.0.rc.3",
+          "4.26.1",
+          "4.27.0",
+          "4.27.0.rc.1",
+          "4.27.0.rc.2",
+          "4.27.0.rc.3",
+          "4.27.1",
+          "4.27.2",
+          "4.27.3",
+          "4.27.4"
+        ],
+        "database_specific": {
+          "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2024/09/GHSA-735f-pc8j-v9w8/GHSA-735f-pc8j-v9w8.json"
+        }
+      },
+      {
+        "package": {
+          "name": "google-protobuf",
+          "ecosystem": "RubyGems",
+          "purl": "pkg:gem/google-protobuf"
+        },
+        "ranges": [
+          {
+            "type": "ECOSYSTEM",
+            "events": [
+              {
+                "introduced": "4.28.0.rc.1"
+              },
+              {
+                "fixed": "4.28.2"
+              }
+            ]
+          }
+        ],
+        "versions": [
+          "4.28.0",
+          "4.28.0.rc.1",
+          "4.28.0.rc.2",
+          "4.28.0.rc.3",
+          "4.28.1"
+        ],
+        "database_specific": {
+          "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2024/09/GHSA-735f-pc8j-v9w8/GHSA-735f-pc8j-v9w8.json"
+        }
+      },
+      {
+        "package": {
+          "name": "com.google.protobuf:protobuf-kotlin-lite",
+          "ecosystem": "Maven",
+          "purl": "pkg:maven/com.google.protobuf/protobuf-kotlin-lite"
+        },
+        "ranges": [
+          {
+            "type": "ECOSYSTEM",
+            "events": [
+              {
+                "introduced": "4.0.0-RC1"
+              },
+              {
+                "fixed": "4.27.5"
+              }
+            ]
+          }
+        ],
+        "versions": [
+          "4.26.0",
+          "4.26.0-RC1",
+          "4.26.0-RC2",
+          "4.26.0-RC3",
+          "4.26.1",
+          "4.27.0",
+          "4.27.0-RC1",
+          "4.27.0-RC2",
+          "4.27.0-RC3",
+          "4.27.1",
+          "4.27.2",
+          "4.27.3",
+          "4.27.4"
+        ],
+        "database_specific": {
+          "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2024/09/GHSA-735f-pc8j-v9w8/GHSA-735f-pc8j-v9w8.json"
+        }
+      },
+      {
+        "package": {
+          "name": "com.google.protobuf:protobuf-kotlin-lite",
+          "ecosystem": "Maven",
+          "purl": "pkg:maven/com.google.protobuf/protobuf-kotlin-lite"
+        },
+        "ranges": [
+          {
+            "type": "ECOSYSTEM",
+            "events": [
+              {
+                "introduced": "4.28.0-RC1"
+              },
+              {
+                "fixed": "4.28.2"
+              }
+            ]
+          }
+        ],
+        "versions": [
+          "4.28.0",
+          "4.28.0-RC1",
+          "4.28.0-RC2",
+          "4.28.0-RC3",
+          "4.28.1"
+        ],
+        "database_specific": {
+          "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2024/09/GHSA-735f-pc8j-v9w8/GHSA-735f-pc8j-v9w8.json"
+        }
+      },
+      {
+        "package": {
+          "name": "com.google.protobuf:protobuf-kotlin",
+          "ecosystem": "Maven",
+          "purl": "pkg:maven/com.google.protobuf/protobuf-kotlin"
+        },
+        "ranges": [
+          {
+            "type": "ECOSYSTEM",
+            "events": [
+              {
+                "introduced": "4.0.0-RC1"
+              },
+              {
+                "fixed": "4.27.5"
+              }
+            ]
+          }
+        ],
+        "versions": [
+          "4.26.0",
+          "4.26.0-RC1",
+          "4.26.0-RC2",
+          "4.26.0-RC3",
+          "4.26.1",
+          "4.27.0",
+          "4.27.0-RC1",
+          "4.27.0-RC2",
+          "4.27.0-RC3",
+          "4.27.1",
+          "4.27.2",
+          "4.27.3",
+          "4.27.4"
+        ],
+        "database_specific": {
+          "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2024/09/GHSA-735f-pc8j-v9w8/GHSA-735f-pc8j-v9w8.json"
+        }
+      },
+      {
+        "package": {
+          "name": "com.google.protobuf:protobuf-kotlin",
+          "ecosystem": "Maven",
+          "purl": "pkg:maven/com.google.protobuf/protobuf-kotlin"
+        },
+        "ranges": [
+          {
+            "type": "ECOSYSTEM",
+            "events": [
+              {
+                "introduced": "4.28.0-RC1"
+              },
+              {
+                "fixed": "4.28.2"
+              }
+            ]
+          }
+        ],
+        "versions": [
+          "4.28.0",
+          "4.28.0-RC1",
+          "4.28.0-RC2",
+          "4.28.0-RC3",
+          "4.28.1"
+        ],
+        "database_specific": {
+          "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2024/09/GHSA-735f-pc8j-v9w8/GHSA-735f-pc8j-v9w8.json"
+        }
+      },
+      {
+        "package": {
+          "name": "com.google.protobuf:protobuf-javalite",
+          "ecosystem": "Maven",
+          "purl": "pkg:maven/com.google.protobuf/protobuf-javalite"
+        },
+        "ranges": [
+          {
+            "type": "ECOSYSTEM",
+            "events": [
+              {
+                "introduced": "4.0.0-RC1"
+              },
+              {
+                "fixed": "4.27.5"
+              }
+            ]
+          }
+        ],
+        "versions": [
+          "4.0.0-rc-1",
+          "4.0.0-rc-2",
+          "4.26.0",
+          "4.26.0-RC1",
+          "4.26.0-RC2",
+          "4.26.0-RC3",
+          "4.26.1",
+          "4.27.0",
+          "4.27.0-RC1",
+          "4.27.0-RC2",
+          "4.27.0-RC3",
+          "4.27.1",
+          "4.27.2",
+          "4.27.3",
+          "4.27.4"
+        ],
+        "database_specific": {
+          "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2024/09/GHSA-735f-pc8j-v9w8/GHSA-735f-pc8j-v9w8.json"
+        }
+      },
+      {
+        "package": {
+          "name": "com.google.protobuf:protobuf-javalite",
+          "ecosystem": "Maven",
+          "purl": "pkg:maven/com.google.protobuf/protobuf-javalite"
+        },
+        "ranges": [
+          {
+            "type": "ECOSYSTEM",
+            "events": [
+              {
+                "introduced": "4.28.0-RC1"
+              },
+              {
+                "fixed": "4.28.2"
+              }
+            ]
+          }
+        ],
+        "versions": [
+          "4.28.0",
+          "4.28.0-RC1",
+          "4.28.0-RC2",
+          "4.28.0-RC3",
+          "4.28.1"
+        ],
+        "database_specific": {
+          "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2024/09/GHSA-735f-pc8j-v9w8/GHSA-735f-pc8j-v9w8.json"
+        }
+      },
+      {
+        "package": {
+          "name": "com.google.protobuf:protobuf-java",
+          "ecosystem": "Maven",
+          "purl": "pkg:maven/com.google.protobuf/protobuf-java"
+        },
+        "ranges": [
+          {
+            "type": "ECOSYSTEM",
+            "events": [
+              {
+                "introduced": "4.0.0-RC1"
+              },
+              {
+                "fixed": "4.27.5"
+              }
+            ]
+          }
+        ],
+        "versions": [
+          "4.0.0-rc-1",
+          "4.0.0-rc-2",
+          "4.26.0",
+          "4.26.0-RC1",
+          "4.26.0-RC2",
+          "4.26.0-RC3",
+          "4.26.1",
+          "4.27.0",
+          "4.27.0-RC1",
+          "4.27.0-RC2",
+          "4.27.0-RC3",
+          "4.27.1",
+          "4.27.2",
+          "4.27.3",
+          "4.27.4"
+        ],
+        "database_specific": {
+          "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2024/09/GHSA-735f-pc8j-v9w8/GHSA-735f-pc8j-v9w8.json"
+        }
+      },
+      {
+        "package": {
+          "name": "com.google.protobuf:protobuf-java",
+          "ecosystem": "Maven",
+          "purl": "pkg:maven/com.google.protobuf/protobuf-java"
+        },
+        "ranges": [
+          {
+            "type": "ECOSYSTEM",
+            "events": [
+              {
+                "introduced": "4.28.0-RC1"
+              },
+              {
+                "fixed": "4.28.2"
+              }
+            ]
+          }
+        ],
+        "versions": [
+          "4.28.0",
+          "4.28.0-RC1",
+          "4.28.0-RC2",
+          "4.28.0-RC3",
+          "4.28.1"
+        ],
+        "database_specific": {
+          "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2024/09/GHSA-735f-pc8j-v9w8/GHSA-735f-pc8j-v9w8.json"
+        }
+      }
+    ],
+    "schema_version": "1.9.0",
+    "severity": [
+      {
+        "type": "CVSS_V3",
+        "score": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H"
+      },
+      {
+        "type": "CVSS_V4",
+        "score": "CVSS:4.0/AV:N/AC:L/AT:N/PR:N/UI:N/VC:N/VI:N/VA:H/SC:N/SI:N/SA:N"
+      }
+    ]
+  },
+  "GHSA-9pwp-9qqc-pr26": {
+    "id": "GHSA-9pwp-9qqc-pr26",
+    "summary": "Bouncy Castle: Name Constraints bypass via trailing dot in rfc822Name and URI",
+    "details": "In Bouncy Castle for Java before 1.85, Name Constraints bypass via trailing dot in rfc822Name and URI. This issue also affects Bouncy Castle for Java LTS before 2.73.12, and Bouncy Castle for Java FIPS (BC-FJA) before bc-fips 1.0.2.7 (1.0.X series), 2.0.2 (2.0.X series) and 2.1.3 (2.1.X series).",
+    "aliases": [
+      "CVE-2026-8763"
+    ],
+    "modified": "2026-09-18T17:45:06.105254943Z",
+    "published": "2026-08-03T03:31:56Z",
+    "database_specific": {
+      "cwe_ids": [
+        "CWE-295"
+      ],
+      "severity": "CRITICAL",
+      "github_reviewed": true,
+      "github_reviewed_at": "2026-09-18T17:35:38Z",
+      "nvd_published_at": "2026-08-03T01:16:45Z"
+    },
+    "references": [
+      {
+        "type": "ADVISORY",
+        "url": "https://nvd.nist.gov/vuln/detail/CVE-2026-8763"
+      },
+      {
+        "type": "WEB",
+        "url": "https://github.com/bcgit/bc-java/commit/2c28b253a44681fbbc562561eab6ad383d2ae558"
+      },
+      {
+        "type": "PACKAGE",
+        "url": "https://github.com/bcgit/bc-java"
+      },
+      {
+        "type": "WEB",
+        "url": "https://github.com/bcgit/bc-java/releases/tag/r1rv85v2"
+      },
+      {
+        "type": "WEB",
+        "url": "https://github.com/bcgit/bc-java/wiki/CVE%E2%80%902026%E2%80%908763"
+      },
+      {
+        "type": "WEB",
+        "url": "https://github.com/bcgit/bc-java/wiki/CVE-2026-8763"
+      }
+    ],
+    "affected": [
+      {
+        "package": {
+          "name": "org.bouncycastle:bc-fips",
+          "ecosystem": "Maven",
+          "purl": "pkg:maven/org.bouncycastle/bc-fips"
+        },
+        "ranges": [
+          {
+            "type": "ECOSYSTEM",
+            "events": [
+              {
+                "introduced": "0"
+              },
+              {
+                "fixed": "1.0.2.7"
+              }
+            ]
+          }
+        ],
+        "versions": [
+          "1.0.0",
+          "1.0.1",
+          "1.0.2",
+          "1.0.2.1",
+          "1.0.2.3",
+          "1.0.2.4",
+          "1.0.2.5",
+          "1.0.2.6"
+        ],
+        "database_specific": {
+          "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2026/08/GHSA-9pwp-9qqc-pr26/GHSA-9pwp-9qqc-pr26.json"
+        }
+      },
+      {
+        "package": {
+          "name": "org.bouncycastle:bc-fips",
+          "ecosystem": "Maven",
+          "purl": "pkg:maven/org.bouncycastle/bc-fips"
+        },
+        "ranges": [
+          {
+            "type": "ECOSYSTEM",
+            "events": [
+              {
+                "introduced": "2.0.0"
+              },
+              {
+                "fixed": "2.0.2"
+              }
+            ]
+          }
+        ],
+        "versions": [
+          "2.0.0",
+          "2.0.1"
+        ],
+        "database_specific": {
+          "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2026/08/GHSA-9pwp-9qqc-pr26/GHSA-9pwp-9qqc-pr26.json"
+        }
+      },
+      {
+        "package": {
+          "name": "org.bouncycastle:bc-fips",
+          "ecosystem": "Maven",
+          "purl": "pkg:maven/org.bouncycastle/bc-fips"
+        },
+        "ranges": [
+          {
+            "type": "ECOSYSTEM",
+            "events": [
+              {
+                "introduced": "2.1.0"
+              },
+              {
+                "fixed": "2.1.3"
+              }
+            ]
+          }
+        ],
+        "versions": [
+          "2.1.0",
+          "2.1.1",
+          "2.1.2"
+        ],
+        "database_specific": {
+          "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2026/08/GHSA-9pwp-9qqc-pr26/GHSA-9pwp-9qqc-pr26.json"
+        }
+      },
+      {
+        "package": {
+          "name": "org.bouncycastle:bcprov-jdk18on",
+          "ecosystem": "Maven",
+          "purl": "pkg:maven/org.bouncycastle/bcprov-jdk18on"
+        },
+        "ranges": [
+          {
+            "type": "ECOSYSTEM",
+            "events": [
+              {
+                "introduced": "0"
+              },
+              {
+                "fixed": "1.85"
+              }
+            ]
+          }
+        ],
+        "versions": [
+          "1.71",
+          "1.71.1",
+          "1.72",
+          "1.73",
+          "1.74",
+          "1.75",
+          "1.76",
+          "1.77",
+          "1.78",
+          "1.78.1",
+          "1.79",
+          "1.80",
+          "1.80.2",
+          "1.81",
+          "1.81.1",
+          "1.82",
+          "1.83",
+          "1.84"
+        ],
+        "database_specific": {
+          "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2026/08/GHSA-9pwp-9qqc-pr26/GHSA-9pwp-9qqc-pr26.json"
+        }
+      },
+      {
+        "package": {
+          "name": "org.bouncycastle:bcprov-lts8on",
+          "ecosystem": "Maven",
+          "purl": "pkg:maven/org.bouncycastle/bcprov-lts8on"
+        },
+        "ranges": [
+          {
+            "type": "ECOSYSTEM",
+            "events": [
+              {
+                "introduced": "0"
+              },
+              {
+                "fixed": "2.73.12"
+              }
+            ]
+          }
+        ],
+        "versions": [
+          "2.73.0",
+          "2.73.1",
+          "2.73.10",
+          "2.73.11",
+          "2.73.2",
+          "2.73.3",
+          "2.73.4",
+          "2.73.5",
+          "2.73.6",
+          "2.73.7",
+          "2.73.8",
+          "2.73.9"
+        ],
+        "database_specific": {
+          "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2026/08/GHSA-9pwp-9qqc-pr26/GHSA-9pwp-9qqc-pr26.json"
+        }
+      },
+      {
+        "package": {
+          "name": "org.bouncycastle:bcprov-jdk15to18",
+          "ecosystem": "Maven",
+          "purl": "pkg:maven/org.bouncycastle/bcprov-jdk15to18"
+        },
+        "ranges": [
+          {
+            "type": "ECOSYSTEM",
+            "events": [
+              {
+                "introduced": "0"
+              },
+              {
+                "fixed": "1.85"
+              }
+            ]
+          }
+        ],
+        "versions": [
+          "1.63",
+          "1.64",
+          "1.65",
+          "1.66",
+          "1.67",
+          "1.68",
+          "1.69",
+          "1.70",
+          "1.71",
+          "1.72",
+          "1.73",
+          "1.74",
+          "1.75",
+          "1.76",
+          "1.77",
+          "1.78",
+          "1.78.1",
+          "1.79",
+          "1.80",
+          "1.81",
+          "1.82",
+          "1.83",
+          "1.84"
+        ],
+        "database_specific": {
+          "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2026/08/GHSA-9pwp-9qqc-pr26/GHSA-9pwp-9qqc-pr26.json"
+        }
+      }
+    ],
+    "schema_version": "1.9.0",
+    "severity": [
+      {
+        "type": "CVSS_V3",
+        "score": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:N"
+      },
+      {
+        "type": "CVSS_V4",
+        "score": "CVSS:4.0/AV:N/AC:L/AT:N/PR:N/UI:N/VC:H/VI:H/VA:N/SC:N/SI:N/SA:N/U:Amber"
+      }
+    ]
+  },
+  "GHSA-c3fc-8qff-9hwx": {
+    "id": "GHSA-c3fc-8qff-9hwx",
+    "summary": "Bouncy Castle has an LDAP injection",
+    "details": "Improper neutralization of special elements used in an LDAP query ('LDAP injection') vulnerability in Legion of the Bouncy Castle Inc. BC-JAVA bcprov on all (prov modules). This vulnerability is associated with program files LDAPStoreHelper.\n\nThis issue affects BC-JAVA: from 1.74 before 1.84.",
+    "aliases": [
+      "CVE-2026-0636"
+    ],
+    "modified": "2026-09-10T03:51:01.534612930Z",
+    "published": "2026-04-17T18:31:50Z",
+    "database_specific": {
+      "github_reviewed": true,
+      "github_reviewed_at": "2026-04-18T01:06:02Z",
+      "nvd_published_at": "2026-04-15T10:16:38Z",
+      "cwe_ids": [
+        "CWE-90"
+      ],
+      "severity": "MODERATE"
+    },
+    "references": [
+      {
+        "type": "ADVISORY",
+        "url": "https://nvd.nist.gov/vuln/detail/CVE-2026-0636"
+      },
+      {
+        "type": "WEB",
+        "url": "https://github.com/bcgit/bc-java/commit/d20cdb8430e09224114fec0179a71859929fcbde"
+      },
+      {
+        "type": "PACKAGE",
+        "url": "https://github.com/bcgit/bc-java"
+      },
+      {
+        "type": "WEB",
+        "url": "https://github.com/bcgit/bc-java/wiki/CVE%E2%80%902026%E2%80%900636"
+      }
+    ],
+    "affected": [
+      {
+        "package": {
+          "name": "org.bouncycastle:bcprov-jdk14",
+          "ecosystem": "Maven",
+          "purl": "pkg:maven/org.bouncycastle/bcprov-jdk14"
+        },
+        "ranges": [
+          {
+            "type": "ECOSYSTEM",
+            "events": [
+              {
+                "introduced": "1.74"
+              },
+              {
+                "fixed": "1.84"
+              }
+            ]
+          }
+        ],
+        "versions": [
+          "1.74",
+          "1.75",
+          "1.76",
+          "1.77",
+          "1.78",
+          "1.78.1",
+          "1.79",
+          "1.80",
+          "1.81",
+          "1.82",
+          "1.83"
+        ],
+        "database_specific": {
+          "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2026/04/GHSA-c3fc-8qff-9hwx/GHSA-c3fc-8qff-9hwx.json"
+        }
+      },
+      {
+        "package": {
+          "name": "org.bouncycastle:bcprov-jdk15to18",
+          "ecosystem": "Maven",
+          "purl": "pkg:maven/org.bouncycastle/bcprov-jdk15to18"
+        },
+        "ranges": [
+          {
+            "type": "ECOSYSTEM",
+            "events": [
+              {
+                "introduced": "1.74"
+              },
+              {
+                "fixed": "1.84"
+              }
+            ]
+          }
+        ],
+        "versions": [
+          "1.74",
+          "1.75",
+          "1.76",
+          "1.77",
+          "1.78",
+          "1.78.1",
+          "1.79",
+          "1.80",
+          "1.81",
+          "1.82",
+          "1.83"
+        ],
+        "database_specific": {
+          "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2026/04/GHSA-c3fc-8qff-9hwx/GHSA-c3fc-8qff-9hwx.json"
+        }
+      },
+      {
+        "package": {
+          "name": "org.bouncycastle:bcprov-jdk18on",
+          "ecosystem": "Maven",
+          "purl": "pkg:maven/org.bouncycastle/bcprov-jdk18on"
+        },
+        "ranges": [
+          {
+            "type": "ECOSYSTEM",
+            "events": [
+              {
+                "introduced": "1.74"
+              },
+              {
+                "fixed": "1.84"
+              }
+            ]
+          }
+        ],
+        "versions": [
+          "1.74",
+          "1.75",
+          "1.76",
+          "1.77",
+          "1.78",
+          "1.78.1",
+          "1.79",
+          "1.80",
+          "1.80.2",
+          "1.81",
+          "1.81.1",
+          "1.82",
+          "1.83"
+        ],
+        "database_specific": {
+          "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2026/04/GHSA-c3fc-8qff-9hwx/GHSA-c3fc-8qff-9hwx.json"
+        }
+      }
+    ],
+    "schema_version": "1.9.0",
+    "severity": [
+      {
+        "type": "CVSS_V4",
+        "score": "CVSS:4.0/AV:N/AC:L/AT:N/PR:N/UI:N/VC:L/VI:N/VA:N/SC:N/SI:N/SA:N/E:P/RE:M/U:Amber"
+      }
+    ]
+  },
+  "GHSA-hfcf-v2f8-x9pc": {
+    "id": "GHSA-hfcf-v2f8-x9pc",
+    "summary": "bitcoinj has a ScriptExecution P2PKH/P2WPKH Verification Bypass",
+    "details": "### Summary\n`ScriptExecution.correctlySpends()` contains two fast-path verification bugs for standard `P2PKH` and native `P2WPKH` spends in `core/src/main/java/org/bitcoinj/script/ScriptExecution.java`.\n\nIn both branches, bitcoinj verifies an attacker-controlled signature/public-key pair but fails to verify that the public key is the one committed to by the output being spent. As a result, any attacker keypair can satisfy bitcoinj's local verification for arbitrary `P2PKH` and `P2WPKH` outputs.\n\nThis doesn't affect the SPV (simple payment verification) trust model, as this model follows PoW and doesn't verify input signatures at all.\n\n### Details\nThe issue is in the optimized branches of `ScriptExecution.correctlySpends(...)`.\n\nIn the `P2PKH` fast path at `core/src/main/java/org/bitcoinj/script/ScriptExecution.java:1042`, the code:\n\n- parses the attacker-supplied signature from `scriptSig`\n- parses the attacker-supplied public key from `scriptSig`\n- computes the sighash against the victim output's `scriptPubKey`\n- checks only `pubkey.verify(sigHash, signature)`\n\nIt never enforces the missing `P2PKH` binding:\n\n- `HASH160(pubkey) == ScriptPattern.extractHashFromP2PKH(scriptPubKey)`\n\nThat means the `OP_DUP OP_HASH160 <hash> OP_EQUALVERIFY OP_CHECKSIG` semantics are not actually enforced in this fast path.\n\nRelevant code:\n\n```java\n} else if (ScriptPattern.isP2PKH(scriptPubKey)) {\n    if (chunks.size() != 2)\n        throw new ScriptException(...);\n    TransactionSignature signature;\n    try {\n        byte[] data = Objects.requireNonNull(chunks.get(0).data);\n        signature = TransactionSignature.decodeFromBitcoin(data, true, true);\n    } catch (SignatureDecodeException x) {\n        throw new ScriptException(...);\n    }\n    ECKey pubkey = ECKey.fromPublicOnly(Objects.requireNonNull(chunks.get(1).data));\n    Sha256Hash sigHash = txContainingThis.hashForSignature(scriptSigIndex, scriptPubKey,\n            signature.sigHashMode(), false);\n    boolean validSig = pubkey.verify(sigHash, signature);\n    if (!validSig)\n        throw new ScriptException(...);\n}\n```\n\nIn the native `P2WPKH` fast path at `core/src/main/java/org/bitcoinj/script/ScriptExecution.java:1023`, the bug is similar. The code:\n\n- reads the attacker-supplied pubkey from `witness`\n- builds `scriptCode` from that attacker pubkey with `ScriptBuilder.createP2PKHOutputScript(pubkey)`\n- computes the BIP143 sighash using that attacker-derived `scriptCode`\n- verifies the signature against the attacker pubkey\n\nIt never enforces:\n\n- `HASH160(pubkey) == ScriptPattern.extractHashFromP2WH(scriptPubKey)`\n\nSo for `P2WPKH`, the attacker controls both the pubkey and the `scriptCode` used for signing.\n\nRelevant code:\n\n```java\nif (ScriptPattern.isP2WPKH(scriptPubKey)) {\n    Objects.requireNonNull(witness);\n    if (witness.getPushCount() < 2)\n        throw new ScriptException(...);\n    TransactionSignature signature;\n    try {\n        signature = TransactionSignature.decodeFromBitcoin(witness.getPush(0), true, true);\n    } catch (SignatureDecodeException x) {\n        throw new ScriptException(...);\n    }\n    ECKey pubkey = ECKey.fromPublicOnly(witness.getPush(1));\n    Script scriptCode = ScriptBuilder.createP2PKHOutputScript(pubkey);\n    Sha256Hash sigHash = txContainingThis.hashForWitnessSignature(scriptSigIndex, scriptCode, value,\n            signature.sigHashMode(), false);\n    boolean validSig = pubkey.verify(sigHash, signature);\n    if (!validSig)\n        throw new ScriptException(...);\n}\n```\n\nAffected call sites include:\n\n- `core/src/main/java/org/bitcoinj/core/TransactionInput.java:546`\n- `core/src/main/java/org/bitcoinj/wallet/Wallet.java:4520`\n- `core/src/main/java/org/bitcoinj/signers/LocalTransactionSigner.java:84`\n- `core/src/main/java/org/bitcoinj/signers/CustomTransactionSigner.java:77`\n\nThese call sites use `correctlySpends()` for transaction/input validation and pre-signing checks. Any application that treats a successful result from this path as proof that a spend is valid is affected.\n\n### Fix\nThe issue is fixed on the `release-0.17` branch via 2bc5653c41d260d840692bc554690d4d79208f9c, and on `master` via b575a682acf614b9ff95cacbdeb48f86c3ababe0. A 0.17.1 maintenance release has been made available on Maven Central.",
+    "aliases": [
+      "CVE-2026-44714"
+    ],
+    "modified": "2026-05-16T00:08:27.144498Z",
+    "published": "2026-05-08T17:43:06Z",
+    "database_specific": {
+      "cwe_ids": [
+        "CWE-347"
+      ],
+      "severity": "HIGH",
+      "github_reviewed": true,
+      "github_reviewed_at": "2026-05-08T17:43:06Z",
+      "nvd_published_at": "2026-05-15T17:16:47Z"
+    },
+    "references": [
+      {
+        "type": "WEB",
+        "url": "https://github.com/bitcoinj/bitcoinj/security/advisories/GHSA-hfcf-v2f8-x9pc"
+      },
+      {
+        "type": "ADVISORY",
+        "url": "https://nvd.nist.gov/vuln/detail/CVE-2026-44714"
+      },
+      {
+        "type": "WEB",
+        "url": "https://github.com/bitcoinj/bitcoinj/commit/2bc5653c41d260d840692bc554690d4d79208f9c"
+      },
+      {
+        "type": "WEB",
+        "url": "https://github.com/bitcoinj/bitcoinj/commit/b575a682acf614b9ff95cacbdeb48f86c3ababe0"
+      },
+      {
+        "type": "PACKAGE",
+        "url": "https://github.com/bitcoinj/bitcoinj"
+      },
+      {
+        "type": "WEB",
+        "url": "https://github.com/bitcoinj/bitcoinj/releases/tag/v0.17.1"
+      }
+    ],
+    "affected": [
+      {
+        "package": {
+          "name": "org.bitcoinj:bitcoinj-core",
+          "ecosystem": "Maven",
+          "purl": "pkg:maven/org.bitcoinj/bitcoinj-core"
+        },
+        "ranges": [
+          {
+            "type": "ECOSYSTEM",
+            "events": [
+              {
+                "introduced": "0.15"
+              },
+              {
+                "fixed": "0.17.1"
+              }
+            ]
+          }
+        ],
+        "versions": [
+          "0.15",
+          "0.15.1",
+          "0.15.10",
+          "0.15.2",
+          "0.15.3",
+          "0.15.4",
+          "0.15.5",
+          "0.15.6",
+          "0.15.7",
+          "0.15.8",
+          "0.15.9",
+          "0.16",
+          "0.16-beta1",
+          "0.16-beta2",
+          "0.16-rc1",
+          "0.16.1",
+          "0.16.2",
+          "0.16.3",
+          "0.16.4",
+          "0.16.5",
+          "0.17",
+          "0.17-alpha1",
+          "0.17-alpha2",
+          "0.17-alpha3",
+          "0.17-alpha4",
+          "0.17-alpha5",
+          "0.17-beta1",
+          "0.17-rc1",
+          "0.17-rc2",
+          "0.17-rc3"
+        ],
+        "database_specific": {
+          "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2026/05/GHSA-hfcf-v2f8-x9pc/GHSA-hfcf-v2f8-x9pc.json"
+        }
+      }
+    ],
+    "schema_version": "1.9.0",
+    "severity": [
+      {
+        "type": "CVSS_V3",
+        "score": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:H/A:N"
+      }
+    ]
+  },
+  "GHSA-qp49-qgx5-5m26": {
+    "id": "GHSA-qp49-qgx5-5m26",
+    "summary": "Bouncy Castle: Lazy ASN.1 sequence forcing resets nesting-depth guard",
+    "details": "In Bouncy Castle for Java before 1.85, Lazy ASN.1 sequence forcing resets nesting-depth guard. This issue also affects Bouncy Castle for Java LTS before 2.73.12, and Bouncy Castle for Java FIPS (BC-FJA) before bc-fips 1.0.2.7 (1.0.X series), 2.0.2 (2.0.X series) and 2.1.3 (2.1.X series).",
+    "aliases": [
+      "CVE-2026-13506"
+    ],
+    "modified": "2026-09-18T17:45:06.096277818Z",
+    "published": "2026-08-03T06:31:44Z",
+    "database_specific": {
+      "github_reviewed": true,
+      "github_reviewed_at": "2026-09-18T17:37:51Z",
+      "nvd_published_at": "2026-08-03T04:16:39Z",
+      "cwe_ids": [
+        "CWE-674"
+      ],
+      "severity": "HIGH"
+    },
+    "references": [
+      {
+        "type": "ADVISORY",
+        "url": "https://nvd.nist.gov/vuln/detail/CVE-2026-13506"
+      },
+      {
+        "type": "WEB",
+        "url": "https://github.com/bcgit/bc-java/commit/77454da9b3dcaaa2991412d1c3c1a6e1a338ff84"
+      },
+      {
+        "type": "PACKAGE",
+        "url": "https://github.com/bcgit/bc-java"
+      },
+      {
+        "type": "WEB",
+        "url": "https://github.com/bcgit/bc-java/wiki/CVE-2026-13506"
+      }
+    ],
+    "affected": [
+      {
+        "package": {
+          "name": "org.bouncycastle:bcprov-jdk18on",
+          "ecosystem": "Maven",
+          "purl": "pkg:maven/org.bouncycastle/bcprov-jdk18on"
+        },
+        "ranges": [
+          {
+            "type": "ECOSYSTEM",
+            "events": [
+              {
+                "introduced": "0"
+              },
+              {
+                "fixed": "1.85"
+              }
+            ]
+          }
+        ],
+        "versions": [
+          "1.71",
+          "1.71.1",
+          "1.72",
+          "1.73",
+          "1.74",
+          "1.75",
+          "1.76",
+          "1.77",
+          "1.78",
+          "1.78.1",
+          "1.79",
+          "1.80",
+          "1.80.2",
+          "1.81",
+          "1.81.1",
+          "1.82",
+          "1.83",
+          "1.84"
+        ],
+        "database_specific": {
+          "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2026/08/GHSA-qp49-qgx5-5m26/GHSA-qp49-qgx5-5m26.json"
+        }
+      },
+      {
+        "package": {
+          "name": "org.bouncycastle:bc-fips",
+          "ecosystem": "Maven",
+          "purl": "pkg:maven/org.bouncycastle/bc-fips"
+        },
+        "ranges": [
+          {
+            "type": "ECOSYSTEM",
+            "events": [
+              {
+                "introduced": "0"
+              },
+              {
+                "fixed": "1.0.2.7"
+              }
+            ]
+          }
+        ],
+        "versions": [
+          "1.0.0",
+          "1.0.1",
+          "1.0.2",
+          "1.0.2.1",
+          "1.0.2.3",
+          "1.0.2.4",
+          "1.0.2.5",
+          "1.0.2.6"
+        ],
+        "database_specific": {
+          "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2026/08/GHSA-qp49-qgx5-5m26/GHSA-qp49-qgx5-5m26.json"
+        }
+      },
+      {
+        "package": {
+          "name": "org.bouncycastle:bc-fips",
+          "ecosystem": "Maven",
+          "purl": "pkg:maven/org.bouncycastle/bc-fips"
+        },
+        "ranges": [
+          {
+            "type": "ECOSYSTEM",
+            "events": [
+              {
+                "introduced": "2.0.0"
+              },
+              {
+                "fixed": "2.0.2"
+              }
+            ]
+          }
+        ],
+        "versions": [
+          "2.0.0",
+          "2.0.1"
+        ],
+        "database_specific": {
+          "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2026/08/GHSA-qp49-qgx5-5m26/GHSA-qp49-qgx5-5m26.json"
+        }
+      },
+      {
+        "package": {
+          "name": "org.bouncycastle:bc-fips",
+          "ecosystem": "Maven",
+          "purl": "pkg:maven/org.bouncycastle/bc-fips"
+        },
+        "ranges": [
+          {
+            "type": "ECOSYSTEM",
+            "events": [
+              {
+                "introduced": "2.1.0"
+              },
+              {
+                "fixed": "2.1.3"
+              }
+            ]
+          }
+        ],
+        "versions": [
+          "2.1.0",
+          "2.1.1",
+          "2.1.2"
+        ],
+        "database_specific": {
+          "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2026/08/GHSA-qp49-qgx5-5m26/GHSA-qp49-qgx5-5m26.json"
+        }
+      },
+      {
+        "package": {
+          "name": "org.bouncycastle:bcprov-lts8on",
+          "ecosystem": "Maven",
+          "purl": "pkg:maven/org.bouncycastle/bcprov-lts8on"
+        },
+        "ranges": [
+          {
+            "type": "ECOSYSTEM",
+            "events": [
+              {
+                "introduced": "0"
+              },
+              {
+                "fixed": "2.73.12"
+              }
+            ]
+          }
+        ],
+        "versions": [
+          "2.73.0",
+          "2.73.1",
+          "2.73.10",
+          "2.73.11",
+          "2.73.2",
+          "2.73.3",
+          "2.73.4",
+          "2.73.5",
+          "2.73.6",
+          "2.73.7",
+          "2.73.8",
+          "2.73.9"
+        ],
+        "database_specific": {
+          "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2026/08/GHSA-qp49-qgx5-5m26/GHSA-qp49-qgx5-5m26.json"
+        }
+      },
+      {
+        "package": {
+          "name": "org.bouncycastle:bcprov-jdk15to18",
+          "ecosystem": "Maven",
+          "purl": "pkg:maven/org.bouncycastle/bcprov-jdk15to18"
+        },
+        "ranges": [
+          {
+            "type": "ECOSYSTEM",
+            "events": [
+              {
+                "introduced": "0"
+              },
+              {
+                "fixed": "1.85"
+              }
+            ]
+          }
+        ],
+        "versions": [
+          "1.63",
+          "1.64",
+          "1.65",
+          "1.66",
+          "1.67",
+          "1.68",
+          "1.69",
+          "1.70",
+          "1.71",
+          "1.72",
+          "1.73",
+          "1.74",
+          "1.75",
+          "1.76",
+          "1.77",
+          "1.78",
+          "1.78.1",
+          "1.79",
+          "1.80",
+          "1.81",
+          "1.82",
+          "1.83",
+          "1.84"
+        ],
+        "database_specific": {
+          "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2026/08/GHSA-qp49-qgx5-5m26/GHSA-qp49-qgx5-5m26.json"
+        }
+      }
+    ],
+    "schema_version": "1.9.0",
+    "severity": [
+      {
+        "type": "CVSS_V3",
+        "score": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H"
+      },
+      {
+        "type": "CVSS_V4",
+        "score": "CVSS:4.0/AV:N/AC:L/AT:N/PR:N/UI:N/VC:N/VI:N/VA:H/SC:N/SI:N/SA:N/U:Amber"
+      }
+    ]
+  },
+  "GHSA-w33c-445m-f8w7": {
+    "id": "GHSA-w33c-445m-f8w7",
+    "summary": "Okio Signed to Unsigned Conversion Error vulnerability",
+    "details": "GzipSource does not handle an exception that might be raised when parsing a malformed gzip buffer. This may lead to denial of service of the Okio client when handling a crafted GZIP archive, by using the GzipSource class.\n\n",
+    "aliases": [
+      "CVE-2023-3635"
+    ],
+    "modified": "2026-09-10T03:49:54.860062065Z",
+    "published": "2023-07-12T21:30:50Z",
+    "database_specific": {
+      "github_reviewed": true,
+      "github_reviewed_at": "2023-07-13T17:01:48Z",
+      "nvd_published_at": "2023-07-12T19:15:08Z",
+      "cwe_ids": [
+        "CWE-195",
+        "CWE-681"
+      ],
+      "severity": "MODERATE"
+    },
+    "references": [
+      {
+        "type": "ADVISORY",
+        "url": "https://nvd.nist.gov/vuln/detail/CVE-2023-3635"
+      },
+      {
+        "type": "WEB",
+        "url": "https://github.com/square/okio/pull/1280"
+      },
+      {
+        "type": "WEB",
+        "url": "https://github.com/square/okio/pull/1334"
+      },
+      {
+        "type": "WEB",
+        "url": "https://github.com/square/okio/commit/81bce1a30af244550b0324597720e4799281da7b"
+      },
+      {
+        "type": "WEB",
+        "url": "https://github.com/square/okio/commit/b4fa875dc24950680c386e4b1c593660ce4f7839"
+      },
+      {
+        "type": "PACKAGE",
+        "url": "https://github.com/square/okio"
+      },
+      {
+        "type": "WEB",
+        "url": "https://github.com/square/okio/blob/master/CHANGELOG.md#version-1176"
+      },
+      {
+        "type": "WEB",
+        "url": "https://research.jfrog.com/vulnerabilities/okio-gzip-source-unhandled-exception-dos-xray-523195"
+      }
+    ],
+    "affected": [
+      {
+        "package": {
+          "name": "com.squareup.okio:okio",
+          "ecosystem": "Maven",
+          "purl": "pkg:maven/com.squareup.okio/okio"
+        },
+        "ranges": [
+          {
+            "type": "ECOSYSTEM",
+            "events": [
+              {
+                "introduced": "2.0.0-RC1"
+              },
+              {
+                "fixed": "3.4.0"
+              }
+            ]
+          }
+        ],
+        "versions": [
+          "2.0.0",
+          "2.0.0-RC1",
+          "2.1.0",
+          "2.10.0",
+          "2.2.0",
+          "2.2.1",
+          "2.2.2",
+          "2.3.0",
+          "2.4.0",
+          "2.4.1",
+          "2.4.2",
+          "2.4.3",
+          "2.5.0",
+          "2.6.0",
+          "2.7.0",
+          "2.7.0-alpha.lockfree.1",
+          "2.7.0-alpha.lockfree.2",
+          "2.8.0",
+          "2.9.0",
+          "3.0.0",
+          "3.0.0-alpha.1",
+          "3.0.0-alpha.10",
+          "3.0.0-alpha.11",
+          "3.0.0-alpha.2",
+          "3.0.0-alpha.3",
+          "3.0.0-alpha.4",
+          "3.0.0-alpha.5",
+          "3.0.0-alpha.6",
+          "3.0.0-alpha.7",
+          "3.0.0-alpha.8",
+          "3.0.0-alpha.9",
+          "3.1.0",
+          "3.2.0",
+          "3.3.0"
+        ],
+        "database_specific": {
+          "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2023/07/GHSA-w33c-445m-f8w7/GHSA-w33c-445m-f8w7.json"
+        }
+      },
+      {
+        "package": {
+          "name": "com.squareup.okio:okio",
+          "ecosystem": "Maven",
+          "purl": "pkg:maven/com.squareup.okio/okio"
+        },
+        "ranges": [
+          {
+            "type": "ECOSYSTEM",
+            "events": [
+              {
+                "introduced": "0"
+              },
+              {
+                "fixed": "1.17.6"
+              }
+            ]
+          }
+        ],
+        "versions": [
+          "0.5.0",
+          "0.6.0",
+          "0.6.1",
+          "0.7.0",
+          "0.8.0",
+          "0.9.0",
+          "1.0.0",
+          "1.0.1",
+          "1.1.0",
+          "1.10.0",
+          "1.11.0",
+          "1.12.0",
+          "1.13.0",
+          "1.14.0",
+          "1.14.1",
+          "1.15.0",
+          "1.16.0",
+          "1.17.0",
+          "1.17.1",
+          "1.17.2",
+          "1.17.3",
+          "1.17.4",
+          "1.17.5",
+          "1.2.0",
+          "1.3.0",
+          "1.4.0",
+          "1.5.0",
+          "1.6.0",
+          "1.7.0",
+          "1.8.0",
+          "1.9.0"
+        ],
+        "database_specific": {
+          "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2023/07/GHSA-w33c-445m-f8w7/GHSA-w33c-445m-f8w7.json"
+        }
+      },
+      {
+        "package": {
+          "name": "com.squareup.okio:okio-jvm",
+          "ecosystem": "Maven",
+          "purl": "pkg:maven/com.squareup.okio/okio-jvm"
+        },
+        "ranges": [
+          {
+            "type": "ECOSYSTEM",
+            "events": [
+              {
+                "introduced": "2.0.0-RC1"
+              },
+              {
+                "fixed": "3.4.0"
+              }
+            ]
+          }
+        ],
+        "versions": [
+          "3.0.0",
+          "3.0.0-alpha.10",
+          "3.0.0-alpha.11",
+          "3.1.0",
+          "3.2.0",
+          "3.3.0"
+        ],
+        "database_specific": {
+          "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2023/07/GHSA-w33c-445m-f8w7/GHSA-w33c-445m-f8w7.json"
+        }
+      }
+    ],
+    "schema_version": "1.9.0",
+    "severity": [
+      {
+        "type": "CVSS_V3",
+        "score": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:N/I:N/A:H"
+      }
+    ]
+  },
+  "GHSA-h4h5-3hr4-j3g2": {
+    "id": "GHSA-h4h5-3hr4-j3g2",
+    "summary": "protobuf-java has a potential Denial of Service issue",
+    "details": "## Summary\nA potential Denial of Service issue in `protobuf-java` core and lite was discovered in the parsing procedure for binary and text format data. Input streams containing multiple instances of non-repeated [embedded messages](http://developers.google.com/protocol-buffers/docs/encoding#embedded) with repeated or unknown fields causes objects to be converted back-n-forth between mutable and immutable forms, resulting in potentially long garbage collection pauses. \n\nReporter: [OSS Fuzz](https://bugs.chromium.org/p/oss-fuzz/issues/detail?id=48771)\n\nAffected versions: This issue affects both the Java full and lite Protobuf runtimes, as well as Protobuf for Kotlin and JRuby, which themselves use the Java Protobuf runtime.\n\n## Severity\n\n[CVE-2022-3171](https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2022-3171) Medium - CVSS Score: 5.7 (NOTE: there may be a delay in publication)\n\n## Remediation and Mitigation\n\nPlease update to the latest available versions of the following packages:\n\nprotobuf-java (3.21.7, 3.20.3, 3.19.6, 3.16.3)\nprotobuf-javalite (3.21.7, 3.20.3, 3.19.6, 3.16.3)\nprotobuf-kotlin (3.21.7, 3.20.3, 3.19.6, 3.16.3)\nprotobuf-kotlin-lite (3.21.7, 3.20.3, 3.19.6, 3.16.3)\ngoogle-protobuf [JRuby gem only] (3.21.7, 3.20.3, 3.19.6)\n",
+    "aliases": [
+      "CVE-2022-3171"
+    ],
+    "modified": "2026-09-10T03:49:50.454391245Z",
+    "published": "2022-10-04T22:17:15Z",
+    "database_specific": {
+      "github_reviewed": true,
+      "github_reviewed_at": "2022-10-04T22:17:15Z",
+      "nvd_published_at": "2022-10-12T23:15:00Z",
+      "cwe_ids": [
+        "CWE-20"
+      ],
+      "severity": "MODERATE"
+    },
+    "references": [
+      {
+        "type": "WEB",
+        "url": "https://github.com/protocolbuffers/protobuf/security/advisories/GHSA-h4h5-3hr4-j3g2"
+      },
+      {
+        "type": "ADVISORY",
+        "url": "https://nvd.nist.gov/vuln/detail/CVE-2022-3171"
+      },
+      {
+        "type": "WEB",
+        "url": "https://bugs.chromium.org/p/oss-fuzz/issues/detail?id=48771"
+      },
+      {
+        "type": "PACKAGE",
+        "url": "https://github.com/protocolbuffers/protobuf"
+      },
+      {
+        "type": "WEB",
+        "url": "https://github.com/protocolbuffers/protobuf/releases/tag/v21.7"
+      },
+      {
+        "type": "WEB",
+        "url": "https://github.com/protocolbuffers/protobuf/releases/tag/v3.16.3"
+      },
+      {
+        "type": "WEB",
+        "url": "https://github.com/protocolbuffers/protobuf/releases/tag/v3.19.6"
+      },
+      {
+        "type": "WEB",
+        "url": "https://github.com/protocolbuffers/protobuf/releases/tag/v3.20.3"
+      },
+      {
+        "type": "WEB",
+        "url": "https://github.com/rubysec/ruby-advisory-db/blob/master/gems/google-protobuf/CVE-2022-3171.yml"
+      },
+      {
+        "type": "WEB",
+        "url": "https://lists.fedoraproject.org/archives/list/package-announce@lists.fedoraproject.org/message/CBAUKJQL6O4TIWYBENORSY5P43TVB4M3"
+      },
+      {
+        "type": "WEB",
+        "url": "https://lists.fedoraproject.org/archives/list/package-announce@lists.fedoraproject.org/message/MPCGUT3T5L6C3IDWUPSUO22QDCGQKTOP"
+      },
+      {
+        "type": "WEB",
+        "url": "https://security.gentoo.org/glsa/202301-09"
+      }
+    ],
+    "affected": [
+      {
+        "package": {
+          "name": "com.google.protobuf:protobuf-java",
+          "ecosystem": "Maven",
+          "purl": "pkg:maven/com.google.protobuf/protobuf-java"
+        },
+        "ranges": [
+          {
+            "type": "ECOSYSTEM",
+            "events": [
+              {
+                "introduced": "3.21.0-rc-1"
+              },
+              {
+                "fixed": "3.21.7"
+              }
+            ]
+          }
+        ],
+        "versions": [
+          "3.21.0",
+          "3.21.0-rc-1",
+          "3.21.0-rc-2",
+          "3.21.1",
+          "3.21.2",
+          "3.21.3",
+          "3.21.4",
+          "3.21.5",
+          "3.21.6"
+        ],
+        "database_specific": {
+          "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/10/GHSA-h4h5-3hr4-j3g2/GHSA-h4h5-3hr4-j3g2.json"
+        }
+      },
+      {
+        "package": {
+          "name": "com.google.protobuf:protobuf-kotlin",
+          "ecosystem": "Maven",
+          "purl": "pkg:maven/com.google.protobuf/protobuf-kotlin"
+        },
+        "ranges": [
+          {
+            "type": "ECOSYSTEM",
+            "events": [
+              {
+                "introduced": "3.21.0-rc-1"
+              },
+              {
+                "fixed": "3.21.7"
+              }
+            ]
+          }
+        ],
+        "versions": [
+          "3.21.0",
+          "3.21.0-rc-1",
+          "3.21.0-rc-2",
+          "3.21.1",
+          "3.21.2",
+          "3.21.3",
+          "3.21.4",
+          "3.21.5",
+          "3.21.6"
+        ],
+        "database_specific": {
+          "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/10/GHSA-h4h5-3hr4-j3g2/GHSA-h4h5-3hr4-j3g2.json"
+        }
+      },
+      {
+        "package": {
+          "name": "google-protobuf",
+          "ecosystem": "RubyGems",
+          "purl": "pkg:gem/google-protobuf"
+        },
+        "ranges": [
+          {
+            "type": "ECOSYSTEM",
+            "events": [
+              {
+                "introduced": "3.21.0.rc.1"
+              },
+              {
+                "fixed": "3.21.7"
+              }
+            ]
+          }
+        ],
+        "versions": [
+          "3.21.0",
+          "3.21.0.rc.1",
+          "3.21.0.rc.2",
+          "3.21.1",
+          "3.21.2",
+          "3.21.3",
+          "3.21.4",
+          "3.21.5",
+          "3.21.6"
+        ],
+        "database_specific": {
+          "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/10/GHSA-h4h5-3hr4-j3g2/GHSA-h4h5-3hr4-j3g2.json"
+        }
+      },
+      {
+        "package": {
+          "name": "com.google.protobuf:protobuf-javalite",
+          "ecosystem": "Maven",
+          "purl": "pkg:maven/com.google.protobuf/protobuf-javalite"
+        },
+        "ranges": [
+          {
+            "type": "ECOSYSTEM",
+            "events": [
+              {
+                "introduced": "3.21.0-rc-1"
+              },
+              {
+                "fixed": "3.21.7"
+              }
+            ]
+          }
+        ],
+        "versions": [
+          "3.21.0",
+          "3.21.0-rc-1",
+          "3.21.0-rc-2",
+          "3.21.1",
+          "3.21.2",
+          "3.21.3",
+          "3.21.4",
+          "3.21.5",
+          "3.21.6"
+        ],
+        "database_specific": {
+          "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/10/GHSA-h4h5-3hr4-j3g2/GHSA-h4h5-3hr4-j3g2.json"
+        }
+      },
+      {
+        "package": {
+          "name": "com.google.protobuf:protobuf-kotlin-lite",
+          "ecosystem": "Maven",
+          "purl": "pkg:maven/com.google.protobuf/protobuf-kotlin-lite"
+        },
+        "ranges": [
+          {
+            "type": "ECOSYSTEM",
+            "events": [
+              {
+                "introduced": "3.21.0-rc-1"
+              },
+              {
+                "fixed": "3.21.7"
+              }
+            ]
+          }
+        ],
+        "versions": [
+          "3.21.0",
+          "3.21.0-rc-1",
+          "3.21.0-rc-2",
+          "3.21.1",
+          "3.21.2",
+          "3.21.3",
+          "3.21.4",
+          "3.21.5",
+          "3.21.6"
+        ],
+        "database_specific": {
+          "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/10/GHSA-h4h5-3hr4-j3g2/GHSA-h4h5-3hr4-j3g2.json"
+        }
+      },
+      {
+        "package": {
+          "name": "com.google.protobuf:protobuf-java",
+          "ecosystem": "Maven",
+          "purl": "pkg:maven/com.google.protobuf/protobuf-java"
+        },
+        "ranges": [
+          {
+            "type": "ECOSYSTEM",
+            "events": [
+              {
+                "introduced": "3.20.0-rc-1"
+              },
+              {
+                "fixed": "3.20.3"
+              }
+            ]
+          }
+        ],
+        "versions": [
+          "3.20.0",
+          "3.20.0-rc-1",
+          "3.20.1",
+          "3.20.1-rc-1",
+          "3.20.2"
+        ],
+        "database_specific": {
+          "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/10/GHSA-h4h5-3hr4-j3g2/GHSA-h4h5-3hr4-j3g2.json"
+        }
+      },
+      {
+        "package": {
+          "name": "com.google.protobuf:protobuf-java",
+          "ecosystem": "Maven",
+          "purl": "pkg:maven/com.google.protobuf/protobuf-java"
+        },
+        "ranges": [
+          {
+            "type": "ECOSYSTEM",
+            "events": [
+              {
+                "introduced": "3.17.0-rc-1"
+              },
+              {
+                "fixed": "3.19.6"
+              }
+            ]
+          }
+        ],
+        "versions": [
+          "3.17.0",
+          "3.17.0-rc-1",
+          "3.17.0-rc-2",
+          "3.17.1",
+          "3.17.2",
+          "3.17.3",
+          "3.18.0",
+          "3.18.0-rc-1",
+          "3.18.0-rc-2",
+          "3.18.1",
+          "3.18.2",
+          "3.18.3",
+          "3.19.0",
+          "3.19.0-rc-1",
+          "3.19.0-rc-2",
+          "3.19.1",
+          "3.19.2",
+          "3.19.3",
+          "3.19.4",
+          "3.19.5"
+        ],
+        "database_specific": {
+          "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/10/GHSA-h4h5-3hr4-j3g2/GHSA-h4h5-3hr4-j3g2.json"
+        }
+      },
+      {
+        "package": {
+          "name": "com.google.protobuf:protobuf-java",
+          "ecosystem": "Maven",
+          "purl": "pkg:maven/com.google.protobuf/protobuf-java"
+        },
+        "ranges": [
+          {
+            "type": "ECOSYSTEM",
+            "events": [
+              {
+                "introduced": "0"
+              },
+              {
+                "fixed": "3.16.3"
+              }
+            ]
+          }
+        ],
+        "versions": [
+          "2.0.1",
+          "2.0.3",
+          "2.1.0",
+          "2.2.0",
+          "2.3.0",
+          "2.4.0a",
+          "2.4.1",
+          "2.5.0",
+          "2.6.0",
+          "2.6.1",
+          "3.0.0",
+          "3.0.0-alpha-2",
+          "3.0.0-alpha-3",
+          "3.0.0-alpha-3.1",
+          "3.0.0-beta-1",
+          "3.0.0-beta-2",
+          "3.0.0-beta-3",
+          "3.0.0-beta-4",
+          "3.0.2",
+          "3.1.0",
+          "3.10.0",
+          "3.10.0-rc-1",
+          "3.11.0",
+          "3.11.0-rc-1",
+          "3.11.0-rc-2",
+          "3.11.1",
+          "3.11.3",
+          "3.11.4",
+          "3.12.0",
+          "3.12.0-rc-1",
+          "3.12.0-rc-2",
+          "3.12.1",
+          "3.12.2",
+          "3.12.4",
+          "3.13.0",
+          "3.13.0-rc-3",
+          "3.14.0",
+          "3.14.0-rc-1",
+          "3.14.0-rc-2",
+          "3.14.0-rc-3",
+          "3.15.0",
+          "3.15.0-rc-1",
+          "3.15.0-rc-2",
+          "3.15.1",
+          "3.15.2",
+          "3.15.3",
+          "3.15.4",
+          "3.15.5",
+          "3.15.6",
+          "3.15.7",
+          "3.15.8",
+          "3.16.0",
+          "3.16.0-rc-1",
+          "3.16.0-rc-2",
+          "3.16.1",
+          "3.2.0",
+          "3.2.0-rc.1",
+          "3.2.0rc2",
+          "3.3.0",
+          "3.3.1",
+          "3.4.0",
+          "3.5.0",
+          "3.5.1",
+          "3.6.0",
+          "3.6.1",
+          "3.7.0",
+          "3.7.0-rc1",
+          "3.7.1",
+          "3.8.0",
+          "3.8.0-rc-1",
+          "3.9.0",
+          "3.9.0-rc-1",
+          "3.9.1",
+          "3.9.2"
+        ],
+        "database_specific": {
+          "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/10/GHSA-h4h5-3hr4-j3g2/GHSA-h4h5-3hr4-j3g2.json"
+        }
+      },
+      {
+        "package": {
+          "name": "com.google.protobuf:protobuf-kotlin",
+          "ecosystem": "Maven",
+          "purl": "pkg:maven/com.google.protobuf/protobuf-kotlin"
+        },
+        "ranges": [
+          {
+            "type": "ECOSYSTEM",
+            "events": [
+              {
+                "introduced": "3.20.0-rc-1"
+              },
+              {
+                "fixed": "3.20.3"
+              }
+            ]
+          }
+        ],
+        "versions": [
+          "3.20.0",
+          "3.20.0-rc-1",
+          "3.20.1",
+          "3.20.1-rc-1",
+          "3.20.2"
+        ],
+        "database_specific": {
+          "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/10/GHSA-h4h5-3hr4-j3g2/GHSA-h4h5-3hr4-j3g2.json"
+        }
+      },
+      {
+        "package": {
+          "name": "com.google.protobuf:protobuf-kotlin",
+          "ecosystem": "Maven",
+          "purl": "pkg:maven/com.google.protobuf/protobuf-kotlin"
+        },
+        "ranges": [
+          {
+            "type": "ECOSYSTEM",
+            "events": [
+              {
+                "introduced": "3.17.0-rc-1"
+              },
+              {
+                "fixed": "3.19.6"
+              }
+            ]
+          }
+        ],
+        "versions": [
+          "3.17.0",
+          "3.17.0-rc-2",
+          "3.17.1",
+          "3.17.2",
+          "3.17.3",
+          "3.18.0",
+          "3.18.0-rc-1",
+          "3.18.0-rc-2",
+          "3.18.1",
+          "3.18.2",
+          "3.18.3",
+          "3.19.0",
+          "3.19.0-rc-1",
+          "3.19.0-rc-2",
+          "3.19.1",
+          "3.19.2",
+          "3.19.3",
+          "3.19.4",
+          "3.19.5"
+        ],
+        "database_specific": {
+          "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/10/GHSA-h4h5-3hr4-j3g2/GHSA-h4h5-3hr4-j3g2.json"
+        }
+      },
+      {
+        "package": {
+          "name": "com.google.protobuf:protobuf-kotlin",
+          "ecosystem": "Maven",
+          "purl": "pkg:maven/com.google.protobuf/protobuf-kotlin"
+        },
+        "ranges": [
+          {
+            "type": "ECOSYSTEM",
+            "events": [
+              {
+                "introduced": "0"
+              },
+              {
+                "fixed": "3.16.3"
+              }
+            ]
+          }
+        ],
+        "database_specific": {
+          "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/10/GHSA-h4h5-3hr4-j3g2/GHSA-h4h5-3hr4-j3g2.json"
+        }
+      },
+      {
+        "package": {
+          "name": "google-protobuf",
+          "ecosystem": "RubyGems",
+          "purl": "pkg:gem/google-protobuf"
+        },
+        "ranges": [
+          {
+            "type": "ECOSYSTEM",
+            "events": [
+              {
+                "introduced": "3.20.0.rc.1"
+              },
+              {
+                "fixed": "3.20.3"
+              }
+            ]
+          }
+        ],
+        "versions": [
+          "3.20.0",
+          "3.20.0.rc.1",
+          "3.20.0.rc.2",
+          "3.20.1",
+          "3.20.1.rc.1",
+          "3.20.2"
+        ],
+        "database_specific": {
+          "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/10/GHSA-h4h5-3hr4-j3g2/GHSA-h4h5-3hr4-j3g2.json"
+        }
+      },
+      {
+        "package": {
+          "name": "google-protobuf",
+          "ecosystem": "RubyGems",
+          "purl": "pkg:gem/google-protobuf"
+        },
+        "ranges": [
+          {
+            "type": "ECOSYSTEM",
+            "events": [
+              {
+                "introduced": "3.17.0.rc.1"
+              },
+              {
+                "fixed": "3.19.6"
+              }
+            ]
+          }
+        ],
+        "versions": [
+          "3.17.0",
+          "3.17.0.rc.1",
+          "3.17.0.rc.2",
+          "3.17.1",
+          "3.17.2",
+          "3.17.3",
+          "3.18.0",
+          "3.18.0.rc.1",
+          "3.18.0.rc.2",
+          "3.18.1",
+          "3.18.2",
+          "3.18.3",
+          "3.19.0",
+          "3.19.0.rc.1",
+          "3.19.0.rc.2",
+          "3.19.1",
+          "3.19.2",
+          "3.19.3",
+          "3.19.4",
+          "3.19.5"
+        ],
+        "database_specific": {
+          "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/10/GHSA-h4h5-3hr4-j3g2/GHSA-h4h5-3hr4-j3g2.json"
+        }
+      },
+      {
+        "package": {
+          "name": "google-protobuf",
+          "ecosystem": "RubyGems",
+          "purl": "pkg:gem/google-protobuf"
+        },
+        "ranges": [
+          {
+            "type": "ECOSYSTEM",
+            "events": [
+              {
+                "introduced": "0"
+              },
+              {
+                "fixed": "3.16.3"
+              }
+            ]
+          }
+        ],
+        "versions": [
+          "3.0.0",
+          "3.0.0.alpha.1.0",
+          "3.0.0.alpha.1.1",
+          "3.0.0.alpha.2.0",
+          "3.0.0.alpha.3",
+          "3.0.0.alpha.3.1.pre",
+          "3.0.0.alpha.4.0",
+          "3.0.0.alpha.5.0.3",
+          "3.0.0.alpha.5.0.4",
+          "3.0.0.alpha.5.0.5",
+          "3.0.0.alpha.5.0.5.1",
+          "3.0.2",
+          "3.1.0",
+          "3.1.0.0.pre",
+          "3.10.0.rc.1",
+          "3.10.1",
+          "3.11.0",
+          "3.11.0.rc.1",
+          "3.11.0.rc.2",
+          "3.11.1",
+          "3.11.2",
+          "3.11.3",
+          "3.11.4",
+          "3.12.0",
+          "3.12.0.rc.1",
+          "3.12.0.rc.2",
+          "3.12.1",
+          "3.12.2",
+          "3.12.4",
+          "3.13.0",
+          "3.13.0.rc.3",
+          "3.14.0",
+          "3.14.0.rc.1",
+          "3.14.0.rc.2",
+          "3.14.0.rc.3",
+          "3.15.0",
+          "3.15.0.rc.1",
+          "3.15.0.rc.2",
+          "3.15.1",
+          "3.15.2",
+          "3.15.3",
+          "3.15.4",
+          "3.15.5",
+          "3.15.6",
+          "3.15.7",
+          "3.15.8",
+          "3.16.0",
+          "3.16.0.rc.1",
+          "3.16.0.rc.2",
+          "3.2.0",
+          "3.2.0.1",
+          "3.2.0.2",
+          "3.2.1.pre",
+          "3.3.0",
+          "3.4.0.1",
+          "3.4.0.2",
+          "3.4.1.1",
+          "3.5.0",
+          "3.5.0.pre",
+          "3.5.1",
+          "3.5.1.1",
+          "3.5.1.2",
+          "3.6.0",
+          "3.6.1",
+          "3.7.0",
+          "3.7.0.rc.2",
+          "3.7.0.rc.3",
+          "3.7.1",
+          "3.8.0",
+          "3.8.0.rc.1",
+          "3.9.0",
+          "3.9.0.rc.1",
+          "3.9.1",
+          "3.9.2"
+        ],
+        "database_specific": {
+          "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/10/GHSA-h4h5-3hr4-j3g2/GHSA-h4h5-3hr4-j3g2.json"
+        }
+      },
+      {
+        "package": {
+          "name": "com.google.protobuf:protobuf-javalite",
+          "ecosystem": "Maven",
+          "purl": "pkg:maven/com.google.protobuf/protobuf-javalite"
+        },
+        "ranges": [
+          {
+            "type": "ECOSYSTEM",
+            "events": [
+              {
+                "introduced": "3.20.0-rc-1"
+              },
+              {
+                "fixed": "3.20.3"
+              }
+            ]
+          }
+        ],
+        "versions": [
+          "3.20.0",
+          "3.20.0-rc-1",
+          "3.20.1",
+          "3.20.1-rc-1",
+          "3.20.2"
+        ],
+        "database_specific": {
+          "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/10/GHSA-h4h5-3hr4-j3g2/GHSA-h4h5-3hr4-j3g2.json"
+        }
+      },
+      {
+        "package": {
+          "name": "com.google.protobuf:protobuf-javalite",
+          "ecosystem": "Maven",
+          "purl": "pkg:maven/com.google.protobuf/protobuf-javalite"
+        },
+        "ranges": [
+          {
+            "type": "ECOSYSTEM",
+            "events": [
+              {
+                "introduced": "3.17.0-rc-1"
+              },
+              {
+                "fixed": "3.19.6"
+              }
+            ]
+          }
+        ],
+        "versions": [
+          "3.17.0",
+          "3.17.0-rc-1",
+          "3.17.0-rc-2",
+          "3.17.1",
+          "3.17.2",
+          "3.17.3",
+          "3.18.0",
+          "3.18.0-rc-1",
+          "3.18.0-rc-2",
+          "3.18.1",
+          "3.18.2",
+          "3.18.3",
+          "3.19.0",
+          "3.19.0-rc-1",
+          "3.19.0-rc-2",
+          "3.19.1",
+          "3.19.2",
+          "3.19.3",
+          "3.19.4",
+          "3.19.5"
+        ],
+        "database_specific": {
+          "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/10/GHSA-h4h5-3hr4-j3g2/GHSA-h4h5-3hr4-j3g2.json"
+        }
+      },
+      {
+        "package": {
+          "name": "com.google.protobuf:protobuf-javalite",
+          "ecosystem": "Maven",
+          "purl": "pkg:maven/com.google.protobuf/protobuf-javalite"
+        },
+        "ranges": [
+          {
+            "type": "ECOSYSTEM",
+            "events": [
+              {
+                "introduced": "0"
+              },
+              {
+                "fixed": "3.16.3"
+              }
+            ]
+          }
+        ],
+        "versions": [
+          "3.10.0",
+          "3.10.0-rc-1",
+          "3.11.0",
+          "3.11.0-rc-1",
+          "3.11.0-rc-2",
+          "3.11.1",
+          "3.11.3",
+          "3.11.4",
+          "3.12.0",
+          "3.12.0-rc-1",
+          "3.12.0-rc-2",
+          "3.12.1",
+          "3.12.2",
+          "3.12.4",
+          "3.13.0",
+          "3.13.0-rc-3",
+          "3.14.0",
+          "3.14.0-rc-1",
+          "3.14.0-rc-2",
+          "3.14.0-rc-3",
+          "3.15.0",
+          "3.15.0-rc-1",
+          "3.15.0-rc-2",
+          "3.15.1",
+          "3.15.2",
+          "3.15.3",
+          "3.15.4",
+          "3.15.5",
+          "3.15.6",
+          "3.15.7",
+          "3.15.8",
+          "3.16.0",
+          "3.16.0-rc-1",
+          "3.16.0-rc-2",
+          "3.16.1",
+          "3.8.0",
+          "3.8.0-rc-1",
+          "3.9.0",
+          "3.9.0-rc-1",
+          "3.9.1",
+          "3.9.2"
+        ],
+        "database_specific": {
+          "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/10/GHSA-h4h5-3hr4-j3g2/GHSA-h4h5-3hr4-j3g2.json"
+        }
+      },
+      {
+        "package": {
+          "name": "com.google.protobuf:protobuf-kotlin-lite",
+          "ecosystem": "Maven",
+          "purl": "pkg:maven/com.google.protobuf/protobuf-kotlin-lite"
+        },
+        "ranges": [
+          {
+            "type": "ECOSYSTEM",
+            "events": [
+              {
+                "introduced": "3.20.0-rc-1"
+              },
+              {
+                "fixed": "3.20.3"
+              }
+            ]
+          }
+        ],
+        "versions": [
+          "3.20.0",
+          "3.20.0-rc-1",
+          "3.20.1",
+          "3.20.1-rc-1",
+          "3.20.2"
+        ],
+        "database_specific": {
+          "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/10/GHSA-h4h5-3hr4-j3g2/GHSA-h4h5-3hr4-j3g2.json"
+        }
+      },
+      {
+        "package": {
+          "name": "com.google.protobuf:protobuf-kotlin-lite",
+          "ecosystem": "Maven",
+          "purl": "pkg:maven/com.google.protobuf/protobuf-kotlin-lite"
+        },
+        "ranges": [
+          {
+            "type": "ECOSYSTEM",
+            "events": [
+              {
+                "introduced": "3.17.0-rc-1"
+              },
+              {
+                "fixed": "3.19.6"
+              }
+            ]
+          }
+        ],
+        "versions": [
+          "3.17.0",
+          "3.17.0-rc-2",
+          "3.17.1",
+          "3.17.2",
+          "3.17.3",
+          "3.18.0",
+          "3.18.0-rc-1",
+          "3.18.0-rc-2",
+          "3.18.1",
+          "3.18.2",
+          "3.18.3",
+          "3.19.0",
+          "3.19.0-rc-1",
+          "3.19.0-rc-2",
+          "3.19.1",
+          "3.19.2",
+          "3.19.3",
+          "3.19.4",
+          "3.19.5"
+        ],
+        "database_specific": {
+          "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/10/GHSA-h4h5-3hr4-j3g2/GHSA-h4h5-3hr4-j3g2.json"
+        }
+      },
+      {
+        "package": {
+          "name": "com.google.protobuf:protobuf-kotlin-lite",
+          "ecosystem": "Maven",
+          "purl": "pkg:maven/com.google.protobuf/protobuf-kotlin-lite"
+        },
+        "ranges": [
+          {
+            "type": "ECOSYSTEM",
+            "events": [
+              {
+                "introduced": "0"
+              },
+              {
+                "fixed": "3.16.3"
+              }
+            ]
+          }
+        ],
+        "database_specific": {
+          "source": "https://github.com/github/advisory-database/blob/main/advisories/github-reviewed/2022/10/GHSA-h4h5-3hr4-j3g2/GHSA-h4h5-3hr4-j3g2.json"
+        }
+      }
+    ],
+    "schema_version": "1.9.0",
+    "severity": [
+      {
+        "type": "CVSS_V3",
+        "score": "CVSS:3.1/AV:A/AC:L/PR:L/UI:N/S:U/C:N/I:N/A:H"
+      }
+    ]
+  }
+}

@@ -1,0 +1,1 @@
+335e610636a71f2b5ff9566aac142c633a825a027dd10e54b9a33e4db1ea54dd  BitNFC-0.4.0-debug.apk

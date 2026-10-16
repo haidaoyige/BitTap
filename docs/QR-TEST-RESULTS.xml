@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="io.coingift.android.QrCodeEncoderTest" tests="4" skipped="0" failures="0" errors="0" timestamp="2026-10-15T08:18:06" hostname="iandeMacBook-Air.local" time="0.09">
+  <properties/>
+  <testcase name="addressQrRejectsPrivateKeysBackupsAndInvalidOrWrongNetworkAddresses" classname="io.coingift.android.QrCodeEncoderTest" time="0.02"/>
+  <testcase name="neverEncodesAnAddressOrEncryptedBackupAsPrivateKey" classname="io.coingift.android.QrCodeEncoderTest" time="0.0"/>
+  <testcase name="displayedPixelsScanToExactlyTheWif" classname="io.coingift.android.QrCodeEncoderTest" time="0.037"/>
+  <testcase name="allFourAddressTypesScanToExactlyThePublicAddress" classname="io.coingift.android.QrCodeEncoderTest" time="0.033"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

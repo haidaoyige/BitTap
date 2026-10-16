@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="io.coingift.core.BitTapNextTest" tests="11" skipped="0" failures="0" errors="0" timestamp="2026-10-16T07:31:51" hostname="iandeMacBook-Air.local" time="1.171">
+  <properties/>
+  <testcase name="closedCaptureRejectsMoreData" classname="io.coingift.core.BitTapNextTest" time="0.009"/>
+  <testcase name="publicNoteAuthenticatesAndRecoveryMatches" classname="io.coingift.core.BitTapNextTest" time="0.39"/>
+  <testcase name="enhancedCreationRecoversNoteAndAllAddresses" classname="io.coingift.core.BitTapNextTest" time="0.219"/>
+  <testcase name="emptyNoteAndLegacyMetadataRemainReadable" classname="io.coingift.core.BitTapNextTest" time="0.149"/>
+  <testcase name="noteTamperingFailsAuthentication" classname="io.coingift.core.BitTapNextTest" time="0.158"/>
+  <testcase name="supplementaryLettersFitExact64ByteBoundary" classname="io.coingift.core.BitTapNextTest" time="0.159"/>
+  <testcase name="systemRandomFailureNeverFallsBackToCamera" classname="io.coingift.core.BitTapNextTest" time="0.001"/>
+  <testcase name="mixtureMatchesIndependentPythonGoldenAndIsSingleUse" classname="io.coingift.core.BitTapNextTest" time="0.0"/>
+  <testcase name="repeatedFramesCannotCompleteCapture" classname="io.coingift.core.BitTapNextTest" time="0.001"/>
+  <testcase name="malformedNoteUtf8AndPrefixMismatchRejected" classname="io.coingift.core.BitTapNextTest" time="0.083"/>
+  <testcase name="notesRejectControlBidiEmojiAndNewlines" classname="io.coingift.core.BitTapNextTest" time="0.001"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

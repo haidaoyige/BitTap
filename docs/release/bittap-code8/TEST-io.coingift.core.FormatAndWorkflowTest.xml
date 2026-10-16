@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="io.coingift.core.FormatAndWorkflowTest" tests="9" skipped="0" failures="0" errors="0" timestamp="2026-10-16T07:31:53" hostname="iandeMacBook-Air.local" time="0.498">
+  <properties/>
+  <testcase name="failedCloseOrReadbackNeverCompletesBackup" classname="io.coingift.core.FormatAndWorkflowTest" time="0.004"/>
+  <testcase name="fourPublicAddressesAvailableWithoutPassword" classname="io.coingift.core.FormatAndWorkflowTest" time="0.0"/>
+  <testcase name="eachAddressIsCoveredByGcmAuthentication" classname="io.coingift.core.FormatAndWorkflowTest" time="0.299"/>
+  <testcase name="backupIsVerifiedAfterClose" classname="io.coingift.core.FormatAndWorkflowTest" time="0.001"/>
+  <testcase name="authenticatedButUnrelatedAddressRejected" classname="io.coingift.core.FormatAndWorkflowTest" time="0.123"/>
+  <testcase name="existingCg1FixtureStillDecrypts" classname="io.coingift.core.FormatAndWorkflowTest" time="0.068"/>
+  <testcase name="completionRequiresVerifiedWriteAndSavedBackup" classname="io.coingift.core.FormatAndWorkflowTest" time="0.002"/>
+  <testcase name="multipleCardsUseExactSameBackupAndCountUniqueTags" classname="io.coingift.core.FormatAndWorkflowTest" time="0.0"/>
+  <testcase name="swappedTypesTruncatedDataAndPrefixVersionMismatchRejected" classname="io.coingift.core.FormatAndWorkflowTest" time="0.001"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

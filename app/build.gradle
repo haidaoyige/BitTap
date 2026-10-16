@@ -1,0 +1,56 @@
+plugins { id 'com.android.application' }
+def releaseSigning = [
+    storeFile: System.getenv('BITNFC_RELEASE_STORE_FILE'),
+    storePassword: System.getenv('BITNFC_RELEASE_STORE_PASSWORD'),
+    keyAlias: System.getenv('BITNFC_RELEASE_KEY_ALIAS'),
+    keyPassword: System.getenv('BITNFC_RELEASE_KEY_PASSWORD')
+]
+android {
+    namespace 'io.coingift.android'
+    compileSdk 35
+    defaultConfig {
+        applicationId 'io.coingift.android'
+        minSdk 28
+        targetSdk 35
+        versionCode 15
+        versionName '0.5.0'
+        testInstrumentationRunner (project.hasProperty('bitnfcAudit') ? 'io.coingift.android.SecurityReviewRunner' : 'io.coingift.android.SmokeRunner')
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+    def taskDebugKeystore = System.getenv('COINGIFT_DEBUG_KEYSTORE')
+    if (taskDebugKeystore) { signingConfigs.debug.storeFile = file(taskDebugKeystore) }
+    signingConfigs {
+        release {
+            if (releaseSigning.storeFile) storeFile = file(releaseSigning.storeFile)
+            storePassword = releaseSigning.storePassword
+            keyAlias = releaseSigning.keyAlias
+            keyPassword = releaseSigning.keyPassword
+        }
+    }
+    testBuildType (project.hasProperty('bitnfcReleaseTest') ? 'release' : 'debug')
+    buildTypes {
+        release {
+            debuggable false
+            minifyEnabled false
+            signingConfig signingConfigs.release
+        }
+    }
+    bundle { language { enableSplit = false } }
+    packaging { resources.excludes += ['META-INF/DEPENDENCIES','META-INF/LICENSE*','META-INF/NOTICE*','META-INF/*.kotlin_module'] }
+}
+// Never silently produce an unsigned APK or fall back to the debug signing identity.
+gradle.taskGraph.whenReady { graph ->
+    if (graph.hasTask(':app:packageRelease') || graph.hasTask(':app:packageReleaseAndroidTest')) {
+        if (releaseSigning.values().any { !it })
+            throw new GradleException('Release signing requires BITNFC_RELEASE_STORE_FILE, STORE_PASSWORD, KEY_ALIAS and KEY_PASSWORD environment variables.')
+    }
+}
+dependencies {
+    implementation project(':core')
+    implementation 'com.google.zxing:core:3.5.3'
+    testImplementation 'junit:junit:4.13.2'
+    runtimeOnly 'org.slf4j:slf4j-nop:1.7.36'
+}

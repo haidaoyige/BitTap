@@ -1,0 +1,396 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+  <string name="copy_confirm_title">Copy WIF private key?</string>
+  <string name="copy_confirm_description">The key will be copied as plaintext to the system clipboard, increasing exposure risk.</string>
+  <string name="copy_confirm_caution">Paste only into a wallet you trust. Never send it to anyone or an AI.</string>
+  <string name="copy_confirm_transfer">After copying or importing, promptly move all BTC to a new, backed-up wallet and stop sending to or receiving at the old addresses.</string>
+  <string name="copy_confirm_action">Confirm copying WIF key</string>
+  <string name="private_image_title">WIF private key</string>
+  <string name="private_image_subtitle">Import into a wallet that supports WIF</string>
+  <string name="private_image_risk_title">Plaintext key · Exposure risk</string>
+  <string name="private_image_risk_body">Anyone with this image may be able to move the BTC in this wallet.</string>
+  <string name="private_image_key_label">Plaintext private key · WIF</string>
+  <string name="private_image_move_title">Move all BTC promptly</string>
+  <string name="private_image_move_body">Transfer all BTC from this wallet to a new wallet that you have already backed up.</string>
+  <string name="private_image_stop_title">Stop using the old addresses</string>
+  <string name="private_image_stop_body">Do not send more BTC to any old address of this wallet or keep using these addresses to receive payments.</string>
+  <string name="private_image_notice">Do not share or upload this image.</string>
+  <string name="address_image_title">Receiving address</string>
+  <string name="address_image_label">Bitcoin address</string>
+  <string name="address_image_tagline" translatable="false">YOUR KEYS. YOUR BITCOIN.</string>
+  <string name="app_name" formatted="false">"BitTap"</string>
+  <string name="private_wif" formatted="false">"Private key · WIF"</string>
+  <string name="btc_mainnet" formatted="false">"BTC mainnet"</string>
+  <string name="nfc_scan_status">"●  %1$s"</string>
+  <string name="tx_e3b0c44298fc" formatted="false">"This explanation is currently available in Chinese."</string>
+  <string name="tx_37e1ec891972" formatted="false">" · recommended"</string>
+  <string name="tx_99fc6ae1c2b5" formatted="false">" · confirm recovery compatibility"</string>
+  <string name="tx_ad71a0cbe0e9" formatted="false">" address"</string>
+  <string name="tx_f5d87a8b74a0" formatted="false">" bytes"</string>
+  <string name="tx_36eac7ae02d6" formatted="false">" bytes / available: "</string>
+  <string name="tx_1f9f261cb3f7" formatted="false">" bytes; available: "</string>
+  <string name="tx_6da628e292f8" formatted="false">" NFC cards."</string>
+  <string name="tx_eb563b1dfeb9" formatted="false">"1 photo"</string>
+  <string name="tx_c24f79164615" formatted="false">"Draft 1.0 · 2026/10/16"</string>
+  <string name="tx_735eaaba42cc" formatted="false">"BIP38 has no public receiving address. Decrypt and match the funded address."</string>
+  <string name="tx_8e6d2572586e" formatted="false">"Unsupported or invalid data. Check the original card/file, address type and format."</string>
+  <string name="tx_eff9e6709f7c" formatted="false">"BTC mainnet"</string>
+  <string name="tx_911c36753ad0" formatted="false">"BTC receiving-address QR"</string>
+  <string name="tx_e631a3fd1c4e" formatted="false">"BitTap creates and restores private keys on your device. It does not hold BTC, private keys or passwords, and offers no asset insurance, capital protection or recovery guarantee."</string>
+  <string name="tx_90f08fc97604" formatted="false">"NFC read-back matches the write"</string>
+  <string name="tx_913c4dddc512" formatted="false">"NFC operation is not confirmed. Check card compatibility, contents, capacity and write protection; save your backup."</string>
+  <string name="tx_8fa272fa506a" formatted="false">"SHA-256 does not create entropy. The camera is a supplement and cannot protect a compromised phone."</string>
+  <string name="tx_be17cc390d70" formatted="false">"SegWit · recommended"</string>
+  <string name="tx_8a49dc584353" formatted="false">"Key or capture verification failed. Stop and retry; do not use an unverified wallet."</string>
+  <string name="tx_d917d625ddcd" formatted="false">"Taproot · check recovery support"</string>
+  <string name="tx_77d845252711" formatted="false">"Key or capture verification failed. Stop and retry; do not use an unverified wallet."</string>
+  <string name="tx_f5b4ef25e5a9" formatted="false">"WIF private key"</string>
+  <string name="tx_9949b5a98f91" formatted="false">"WIF private-key QR, for your own wallet only"</string>
+  <string name="tx_c6154c8d953e" formatted="false">"WIF copied. Import into your own wallet promptly; never share it."</string>
+  <string name="tx_a218fa85ba4c" formatted="false">"Disagree, return home"</string>
+  <string name="tx_67a970469fc9" formatted="false">"NFC operation is not confirmed. Check card compatibility, contents, capacity and write protection; save your backup."</string>
+  <string name="tx_a62408ee3231" formatted="false">"Unsupported or invalid data. Check the original card/file, address type and format."</string>
+  <string name="tx_820ac17abe39" formatted="false">"Unsupported or invalid data. Check the original card/file, address type and format."</string>
+  <string name="tx_1f31eefae604" formatted="false">"Unsupported or invalid data. Check the original card/file, address type and format."</string>
+  <string name="tx_f9108720f396" formatted="false">"Mix both inputs, then generate the key"</string>
+  <string name="tx_64eff9d19646" formatted="false">"Passwords do not match"</string>
+  <string name="tx_72726d8818f6" formatted="false">"中文"</string>
+  <string name="tx_7e2a0ba85e5b" formatted="false">"How it works"</string>
+  <string name="tx_7ffa50a9d43f" formatted="false">"QR contains only a receiving address, no private key"</string>
+  <string name="tx_3f220c138d71" formatted="false">"The QR contains only the receiving address and can be shared."</string>
+  <string name="tx_8acc3205b149" formatted="false">"This QR contains an unencrypted private key. Do not share it. Protect any saved image. Closes after 60 seconds."</string>
+  <string name="tx_aa0a7876797e" formatted="false">"This QR contains an unencrypted private key. Do not share it. Protect any saved image."</string>
+  <string name="tx_c5eedf9864cd" formatted="false">"Key or capture verification failed. Stop and retry; do not use an unverified wallet."</string>
+  <string name="tx_7e275fe335e2" formatted="false">"QR creation failed. Use private-key copy instead."</string>
+  <string name="tx_032055388866" formatted="false">"For import into your own wallet only"</string>
+  <string name="tx_0a4552e299bc" formatted="false">"Processed on this device. No internet needed."</string>
+  <string name="tx_8bba62eb3a44" formatted="false">"Applies to this entry only. You will be asked again next time."</string>
+  <string name="tx_53f28d79af7c" formatted="false">"Preview only. Clipboard is unchanged."</string>
+  <string name="tx_5fcdace46495" formatted="false">"Only for this randomness capture. No external camera app or automatic photo saving."</string>
+  <string name="tx_7b9f160607a2" formatted="false">"Unsupported or invalid data. Check the original card/file, address type and format."</string>
+  <string name="tx_eac9ebe7e1c5" formatted="false">"The full Chinese source text follows. Legal review is required before release."</string>
+  <string name="tx_52f2311f533a" formatted="false">"Unsupported or invalid data. Check the original card/file, address type and format."</string>
+  <string name="tx_a77dc3583d73" formatted="false">"Use the original wallet password. Decryption is local."</string>
+  <string name="tx_1ac37c0d65e9" formatted="false">"Generated and encrypted locally with system secure randomness"</string>
+  <string name="tx_dd961e177aed" formatted="false">"Use system randomness"</string>
+  <string name="tx_cb4ba40bf823" formatted="false">"Help"</string>
+  <string name="tx_fd233833460b" formatted="false">"Use this capture"</string>
+  <string name="tx_9403c6e1c0de" formatted="false">"Keep an encrypted backup separately from your NFC card. Recovery requires that backup and the original password. Store the password separately."</string>
+  <string name="tx_71386d7b5c41" formatted="false">"Keep a separate backup"</string>
+  <string name="tx_dd44e0a9987d" formatted="false">"Save as file"</string>
+  <string name="tx_05f2ed792d40" formatted="false">"Save encrypted backup"</string>
+  <string name="tx_85f70d2c0501" formatted="false">"Save the same cold wallet"</string>
+  <string name="tx_850de13a01d9" formatted="false">"Save image"</string>
+  <string name="tx_cc7068c55be5" formatted="false">"After saving, continue writing the same wallet to another NFC card."</string>
+  <string name="tx_a89841c91122" formatted="false">"Save private-key QR?"</string>
+  <string name="tx_460df61eff5c" formatted="false">"Allow &amp; start capture"</string>
+  <string name="tx_8b1c112f7d39" formatted="false">"Save encrypted backup first"</string>
+  <string name="tx_c407ad9101a0" formatted="false">"Save a backup before writing another card"</string>
+  <string name="tx_0c07e16de18e" formatted="false">"Capture camera data first, then set the password."</string>
+  <string name="tx_4c66c0a2d9e6" formatted="false">"Protect your private key"</string>
+  <string name="tx_fa5c6e3c27c3" formatted="false">"Use the note to recognize your wallet.\nEnter the password when you need the private key."</string>
+  <string name="tx_1c3ae1077963" formatted="false">"Disclaimer &amp; risk notice"</string>
+  <string name="tx_26d3ddeff65f" formatted="false">"Free and open source. No custody."</string>
+  <string name="tx_8b14a413b837" formatted="false">"About BitTap"</string>
+  <string name="tx_3fd47edce45b" formatted="false">"Close"</string>
+  <string name="tx_759e3f6eeac7" formatted="false">"Close QR"</string>
+  <string name="tx_3970b3aa27d1" formatted="false">"Other addresses"</string>
+  <string name="tx_50bc777b5525" formatted="false">"Other receiving addresses ⌄"</string>
+  <string name="tx_cc4ad0893aab" formatted="false">"Save encrypted backup again"</string>
+  <string name="tx_b0203d529979" formatted="false">"Tap the same card to write"</string>
+  <string name="tx_d0c9a0e81079" formatted="false">"Confirm password"</string>
+  <string name="tx_a8ca5da31def" formatted="false">"Writing → reading back → comparing. Keep the card in place…"</string>
+  <string name="tx_47fe095a6374" formatted="false">"Writing replaces all existing NDEF contents. Confirm you have kept any data you need."</string>
+  <string name="tx_aee7400b7392" formatted="false">"Write another NFC card"</string>
+  <string name="tx_cbbf5beae050" formatted="false">"Read-back comparison after writing"</string>
+  <string name="tx_b375e92d28b4" formatted="false">"NFC operation is not confirmed. Check card compatibility, contents, capacity and write protection; save your backup."</string>
+  <string name="tx_380f0a6349fa" formatted="false">"Cold wallet created"</string>
+  <string name="tx_ece1ad79e4bf" formatted="false">"Cold wallet read"</string>
+  <string name="tx_2793fd50220e" formatted="false">"Prepare a writable NFC card.\nThe app reads back and compares after writing."</string>
+  <string name="tx_315ae18ab628" formatted="false">"Prepare a writable NFC card. Keep it against the phone throughout writing."</string>
+  <string name="tx_fac6cd7a6d04" formatted="false">"Create cold wallet"</string>
+  <string name="tx_e0aa451f02d8" formatted="false">"Before creating a wallet"</string>
+  <string name="tx_bc0fbd2ebc53" formatted="false">"Add preview frames and a photo to the system random source."</string>
+  <string name="tx_081487800eae" formatted="false">"Encrypted backup saved and verified"</string>
+  <string name="tx_6fb3f0efab68" formatted="false">"Encrypted backup saved and checked"</string>
+  <string name="tx_e14cd3c23f47" formatted="false">"Includes the encrypted key, four receiving addresses and public note. The original password is still required."</string>
+  <string name="tx_576967c59689" formatted="false">"NFC operation is not confirmed. Check card compatibility, contents, capacity and write protection; save your backup."</string>
+  <string name="tx_89401142aefd" formatted="false">"Unsupported or invalid data. Check the original card/file, address type and format."</string>
+  <string name="tx_010c9563a277" formatted="false">"NFC operation is not confirmed. Check card compatibility, contents, capacity and write protection; save your backup."</string>
+  <string name="tx_39648e5a0493" formatted="false">"NFC operation is not confirmed. Check card compatibility, contents, capacity and write protection; save your backup."</string>
+  <string name="tx_be1dcb6422b4" formatted="false">"NFC operation is not confirmed. Check card compatibility, contents, capacity and write protection; save your backup."</string>
+  <string name="tx_108f53d16de5" formatted="false">"Unsupported or invalid data. Check the original card/file, address type and format."</string>
+  <string name="tx_a5ac8ef23c31" formatted="false">"Unsupported or invalid data. Check the original card/file, address type and format."</string>
+  <string name="tx_218b191985f5" formatted="false">"Card is writable"</string>
+  <string name="tx_0bc1c2d8cc01" formatted="false">"Writable card with enough capacity. Tap the same card again after confirmation."</string>
+  <string name="tx_688cf3e7251b" formatted="false">"Insufficient card capacity; required: "</string>
+  <string name="tx_93adbae9e89b" formatted="false">"Capacity and writable-state checks passed. Confirm, then tap the same card again. Existing data still requires an overwrite warning."</string>
+  <string name="tx_5fe0d2784c6b" formatted="false">"Card written and read-back verified."</string>
+  <string name="tx_107ff4bce650" formatted="false">"Card has data. Overwrite it?"</string>
+  <string name="tx_ca4aef0f8ba7" formatted="false">"NFC operation is not confirmed. Check card compatibility, contents, capacity and write protection; save your backup."</string>
+  <string name="tx_78c8d85085cf" formatted="false">"Card receiving address"</string>
+  <string name="tx_3cf70a09b4c9" formatted="false">"Unsupported or invalid data. Check the original card/file, address type and format."</string>
+  <string name="tx_40b58d30c11e" formatted="false">"Unsupported or invalid data. Check the original card/file, address type and format."</string>
+  <string name="tx_5d5929f7b41e" formatted="false">"NFC operation is not confirmed. Check card compatibility, contents, capacity and write protection; save your backup."</string>
+  <string name="tx_931bf9bff097" formatted="false">"Prototype · Sample data and camera view. Do not enter real passwords."</string>
+  <string name="tx_b097fac49ab6" formatted="false">"Prototype"</string>
+  <string name="tx_f04015a9b777" formatted="false">"Prototype only. No image was saved."</string>
+  <string name="tx_6dd443e06c51" formatted="false">"Prototype only. No external site was opened or address sent."</string>
+  <string name="tx_2cd0f3be8738" formatted="false">"Cancel"</string>
+  <string name="tx_d54787a3b6ce" formatted="false">"Memory only. No gallery save or upload."</string>
+  <string name="tx_54e37a1b1fb7" formatted="false">"Unsupported or invalid data. Check the original card/file, address type and format."</string>
+  <string name="tx_31c6d3c75a21" formatted="false">"Optional · System secure randomness stays enabled"</string>
+  <string name="tx_bb4b7a71f408" formatted="false">"Same wallet and password. The note stays the same."</string>
+  <string name="tx_81c92013219d" formatted="false">"Agree &amp; continue"</string>
+  <string name="tx_0e731363d1ba" formatted="false">"Four address types share the original key material; balances are separate. Match the actual funded address."</string>
+  <string name="tx_887f8753d322" formatted="false">"View four addresses without a password. Enter the password to recover the key."</string>
+  <string name="tx_1aef87cbb981" formatted="false">"Empty or repeated frames, or no valid photo. Capture again; enhanced mode will not silently continue."</string>
+  <string name="tx_a48e23cd97c3" formatted="false">"Key or capture verification failed. Stop and retry; do not use an unverified wallet."</string>
+  <string name="tx_2fb79b2058c3" formatted="false">"Image export expired. Open the QR and save again."</string>
+  <string name="tx_c744e2e1e9b9" formatted="false">"This image is an unencrypted private key. Anyone who obtains it may spend your BTC. Save locally in a trusted location; avoid cloud sync and sharing. This is not an encrypted backup."</string>
+  <string name="tx_8cdf4cdf4c3b" formatted="false">"Anyone with this image may spend the BTC. Save it in a trusted location. Do not upload or share it."</string>
+  <string name="tx_4ee93857558a" formatted="false">"This image is a plaintext private key, not an encrypted backup."</string>
+  <string name="tx_f809f8290f2f" formatted="false">"Image cleared. Reopen the QR to save."</string>
+  <string name="tx_4c5ccadbe1f4" formatted="false">"Image save not verified. Save again and check the destination."</string>
+  <string name="tx_f44b0e78cc58" formatted="false">"Liability is limited where the law permits"</string>
+  <string name="tx_98bba9491449" formatted="false">"Where permitted by applicable law and where this limitation is valid, the project parties are not liable for loss of assets, keys, data or other damage arising from use or inability to use the software. This does not exclude liability that the law prohibits excluding, including applicable liability for intent or gross negligence."</string>
+  <string name="tx_c0039dc141c3" formatted="false">"Address QR failed. Try again."</string>
+  <string name="tx_4d35a56765a8" formatted="false">"Unsupported or invalid data. Check the original card/file, address type and format."</string>
+  <string name="tx_cb2db11366eb" formatted="false">"Unsupported or invalid data. Check the original card/file, address type and format."</string>
+  <string name="tx_602ccc4203f8" formatted="false">"Unsupported or invalid data. Check the original card/file, address type and format."</string>
+  <string name="tx_ed48952f3a28" formatted="false">"Unsupported or invalid data. Check the original card/file, address type and format."</string>
+  <string name="tx_42f9e26c5fa8" formatted="false">"Unsupported or invalid data. Check the original card/file, address type and format."</string>
+  <string name="tx_f1ca14769c27" formatted="false">"Unsupported or invalid data. Check the original card/file, address type and format."</string>
+  <string name="tx_ae3c42b6f605" formatted="false">"Unsupported or invalid data. Check the original card/file, address type and format."</string>
+  <string name="tx_670359f61e46" formatted="false">"Unsupported or invalid data. Check the original card/file, address type and format."</string>
+  <string name="tx_a4faef1de21e" formatted="false">"Unsupported or invalid data. Check the original card/file, address type and format."</string>
+  <string name="tx_208e6d054424" formatted="false">"Backup save not verified. Save again and check the file."</string>
+  <string name="tx_04391362591f" formatted="false">"Unsupported or invalid data. Check the original card/file, address type and format."</string>
+  <string name="tx_718212dce525" formatted="false">"Unsupported or invalid data. Check the original card/file, address type and format."</string>
+  <string name="tx_30024f2f93a7" formatted="false">"Unsupported or invalid data. Check the original card/file, address type and format."</string>
+  <string name="tx_b39ce6bd43e2" formatted="false">"Unsupported or invalid data. Check the original card/file, address type and format."</string>
+  <string name="tx_a0adef29ec1d" formatted="false">"Use letters, numbers, spaces and ordinary punctuation only; no emoji or control characters."</string>
+  <string name="tx_e5049bc960e6" formatted="false">"Note verified"</string>
+  <string name="tx_6addf141274d" formatted="false">"Copy WIF private key"</string>
+  <string name="tx_4c6de01bbe86" formatted="false">"Copy address"</string>
+  <string name="tx_96b7d6d7932f" formatted="false">"Copy private key"</string>
+  <string name="tx_9f7d5d389eb6" formatted="false">"How to move BTC"</string>
+  <string name="tx_9d8a7c85a670" formatted="false">"e.g. 03 - Long term"</string>
+  <string name="tx_d75182c59997" formatted="false">"Security and data cleanup"</string>
+  <string name="tx_56d46c19f8d1" formatted="false">"Android secure randomness stays enabled"</string>
+  <string name="tx_c0b3fbff51cc" formatted="false">"Done"</string>
+  <string name="tx_6ba33ad4de8f" formatted="false">"Finish, return home"</string>
+  <string name="tx_78603d1d957a" formatted="false">"Full disclaimer and risk notice"</string>
+  <string name="tx_606a2d350546" formatted="false">"Password cannot be all whitespace"</string>
+  <string name="tx_70705d85eaf4" formatted="false">"Password and data authenticated. Note and receiving addresses verified."</string>
+  <string name="tx_6d4608e990e4" formatted="false">"Password and data authenticated. Receiving addresses verified."</string>
+  <string name="tx_9d9491d8a3ea" formatted="false">"Password strength · guidance only"</string>
+  <string name="tx_a7ec90b3c281" formatted="false">"Medium password · allowed; consider adding length"</string>
+  <string name="tx_db0b40966118" formatted="false">"Weak password · allowed; use a longer, unique password"</string>
+  <string name="tx_f39e37039a6d" formatted="false">"Password strength: stronger · Guidance only"</string>
+  <string name="tx_e449a1d17850" formatted="false">"Stronger password · keep it unique and secure"</string>
+  <string name="tx_3940d14c2300" formatted="false">"Passwords cannot be reset. Keep yours separate from the card and backup."</string>
+  <string name="tx_a3661ec2a06b" formatted="false">"Password verified. Match the actual funded address."</string>
+  <string name="tx_f7ccde5b5f23" formatted="false">"Use at least 6 characters and matching passwords."</string>
+  <string name="tx_d71a50362f19" formatted="false">"Import encrypted backup file"</string>
+  <string name="tx_3f1a9c14fcbd" formatted="false">"Unsupported or invalid data. Check the original card/file, address type and format."</string>
+  <string name="tx_e3025c2b9a8c" formatted="false">"Hold the card against the phone’s NFC area"</string>
+  <string name="tx_888cc3269f57" formatted="false">"Hold the card against the phone’s NFC area."</string>
+  <string name="tx_2f6cfcdd0d49" formatted="false">"Opens online in your browser. The selected site receives this address and may associate it with your IP and browsing activity. No private key, password, wallet note or encrypted backup is sent."</string>
+  <string name="tx_7164d7dcce03" formatted="false">"Show "</string>
+  <string name="tx_f2c1c17e261f" formatted="false">"Show address"</string>
+  <string name="tx_e34e0d8f3f9f" formatted="false">"Verified against the private key"</string>
+  <string name="tx_0d09931b152d" formatted="false">"Image save cancelled"</string>
+  <string name="tx_9d8e4093a4db" formatted="false">"Cancelled. You can try again."</string>
+  <string name="tx_8f6f8d979c98" formatted="false">" copied"</string>
+  <string name="tx_e11c55870865" formatted="false">"Encrypted data read"</string>
+  <string name="tx_b9d33622822b" formatted="false">"frames"</string>
+  <string name="tx_9e2dd3a98d7d" formatted="false">"Enable NFC, return here and try again."</string>
+  <string name="tx_6ae15fbc4b31" formatted="false">"Start writing"</string>
+  <string name="tx_708a5bc8096c" formatted="false">"Start camera capture"</string>
+  <string name="tx_a65de7300439" formatted="false">"Flow preview only. No real QR is displayed."</string>
+  <string name="tx_774309b6c203" formatted="false">"Currently displayed"</string>
+  <string name="tx_71d56c609ed2" formatted="false">"Not yet verified"</string>
+  <string name="tx_1405dd6512a9" formatted="false">"Not yet checked against the private key. Decrypt to verify."</string>
+  <string name="tx_2a199152ebb3" formatted="false">"Key or capture verification failed. Stop and retry; do not use an unverified wallet."</string>
+  <string name="tx_da432e122a25" formatted="false">"Required capacity: "</string>
+  <string name="tx_16136805d1b2" formatted="false">"Uses English if the phone language is unsupported."</string>
+  <string name="tx_6bbcc116afce" formatted="false">"Open NFC settings"</string>
+  <string name="tx_7f73383195fc" formatted="false">"Put your wallet onto a card"</string>
+  <string name="tx_c93d6fdd936c" formatted="false">"Take photo &amp; finish capture"</string>
+  <string name="tx_2e15acc56b5a" formatted="false">"Read another wallet"</string>
+  <string name="tx_bad3182047eb" formatted="false">"Receiving address"</string>
+  <string name="tx_4a34d2a05a90" formatted="false">"Invalid receiving address. Cannot open explorer."</string>
+  <string name="tx_8ad0d107e3b1" formatted="false">"Receiving-address QR image saved"</string>
+  <string name="tx_1066146e689a" formatted="false">"Unsupported or invalid data. Check the original card/file, address type and format."</string>
+  <string name="tx_95e334ad66c8" formatted="false">"The file is read back and compared after saving."</string>
+  <string name="tx_075d2d3c6ee7" formatted="false">"Unsupported or invalid data. Check the original card/file, address type and format."</string>
+  <string name="tx_19ecb3b01400" formatted="false">"Unsupported or invalid data. Check the original card/file, address type and format."</string>
+  <string name="tx_9ac4cc9d917b" formatted="false">"Cannot open image save picker. Try again."</string>
+  <string name="tx_e7225644c1d3" formatted="false">"Unsupported or invalid data. Check the original card/file, address type and format."</string>
+  <string name="tx_66984199cd06" formatted="false">"Cannot read backup file, or file is too large."</string>
+  <string name="tx_5971bf6d24f7" formatted="false">"Cannot open browser. Check the public address on another device."</string>
+  <string name="tx_e19ff563fd63" formatted="false">"Unsupported or invalid data. Check the original card/file, address type and format."</string>
+  <string name="tx_38f1e2d533d9" formatted="false">"NFC operation is not confirmed. Check card compatibility, contents, capacity and write protection; save your backup."</string>
+  <string name="tx_47d43e26cce4" formatted="false">"Cannot access clipboard. Try again."</string>
+  <string name="tx_6c4c37c97d1b" formatted="false">"Unsupported or invalid data. Check the original card/file, address type and format."</string>
+  <string name="tx_d0431bf91be8" formatted="false">"Unsupported or invalid data. Check the original card/file, address type and format."</string>
+  <string name="tx_9655473ab707" formatted="false">"Unsupported or invalid data. Check the original card/file, address type and format."</string>
+  <string name="tx_5f9148cbaddc" formatted="false">"No decryption needed. This checks only the selected address, not the other address types."</string>
+  <string name="tx_77710aedc74e" formatted="false">"日本語"</string>
+  <string name="tx_51599727d1b9" formatted="false">"Legacy wallet"</string>
+  <string name="tx_4e1449e7d5e5" formatted="false">"Show"</string>
+  <string name="tx_7711581a6f1b" formatted="false">"Generic WIF import does not guarantee Taproot recovery. Confirm support for the exact funded address."</string>
+  <string name="tx_a2666f394298" formatted="false">"Not now"</string>
+  <string name="tx_6503fd81d536" formatted="false">"Last step: save a backup"</string>
+  <string name="tx_7139c515011e" formatted="false">"Up to 16 characters. Stored publicly. Never enter passwords or secrets."</string>
+  <string name="tx_f7b24a95d1db" formatted="false">"Final photo"</string>
+  <string name="tx_58d23126e224" formatted="false">"Key or capture verification failed. Stop and retry; do not use an unverified wallet."</string>
+  <string name="tx_259a872ca177" formatted="false">"Key or capture verification failed. Stop and retry; do not use an unverified wallet."</string>
+  <string name="tx_ab501de60709" formatted="false">"Do not force-close the app before saving a backup."</string>
+  <string name="tx_d9e0f04ff9de" formatted="false">"Copy success could not be confirmed. Check clipboard access and retry."</string>
+  <string name="tx_f0f179a46077" formatted="false">"No note set"</string>
+  <string name="tx_991dd7f9e675" formatted="false">"Capture not completed"</string>
+  <string name="tx_a32ec708f964" formatted="false">"Unsupported or invalid data. Check the original card/file, address type and format."</string>
+  <string name="tx_84324c8cae27" formatted="false">"The software is provided as is, with no guarantee that it is free of vulnerabilities or that recovery will always succeed. Defects, device failures, forgotten passwords, damaged cards or exposed keys may cause permanent loss. Back up and verify before use."</string>
+  <string name="tx_e6a338bdc302" formatted="false">"View on-chain balance"</string>
+  <string name="tx_be54ffff4425" formatted="false">"Balance checks never need a private key or seed phrase. Do not enter them or connect a wallet."</string>
+  <string name="tx_e75d6689e8da" formatted="false">"Simulate write &amp; read-back"</string>
+  <string name="tx_f43d90a75ec5" formatted="false">"Simulate card check"</string>
+  <string name="tx_8c5ef3dd8080" formatted="false">"Simulated view"</string>
+  <string name="tx_4dc8f15c9c23" formatted="false">"Simulate card recognition"</string>
+  <string name="tx_b968b14c3c44" formatted="false">"Simulate capture failure"</string>
+  <string name="tx_04f5b5bd3cd9" formatted="false">"Writing and comparing"</string>
+  <string name="tx_3b7e27cb4379" formatted="false">"Processing"</string>
+  <string name="tx_bf19b26b491a" formatted="false">"Checking card"</string>
+  <string name="tx_efff82d191ab" formatted="false">"Generating, encrypting and checking recovery…"</string>
+  <string name="tx_d57fc495aa67" formatted="false">"Decrypting and comparing addresses…"</string>
+  <string name="tx_2d40e9dd3041" formatted="false">"Reading cold wallet"</string>
+  <string name="tx_775ed16a7f8a" formatted="false">"Reading. Keep the card in place…"</string>
+  <string name="tx_fe35ae5322b1" formatted="false">"Unsupported or invalid data. Check the original card/file, address type and format."</string>
+  <string name="tx_93cf5fb968f5" formatted="false">"Address from card. Decrypt to verify before receiving funds."</string>
+  <string name="tx_cc0bcfe13c53" formatted="false">"This device has no NFC. Use an encrypted backup file for recovery."</string>
+  <string name="tx_5acddb38441d" formatted="false">"No file save picker is available"</string>
+  <string name="tx_2d4fdb747a67" formatted="false">"No file picker is available. Use NFC instead."</string>
+  <string name="tx_bb065d618351" formatted="false">"Wallet written to "</string>
+  <string name="tx_a9836e6504ed" formatted="false">"NFC operation is not confirmed. Check card compatibility, contents, capacity and write protection; save your backup."</string>
+  <string name="tx_7bd174586538" formatted="false">"Sample address. Do not send BTC."</string>
+  <string name="tx_3981325f1cd0" formatted="false">"Select a site to send the current address to it for lookup."</string>
+  <string name="tx_93425ea4d0e0" formatted="false">"Photos are not recovery material. No backup needed. Capture data is cleared after generation or cancellation."</string>
+  <string name="tx_86c41c9ba95a" formatted="false">"Generate cold wallet"</string>
+  <string name="tx_20a385baf1b7" formatted="false">"Key or capture verification failed. Stop and retry; do not use an unverified wallet."</string>
+  <string name="tx_067d7b7070f8" formatted="false">"Generation failed. No wallet created."</string>
+  <string name="tx_4c4d1a664117" formatted="false">"Recovery check passed at creation"</string>
+  <string name="tx_e2470988fb35" formatted="false">"One NFC card.\nYour BTC, in your hands."</string>
+  <string name="tx_c0fcc7154b58" formatted="false">"One NFC card. Your BTC, in your hands.\nAn open-source, offline NFC cold-wallet tool."</string>
+  <string name="tx_f4f5d0d5a7a1" formatted="false">"Scan with a wallet to receive BTC at this address"</string>
+  <string name="tx_e3886f06b0c2" formatted="false">"Camera supplement is incomplete. Retry, or explicitly switch to system randomness."</string>
+  <string name="tx_e5d2c8157cb0" formatted="false">"Key or capture verification failed. Stop and retry; do not use an unverified wallet."</string>
+  <string name="tx_32bd74daaa2f" formatted="false">"How the camera contributes"</string>
+  <string name="tx_d574ae07f42f" formatted="false">"Camera data ready · Cleared after generation"</string>
+  <string name="tx_01eadf17c0c0" formatted="false">"Camera data captured"</string>
+  <string name="tx_16dfd7a23b51" formatted="false">"Camera access is off"</string>
+  <string name="tx_2ca0bd5ad876" formatted="false">"Camera randomness supplement"</string>
+  <string name="tx_de32e20193ad" formatted="false">"Got it"</string>
+  <string name="tx_0b3214cc91f8" formatted="false">"NFC operation is not confirmed. Check card compatibility, contents, capacity and write protection; save your backup."</string>
+  <string name="tx_4a1edb18155e" formatted="false">"Confirm save"</string>
+  <string name="tx_545ef9fb0bcf" formatted="false">"Confirm writing"</string>
+  <string name="tx_aa2a9a2e2b20" formatted="false">"Confirm overwrite and write"</string>
+  <string name="tx_bfac7461da66" formatted="false">"Offline creation · Password protected"</string>
+  <string name="tx_2c902f3e8d2c" formatted="false">"Generate offline. Encrypt onto your card."</string>
+  <string name="tx_61f80e2016b1" formatted="false">"Private-key QR"</string>
+  <string name="tx_3439aad2c960" formatted="false">"Private-key QR saved. Protect the image."</string>
+  <string name="tx_3a2105caac04" formatted="false">"The private key and QR control BTC. Never share them."</string>
+  <string name="tx_b0251000355d" formatted="false">"How keys are generated and encrypted"</string>
+  <string name="tx_8798d03701ab" formatted="false">"Private key recovered"</string>
+  <string name="tx_67f5f80bba40" formatted="false">"Key or capture verification failed. Stop and retry; do not use an unverified wallet."</string>
+  <string name="tx_427756372fa1" formatted="false">"STEP 1 / PASSWORD &amp; NOTE"</string>
+  <string name="tx_beed11f3ea3d" formatted="false">"STEP 2 / WRITE CARD"</string>
+  <string name="tx_5e4c715b4306" formatted="false">"STEP 3 / COMPLETE &amp; BACK UP"</string>
+  <string name="tx_db318ad2805f" formatted="false">"Waiting for a card…"</string>
+  <string name="tx_4eb0894dc5c3" formatted="false">"Waiting for the same card…"</string>
+  <string name="tx_ce7e2556f66d" formatted="false">"Add another source"</string>
+  <string name="tx_aa51e9eb405e" formatted="false">"At least 6 characters. A longer, unique password is recommended."</string>
+  <string name="tx_52467cca5896" formatted="false">"To keep this phone offline, scan the receiving-address QR with another device and check there."</string>
+  <string name="tx_49bd846f4dec" formatted="false">"Decrypt cold wallet"</string>
+  <string name="tx_37343ee66db9" formatted="false">"Decryption failed: wrong password or damaged data"</string>
+  <string name="tx_0a04f815a4be" formatted="false">"Decryption successful"</string>
+  <string name="tx_a3cbe5a15cf7" formatted="false">"Set a password. Write to NFC."</string>
+  <string name="tx_4f53ff0d74b4" formatted="false">"Set a password and add a note to recognize this wallet."</string>
+  <string name="tx_127527c89c51" formatted="false">"Language"</string>
+  <string name="tx_61a1bd0312b1" formatted="false">"Unsupported or invalid data. Check the original card/file, address type and format."</string>
+  <string name="tx_6882806be0d8" formatted="false">"Use letters, numbers, spaces or common punctuation; up to 16 characters. No emoji, line breaks or hidden characters."</string>
+  <string name="tx_d3382bb9acad" formatted="false">"Use an independent password of 6–1024 characters"</string>
+  <string name="tx_e1461edccc60" formatted="false">"Check the card first"</string>
+  <string name="tx_262173029789" formatted="false">"Create a wallet first"</string>
+  <string name="tx_44f41c9a3131" formatted="false">"Remove the card, then tap again to verify locking"</string>
+  <string name="tx_ec721d66afb2" formatted="false">"Read the important information below and the full notice."</string>
+  <string name="tx_94fc9aae4921" formatted="false">"Save a separate encrypted backup"</string>
+  <string name="tx_6814c1cedd23" formatted="false">"Enable NFC"</string>
+  <string name="tx_dd59f35e7289" formatted="false">"Use another writable NFC card. Wallet, addresses and password stay the same."</string>
+  <string name="tx_83b2df51c031" formatted="false">"Tap a card to check it first"</string>
+  <string name="tx_3ed60404f305" formatted="false">"Tap to check and write"</string>
+  <string name="tx_01667d924e7c" formatted="false">"Tap a card to read"</string>
+  <string name="tx_fc76f3f547dd" formatted="false">"Tap the same card just written"</string>
+  <string name="tx_024e611eccc7" formatted="false">"Tap the same card just checked"</string>
+  <string name="tx_d6e3cb7ae284" formatted="false">"Enter the original wallet password. It cannot be reset."</string>
+  <string name="tx_a794cf9211ed" formatted="false">"Enter decryption password"</string>
+  <string name="tx_f7cd8038ffd8" formatted="false">"Enter the decryption password (up to 1024 characters)"</string>
+  <string name="tx_ddf8ce3976c6" formatted="false">"Read NFC card"</string>
+  <string name="tx_4f729bb745b4" formatted="false">"Read your cold wallet"</string>
+  <string name="tx_6ea10ab02986" formatted="false">"Read another wallet"</string>
+  <string name="tx_6b4ef5b7d303" formatted="false">"Read cold wallet"</string>
+  <string name="tx_b2a38955cbbc" formatted="false">"Before reading a wallet"</string>
+  <string name="tx_49970b35d8b0" formatted="false">"Tap a card or import a backup."</string>
+  <string name="tx_527e08c045c3" formatted="false">"Tap the same checked card. Keep it in place until read-back is verified."</string>
+  <string name="tx_bc9016054e9a" formatted="false">"Tap the same card to lock it permanently"</string>
+  <string name="tx_508e4c9ca73f" formatted="false">"Tap an NFC card or import an encrypted backup file."</string>
+  <string name="tx_8a96ae514509" formatted="false">"Tap an NFC card or import an encrypted backup.\nNo password is needed to see notes or addresses."</string>
+  <string name="tx_878d930524ed" formatted="false">"Hold against the phone’s NFC area"</string>
+  <string name="tx_0cd83cfe9fdf" formatted="false">"Follow phone language"</string>
+  <string name="tx_787c7c430960" formatted="false">"Software defects may cause loss of all BTC"</string>
+  <string name="tx_b618585b0699" formatted="false">"Move the camera gently over everyday objects.\nDo not photograph keys, passwords or private information."</string>
+  <string name="tx_572cf45ba436" formatted="false">"Back"</string>
+  <string name="tx_566866c64d7a" formatted="false">"Back to About BitTap"</string>
+  <string name="tx_4f43c229a0c2" formatted="false">"Save a backup before returning home"</string>
+  <string name="tx_bfa8ac132dd5" formatted="false">"Return to completion"</string>
+  <string name="tx_e12517e89134" formatted="false">"Back to risk notice"</string>
+  <string name="tx_173983928c88" formatted="false">"This data will be mixed with Android secure random bytes.\nIt will never generate your key on its own."</string>
+  <string name="tx_718e7b4fa1c7" formatted="false">"NFC operation is not confirmed. Check card compatibility, contents, capacity and write protection; save your backup."</string>
+  <string name="tx_237607776612" formatted="false">"NFC operation is not confirmed. Check card compatibility, contents, capacity and write protection; save your backup."</string>
+  <string name="tx_52056c380a1c" formatted="false">"NFC operation is not confirmed. Check card compatibility, contents, capacity and write protection; save your backup."</string>
+  <string name="tx_5836c07654e0" formatted="false">"Unsupported or invalid data. Check the original card/file, address type and format."</string>
+  <string name="tx_fbc75fc4847a" formatted="false">"Unsupported or invalid data. Check the original card/file, address type and format."</string>
+  <string name="tx_ebdcbdcf9c99" formatted="false">"Optional"</string>
+  <string name="tx_3547e178882d" formatted="false">"Choose a block explorer"</string>
+  <string name="tx_fd2843b6b6a3" formatted="false">"Choose location &amp; save"</string>
+  <string name="tx_e1fe64a57661" formatted="false">"Key or capture verification failed. Stop and retry; do not use an unverified wallet."</string>
+  <string name="tx_e99e632a128c" formatted="false">"Capture again"</string>
+  <string name="tx_b8784c8dd563" formatted="false">"Retry"</string>
+  <string name="tx_4dec52a5c8bf" formatted="false">"Wallet note"</string>
+  <string name="tx_313cd0764f94" formatted="false">"Unsupported or invalid data. Check the original card/file, address type and format."</string>
+  <string name="tx_86aeaac6b760" formatted="false">"Wallet notes and receiving addresses are public. The private key is password-encrypted."</string>
+  <string name="tx_48feaa3eb5b8" formatted="false">"The public wallet note is unverified and does not prove the wallet’s origin."</string>
+  <string name="tx_598abb77dc8e" formatted="false">"Unsupported or invalid data. Check the original card/file, address type and format."</string>
+  <string name="tx_f6428ad5a1ad" formatted="false">"Wallet note: at most 16 characters and 64 UTF-8 bytes"</string>
+  <string name="tx_cdaef56d96db" formatted="false">"Unsupported or invalid data. Check the original card/file, address type and format."</string>
+  <string name="tx_f6cd9514f416" formatted="false">"Unsupported or invalid data. Check the original card/file, address type and format."</string>
+  <string name="tx_aa096c77e4d8" formatted="false">"Wallet recognized"</string>
+  <string name="tx_ac27a35a073b" formatted="false">"Private key · WIF"</string>
+  <string name="tx_aac08d9f5f0e" formatted="false">"Wallet decryption password"</string>
+  <string name="tx_f0bc3849d39b" formatted="false">"Read the full disclaimer and risk notice"</string>
+  <string name="tx_ae6b4e57b0d2" formatted="false">"Key or capture verification failed. Stop and retry; do not use an unverified wallet."</string>
+  <string name="tx_90d37c0f93c7" formatted="false">"Stored with the wallet"</string>
+  <string name="tx_145219e726b8" formatted="false">"Hide"</string>
+  <string name="tx_fa53be48a3db" formatted="false">"Hide key, return home"</string>
+  <string name="tx_60495b4cccfd" formatted="false">"Unsupported or invalid data. Check the original card/file, address type and format."</string>
+  <string name="tx_8aa01651a9ad" formatted="false">"Camera access needed"</string>
+  <string name="tx_df789545c9c8" formatted="false">"Unsupported or invalid data. Check the original card/file, address type and format."</string>
+  <string name="tx_64a5f49fdbfe" formatted="false">"Preview frames"</string>
+  <string name="tx_56c5cb66a9a9" formatted="false">"Frames and photo become a digest"</string>
+  <string name="tx_0b051f23417c" formatted="false">"Preview frames collected"</string>
+  <string name="tx_ae09ddfcf2f1" formatted="false">"Before funding, read and decrypt again to verify recovery."</string>
+  <string name="tx_203c08e0d44a" formatted="false">"Home"</string>
+  <string name="camera_progress">%1$s %2$d / 32</string>
+  <string name="note_counter">%1$s · %2$d/16</string>
+</resources>

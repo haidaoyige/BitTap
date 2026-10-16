@@ -1,0 +1,2 @@
+PASS: 89 address-image export assertions.
+

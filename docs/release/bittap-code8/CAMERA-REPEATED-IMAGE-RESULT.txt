@@ -1,0 +1,7 @@
+FAIL after 2 assertions: java.lang.AssertionError: final still timestamp matches and capture is ready (failure category: repeated-final-image)
+java.lang.AssertionError: final still timestamp matches and capture is ready (failure category: repeated-final-image)
+	at io.coingift.android.SmokeRunner.yes(SmokeRunner.java:378)
+	at io.coingift.android.SmokeRunner.cameraProbe(SmokeRunner.java:173)
+	at io.coingift.android.SmokeRunner.onStart(SmokeRunner.java:31)
+	at android.app.Instrumentation$InstrumentationThread.run(Instrumentation.java:2594)
+

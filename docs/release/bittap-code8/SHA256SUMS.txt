@@ -1,0 +1,1 @@
+affbe4a0e7bee4142e4298dd29daa6f47690e03e70326a158cbf3af79080cf7e  app/build/outputs/bittap/BitTap-0.4.0-code8-candidate.apk

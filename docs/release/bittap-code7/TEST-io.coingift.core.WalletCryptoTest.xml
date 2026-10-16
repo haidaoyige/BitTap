@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="io.coingift.core.WalletCryptoTest" tests="21" skipped="0" failures="0" errors="0" timestamp="2026-10-16T07:31:56" hostname="iandeMacBook-Air.local" time="2.171">
+  <properties/>
+  <testcase name="rejectionSamplingRetriesZeroAndCurveOrder" classname="io.coingift.core.WalletCryptoTest" time="0.115"/>
+  <testcase name="shortOrBlankNewPasswordsRejected" classname="io.coingift.core.WalletCryptoTest" time="0.0"/>
+  <testcase name="unicodeNormalizedButWhitespaceAndCasePreserved" classname="io.coingift.core.WalletCryptoTest" time="0.226"/>
+  <testcase name="productionGeneratorCreatesRecoverableMainnetCard" classname="io.coingift.core.WalletCryptoTest" time="0.168"/>
+  <testcase name="exportPublicTestFixtureForIndependentRecovery" classname="io.coingift.core.WalletCryptoTest" time="0.056"/>
+  <testcase name="closePreventsFurtherWifAccess" classname="io.coingift.core.WalletCryptoTest" time="0.001"/>
+  <testcase name="bip38WrongPasswordRejected" classname="io.coingift.core.WalletCryptoTest" time="0.223"/>
+  <testcase name="sameKeyAndPasswordGetDifferentSaltAndNonce" classname="io.coingift.core.WalletCryptoTest" time="0.112"/>
+  <testcase name="testnetBackupRejectedExplicitly" classname="io.coingift.core.WalletCryptoTest" time="0.055"/>
+  <testcase name="failedRandomSourceDoesNotFallback" classname="io.coingift.core.WalletCryptoTest" time="0.001"/>
+  <testcase name="aes256GcmNistVector" classname="io.coingift.core.WalletCryptoTest" time="0.0"/>
+  <testcase name="hostileKdfAndUnknownVersionsRejectedBeforeKdf" classname="io.coingift.core.WalletCryptoTest" time="0.058"/>
+  <testcase name="bip38CompressedOfficialVector" classname="io.coingift.core.WalletCryptoTest" time="0.218"/>
+  <testcase name="privateKeyRangeBoundaries" classname="io.coingift.core.WalletCryptoTest" time="0.0"/>
+  <testcase name="sixCharacterPasswordCanCreateAndRecoverCard" classname="io.coingift.core.WalletCryptoTest" time="0.173"/>
+  <testcase name="wrongPasswordAndTamperingNeverReturnPrivateKey" classname="io.coingift.core.WalletCryptoTest" time="0.397"/>
+  <testcase name="stuckRandomSourceStopsInsteadOfLoopingForever" classname="io.coingift.core.WalletCryptoTest" time="0.001"/>
+  <testcase name="scryptRfc7914Vector" classname="io.coingift.core.WalletCryptoTest" time="0.027"/>
+  <testcase name="mainnetRoundTrip" classname="io.coingift.core.WalletCryptoTest" time="0.114"/>
+  <testcase name="secp256k1AndBech32PublishedVector" classname="io.coingift.core.WalletCryptoTest" time="0.001"/>
+  <testcase name="bip38UncompressedKeyNotSilentlyChangedToSegwit" classname="io.coingift.core.WalletCryptoTest" time="0.224"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

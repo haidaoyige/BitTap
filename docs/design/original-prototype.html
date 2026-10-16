@@ -1,0 +1,108 @@
+<style>
+#btc-design { --paper:light-dark(#f5f6f2,#161b18);--surface:light-dark(#ffffff,#202823);--ink:light-dark(#18291f,#edf5ee);--sub:light-dark(#647369,#a7b7ab);--line:light-dark(#dce3dc,#35453b);--green:light-dark(#205c3c,#a4deb7);--on-green:light-dark(#ffffff,#122d1e);--soft:light-dark(#e8efe7,#2c3d31);--gold:light-dark(#916b25,#e6bd70);font-family:Inter,-apple-system,BlinkMacSystemFont,'Segoe UI','PingFang SC',sans-serif;color:var(--ink); }
+#btc-design * {box-sizing:border-box}
+#btc-design .stage {padding:26px 12px 20px;min-height:800px;display:flex;justify-content:center;align-items:flex-start}
+#btc-design .phone {width:390px;max-width:100%;background:var(--paper);border:1px solid var(--line);border-radius:30px;overflow:hidden;box-shadow:0 15px 45px light-dark(#21342715,#00000035)}
+#btc-design .status {display:flex;justify-content:space-between;padding:15px 25px 4px;font-size:12px;font-weight:500}
+#btc-design header {padding:24px 23px 16px;display:flex;align-items:center;gap:10px}
+#btc-design .brand {background:var(--green);color:var(--on-green);width:35px;height:35px;border-radius:12px;display:grid;place-items:center}
+#btc-design .brand svg {width:19px;height:19px}
+#btc-design .name {font-size:17px;font-weight:500;letter-spacing:-.4px}
+#btc-design .subtitle {font-size:11px;color:var(--sub);margin-top:3px}
+#btc-design .badge {margin-left:auto;color:var(--green);background:var(--soft);padding:6px 8px;border-radius:20px;font-size:11px;display:flex;align-items:center;gap:4px;white-space:nowrap}
+#btc-design .badge svg {width:12px;height:12px}
+#btc-design .tabs {display:flex;margin:0 23px 22px;background:var(--soft);padding:4px;border-radius:13px}
+#btc-design button {font-family:inherit;font-weight:500;cursor:inherit}
+#btc-design .tabs button {width:50%;border:0;padding:11px 4px;border-radius:10px;background:transparent;color:var(--sub);font-size:13px}
+#btc-design .tabs button[aria-pressed=true] {background:var(--surface);color:var(--ink);box-shadow:0 2px 4px light-dark(#18291f0b,#00000020)}
+#btc-design main {padding:0 23px 24px;min-height:575px}
+#btc-design .eyebrow {font-size:11px;color:var(--green);letter-spacing:1px;margin:0 0 9px;display:flex;align-items:center;gap:6px}
+#btc-design h2 {font-size:27px;letter-spacing:-1px;line-height:1.3;font-weight:500;margin:0 0 9px}
+#btc-design p {font-size:13px;line-height:1.7;margin:0;color:var(--sub)}
+#btc-design .steps {display:flex;align-items:center;gap:8px;margin:22px 0;color:var(--sub);font-size:11px}
+#btc-design .steps span {white-space:nowrap}
+#btc-design .steps .active {color:var(--green);font-weight:500}
+#btc-design .steps b {height:1px;background:var(--line);flex:1}
+#btc-design .field {margin-top:20px}
+#btc-design label {display:block;font-size:12px;font-weight:500;margin-bottom:8px}
+#btc-design input {width:100%;border:1px solid var(--line);border-radius:12px;background:var(--surface);color:var(--ink);font-size:16px;padding:14px;font-family:inherit}
+#btc-design .hint {font-size:11px;color:var(--sub);margin-top:7px;line-height:1.6}
+#btc-design .info {display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--line);padding:15px 0;font-size:12px;gap:10px}
+#btc-design .info span {color:var(--sub)}
+#btc-design .info strong {font-weight:500;text-align:right}
+#btc-design .primary,#btc-design .secondary {width:100%;padding:15px 12px;border-radius:13px;border:0;font-size:14px;display:flex;justify-content:center;align-items:center;gap:9px;margin-top:24px}
+#btc-design .primary {background:var(--green);color:var(--on-green)}
+#btc-design .secondary {background:var(--soft);color:var(--ink);margin-top:10px}
+#btc-design button svg {width:17px;height:17px}
+#btc-design .note {font-size:11px;text-align:center;color:var(--sub);margin-top:13px;line-height:1.6}
+#btc-design .gift {border-radius:18px;background:var(--green);color:var(--on-green);padding:22px;margin:25px 0 20px;position:relative;min-height:170px}
+#btc-design .gift .top {display:flex;justify-content:space-between;font-size:11px;letter-spacing:1px;opacity:.85}
+#btc-design .gift .symbol {font-size:38px;font-weight:500;margin:16px 0 12px}
+#btc-design .gift .bottom {display:flex;justify-content:space-between;align-items:center;font-size:11px;gap:10px}
+#btc-design .gift svg {width:25px;height:25px}
+#btc-design .address {font-family:ui-monospace,SFMono-Regular,monospace;font-size:12px;overflow-wrap:anywhere;line-height:1.7}
+#btc-design .block {padding:15px;background:var(--surface);border:1px solid var(--line);border-radius:12px;margin-top:12px}
+#btc-design .block label {color:var(--sub);font-size:11px}
+#btc-design .scan {display:grid;place-items:center;min-height:190px;margin:23px 0;border-radius:20px;background:var(--soft);position:relative}
+#btc-design .scan svg {width:56px;height:56px;color:var(--green)}
+#btc-design .scan .caption {position:absolute;bottom:22px;font-size:12px;color:var(--sub)}
+#btc-design .check {display:flex;gap:9px;align-items:center;color:var(--green);font-size:12px;padding:10px 0}
+#btc-design .check svg {width:16px;height:16px}
+#btc-design .home-action {width:100%;background:var(--surface);color:var(--ink);border:1px solid var(--line);border-radius:16px;text-align:left;padding:18px;display:flex;align-items:center;gap:13px;margin-top:14px}
+#btc-design .home-action .icon {background:var(--soft);padding:12px;border-radius:12px;color:var(--green);display:grid;place-items:center}
+#btc-design .home-action strong {display:block;font-size:14px;font-weight:500;margin-bottom:5px}
+#btc-design .home-action small {font-size:11px;color:var(--sub);font-weight:400}
+#btc-design .home-action .arrow {margin-left:auto;color:var(--sub)}
+#btc-design footer {border-top:1px solid var(--line);margin-top:24px;padding-top:14px;display:flex;justify-content:space-between;font-size:10px;color:var(--sub)}
+@media(max-width:380px){#btc-design .stage{padding:16px 0;min-height:820px}#btc-design main{padding:0 18px 22px}#btc-design header{padding-left:18px;padding-right:18px}#btc-design h2{font-size:25px}#btc-design .tabs{margin-left:18px;margin-right:18px}}
+</style>
+<div id="btc-design" class="viz-carousel viz-dotted-background" aria-label="BTC 礼品卡 App 页面设计" data-previous-label="上一个设计" data-next-label="下一个设计">
+<section data-variant="引导制作" aria-label="引导制作设计"><div class="stage"><div class="phone" data-layout="wizard"><div class="status"><span>9:41</span><span>▰ ▰ ▰</span></div><header><div class="brand"><i data-lucide="bitcoin" aria-hidden="true"></i></div><div><div class="name">币礼 · CoinGift</div><div class="subtitle">BTC 离线礼品卡</div></div><div class="badge"><i data-lucide="wifi-off" aria-hidden="true"></i>离线设计</div></header><nav class="tabs" aria-label="功能"><button type="button" class="cursor-interaction" data-tab="create" aria-pressed="true">制作卡片</button><button type="button" class="cursor-interaction" data-tab="read" aria-pressed="false">读取 / 解密</button></nav><main aria-live="polite"></main></div></div></section>
+<section data-variant="卡片首页" aria-label="卡片首页设计" hidden><div class="stage"><div class="phone" data-layout="home"><div class="status"><span>9:41</span><span>▰ ▰ ▰</span></div><header><div class="brand"><i data-lucide="bitcoin" aria-hidden="true"></i></div><div><div class="name">币礼 · CoinGift</div><div class="subtitle">BTC 离线礼品卡</div></div><div class="badge"><i data-lucide="wifi-off" aria-hidden="true"></i>离线设计</div></header><main aria-live="polite"></main></div></div></section>
+</div>
+<script>
+(()=>{
+const root=document.getElementById('btc-design');
+const icon=name=>`<i data-lucide="${name}" aria-hidden="true"></i>`;
+const primary=(label,action)=>`<button type="button" class="primary cursor-interaction" data-action="${action}">${label}${icon('arrow-right')}</button>`;
+const secondary=(label,action)=>`<button type="button" class="secondary cursor-interaction" data-action="${action}">${label}</button>`;
+const footer='<footer><span>Android · NFC</span><span>交互原型 / 无真实密钥</span></footer>';
+const title=(small,big,desc)=>`<div class="eyebrow">${small}</div><h2>${big}</h2><p>${desc}</p>`;
+const steps=n=>`<div class="steps"><span class="${n===1?'active':''}">01 设置密码</span><b></b><span class="${n===2?'active':''}">02 确认卡片</span><b></b><span class="${n===3?'active':''}">03 写入核验</span></div>`;
+const gift=()=>`<div class="gift"><div class="top"><span>BITCOIN GIFT CARD</span>${icon('nfc')}</div><div class="symbol">₿</div><div class="bottom"><span>原生 SegWit · 主网</span><span>私钥密码保护</span></div></div>`;
+const address='<div class="block"><label>收款地址 · 仅作排版示例</label><div class="address">bc1q…示例地址…7k2m</div></div>';
+const encrypted='<div class="block"><label>加密私钥 · 仅作排版示例</label><div class="address">6P…示例密文…Q8n</div></div>';
+const pwd=(confirm=false,recipient=false)=>`<div class="field"><label>${recipient?'输入解密密码':confirm?'再次输入密码':'设置卡片解密密码'}</label><input type="text" value="••••••••••••••••" readonly aria-label="示例密码占位，不接受真实密码"><div class="hint">${recipient?'请输入赠送者单独提供给你的解密密码。':confirm?'原型使用占位密码，无需输入真实密码。':'建议使用长且独立的密码，单独交给收礼人。'}</div></div>`;
+let saved=window.openai?.widgetState?.privateContent||{};
+const states={wizard:saved.wizard||'unlock',home:saved.home||'home'};
+const valid=['home','setup','confirm','write','done','read','unlock','revealed'];
+function render(phone){
+const layout=phone.dataset.layout; let state=states[layout];if(!valid.includes(state))state=layout==='home'?'home':'setup';states[layout]=state;
+const main=phone.querySelector('main');
+phone.querySelectorAll('[data-tab]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.tab===(['read','unlock','revealed'].includes(state)?'read':'create'))));
+let out='';
+if(state==='home')out=title('一张卡片，一份心意','把比特币送给 TA','在本机制作，密码保护，轻触读取。')+gift()+`<button class="home-action cursor-interaction" type="button" data-action="setup"><span class="icon">${icon('plus')}</span><span><strong>制作一张礼品卡</strong><small>生成密钥 · 加密 · NFC 写入</small></span><span class="arrow">${icon('chevron-right')}</span></button><button class="home-action cursor-interaction" type="button" data-action="read"><span class="icon">${icon('scan-line')}</span><span><strong>读取已有卡片</strong><small>查看地址 · 用密码解密</small></span><span class="arrow">${icon('chevron-right')}</span></button><div class="note">密码与卡片分开保管</div>`;
+if(state==='setup')out=title('制作礼品卡','先为私钥设一把锁','生成后直接加密，默认隐藏明文私钥。')+steps(1)+`<div class="info"><span>收款类型</span><strong>原生 SegWit · bc1q…</strong></div><div class="info"><span>网络 / 加密格式</span><strong>BTC 主网 / BIP38</strong></div>`+pwd()+pwd(true)+primary('预览生成结果','confirm')+'<div class="note">密码遗失后无法重置</div>';
+if(state==='confirm')out=title('制作礼品卡','确认你的卡片','正式 App 将在本机生成并加密密钥。')+steps(2)+gift()+address+encrypted+primary('准备写入 NFC','write')+secondary('返回设置','setup');
+if(state==='write')out=title('制作礼品卡','把卡片贴近手机','保持贴合，完成写入后自动读回核验。')+steps(3)+`<div class="scan">${icon('nfc')}<span class="caption">靠近手机背部的 NFC 感应区域</span></div><div class="info"><span>写入内容</span><strong>加密私钥 + 地址</strong></div><div class="info"><span>写入前检查</span><strong>容量充足 · 卡片可写</strong></div>`+primary('模拟写入并核验','done')+secondary('取消','confirm');
+if(state==='done')out=title('制作完成 · 模拟结果','一份礼物，准备好了','实际使用时，核验通过后再向地址充值。')+gift()+`<div class="check">${icon('circle-check')}卡片数据读回一致</div><div class="check">${icon('circle-check')}解密后收款地址一致</div>`+address+primary('预览加密备份','backup')+secondary('再制作一张','setup')+'<div class="note">将密码单独交付给收礼人</div>';
+if(state==='read')out=title('读取 / 解密','轻触，读取你的礼物','查看收款地址无需密码；私钥保持加密。')+`<div class="scan">${icon('scan-line')}<span class="caption">将礼品卡贴近手机背部</span></div>`+primary('模拟读取卡片','unlock')+`<div class="block"><label>也可以粘贴加密私钥</label><div class="address">6P…</div></div>`+secondary('预览手动解密','unlock');
+if(state==='unlock')out=title('读取成功 · 模拟结果','你的 BTC 礼品卡','卡片含加密私钥，需要密码才能恢复。')+address+encrypted+pwd(false,true)+primary('预览解密结果','revealed')+secondary('重新读卡','read')+'<div class="note">原型不进行解密，不接受真实密码</div>';
+if(state==='revealed')out=title('解密结果 · 示例','私钥已恢复','正式 App 将核对恢复地址，并默认隐藏私钥。')+`<div class="check">${icon('circle-check')}收款地址核对一致</div>`+address+`<div class="block"><label>WIF 私钥 · 隐藏状态</label><div class="address" data-secret>••••••••••••••••••••••••</div><button type="button" class="secondary cursor-interaction" data-action="reveal">显示示例私钥</button></div><div class="hint">领取时将余额全部转入你自己的钱包，之后停止使用礼品卡地址。</div>`+primary('隐藏并退出','read');
+main.innerHTML=out+footer;
+if(globalThis.lucide)lucide.createIcons();
+}
+function persist(){window.openai?.setWidgetState?.({modelContent:{prototype:'BTC NFC 礼品卡',wizardScreen:states.wizard,homeScreen:states.home},privateContent:{...states}})?.catch(()=>{});}
+root.addEventListener('click',e=>{
+const b=e.target.closest('button');if(!b)return;const phone=b.closest('.phone');if(!phone)return;
+if(b.dataset.tab){states[phone.dataset.layout]=b.dataset.tab==='create'?'setup':'read';render(phone);persist();return;}
+const action=b.dataset.action;if(!action)return;
+if(action==='backup'){const previous=phone.querySelector('[data-backup]');if(previous){previous.remove();return;}const div=document.createElement('div');div.className='block';div.dataset.backup='true';div.innerHTML='<label>加密备份预览 · 不包含密码</label><div class="address">格式 v1 · bitcoin-mainnet<br>地址类型 p2wpkh<br>地址 bc1q…示例地址…7k2m<br>密文 6P…示例密文…Q8n</div>';b.after(div);return;}
+if(action==='reveal'){const s=phone.querySelector('[data-secret]');const hidden=s.textContent.startsWith('•');s.textContent=hidden?'K…示例私钥（无效，不能用于转账）':'••••••••••••••••••••••••';b.textContent=hidden?'隐藏示例私钥':'显示示例私钥';return;}
+states[phone.dataset.layout]=action;render(phone);persist();
+});
+root.querySelectorAll('.phone').forEach(render);
+window.addEventListener('openai:set_globals',e=>{const value=e.detail?.globals?.widgetState?.privateContent;if(!value)return;for(const k of ['wizard','home'])if(valid.includes(value[k]))states[k]=value[k];root.querySelectorAll('.phone').forEach(render);});
+if(globalThis.Tweak){root.querySelectorAll('.phone').forEach(phone=>{const design={rounded:true};const tweak=new Tweak({container:phone,onChange:()=>phone.style.borderRadius=design.rounded?'30px':'12px'});tweak.addToggle(design,'rounded',{label:'圆润外框'});});}
+})();
+</script>

@@ -1,0 +1,16 @@
+{
+  "source_url": "https://bitcoin.design/assets/images/guide/getting-started/visual-language/bitcoin-symbol.svg",
+  "source_sha256": "a772587201b7603cc316fc28fbd974d07bf47d22d0e4a25d8f076d7900f3469b",
+  "glyph_path_sha256": "f7570b9f1e06b4a459fcf5bd902143110d6479169272847d2fe854e7e91782be",
+  "transform": "Uniform scaling and translation only; no path changes, stretching or additional rotation.",
+  "outputs": {
+    "bitnfc-logo.svg": {
+      "glyph_path_exact_match": true,
+      "sha256": "835cc90a96b8a2905214d2205aab51c2c9b21b6e5c14e4b1521247d27a7631aa"
+    },
+    "bitnfc-logo-white.svg": {
+      "glyph_path_exact_match": true,
+      "sha256": "ccc5e6a32c6f52850d4bb7a8e2ec25da7ad1d0e24006b99f189c9fae0f7f038a"
+    }
+  }
+}

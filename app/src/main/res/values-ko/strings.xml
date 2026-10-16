@@ -1,0 +1,395 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+  <string name="copy_confirm_title">WIF 개인 키를 복사할까요?</string>
+  <string name="copy_confirm_description">개인 키가 시스템 클립보드에 평문으로 복사되어 노출 위험이 커질 수 있습니다.</string>
+  <string name="copy_confirm_caution">신뢰하는 지갑에만 붙여넣으세요. 다른 사람이나 AI에게 보내지 마세요.</string>
+  <string name="copy_confirm_transfer">복사하거나 가져온 후에는 모든 BTC를 백업한 새 지갑으로 신속히 옮기고, 기존 주소로 보내거나 입금받는 것을 중단하세요.</string>
+  <string name="copy_confirm_action">WIF 개인 키 복사 확인</string>
+  <string name="private_image_title">WIF 개인 키</string>
+  <string name="private_image_subtitle">WIF를 지원하는 지갑으로 가져오기</string>
+  <string name="private_image_risk_title">노출 위험이 있는 평문 개인 키</string>
+  <string name="private_image_risk_body">이 이미지를 가진 사람은 지갑의 BTC를 옮길 수 있습니다.</string>
+  <string name="private_image_key_label">평문 개인 키 · WIF</string>
+  <string name="private_image_move_title">모든 BTC를 신속히 옮기세요</string>
+  <string name="private_image_move_body">이 지갑의 모든 BTC를 백업을 마친 새 지갑으로 옮기세요.</string>
+  <string name="private_image_stop_title">기존 주소 사용을 중단하세요</string>
+  <string name="private_image_stop_body">이 지갑의 어떤 기존 주소로도 BTC를 추가로 보내지 말고, 입금받는 데에도 사용하지 마세요.</string>
+  <string name="private_image_notice">이 이미지를 공유하거나 업로드하지 마세요.</string>
+  <string name="address_image_title">받는 주소</string>
+  <string name="address_image_label">비트코인 주소</string>
+  <string name="app_name" formatted="false">"BitTap"</string>
+  <string name="private_wif" formatted="false">"개인키 · WIF"</string>
+  <string name="btc_mainnet" formatted="false">"BTC 메인넷"</string>
+  <string name="nfc_scan_status">"●  %1$s"</string>
+  <string name="tx_e3b0c44298fc" formatted="false">"이 설명의 본문은 현재 중국어로 제공됩니다."</string>
+  <string name="tx_37e1ec891972" formatted="false">" · 권장"</string>
+  <string name="tx_99fc6ae1c2b5" formatted="false">" · 복구 호환성 확인 필요"</string>
+  <string name="tx_ad71a0cbe0e9" formatted="false">" 주소"</string>
+  <string name="tx_f5d87a8b74a0" formatted="false">" 바이트"</string>
+  <string name="tx_36eac7ae02d6" formatted="false">" 바이트 / 사용 가능: "</string>
+  <string name="tx_1f9f261cb3f7" formatted="false">" 바이트, 사용 가능: "</string>
+  <string name="tx_6da628e292f8" formatted="false">" 장의 NFC 카드."</string>
+  <string name="tx_eb563b1dfeb9" formatted="false">"1장"</string>
+  <string name="tx_c24f79164615" formatted="false">"초안1.0 · 2026/10/16"</string>
+  <string name="tx_735eaaba42cc" formatted="false">"BIP38에는 공개 받는 주소가 없습니다. 복호화 후 실제 보관 주소를 대조하세요."</string>
+  <string name="tx_8e6d2572586e" formatted="false">"유효하지 않거나 지원하지 않는 데이터입니다. 원본 카드·파일과 주소 형식을 확인하세요."</string>
+  <string name="tx_eff9e6709f7c" formatted="false">"BTC 메인넷"</string>
+  <string name="tx_911c36753ad0" formatted="false">"BTC 받는 주소 QR"</string>
+  <string name="tx_e631a3fd1c4e" formatted="false">"BitTap은 기기 안에서 개인키를 생성·복구하는 도구입니다. BTC, 개인키, 비밀번호를 보관하지 않으며 자산 보험, 원금 보호 또는 복구를 보장하지 않습니다."</string>
+  <string name="tx_90f08fc97604" formatted="false">"NFC 저장 내용과 다시 읽은 내용 일치"</string>
+  <string name="tx_913c4dddc512" formatted="false">"NFC 작업이 확인되지 않았습니다. 카드 호환성·내용·용량·쓰기 보호를 확인하고 백업을 저장하세요."</string>
+  <string name="tx_8fa272fa506a" formatted="false">"SHA-256이 무작위성을 만들어 내지는 않습니다. 카메라는 보완 수단이며 침해된 휴대전화를 보호할 수 없습니다."</string>
+  <string name="tx_be17cc390d70" formatted="false">"SegWit · 권장"</string>
+  <string name="tx_8a49dc584353" formatted="false">"키 또는 이미지 검증에 실패했습니다. 중단하고 다시 시도하세요. 검증되지 않은 월렛은 사용하지 마세요."</string>
+  <string name="tx_d917d625ddcd" formatted="false">"Taproot · 복구 지원 확인"</string>
+  <string name="tx_77d845252711" formatted="false">"키 또는 이미지 검증에 실패했습니다. 중단하고 다시 시도하세요. 검증되지 않은 월렛은 사용하지 마세요."</string>
+  <string name="tx_f5b4ef25e5a9" formatted="false">"WIF 개인키"</string>
+  <string name="tx_9949b5a98f91" formatted="false">"WIF 개인키 QR, 본인 월렛 전용"</string>
+  <string name="tx_c6154c8d953e" formatted="false">"WIF를 복사했습니다. 본인 월렛으로 가져오고 공유하지 마세요."</string>
+  <string name="tx_a218fa85ba4c" formatted="false">"동의하지 않고 홈으로"</string>
+  <string name="tx_67a970469fc9" formatted="false">"NFC 작업이 확인되지 않았습니다. 카드 호환성·내용·용량·쓰기 보호를 확인하고 백업을 저장하세요."</string>
+  <string name="tx_a62408ee3231" formatted="false">"유효하지 않거나 지원하지 않는 데이터입니다. 원본 카드·파일과 주소 형식을 확인하세요."</string>
+  <string name="tx_820ac17abe39" formatted="false">"유효하지 않거나 지원하지 않는 데이터입니다. 원본 카드·파일과 주소 형식을 확인하세요."</string>
+  <string name="tx_1f31eefae604" formatted="false">"유효하지 않거나 지원하지 않는 데이터입니다. 원본 카드·파일과 주소 형식을 확인하세요."</string>
+  <string name="tx_f9108720f396" formatted="false">"두 입력을 혼합한 후 개인키 생성"</string>
+  <string name="tx_64eff9d19646" formatted="false">"비밀번호가 일치하지 않습니다"</string>
+  <string name="tx_72726d8818f6" formatted="false">"中文"</string>
+  <string name="tx_7e2a0ba85e5b" formatted="false">"원리 보기"</string>
+  <string name="tx_7ffa50a9d43f" formatted="false">"QR에는 받는 주소만 있으며 개인키는 없습니다"</string>
+  <string name="tx_3f220c138d71" formatted="false">"QR에는 받는 주소만 포함되며 공유할 수 있습니다."</string>
+  <string name="tx_8acc3205b149" formatted="false">"이 QR은 평문 개인키입니다. 공유하지 말고 저장 이미지를 보호하세요. 60초 후 닫힙니다."</string>
+  <string name="tx_aa0a7876797e" formatted="false">"QR에 평문 개인키가 포함됩니다. 공유하지 말고 저장한 이미지를 보호하세요."</string>
+  <string name="tx_c5eedf9864cd" formatted="false">"키 또는 이미지 검증에 실패했습니다. 중단하고 다시 시도하세요. 검증되지 않은 월렛은 사용하지 마세요."</string>
+  <string name="tx_7e275fe335e2" formatted="false">"QR 생성에 실패했습니다. 개인키 복사를 이용하세요."</string>
+  <string name="tx_032055388866" formatted="false">"본인 월렛으로 가져오기 전용"</string>
+  <string name="tx_0a4552e299bc" formatted="false">"기기 안에서 처리하며 인터넷 연결이 필요 없습니다."</string>
+  <string name="tx_8bba62eb3a44" formatted="false">"이번 진입에만 적용됩니다. 다음에는 다시 확인합니다."</string>
+  <string name="tx_53f28d79af7c" formatted="false">"동작만 시연하며 클립보드는 변경하지 않습니다."</string>
+  <string name="tx_5fcdace46495" formatted="false">"이번 난수 데이터 수집에만 사용합니다. 외부 카메라 앱을 열거나 사진을 자동 저장하지 않습니다."</string>
+  <string name="tx_7b9f160607a2" formatted="false">"유효하지 않거나 지원하지 않는 데이터입니다. 원본 카드·파일과 주소 형식을 확인하세요."</string>
+  <string name="tx_eac9ebe7e1c5" formatted="false">"아래는 중국어 전체 원문입니다. 정식 공개 전 법률 검토가 필요합니다."</string>
+  <string name="tx_52f2311f533a" formatted="false">"유효하지 않거나 지원하지 않는 데이터입니다. 원본 카드·파일과 주소 형식을 확인하세요."</string>
+  <string name="tx_a77dc3583d73" formatted="false">"생성 당시 비밀번호를 사용하세요. 기기 안에서 복호화합니다."</string>
+  <string name="tx_1ac37c0d65e9" formatted="false">"시스템 보안 난수로 기기 안에서 생성·암호화"</string>
+  <string name="tx_dd961e177aed" formatted="false">"시스템 난수 사용"</string>
+  <string name="tx_cb4ba40bf823" formatted="false">"도움말"</string>
+  <string name="tx_fd233833460b" formatted="false">"이번 수집 데이터 사용"</string>
+  <string name="tx_9403c6e1c0de" formatted="false">"NFC 카드와 별도로 암호화 백업을 보관하세요. 복구에는 원래 비밀번호도 필요합니다. 비밀번호는 따로 보관하세요."</string>
+  <string name="tx_71386d7b5c41" formatted="false">"백업을 별도로 보관"</string>
+  <string name="tx_dd44e0a9987d" formatted="false">"파일로 저장"</string>
+  <string name="tx_05f2ed792d40" formatted="false">"암호화 백업 저장"</string>
+  <string name="tx_85f70d2c0501" formatted="false">"같은 콜드월렛 저장"</string>
+  <string name="tx_850de13a01d9" formatted="false">"이미지 저장"</string>
+  <string name="tx_cc7068c55be5" formatted="false">"저장 후 같은 월렛을 다른 NFC 카드에 씁니다."</string>
+  <string name="tx_a89841c91122" formatted="false">"개인키 QR을 저장할까요?"</string>
+  <string name="tx_460df61eff5c" formatted="false">"허용하고 촬영 시작"</string>
+  <string name="tx_8b1c112f7d39" formatted="false">"암호화 백업 먼저 저장"</string>
+  <string name="tx_c407ad9101a0" formatted="false">"다른 카드에 쓰기 전 백업 저장"</string>
+  <string name="tx_0c07e16de18e" formatted="false">"카메라 수집을 먼저 완료한 후 비밀번호를 설정하세요."</string>
+  <string name="tx_4c66c0a2d9e6" formatted="false">"개인키에 잠금 설정"</string>
+  <string name="tx_fa5c6e3c27c3" formatted="false">"먼저 메모로 월렛을 구분하세요.\n개인키가 필요할 때 비밀번호를 입력하세요."</string>
+  <string name="tx_1c3ae1077963" formatted="false">"면책 및 위험 안내"</string>
+  <string name="tx_26d3ddeff65f" formatted="false">"무료 오픈소스이며 자금을 맡지 않습니다"</string>
+  <string name="tx_8b14a413b837" formatted="false">"BitTap 정보"</string>
+  <string name="tx_3fd47edce45b" formatted="false">"닫기"</string>
+  <string name="tx_759e3f6eeac7" formatted="false">"QR 닫기"</string>
+  <string name="tx_3970b3aa27d1" formatted="false">"다른 주소"</string>
+  <string name="tx_50bc777b5525" formatted="false">"다른 받는 주소 ⌄"</string>
+  <string name="tx_cc4ad0893aab" formatted="false">"암호화 백업 다시 저장"</string>
+  <string name="tx_b0203d529979" formatted="false">"같은 카드를 다시 대고 쓰기"</string>
+  <string name="tx_d0c9a0e81079" formatted="false">"비밀번호 다시 입력"</string>
+  <string name="tx_a8ca5da31def" formatted="false">"쓰기→다시 읽기→대조 중. 카드를 계속 대 주세요…"</string>
+  <string name="tx_47fe095a6374" formatted="false">"기존 NDEF 내용을 모두 덮어씁니다. 필요한 데이터는 먼저 보관하세요."</string>
+  <string name="tx_aee7400b7392" formatted="false">"다른 NFC 카드에도 쓰기"</string>
+  <string name="tx_cbbf5beae050" formatted="false">"쓰기 후 다시 읽어 대조"</string>
+  <string name="tx_b375e92d28b4" formatted="false">"NFC 작업이 확인되지 않았습니다. 카드 호환성·내용·용량·쓰기 보호를 확인하고 백업을 저장하세요."</string>
+  <string name="tx_380f0a6349fa" formatted="false">"콜드월렛 생성 완료"</string>
+  <string name="tx_ece1ad79e4bf" formatted="false">"콜드월렛 읽기 완료"</string>
+  <string name="tx_2793fd50220e" formatted="false">"쓰기가 가능한 NFC 카드를 준비하세요.\n저장 후 다시 읽어 내용을 비교합니다."</string>
+  <string name="tx_315ae18ab628" formatted="false">"쓰기 가능한 NFC 카드를 준비하고 완료까지 휴대전화에 대 주세요."</string>
+  <string name="tx_fac6cd7a6d04" formatted="false">"콜드월렛 만들기"</string>
+  <string name="tx_e0aa451f02d8" formatted="false">"만들기 전에 확인하세요"</string>
+  <string name="tx_bc0fbd2ebc53" formatted="false">"미리보기 프레임과 사진을 시스템 난수에 추가합니다."</string>
+  <string name="tx_081487800eae" formatted="false">"암호화 백업 저장·검증 완료"</string>
+  <string name="tx_6fb3f0efab68" formatted="false">"암호화 백업 저장 및 검증 완료"</string>
+  <string name="tx_e14cd3c23f47" formatted="false">"암호화 개인키, 받는 주소 4개, 공개 메모를 포함합니다. 복구할 때 원래 비밀번호가 필요합니다."</string>
+  <string name="tx_576967c59689" formatted="false">"NFC 작업이 확인되지 않았습니다. 카드 호환성·내용·용량·쓰기 보호를 확인하고 백업을 저장하세요."</string>
+  <string name="tx_89401142aefd" formatted="false">"유효하지 않거나 지원하지 않는 데이터입니다. 원본 카드·파일과 주소 형식을 확인하세요."</string>
+  <string name="tx_010c9563a277" formatted="false">"NFC 작업이 확인되지 않았습니다. 카드 호환성·내용·용량·쓰기 보호를 확인하고 백업을 저장하세요."</string>
+  <string name="tx_39648e5a0493" formatted="false">"NFC 작업이 확인되지 않았습니다. 카드 호환성·내용·용량·쓰기 보호를 확인하고 백업을 저장하세요."</string>
+  <string name="tx_be1dcb6422b4" formatted="false">"NFC 작업이 확인되지 않았습니다. 카드 호환성·내용·용량·쓰기 보호를 확인하고 백업을 저장하세요."</string>
+  <string name="tx_108f53d16de5" formatted="false">"유효하지 않거나 지원하지 않는 데이터입니다. 원본 카드·파일과 주소 형식을 확인하세요."</string>
+  <string name="tx_a5ac8ef23c31" formatted="false">"유효하지 않거나 지원하지 않는 데이터입니다. 원본 카드·파일과 주소 형식을 확인하세요."</string>
+  <string name="tx_218b191985f5" formatted="false">"카드에 쓸 수 있습니다"</string>
+  <string name="tx_0bc1c2d8cc01" formatted="false">"쓰기 가능하며 용량이 충분합니다. 확인 후 같은 카드를 다시 대 주세요."</string>
+  <string name="tx_688cf3e7251b" formatted="false">"카드 용량 부족. 필요: "</string>
+  <string name="tx_93adbae9e89b" formatted="false">"용량과 쓰기 가능 여부를 확인했습니다. 확인 후 같은 카드를 다시 대세요. 기존 데이터가 있으면 덮어쓰기 안내가 먼저 표시됩니다."</string>
+  <string name="tx_5fe0d2784c6b" formatted="false">"카드 저장과 다시 읽기 검증이 완료되었습니다."</string>
+  <string name="tx_107ff4bce650" formatted="false">"기존 데이터를 덮어쓸까요?"</string>
+  <string name="tx_ca4aef0f8ba7" formatted="false">"NFC 작업이 확인되지 않았습니다. 카드 호환성·내용·용량·쓰기 보호를 확인하고 백업을 저장하세요."</string>
+  <string name="tx_78c8d85085cf" formatted="false">"카드 받는 주소"</string>
+  <string name="tx_3cf70a09b4c9" formatted="false">"유효하지 않거나 지원하지 않는 데이터입니다. 원본 카드·파일과 주소 형식을 확인하세요."</string>
+  <string name="tx_40b58d30c11e" formatted="false">"유효하지 않거나 지원하지 않는 데이터입니다. 원본 카드·파일과 주소 형식을 확인하세요."</string>
+  <string name="tx_5d5929f7b41e" formatted="false">"NFC 작업이 확인되지 않았습니다. 카드 호환성·내용·용량·쓰기 보호를 확인하고 백업을 저장하세요."</string>
+  <string name="tx_931bf9bff097" formatted="false">"프로토타입 · 모의 데이터와 화면입니다. 실제 비밀번호는 입력하지 마세요."</string>
+  <string name="tx_b097fac49ab6" formatted="false">"프로토타입"</string>
+  <string name="tx_f04015a9b777" formatted="false">"모의 동작입니다. 이미지는 저장하지 않았습니다."</string>
+  <string name="tx_6dd443e06c51" formatted="false">"모의 동작입니다. 외부 사이트를 열거나 주소를 보내지 않았습니다."</string>
+  <string name="tx_2cd0f3be8738" formatted="false">"취소"</string>
+  <string name="tx_d54787a3b6ce" formatted="false">"메모리에서만 사용하며 사진을 저장하거나 업로드하지 않습니다."</string>
+  <string name="tx_54e37a1b1fb7" formatted="false">"유효하지 않거나 지원하지 않는 데이터입니다. 원본 카드·파일과 주소 형식을 확인하세요."</string>
+  <string name="tx_31c6d3c75a21" formatted="false">"선택 · 시스템 보안 난수는 항상 사용"</string>
+  <string name="tx_bb4b7a71f408" formatted="false">"동일한 월렛과 비밀번호이며 메모도 유지됩니다."</string>
+  <string name="tx_81c92013219d" formatted="false">"동의하고 계속"</string>
+  <string name="tx_0e731363d1ba" formatted="false">"네 주소는 원래 키 재료를 공유하지만 잔액은 별도입니다. 실제 보관 주소를 대조하세요."</string>
+  <string name="tx_887f8753d322" formatted="false">"네 주소는 비밀번호 없이 볼 수 있습니다. 키 복구 시 비밀번호를 입력하세요."</string>
+  <string name="tx_1aef87cbb981" formatted="false">"빈 프레임, 중복 프레임 또는 유효한 사진이 없습니다. 다시 촬영하세요."</string>
+  <string name="tx_a48e23cd97c3" formatted="false">"키 또는 이미지 검증에 실패했습니다. 중단하고 다시 시도하세요. 검증되지 않은 월렛은 사용하지 마세요."</string>
+  <string name="tx_2fb79b2058c3" formatted="false">"이미지 저장 시간이 초과되었습니다. QR을 다시 열어 저장하세요."</string>
+  <string name="tx_c744e2e1e9b9" formatted="false">"이 이미지는 평문 개인키입니다. 획득한 사람은 BTC를 전송할 수 있습니다. 신뢰할 수 있는 기기 내 위치에 저장하고 클라우드 동기화·공유를 피하세요. 암호화 백업이 아닙니다."</string>
+  <string name="tx_8cdf4cdf4c3b" formatted="false">"이미지를 가진 사람은 BTC를 옮길 수 있습니다. 신뢰할 수 있는 위치에 저장하고 업로드하거나 공유하지 마세요."</string>
+  <string name="tx_4ee93857558a" formatted="false">"이미지는 평문 개인키이며 암호화 백업이 아닙니다."</string>
+  <string name="tx_f809f8290f2f" formatted="false">"이미지가 지워졌습니다. QR을 다시 여세요."</string>
+  <string name="tx_4c5ccadbe1f4" formatted="false">"이미지 저장이 확인되지 않았습니다. 다시 저장하고 위치를 확인하세요."</string>
+  <string name="tx_f44b0e78cc58" formatted="false">"법률이 허용하는 범위에서 배상 책임 제한"</string>
+  <string name="tx_98bba9491449" formatted="false">"적용 법률이 허용하고 조항이 유효한 범위에서 프로젝트 관계자는 사용 또는 사용 불능으로 인한 자산, 키, 데이터 등의 손실에 배상 책임을 지지 않습니다. 법률상 면제할 수 없는 책임(면제 불가능한 고의·중과실 책임 등)은 제외하지 않습니다."</string>
+  <string name="tx_c0039dc141c3" formatted="false">"주소 QR 생성 실패. 다시 시도하세요."</string>
+  <string name="tx_4d35a56765a8" formatted="false">"유효하지 않거나 지원하지 않는 데이터입니다. 원본 카드·파일과 주소 형식을 확인하세요."</string>
+  <string name="tx_cb2db11366eb" formatted="false">"유효하지 않거나 지원하지 않는 데이터입니다. 원본 카드·파일과 주소 형식을 확인하세요."</string>
+  <string name="tx_602ccc4203f8" formatted="false">"유효하지 않거나 지원하지 않는 데이터입니다. 원본 카드·파일과 주소 형식을 확인하세요."</string>
+  <string name="tx_ed48952f3a28" formatted="false">"유효하지 않거나 지원하지 않는 데이터입니다. 원본 카드·파일과 주소 형식을 확인하세요."</string>
+  <string name="tx_42f9e26c5fa8" formatted="false">"유효하지 않거나 지원하지 않는 데이터입니다. 원본 카드·파일과 주소 형식을 확인하세요."</string>
+  <string name="tx_f1ca14769c27" formatted="false">"유효하지 않거나 지원하지 않는 데이터입니다. 원본 카드·파일과 주소 형식을 확인하세요."</string>
+  <string name="tx_ae3c42b6f605" formatted="false">"유효하지 않거나 지원하지 않는 데이터입니다. 원본 카드·파일과 주소 형식을 확인하세요."</string>
+  <string name="tx_670359f61e46" formatted="false">"유효하지 않거나 지원하지 않는 데이터입니다. 원본 카드·파일과 주소 형식을 확인하세요."</string>
+  <string name="tx_a4faef1de21e" formatted="false">"유효하지 않거나 지원하지 않는 데이터입니다. 원본 카드·파일과 주소 형식을 확인하세요."</string>
+  <string name="tx_208e6d054424" formatted="false">"백업 저장이 확인되지 않았습니다. 다시 저장하고 파일을 확인하세요."</string>
+  <string name="tx_04391362591f" formatted="false">"유효하지 않거나 지원하지 않는 데이터입니다. 원본 카드·파일과 주소 형식을 확인하세요."</string>
+  <string name="tx_718212dce525" formatted="false">"유효하지 않거나 지원하지 않는 데이터입니다. 원본 카드·파일과 주소 형식을 확인하세요."</string>
+  <string name="tx_30024f2f93a7" formatted="false">"유효하지 않거나 지원하지 않는 데이터입니다. 원본 카드·파일과 주소 형식을 확인하세요."</string>
+  <string name="tx_b39ce6bd43e2" formatted="false">"유효하지 않거나 지원하지 않는 데이터입니다. 원본 카드·파일과 주소 형식을 확인하세요."</string>
+  <string name="tx_a0adef29ec1d" formatted="false">"문자·숫자·공백·일반 문장부호만 허용됩니다. 이모지·제어 문자는 안 됩니다."</string>
+  <string name="tx_e5049bc960e6" formatted="false">"메모 검증 완료"</string>
+  <string name="tx_6addf141274d" formatted="false">"WIF 개인키 복사"</string>
+  <string name="tx_4c6de01bbe86" formatted="false">"주소 복사"</string>
+  <string name="tx_96b7d6d7932f" formatted="false">"개인키 복사"</string>
+  <string name="tx_9f7d5d389eb6" formatted="false">"BTC 옮기는 방법"</string>
+  <string name="tx_9d8a7c85a670" formatted="false">"예: 03 - 장기 보관"</string>
+  <string name="tx_d75182c59997" formatted="false">"보안 원리와 데이터 정리"</string>
+  <string name="tx_56d46c19f8d1" formatted="false">"Android 보안 난수를 계속 사용"</string>
+  <string name="tx_c0b3fbff51cc" formatted="false">"완료"</string>
+  <string name="tx_6ba33ad4de8f" formatted="false">"완료하고 홈으로"</string>
+  <string name="tx_78603d1d957a" formatted="false">"전체 면책 및 위험 안내"</string>
+  <string name="tx_606a2d350546" formatted="false">"공백만 있는 비밀번호는 안 됩니다"</string>
+  <string name="tx_70705d85eaf4" formatted="false">"인증에 성공했으며 메모와 받는 주소를 확인했습니다."</string>
+  <string name="tx_6d4608e990e4" formatted="false">"인증에 성공했으며 받는 주소를 확인했습니다."</string>
+  <string name="tx_9d9491d8a3ea" formatted="false">"비밀번호 강도 · 참고용"</string>
+  <string name="tx_a7ec90b3c281" formatted="false">"강도: 보통 · 사용 가능, 더 길게 권장"</string>
+  <string name="tx_db0b40966118" formatted="false">"강도: 약함 · 사용 가능, 긴 전용 비밀번호 권장"</string>
+  <string name="tx_f39e37039a6d" formatted="false">"비밀번호 강도: 높음 · 참고용"</string>
+  <string name="tx_e449a1d17850" formatted="false">"강도: 높음 · 전용으로 쓰고 안전하게 보관"</string>
+  <string name="tx_3940d14c2300" formatted="false">"비밀번호는 재설정할 수 없습니다. 카드 및 백업과 별도로 보관하세요."</string>
+  <string name="tx_a3661ec2a06b" formatted="false">"비밀번호 확인 완료. 실제 보관 주소를 대조하세요."</string>
+  <string name="tx_f7ccde5b5f23" formatted="false">"6자 이상으로 두 비밀번호를 동일하게 입력하세요."</string>
+  <string name="tx_d71a50362f19" formatted="false">"암호화 백업 파일 가져오기"</string>
+  <string name="tx_3f1a9c14fcbd" formatted="false">"유효하지 않거나 지원하지 않는 데이터입니다. 원본 카드·파일과 주소 형식을 확인하세요."</string>
+  <string name="tx_e3025c2b9a8c" formatted="false">"휴대전화 NFC 영역에 카드를 대 주세요"</string>
+  <string name="tx_888cc3269f57" formatted="false">"휴대전화 NFC 영역에 카드를 대 주세요."</string>
+  <string name="tx_2f6cfcdd0d49" formatted="false">"휴대전화 브라우저에서 인터넷에 연결합니다. 선택한 사이트는 주소를 받고 IP 및 방문 기록과 연결할 수 있습니다. 개인키, 비밀번호, 메모, 암호화 백업은 보내지 않습니다."</string>
+  <string name="tx_7164d7dcce03" formatted="false">"보기 "</string>
+  <string name="tx_f2c1c17e261f" formatted="false">"주소 보기"</string>
+  <string name="tx_e34e0d8f3f9f" formatted="false">"개인키와 대조하여 주소 확인 완료"</string>
+  <string name="tx_0d09931b152d" formatted="false">"이미지 저장 취소"</string>
+  <string name="tx_9d8e4093a4db" formatted="false">"취소했습니다. 다시 시도할 수 있습니다."</string>
+  <string name="tx_8f6f8d979c98" formatted="false">" 복사됨"</string>
+  <string name="tx_e11c55870865" formatted="false">"암호화 데이터 읽음"</string>
+  <string name="tx_b9d33622822b" formatted="false">"프레임"</string>
+  <string name="tx_9e2dd3a98d7d" formatted="false">"NFC를 켠 뒤 돌아와 다시 시도하세요."</string>
+  <string name="tx_6ae15fbc4b31" formatted="false">"카드 쓰기 시작"</string>
+  <string name="tx_708a5bc8096c" formatted="false">"카메라 데이터 수집 시작"</string>
+  <string name="tx_a65de7300439" formatted="false">"흐름 미리보기입니다. 실제 QR은 표시하지 않습니다."</string>
+  <string name="tx_774309b6c203" formatted="false">"현재 표시 언어"</string>
+  <string name="tx_71d56c609ed2" formatted="false">"복호화 전 · 미검증"</string>
+  <string name="tx_1405dd6512a9" formatted="false">"개인키와 아직 대조하지 않았습니다. 복호화 후 확인하세요."</string>
+  <string name="tx_2a199152ebb3" formatted="false">"키 또는 이미지 검증에 실패했습니다. 중단하고 다시 시도하세요. 검증되지 않은 월렛은 사용하지 마세요."</string>
+  <string name="tx_da432e122a25" formatted="false">"필요 용량: "</string>
+  <string name="tx_16136805d1b2" formatted="false">"지원하지 않는 언어는 영어로 표시합니다."</string>
+  <string name="tx_6bbcc116afce" formatted="false">"NFC 설정 열기"</string>
+  <string name="tx_7f73383195fc" formatted="false">"월렛을 카드에 저장"</string>
+  <string name="tx_c93d6fdd936c" formatted="false">"촬영하고 수집 완료"</string>
+  <string name="tx_2e15acc56b5a" formatted="false">"다른 월렛 읽기"</string>
+  <string name="tx_bad3182047eb" formatted="false">"받는 주소"</string>
+  <string name="tx_4a34d2a05a90" formatted="false">"유효하지 않은 받는 주소입니다. 조회할 수 없습니다."</string>
+  <string name="tx_8ad0d107e3b1" formatted="false">"받는 주소 QR 이미지 저장 완료"</string>
+  <string name="tx_1066146e689a" formatted="false">"유효하지 않거나 지원하지 않는 데이터입니다. 원본 카드·파일과 주소 형식을 확인하세요."</string>
+  <string name="tx_95e334ad66c8" formatted="false">"저장 후 파일을 다시 읽어 대조합니다."</string>
+  <string name="tx_075d2d3c6ee7" formatted="false">"유효하지 않거나 지원하지 않는 데이터입니다. 원본 카드·파일과 주소 형식을 확인하세요."</string>
+  <string name="tx_19ecb3b01400" formatted="false">"유효하지 않거나 지원하지 않는 데이터입니다. 원본 카드·파일과 주소 형식을 확인하세요."</string>
+  <string name="tx_9ac4cc9d917b" formatted="false">"이미지 저장 창을 열 수 없습니다. 다시 시도하세요."</string>
+  <string name="tx_e7225644c1d3" formatted="false">"유효하지 않거나 지원하지 않는 데이터입니다. 원본 카드·파일과 주소 형식을 확인하세요."</string>
+  <string name="tx_66984199cd06" formatted="false">"백업 파일을 읽을 수 없거나 너무 큽니다."</string>
+  <string name="tx_5971bf6d24f7" formatted="false">"브라우저를 열 수 없습니다. 다른 기기에서 공개 주소를 조회하세요."</string>
+  <string name="tx_e19ff563fd63" formatted="false">"유효하지 않거나 지원하지 않는 데이터입니다. 원본 카드·파일과 주소 형식을 확인하세요."</string>
+  <string name="tx_38f1e2d533d9" formatted="false">"NFC 작업이 확인되지 않았습니다. 카드 호환성·내용·용량·쓰기 보호를 확인하고 백업을 저장하세요."</string>
+  <string name="tx_47d43e26cce4" formatted="false">"클립보드에 접근할 수 없습니다. 다시 시도하세요."</string>
+  <string name="tx_6c4c37c97d1b" formatted="false">"유효하지 않거나 지원하지 않는 데이터입니다. 원본 카드·파일과 주소 형식을 확인하세요."</string>
+  <string name="tx_d0431bf91be8" formatted="false">"유효하지 않거나 지원하지 않는 데이터입니다. 원본 카드·파일과 주소 형식을 확인하세요."</string>
+  <string name="tx_9655473ab707" formatted="false">"유효하지 않거나 지원하지 않는 데이터입니다. 원본 카드·파일과 주소 형식을 확인하세요."</string>
+  <string name="tx_5f9148cbaddc" formatted="false">"복호화가 필요 없습니다. 현재 주소만 조회하며 다른 주소 유형의 잔액은 별도입니다."</string>
+  <string name="tx_77710aedc74e" formatted="false">"日本語"</string>
+  <string name="tx_51599727d1b9" formatted="false">"이전 형식 월렛"</string>
+  <string name="tx_4e1449e7d5e5" formatted="false">"표시"</string>
+  <string name="tx_7711581a6f1b" formatted="false">"일반 WIF 가져오기가 Taproot 복구를 보장하지는 않습니다. 실제 보관 주소 지원을 확인하세요."</string>
+  <string name="tx_a2666f394298" formatted="false">"나중에"</string>
+  <string name="tx_6503fd81d536" formatted="false">"마지막으로 백업 저장"</string>
+  <string name="tx_7139c515011e" formatted="false">"최대 16자. 공개 저장됩니다. 비밀번호나 비밀 정보는 입력하지 마세요."</string>
+  <string name="tx_f7b24a95d1db" formatted="false">"최종 사진"</string>
+  <string name="tx_58d23126e224" formatted="false">"키 또는 이미지 검증에 실패했습니다. 중단하고 다시 시도하세요. 검증되지 않은 월렛은 사용하지 마세요."</string>
+  <string name="tx_259a872ca177" formatted="false">"키 또는 이미지 검증에 실패했습니다. 중단하고 다시 시도하세요. 검증되지 않은 월렛은 사용하지 마세요."</string>
+  <string name="tx_ab501de60709" formatted="false">"백업 전 앱을 강제 종료하지 마세요."</string>
+  <string name="tx_d9e0f04ff9de" formatted="false">"복사 성공을 확인하지 못했습니다. 클립보드 권한을 확인하고 다시 시도하세요."</string>
+  <string name="tx_f0f179a46077" formatted="false">"설정된 메모 없음"</string>
+  <string name="tx_991dd7f9e675" formatted="false">"수집을 완료하지 못했습니다"</string>
+  <string name="tx_a32ec708f964" formatted="false">"유효하지 않거나 지원하지 않는 데이터입니다. 원본 카드·파일과 주소 형식을 확인하세요."</string>
+  <string name="tx_84324c8cae27" formatted="false">"소프트웨어는 현 상태로 제공되며 취약점이 없거나 복구가 항상 성공함을 보장하지 않습니다. 결함, 기기 고장, 비밀번호 분실, 카드 손상, 개인키 유출 등으로 영구 손실이 발생할 수 있습니다. 사용 전 백업하고 검증하세요."</string>
+  <string name="tx_e6a338bdc302" formatted="false">"온체인 잔액 보기"</string>
+  <string name="tx_be54ffff4425" formatted="false">"잔액 조회에는 개인키나 시드 문구가 필요 없습니다. 사이트에 입력하거나 지갑을 연결하지 마세요."</string>
+  <string name="tx_e75d6689e8da" formatted="false">"저장 및 다시 읽기 시뮬레이션"</string>
+  <string name="tx_f43d90a75ec5" formatted="false">"카드 확인 시뮬레이션"</string>
+  <string name="tx_8c5ef3dd8080" formatted="false">"모의 화면"</string>
+  <string name="tx_4dc8f15c9c23" formatted="false">"카드 인식 시뮬레이션"</string>
+  <string name="tx_b968b14c3c44" formatted="false">"수집 실패 시뮬레이션"</string>
+  <string name="tx_04f5b5bd3cd9" formatted="false">"쓰기·대조 중"</string>
+  <string name="tx_3b7e27cb4379" formatted="false">"처리 중"</string>
+  <string name="tx_bf19b26b491a" formatted="false">"카드 확인 중"</string>
+  <string name="tx_efff82d191ab" formatted="false">"생성·암호화·복구 확인 중…"</string>
+  <string name="tx_d57fc495aa67" formatted="false">"복호화·주소 대조 중…"</string>
+  <string name="tx_2d40e9dd3041" formatted="false">"콜드월렛 읽는 중"</string>
+  <string name="tx_775ed16a7f8a" formatted="false">"읽는 중. 카드를 계속 대 주세요…"</string>
+  <string name="tx_fe35ae5322b1" formatted="false">"유효하지 않거나 지원하지 않는 데이터입니다. 원본 카드·파일과 주소 형식을 확인하세요."</string>
+  <string name="tx_93cf5fb968f5" formatted="false">"카드의 주소입니다. 입금 전 복호화해 검증하세요."</string>
+  <string name="tx_cc0bcfe13c53" formatted="false">"NFC 미지원 기기입니다. 복구에는 암호화 백업 파일을 사용하세요."</string>
+  <string name="tx_5acddb38441d" formatted="false">"파일 저장 도구가 없습니다"</string>
+  <string name="tx_2d4fdb747a67" formatted="false">"파일 선택 도구가 없습니다. NFC를 사용하세요."</string>
+  <string name="tx_bb065d618351" formatted="false">"월렛 기록 카드 수: "</string>
+  <string name="tx_a9836e6504ed" formatted="false">"NFC 작업이 확인되지 않았습니다. 카드 호환성·내용·용량·쓰기 보호를 확인하고 백업을 저장하세요."</string>
+  <string name="tx_7bd174586538" formatted="false">"예시 주소입니다. BTC를 보내지 마세요."</string>
+  <string name="tx_3981325f1cd0" formatted="false">"사이트를 선택하면 현재 주소를 해당 사이트에 보내 조회합니다."</string>
+  <string name="tx_93425ea4d0e0" formatted="false">"사진은 복구 자료가 아니며 백업할 필요가 없습니다. 생성 또는 취소 후 수집 데이터를 지웁니다."</string>
+  <string name="tx_86c41c9ba95a" formatted="false">"콜드월렛 생성"</string>
+  <string name="tx_20a385baf1b7" formatted="false">"키 또는 이미지 검증에 실패했습니다. 중단하고 다시 시도하세요. 검증되지 않은 월렛은 사용하지 마세요."</string>
+  <string name="tx_067d7b7070f8" formatted="false">"생성 실패. 월렛이 생성되지 않았습니다."</string>
+  <string name="tx_4c4d1a664117" formatted="false">"생성 시 복구 확인 통과"</string>
+  <string name="tx_e2470988fb35" formatted="false">"NFC 카드 한 장으로,\n내 BTC를 보관하세요."</string>
+  <string name="tx_c0fcc7154b58" formatted="false">"NFC 카드 한 장으로 내 BTC를 보관하세요.\n오픈소스 오프라인 NFC 콜드월렛 생성 도구입니다."</string>
+  <string name="tx_f4f5d0d5a7a1" formatted="false">"월렛으로 스캔해 이 주소로 BTC를 받으세요"</string>
+  <string name="tx_e3886f06b0c2" formatted="false">"카메라 보완이 완료되지 않았습니다. 다시 시도하거나 시스템 난수 모드로 직접 변경하세요."</string>
+  <string name="tx_e5d2c8157cb0" formatted="false">"키 또는 이미지 검증에 실패했습니다. 중단하고 다시 시도하세요. 검증되지 않은 월렛은 사용하지 마세요."</string>
+  <string name="tx_32bd74daaa2f" formatted="false">"카메라가 생성에 참여하는 방식"</string>
+  <string name="tx_d574ae07f42f" formatted="false">"카메라 데이터 준비 완료 · 생성 후 삭제"</string>
+  <string name="tx_01eadf17c0c0" formatted="false">"카메라 데이터 수집 완료"</string>
+  <string name="tx_16dfd7a23b51" formatted="false">"카메라 권한이 꺼져 있습니다"</string>
+  <string name="tx_2ca0bd5ad876" formatted="false">"카메라로 무작위성 보완"</string>
+  <string name="tx_de32e20193ad" formatted="false">"확인"</string>
+  <string name="tx_0b3214cc91f8" formatted="false">"NFC 작업이 확인되지 않았습니다. 카드 호환성·내용·용량·쓰기 보호를 확인하고 백업을 저장하세요."</string>
+  <string name="tx_4a1edb18155e" formatted="false">"저장 확인"</string>
+  <string name="tx_545ef9fb0bcf" formatted="false">"쓰기 확인"</string>
+  <string name="tx_aa2a9a2e2b20" formatted="false">"덮어쓰기·쓰기 확인"</string>
+  <string name="tx_bfac7461da66" formatted="false">"오프라인 생성 · 비밀번호 보호"</string>
+  <string name="tx_2c902f3e8d2c" formatted="false">"오프라인에서 개인키를 생성하고 암호화해 카드에 저장합니다."</string>
+  <string name="tx_61f80e2016b1" formatted="false">"개인키 QR"</string>
+  <string name="tx_3439aad2c960" formatted="false">"개인키 QR을 저장했습니다. 이미지를 보호하세요."</string>
+  <string name="tx_3a2105caac04" formatted="false">"개인키와 QR로 BTC를 제어할 수 있습니다. 공유하지 마세요."</string>
+  <string name="tx_b0251000355d" formatted="false">"개인키 생성과 암호화 원리"</string>
+  <string name="tx_8798d03701ab" formatted="false">"개인키 복구 완료"</string>
+  <string name="tx_67f5f80bba40" formatted="false">"키 또는 이미지 검증에 실패했습니다. 중단하고 다시 시도하세요. 검증되지 않은 월렛은 사용하지 마세요."</string>
+  <string name="tx_427756372fa1" formatted="false">"1단계 / 비밀번호와 메모"</string>
+  <string name="tx_beed11f3ea3d" formatted="false">"2단계 / 카드에 쓰기"</string>
+  <string name="tx_5e4c715b4306" formatted="false">"3단계 / 완료 및 백업"</string>
+  <string name="tx_db318ad2805f" formatted="false">"카드를 기다리는 중…"</string>
+  <string name="tx_4eb0894dc5c3" formatted="false">"같은 카드를 기다리는 중…"</string>
+  <string name="tx_ce7e2556f66d" formatted="false">"입력원을 하나 더 추가"</string>
+  <string name="tx_aa51e9eb405e" formatted="false">"최소 6자. 길고 다른 곳에서 쓰지 않는 비밀번호를 권장합니다."</string>
+  <string name="tx_52467cca5896" formatted="false">"이 휴대전화를 오프라인으로 유지하려면 다른 기기로 받는 주소 QR을 스캔한 후 조회하세요."</string>
+  <string name="tx_49bd846f4dec" formatted="false">"콜드월렛 복호화"</string>
+  <string name="tx_37343ee66db9" formatted="false">"복호화 실패: 잘못된 비밀번호 또는 손상 데이터"</string>
+  <string name="tx_0a04f815a4be" formatted="false">"복호화 성공"</string>
+  <string name="tx_a3cbe5a15cf7" formatted="false">"비밀번호를 설정하고 NFC 카드에 저장"</string>
+  <string name="tx_4f53ff0d74b4" formatted="false">"복호화 비밀번호와 월렛을 구분할 메모를 입력하세요."</string>
+  <string name="tx_127527c89c51" formatted="false">"언어 / Language"</string>
+  <string name="tx_61a1bd0312b1" formatted="false">"유효하지 않거나 지원하지 않는 데이터입니다. 원본 카드·파일과 주소 형식을 확인하세요."</string>
+  <string name="tx_6882806be0d8" formatted="false">"문자, 숫자, 공백, 일반 문장부호만 최대 16자까지 사용할 수 있습니다. 이모지, 줄바꿈, 숨김 문자는 사용할 수 없습니다."</string>
+  <string name="tx_d3382bb9acad" formatted="false">"6~1024자의 전용 비밀번호를 사용하세요"</string>
+  <string name="tx_e1461edccc60" formatted="false">"먼저 카드를 확인하세요"</string>
+  <string name="tx_262173029789" formatted="false">"먼저 월렛을 생성하세요"</string>
+  <string name="tx_44f41c9a3131" formatted="false">"카드를 뗀 뒤 다시 대어 잠금 확인"</string>
+  <string name="tx_ec721d66afb2" formatted="false">"아래 중요 내용과 전체 안내를 읽어 주세요."</string>
+  <string name="tx_94fc9aae4921" formatted="false">"별도의 암호화 백업을 저장하세요"</string>
+  <string name="tx_6814c1cedd23" formatted="false">"NFC를 켜 주세요"</string>
+  <string name="tx_dd59f35e7289" formatted="false">"다른 쓰기 가능한 NFC 카드를 준비하세요. 월렛·주소·비밀번호는 같습니다."</string>
+  <string name="tx_83b2df51c031" formatted="false">"먼저 카드를 대어 확인"</string>
+  <string name="tx_3ed60404f305" formatted="false">"카드를 확인하고 쓰기"</string>
+  <string name="tx_01667d924e7c" formatted="false">"카드를 대고 읽기"</string>
+  <string name="tx_fc76f3f547dd" formatted="false">"방금 쓴 같은 카드를 대 주세요"</string>
+  <string name="tx_024e611eccc7" formatted="false">"확인한 같은 카드를 대 주세요"</string>
+  <string name="tx_d6e3cb7ae284" formatted="false">"원래 비밀번호를 입력하세요. 재설정할 수 없습니다."</string>
+  <string name="tx_a794cf9211ed" formatted="false">"복호화 비밀번호 입력"</string>
+  <string name="tx_f7cd8038ffd8" formatted="false">"복호화 비밀번호를 입력하세요(최대 1024자)"</string>
+  <string name="tx_ddf8ce3976c6" formatted="false">"NFC 카드 읽기"</string>
+  <string name="tx_4f729bb745b4" formatted="false">"콜드월렛 읽기"</string>
+  <string name="tx_6ea10ab02986" formatted="false">"다른 월렛 읽기"</string>
+  <string name="tx_6b4ef5b7d303" formatted="false">"콜드월렛 읽기"</string>
+  <string name="tx_b2a38955cbbc" formatted="false">"읽기 전에 확인하세요"</string>
+  <string name="tx_49970b35d8b0" formatted="false">"카드를 대거나 백업 파일 가져오기"</string>
+  <string name="tx_527e08c045c3" formatted="false">"확인한 같은 카드를 대고 다시 읽기 검증까지 유지하세요."</string>
+  <string name="tx_bc9016054e9a" formatted="false">"같은 카드를 대어 영구 잠금"</string>
+  <string name="tx_508e4c9ca73f" formatted="false">"NFC 카드를 대거나 암호화 백업 파일을 가져오세요."</string>
+  <string name="tx_8a96ae514509" formatted="false">"NFC 카드를 대거나 암호화 백업을 가져오세요.\n메모와 주소는 비밀번호 없이 볼 수 있습니다."</string>
+  <string name="tx_878d930524ed" formatted="false">"휴대전화 뒷면 NFC 인식 영역에 대세요"</string>
+  <string name="tx_0cd83cfe9fdf" formatted="false">"휴대전화 언어 따르기"</string>
+  <string name="tx_787c7c430960" formatted="false">"소프트웨어 결함으로 BTC 전부를 잃을 수 있습니다"</string>
+  <string name="tx_b618585b0699" formatted="false">"주변 사물을 향해 카메라를 천천히 움직이세요.\n개인키, 비밀번호 등 비밀 정보는 촬영하지 마세요."</string>
+  <string name="tx_572cf45ba436" formatted="false">"뒤로"</string>
+  <string name="tx_566866c64d7a" formatted="false">"BitTap 정보로 돌아가기"</string>
+  <string name="tx_4f43c229a0c2" formatted="false">"돌아가기 전 백업 저장"</string>
+  <string name="tx_bfa8ac132dd5" formatted="false">"완료 화면으로 돌아가기"</string>
+  <string name="tx_e12517e89134" formatted="false">"위험 안내로 돌아가기"</string>
+  <string name="tx_173983928c88" formatted="false">"Android 보안 난수와 함께 혼합합니다.\n사진만으로 개인키를 만들지 않습니다."</string>
+  <string name="tx_718e7b4fa1c7" formatted="false">"NFC 작업이 확인되지 않았습니다. 카드 호환성·내용·용량·쓰기 보호를 확인하고 백업을 저장하세요."</string>
+  <string name="tx_237607776612" formatted="false">"NFC 작업이 확인되지 않았습니다. 카드 호환성·내용·용량·쓰기 보호를 확인하고 백업을 저장하세요."</string>
+  <string name="tx_52056c380a1c" formatted="false">"NFC 작업이 확인되지 않았습니다. 카드 호환성·내용·용량·쓰기 보호를 확인하고 백업을 저장하세요."</string>
+  <string name="tx_5836c07654e0" formatted="false">"유효하지 않거나 지원하지 않는 데이터입니다. 원본 카드·파일과 주소 형식을 확인하세요."</string>
+  <string name="tx_fbc75fc4847a" formatted="false">"유효하지 않거나 지원하지 않는 데이터입니다. 원본 카드·파일과 주소 형식을 확인하세요."</string>
+  <string name="tx_ebdcbdcf9c99" formatted="false">"선택"</string>
+  <string name="tx_3547e178882d" formatted="false">"블록 탐색기 선택"</string>
+  <string name="tx_fd2843b6b6a3" formatted="false">"저장 위치 선택 후 저장"</string>
+  <string name="tx_e1fe64a57661" formatted="false">"키 또는 이미지 검증에 실패했습니다. 중단하고 다시 시도하세요. 검증되지 않은 월렛은 사용하지 마세요."</string>
+  <string name="tx_e99e632a128c" formatted="false">"다시 촬영"</string>
+  <string name="tx_b8784c8dd563" formatted="false">"다시 시도"</string>
+  <string name="tx_4dec52a5c8bf" formatted="false">"월렛 메모"</string>
+  <string name="tx_313cd0764f94" formatted="false">"유효하지 않거나 지원하지 않는 데이터입니다. 원본 카드·파일과 주소 형식을 확인하세요."</string>
+  <string name="tx_86aeaac6b760" formatted="false">"메모와 받는 주소는 공개 정보이며 개인키는 비밀번호로 암호화됩니다."</string>
+  <string name="tx_48feaa3eb5b8" formatted="false">"공개된 월렛 메모는 아직 검증되지 않았으며 월렛의 출처를 증명하지 않습니다."</string>
+  <string name="tx_598abb77dc8e" formatted="false">"유효하지 않거나 지원하지 않는 데이터입니다. 원본 카드·파일과 주소 형식을 확인하세요."</string>
+  <string name="tx_f6428ad5a1ad" formatted="false">"메모는 최대 16자·UTF-8 64바이트"</string>
+  <string name="tx_cdaef56d96db" formatted="false">"유효하지 않거나 지원하지 않는 데이터입니다. 원본 카드·파일과 주소 형식을 확인하세요."</string>
+  <string name="tx_f6cd9514f416" formatted="false">"유효하지 않거나 지원하지 않는 데이터입니다. 원본 카드·파일과 주소 형식을 확인하세요."</string>
+  <string name="tx_aa096c77e4d8" formatted="false">"월렛을 인식했습니다"</string>
+  <string name="tx_ac27a35a073b" formatted="false">"개인키 · WIF"</string>
+  <string name="tx_aac08d9f5f0e" formatted="false">"월렛 복호화 비밀번호"</string>
+  <string name="tx_f0bc3849d39b" formatted="false">"전체 면책 및 위험 안내 읽기"</string>
+  <string name="tx_ae6b4e57b0d2" formatted="false">"키 또는 이미지 검증에 실패했습니다. 중단하고 다시 시도하세요. 검증되지 않은 월렛은 사용하지 마세요."</string>
+  <string name="tx_90d37c0f93c7" formatted="false">"월렛과 함께 저장"</string>
+  <string name="tx_145219e726b8" formatted="false">"숨기기"</string>
+  <string name="tx_fa53be48a3db" formatted="false">"개인키를 숨기고 홈으로"</string>
+  <string name="tx_60495b4cccfd" formatted="false">"유효하지 않거나 지원하지 않는 데이터입니다. 원본 카드·파일과 주소 형식을 확인하세요."</string>
+  <string name="tx_8aa01651a9ad" formatted="false">"카메라 접근이 필요합니다"</string>
+  <string name="tx_df789545c9c8" formatted="false">"유효하지 않거나 지원하지 않는 데이터입니다. 원본 카드·파일과 주소 형식을 확인하세요."</string>
+  <string name="tx_64a5f49fdbfe" formatted="false">"미리보기 프레임"</string>
+  <string name="tx_56c5cb66a9a9" formatted="false">"프레임과 사진을 요약값으로 변환"</string>
+  <string name="tx_0b051f23417c" formatted="false">"미리보기 프레임 수집 완료"</string>
+  <string name="tx_ae09ddfcf2f1" formatted="false">"입금 전 다시 읽고 복호화해 복구를 확인하세요."</string>
+  <string name="tx_203c08e0d44a" formatted="false">"홈"</string>
+  <string name="camera_progress">%1$s %2$d / 32</string>
+  <string name="note_counter">%1$s · %2$d/16</string>
+</resources>

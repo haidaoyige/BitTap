@@ -1,0 +1,2 @@
+51284fefb0afc7f6a004f96bfe5234de366337e77998b12f88f0ea74ece95269  app/build/outputs/bittap/BitTap-0.4.0-code7-candidate.apk
+b1a86747643582d43153d152fe0f77bda04d71aa6b2d406f5dd0a6b3f3acbaa5  recovery/build/distributions/bittap-recover.zip

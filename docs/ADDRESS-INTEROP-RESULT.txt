@@ -1,0 +1,1 @@
+Independent Python address verification PASS: 4 public scalar fixtures; P2PKH, P2SH-P2WPKH, P2WPKH and BIP341 key-only P2TR match; original scalars recover matching Taproot spending keys. No user keys read.

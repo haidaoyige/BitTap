@@ -1,0 +1,1 @@
+Independent Python recovery PASS: CG3, CG2 and legacy CG1 fixtures decrypted to published scalar 1; compressed public key and addresses match; all public-address and wallet-note metadata bytes and ciphertext are authenticated.

@@ -1,0 +1,21 @@
+.gradle/
+**/build/
+local.properties
+*.jks
+*.keystore
+.idea/
+
+# Local credentials and real wallet exports
+.env
+.env.*
+*.pem
+*.key
+*.p12
+*.pfx
+backups/
+private-keys/
+*.apk
+.DS_Store
+local-dev/
+credentials.json
+release-artifacts/

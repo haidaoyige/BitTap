@@ -1,0 +1,68 @@
+<?xml version='1.0' encoding='utf-8'?>
+<testsuites>
+  <testsuite name="io.coingift.core.BitcoinAddressesTest" tests="9" skipped="0" failures="0" errors="0" timestamp="2026-10-15T07:15:34" hostname="iandeMacBook-Air.local" time="0.413">
+    <properties />
+    <testcase name="bip86FirstReceivingOutputVector" classname="io.coingift.core.BitcoinAddressesTest" time="0.152" />
+    <testcase name="knownScalarOneLegacyNestedAndNative" classname="io.coingift.core.BitcoinAddressesTest" time="0.002" />
+    <testcase name="oddAndEvenYUseSameXOnlyTaprootInternalKey" classname="io.coingift.core.BitcoinAddressesTest" time="0.003" />
+    <testcase name="exportKnownScalarsForIndependentAddressAndSpendKeyVerification" classname="io.coingift.core.BitcoinAddressesTest" time="0.006" />
+    <testcase name="cardRoundTripAuthenticatesAllFourAddressesInCg2" classname="io.coingift.core.BitcoinAddressesTest" time="0.247" />
+    <testcase name="bip341KeyOnlyOfficialVector" classname="io.coingift.core.BitcoinAddressesTest" time="0.0" />
+    <testcase name="taprootUsesBech32mAndNativeUsesBech32" classname="io.coingift.core.BitcoinAddressesTest" time="0.001" />
+    <testcase name="rejectUncompressedPubkey" classname="io.coingift.core.BitcoinAddressesTest" time="0.0" />
+    <testcase name="bip86SecondReceivingOutputVector" classname="io.coingift.core.BitcoinAddressesTest" time="0.001" />
+    <system-out />
+    <system-err />
+  </testsuite>
+  <testsuite name="io.coingift.core.FormatAndWorkflowTest" tests="9" skipped="0" failures="0" errors="0" timestamp="2026-10-15T07:15:34" hostname="iandeMacBook-Air.local" time="0.412">
+    <properties />
+    <testcase name="failedCloseOrReadbackNeverCompletesBackup" classname="io.coingift.core.FormatAndWorkflowTest" time="0.002" />
+    <testcase name="fourPublicAddressesAvailableWithoutPassword" classname="io.coingift.core.FormatAndWorkflowTest" time="0.0" />
+    <testcase name="eachAddressIsCoveredByGcmAuthentication" classname="io.coingift.core.FormatAndWorkflowTest" time="0.235" />
+    <testcase name="backupIsVerifiedAfterClose" classname="io.coingift.core.FormatAndWorkflowTest" time="0.001" />
+    <testcase name="authenticatedButUnrelatedAddressRejected" classname="io.coingift.core.FormatAndWorkflowTest" time="0.112" />
+    <testcase name="existingCg1FixtureStillDecrypts" classname="io.coingift.core.FormatAndWorkflowTest" time="0.058" />
+    <testcase name="completionRequiresVerifiedWriteAndSavedBackup" classname="io.coingift.core.FormatAndWorkflowTest" time="0.0" />
+    <testcase name="multipleCardsUseExactSameBackupAndCountUniqueTags" classname="io.coingift.core.FormatAndWorkflowTest" time="0.0" />
+    <testcase name="swappedTypesTruncatedDataAndPrefixVersionMismatchRejected" classname="io.coingift.core.FormatAndWorkflowTest" time="0.001" />
+    <system-out />
+    <system-err />
+  </testsuite>
+  <testsuite name="io.coingift.core.SecurityReviewTest" tests="6" skipped="0" failures="0" errors="0" timestamp="2026-10-15T07:15:35" hostname="iandeMacBook-Air.local" time="2.158">
+    <properties />
+    <testcase name="decryptedScalarExistsBeforeAnyWifExportAndCloseWipesOwnedArray" classname="io.coingift.core.SecurityReviewTest" time="0.12" />
+    <testcase name="authenticatedOutOfRangeScalarsNeverReturnAnUnlockedKey" classname="io.coingift.core.SecurityReviewTest" time="0.289" />
+    <testcase name="freshCreationsUseDifferentKeysSaltsAndNonces" classname="io.coingift.core.SecurityReviewTest" time="1.353" />
+    <testcase name="publicClaimsCanBeReplacedBeforeAuthenticationEvenThoughDecryptionRejects" classname="io.coingift.core.SecurityReviewTest" time="0.112" />
+    <testcase name="parserHandlesEveryTruncationAndMutatedUntrustedPayloads" classname="io.coingift.core.SecurityReviewTest" time="0.107" />
+    <testcase name="currentSixDigitPolicyAllowsOfflineDictionaryRecovery" classname="io.coingift.core.SecurityReviewTest" time="0.177" />
+    <system-out />
+    <system-err />
+  </testsuite>
+  <testsuite name="io.coingift.core.WalletCryptoTest" tests="21" skipped="0" failures="0" errors="0" timestamp="2026-10-15T07:15:37" hostname="iandeMacBook-Air.local" time="2.316">
+    <properties />
+    <testcase name="rejectionSamplingRetriesZeroAndCurveOrder" classname="io.coingift.core.WalletCryptoTest" time="0.115" />
+    <testcase name="shortOrBlankNewPasswordsRejected" classname="io.coingift.core.WalletCryptoTest" time="0.001" />
+    <testcase name="unicodeNormalizedButWhitespaceAndCasePreserved" classname="io.coingift.core.WalletCryptoTest" time="0.222" />
+    <testcase name="productionGeneratorCreatesRecoverableMainnetCard" classname="io.coingift.core.WalletCryptoTest" time="0.166" />
+    <testcase name="exportPublicTestFixtureForIndependentRecovery" classname="io.coingift.core.WalletCryptoTest" time="0.061" />
+    <testcase name="closePreventsFurtherWifAccess" classname="io.coingift.core.WalletCryptoTest" time="0.001" />
+    <testcase name="bip38WrongPasswordRejected" classname="io.coingift.core.WalletCryptoTest" time="0.379" />
+    <testcase name="sameKeyAndPasswordGetDifferentSaltAndNonce" classname="io.coingift.core.WalletCryptoTest" time="0.113" />
+    <testcase name="testnetBackupRejectedExplicitly" classname="io.coingift.core.WalletCryptoTest" time="0.063" />
+    <testcase name="failedRandomSourceDoesNotFallback" classname="io.coingift.core.WalletCryptoTest" time="0.0" />
+    <testcase name="aes256GcmNistVector" classname="io.coingift.core.WalletCryptoTest" time="0.0" />
+    <testcase name="hostileKdfAndUnknownVersionsRejectedBeforeKdf" classname="io.coingift.core.WalletCryptoTest" time="0.061" />
+    <testcase name="bip38CompressedOfficialVector" classname="io.coingift.core.WalletCryptoTest" time="0.215" />
+    <testcase name="privateKeyRangeBoundaries" classname="io.coingift.core.WalletCryptoTest" time="0.0" />
+    <testcase name="sixCharacterPasswordCanCreateAndRecoverCard" classname="io.coingift.core.WalletCryptoTest" time="0.164" />
+    <testcase name="wrongPasswordAndTamperingNeverReturnPrivateKey" classname="io.coingift.core.WalletCryptoTest" time="0.387" />
+    <testcase name="stuckRandomSourceStopsInsteadOfLoopingForever" classname="io.coingift.core.WalletCryptoTest" time="0.001" />
+    <testcase name="scryptRfc7914Vector" classname="io.coingift.core.WalletCryptoTest" time="0.026" />
+    <testcase name="mainnetRoundTrip" classname="io.coingift.core.WalletCryptoTest" time="0.116" />
+    <testcase name="secp256k1AndBech32PublishedVector" classname="io.coingift.core.WalletCryptoTest" time="0.001" />
+    <testcase name="bip38UncompressedKeyNotSilentlyChangedToSegwit" classname="io.coingift.core.WalletCryptoTest" time="0.223" />
+    <system-out />
+    <system-err />
+  </testsuite>
+</testsuites>

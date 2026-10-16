@@ -1,0 +1,113 @@
+To honour the JVM settings for this build a single-use Daemon process will be forked. For more on this, please refer to https://docs.gradle.org/8.11.1/userguide/gradle_daemon.html#sec:disabling_the_daemon in the Gradle documentation.
+Daemon will be stopped at the end of the build 
+> Task :core:compileJava
+> Task :core:processResources NO-SOURCE
+> Task :core:classes
+> Task :core:jar
+> Task :app:preBuild UP-TO-DATE
+> Task :app:preReleaseBuild UP-TO-DATE
+> Task :app:mergeReleaseJniLibFolders
+> Task :app:mergeReleaseNativeLibs NO-SOURCE
+> Task :app:stripReleaseDebugSymbols NO-SOURCE
+> Task :app:extractReleaseNativeSymbolTables NO-SOURCE
+> Task :app:mergeReleaseNativeDebugMetadata NO-SOURCE
+> Task :app:checkReleaseDuplicateClasses
+> Task :app:javaPreCompileRelease
+> Task :app:checkReleaseAarMetadata
+> Task :app:generateReleaseResValues
+> Task :app:mapReleaseSourceSetPaths
+> Task :app:generateReleaseResources
+> Task :app:mergeReleaseResources
+> Task :app:packageReleaseResources
+> Task :app:parseReleaseLocalResources
+> Task :app:createReleaseCompatibleScreenManifests
+> Task :app:extractDeepLinksRelease
+> Task :app:processReleaseMainManifest
+> Task :app:processReleaseManifest
+> Task :app:desugarReleaseFileDependencies
+> Task :app:mergeReleaseStartupProfile
+> Task :app:processReleaseManifestForPackage
+> Task :app:mergeExtDexRelease
+> Task :app:mergeReleaseArtProfile
+> Task :app:mergeReleaseShaders
+> Task :app:compileReleaseShaders NO-SOURCE
+> Task :app:generateReleaseAssets UP-TO-DATE
+> Task :app:mergeReleaseAssets
+> Task :app:compressReleaseAssets
+> Task :app:extractReleaseVersionControlInfo
+> Task :app:extractProguardFiles
+> Task :app:processReleaseJavaRes NO-SOURCE
+> Task :app:processReleaseResources
+> Task :app:mergeReleaseJavaResource
+
+> Task :app:compileReleaseJavaWithJavac
+注: 某些输入文件使用或覆盖了已过时的 API。
+注: 有关详细信息, 请使用 -Xlint:deprecation 重新编译。
+
+> Task :app:dexBuilderRelease
+> Task :app:mergeReleaseGlobalSynthetics
+> Task :app:mergeDexRelease
+> Task :app:generateReleaseLintVitalReportModel
+> Task :app:compileReleaseArtProfile
+> Task :app:optimizeReleaseResources
+> Task :app:collectReleaseDependencies
+> Task :app:sdkReleaseDependencyData
+> Task :app:validateSigningRelease
+> Task :app:writeReleaseAppMetadata
+> Task :app:writeReleaseSigningConfigVersions
+> Task :app:bundleReleaseClassesToCompileJar
+> Task :app:preReleaseAndroidTestBuild SKIPPED
+> Task :app:generateReleaseAndroidTestResValues
+> Task :app:generateReleaseAndroidTestLintModel
+> Task :app:generateReleaseLintReportModel
+> Task :app:preReleaseUnitTestBuild UP-TO-DATE
+> Task :app:generateReleaseUnitTestLintModel
+> Task :app:bundleReleaseClassesToRuntimeJar
+> Task :app:javaPreCompileReleaseUnitTest
+> Task :app:compileReleaseUnitTestJavaWithJavac
+> Task :app:processReleaseUnitTestJavaRes NO-SOURCE
+> Task :app:testReleaseUnitTest
+> Task :app:javaPreCompileReleaseAndroidTest
+> Task :app:checkReleaseAndroidTestAarMetadata
+> Task :app:mapReleaseAndroidTestSourceSetPaths
+> Task :app:generateReleaseAndroidTestResources
+> Task :app:mergeReleaseAndroidTestResources
+> Task :app:processReleaseAndroidTestManifest
+> Task :app:processReleaseAndroidTestResources
+> Task :app:compileReleaseAndroidTestJavaWithJavac
+> Task :app:mergeReleaseAndroidTestShaders
+> Task :app:compileReleaseAndroidTestShaders NO-SOURCE
+> Task :app:generateReleaseAndroidTestAssets UP-TO-DATE
+> Task :app:mergeReleaseAndroidTestAssets
+> Task :app:compressReleaseAndroidTestAssets
+> Task :app:checkReleaseAndroidTestDuplicateClasses
+> Task :app:lintVitalAnalyzeRelease
+> Task :app:dexBuilderReleaseAndroidTest
+> Task :app:lintVitalReportRelease SKIPPED
+> Task :app:lintVitalRelease SKIPPED
+> Task :app:packageRelease
+> Task :app:createReleaseApkListingFileRedirect
+> Task :app:assembleRelease
+> Task :app:desugarReleaseAndroidTestFileDependencies
+> Task :app:mergeExtDexReleaseAndroidTest
+> Task :app:mergeDexReleaseAndroidTest
+> Task :app:mergeReleaseAndroidTestGlobalSynthetics
+> Task :app:processReleaseAndroidTestJavaRes NO-SOURCE
+> Task :app:mergeReleaseAndroidTestJavaResource
+> Task :app:mergeReleaseAndroidTestJniLibFolders
+> Task :app:mergeReleaseAndroidTestNativeLibs NO-SOURCE
+> Task :app:stripReleaseAndroidTestDebugSymbols NO-SOURCE
+> Task :app:validateSigningReleaseAndroidTest
+> Task :app:writeReleaseAndroidTestSigningConfigVersions
+> Task :app:packageReleaseAndroidTest
+> Task :app:createReleaseAndroidTestApkListingFileRedirect
+> Task :app:assembleReleaseAndroidTest
+> Task :app:lintAnalyzeRelease
+> Task :app:lintAnalyzeReleaseAndroidTest
+> Task :app:lintAnalyzeReleaseUnitTest
+> Task :app:lintReportRelease
+> Task :app:lintRelease
+[Incubating] Problems report is available at: file:///private/tmp/bittap-code13-build/_root/reports/problems/problems-report.html
+
+BUILD SUCCESSFUL in 19s
+80 actionable tasks: 80 executed

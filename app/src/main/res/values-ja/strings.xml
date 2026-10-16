@@ -1,0 +1,395 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+  <string name="copy_confirm_title">WIF 秘密鍵をコピーしますか？</string>
+  <string name="copy_confirm_description">秘密鍵は平文でシステムのクリップボードにコピーされ、漏えいのリスクが高まります。</string>
+  <string name="copy_confirm_caution">信頼できるウォレットにのみ貼り付けてください。他人や AI に送らないでください。</string>
+  <string name="copy_confirm_transfer">コピーまたはインポート後は、全 BTC をバックアップ済みの新しいウォレットに早めに移し、旧アドレスへの送金や受取をやめてください。</string>
+  <string name="copy_confirm_action">WIF 秘密鍵をコピーする</string>
+  <string name="private_image_title">WIF 秘密鍵</string>
+  <string name="private_image_subtitle">WIF 対応のウォレットへのインポート用</string>
+  <string name="private_image_risk_title">平文の秘密鍵・漏えいのリスク</string>
+  <string name="private_image_risk_body">この画像を入手した人は、ウォレット内の BTC を送金できる可能性があります。</string>
+  <string name="private_image_key_label">平文の秘密鍵 · WIF</string>
+  <string name="private_image_move_title">すべての BTC を早めに移す</string>
+  <string name="private_image_move_body">このウォレットの全 BTC を、バックアップ済みの新しいウォレットに移してください。</string>
+  <string name="private_image_stop_title">古いアドレスの利用をやめる</string>
+  <string name="private_image_stop_body">このウォレットのどの旧アドレスにも追加送金せず、受取にも使わないでください。</string>
+  <string name="private_image_notice">この画像を共有・アップロードしないでください。</string>
+  <string name="address_image_title">受取アドレス</string>
+  <string name="address_image_label">ビットコインアドレス</string>
+  <string name="app_name" formatted="false">"BitTap"</string>
+  <string name="private_wif" formatted="false">"秘密鍵 · WIF"</string>
+  <string name="btc_mainnet" formatted="false">"BTC メインネット"</string>
+  <string name="nfc_scan_status">"●  %1$s"</string>
+  <string name="tx_e3b0c44298fc" formatted="false">"この説明の本文は現在、中国語で表示されます。"</string>
+  <string name="tx_37e1ec891972" formatted="false">" · 推奨"</string>
+  <string name="tx_99fc6ae1c2b5" formatted="false">" · 復元互換性を要確認"</string>
+  <string name="tx_ad71a0cbe0e9" formatted="false">" アドレス"</string>
+  <string name="tx_f5d87a8b74a0" formatted="false">" バイト"</string>
+  <string name="tx_36eac7ae02d6" formatted="false">" バイト / 利用可能："</string>
+  <string name="tx_1f9f261cb3f7" formatted="false">" バイト、利用可能："</string>
+  <string name="tx_6da628e292f8" formatted="false">" 枚のNFCカード。"</string>
+  <string name="tx_eb563b1dfeb9" formatted="false">"1枚"</string>
+  <string name="tx_c24f79164615" formatted="false">"草案1.0 · 2026/10/16"</string>
+  <string name="tx_735eaaba42cc" formatted="false">"BIP38には公開受取アドレスがありません。復号して実際の保管先と照合してください。"</string>
+  <string name="tx_8e6d2572586e" formatted="false">"データ形式が無効または非対応です。元のカード・ファイルとアドレス形式を確認してください。"</string>
+  <string name="tx_eff9e6709f7c" formatted="false">"BTCメインネット"</string>
+  <string name="tx_911c36753ad0" formatted="false">"BTC受取アドレスQR"</string>
+  <string name="tx_e631a3fd1c4e" formatted="false">"BitTapは端末内で秘密鍵を作成・復元するツールです。BTC、秘密鍵、パスワードを預からず、資産保険、元本保護、復旧保証は提供しません。"</string>
+  <string name="tx_90f08fc97604" formatted="false">"NFC書込と再読取の内容が一致"</string>
+  <string name="tx_913c4dddc512" formatted="false">"NFC操作を確認できません。対応形式、内容、容量、書き込み保護を確認し、バックアップを保存してください。"</string>
+  <string name="tx_8fa272fa506a" formatted="false">"SHA-256は乱数を無から作りません。カメラは補助であり、侵害された端末を保護できません。"</string>
+  <string name="tx_be17cc390d70" formatted="false">"SegWit · 推奨"</string>
+  <string name="tx_8a49dc584353" formatted="false">"鍵または画像の検証に失敗しました。停止して再試行し、未検証のウォレットは使わないでください。"</string>
+  <string name="tx_d917d625ddcd" formatted="false">"Taproot · 復元対応を確認"</string>
+  <string name="tx_77d845252711" formatted="false">"鍵または画像の検証に失敗しました。停止して再試行し、未検証のウォレットは使わないでください。"</string>
+  <string name="tx_f5b4ef25e5a9" formatted="false">"WIF秘密鍵"</string>
+  <string name="tx_9949b5a98f91" formatted="false">"WIF秘密鍵QR。自分のウォレット専用"</string>
+  <string name="tx_c6154c8d953e" formatted="false">"WIFをコピーしました。自分のウォレットに取り込み、共有しないでください。"</string>
+  <string name="tx_a218fa85ba4c" formatted="false">"同意せずホームへ"</string>
+  <string name="tx_67a970469fc9" formatted="false">"NFC操作を確認できません。対応形式、内容、容量、書き込み保護を確認し、バックアップを保存してください。"</string>
+  <string name="tx_a62408ee3231" formatted="false">"データ形式が無効または非対応です。元のカード・ファイルとアドレス形式を確認してください。"</string>
+  <string name="tx_820ac17abe39" formatted="false">"データ形式が無効または非対応です。元のカード・ファイルとアドレス形式を確認してください。"</string>
+  <string name="tx_1f31eefae604" formatted="false">"データ形式が無効または非対応です。元のカード・ファイルとアドレス形式を確認してください。"</string>
+  <string name="tx_f9108720f396" formatted="false">"両方を混合して秘密鍵を生成"</string>
+  <string name="tx_64eff9d19646" formatted="false">"パスワードが一致しません"</string>
+  <string name="tx_72726d8818f6" formatted="false">"中文"</string>
+  <string name="tx_7e2a0ba85e5b" formatted="false">"仕組みを見る"</string>
+  <string name="tx_7ffa50a9d43f" formatted="false">"QRには受取アドレスのみが含まれ、秘密鍵は含まれません"</string>
+  <string name="tx_3f220c138d71" formatted="false">"QRには受取アドレスのみが含まれ、共有できます。"</string>
+  <string name="tx_8acc3205b149" formatted="false">"このQRは平文の秘密鍵です。共有せず、保存画像を保護してください。60秒後に閉じます。"</string>
+  <string name="tx_aa0a7876797e" formatted="false">"このQRには平文の秘密鍵が含まれます。共有せず、保存した画像を保護してください。"</string>
+  <string name="tx_c5eedf9864cd" formatted="false">"鍵または画像の検証に失敗しました。停止して再試行し、未検証のウォレットは使わないでください。"</string>
+  <string name="tx_7e275fe335e2" formatted="false">"QR生成に失敗しました。秘密鍵のコピーを使ってください。"</string>
+  <string name="tx_032055388866" formatted="false">"自分のウォレットへの取り込み専用"</string>
+  <string name="tx_0a4552e299bc" formatted="false">"端末内で処理。インターネット接続は不要。"</string>
+  <string name="tx_8bba62eb3a44" formatted="false">"今回の操作にのみ適用されます。次回も再度確認します。"</string>
+  <string name="tx_53f28d79af7c" formatted="false">"操作のデモです。クリップボードは変更しません。"</string>
+  <string name="tx_5fcdace46495" formatted="false">"今回のランダムデータ取得のみに使います。外部カメラアプリや写真の自動保存は使用しません。"</string>
+  <string name="tx_7b9f160607a2" formatted="false">"データ形式が無効または非対応です。元のカード・ファイルとアドレス形式を確認してください。"</string>
+  <string name="tx_eac9ebe7e1c5" formatted="false">"以下は中国語の全文です。正式公開前に法的確認が必要です。"</string>
+  <string name="tx_52f2311f533a" formatted="false">"データ形式が無効または非対応です。元のカード・ファイルとアドレス形式を確認してください。"</string>
+  <string name="tx_a77dc3583d73" formatted="false">"作成時のパスワードを使います。復号は端末内で行います。"</string>
+  <string name="tx_1ac37c0d65e9" formatted="false">"システムの安全な乱数を使い端末内で生成・暗号化"</string>
+  <string name="tx_dd961e177aed" formatted="false">"システム乱数を使用"</string>
+  <string name="tx_cb4ba40bf823" formatted="false">"ヘルプ"</string>
+  <string name="tx_fd233833460b" formatted="false">"この取得データを使用"</string>
+  <string name="tx_9403c6e1c0de" formatted="false">"NFCカードとは別に暗号化バックアップを保存してください。復元には元のパスワードも必要です。パスワードは別に保管してください。"</string>
+  <string name="tx_71386d7b5c41" formatted="false">"別の場所にバックアップ"</string>
+  <string name="tx_dd44e0a9987d" formatted="false">"ファイルに保存"</string>
+  <string name="tx_05f2ed792d40" formatted="false">"暗号化バックアップを保存"</string>
+  <string name="tx_85f70d2c0501" formatted="false">"同じコールドウォレットを保存"</string>
+  <string name="tx_850de13a01d9" formatted="false">"画像を保存"</string>
+  <string name="tx_cc7068c55be5" formatted="false">"保存後、同じウォレットを別のNFCカードに書き込みます。"</string>
+  <string name="tx_a89841c91122" formatted="false">"秘密鍵QRを保存しますか？"</string>
+  <string name="tx_460df61eff5c" formatted="false">"許可して撮影を開始"</string>
+  <string name="tx_8b1c112f7d39" formatted="false">"先に暗号化バックアップを保存"</string>
+  <string name="tx_c407ad9101a0" formatted="false">"別のカードへ書く前にバックアップ"</string>
+  <string name="tx_0c07e16de18e" formatted="false">"先に撮影を完了し、その後パスワードを設定します。"</string>
+  <string name="tx_4c66c0a2d9e6" formatted="false">"秘密鍵をパスワードで保護"</string>
+  <string name="tx_fa5c6e3c27c3" formatted="false">"まずメモでウォレットを見分けてください。\n秘密鍵が必要なときにパスワードを入力します。"</string>
+  <string name="tx_1c3ae1077963" formatted="false">"免責事項とリスクのご案内"</string>
+  <string name="tx_26d3ddeff65f" formatted="false">"無料・オープンソース。資金を預かりません"</string>
+  <string name="tx_8b14a413b837" formatted="false">"BitTapについて"</string>
+  <string name="tx_3fd47edce45b" formatted="false">"閉じる"</string>
+  <string name="tx_759e3f6eeac7" formatted="false">"QRを閉じる"</string>
+  <string name="tx_3970b3aa27d1" formatted="false">"その他のアドレス"</string>
+  <string name="tx_50bc777b5525" formatted="false">"他の受取アドレス ⌄"</string>
+  <string name="tx_cc4ad0893aab" formatted="false">"暗号化バックアップを再保存"</string>
+  <string name="tx_b0203d529979" formatted="false">"同じカードを再度かざす"</string>
+  <string name="tx_d0c9a0e81079" formatted="false">"パスワードを再入力"</string>
+  <string name="tx_a8ca5da31def" formatted="false">"書き込み→再読み取り→照合中。カードを離さないでください…"</string>
+  <string name="tx_47fe095a6374" formatted="false">"NDEFの全内容を上書きします。必要なデータを保存したことを確認してください。"</string>
+  <string name="tx_aee7400b7392" formatted="false">"別のNFCカードにも書込"</string>
+  <string name="tx_cbbf5beae050" formatted="false">"書き込み後に再読み取り照合"</string>
+  <string name="tx_b375e92d28b4" formatted="false">"NFC操作を確認できません。対応形式、内容、容量、書き込み保護を確認し、バックアップを保存してください。"</string>
+  <string name="tx_380f0a6349fa" formatted="false">"コールドウォレット作成完了"</string>
+  <string name="tx_ece1ad79e4bf" formatted="false">"読取が完了しました"</string>
+  <string name="tx_2793fd50220e" formatted="false">"書込可能なNFCカードを用意してください。\n書込後、自動で再読取して照合します。"</string>
+  <string name="tx_315ae18ab628" formatted="false">"書き込み可能なNFCカードを用意し、完了まで端末にかざしてください。"</string>
+  <string name="tx_fac6cd7a6d04" formatted="false">"ウォレットを作成"</string>
+  <string name="tx_e0aa451f02d8" formatted="false">"作成する前にご確認ください"</string>
+  <string name="tx_bc0fbd2ebc53" formatted="false">"プレビューフレームと写真をシステム乱数に追加します。"</string>
+  <string name="tx_081487800eae" formatted="false">"暗号化バックアップを保存・照合済み"</string>
+  <string name="tx_6fb3f0efab68" formatted="false">"暗号化バックアップを保存・照合済み"</string>
+  <string name="tx_e14cd3c23f47" formatted="false">"暗号化秘密鍵・4種類のアドレス・公開メモを含みます。復元には元のパスワードが必要です。"</string>
+  <string name="tx_576967c59689" formatted="false">"NFC操作を確認できません。対応形式、内容、容量、書き込み保護を確認し、バックアップを保存してください。"</string>
+  <string name="tx_89401142aefd" formatted="false">"データ形式が無効または非対応です。元のカード・ファイルとアドレス形式を確認してください。"</string>
+  <string name="tx_010c9563a277" formatted="false">"NFC操作を確認できません。対応形式、内容、容量、書き込み保護を確認し、バックアップを保存してください。"</string>
+  <string name="tx_39648e5a0493" formatted="false">"NFC操作を確認できません。対応形式、内容、容量、書き込み保護を確認し、バックアップを保存してください。"</string>
+  <string name="tx_be1dcb6422b4" formatted="false">"NFC操作を確認できません。対応形式、内容、容量、書き込み保護を確認し、バックアップを保存してください。"</string>
+  <string name="tx_108f53d16de5" formatted="false">"データ形式が無効または非対応です。元のカード・ファイルとアドレス形式を確認してください。"</string>
+  <string name="tx_a5ac8ef23c31" formatted="false">"データ形式が無効または非対応です。元のカード・ファイルとアドレス形式を確認してください。"</string>
+  <string name="tx_218b191985f5" formatted="false">"カードに書き込めます"</string>
+  <string name="tx_0bc1c2d8cc01" formatted="false">"書き込み可能で容量も十分です。確認後、同じカードを再度かざしてください。"</string>
+  <string name="tx_688cf3e7251b" formatted="false">"カード容量不足。必要："</string>
+  <string name="tx_93adbae9e89b" formatted="false">"容量と書込状態を確認しました。確認後、同じカードを再度かざしてください。既存データがある場合は上書き確認を行います。"</string>
+  <string name="tx_5fe0d2784c6b" formatted="false">"書込と再読取による照合が完了しました。"</string>
+  <string name="tx_107ff4bce650" formatted="false">"既存データを上書きしますか？"</string>
+  <string name="tx_ca4aef0f8ba7" formatted="false">"NFC操作を確認できません。対応形式、内容、容量、書き込み保護を確認し、バックアップを保存してください。"</string>
+  <string name="tx_78c8d85085cf" formatted="false">"カードの受取アドレス"</string>
+  <string name="tx_3cf70a09b4c9" formatted="false">"データ形式が無効または非対応です。元のカード・ファイルとアドレス形式を確認してください。"</string>
+  <string name="tx_40b58d30c11e" formatted="false">"データ形式が無効または非対応です。元のカード・ファイルとアドレス形式を確認してください。"</string>
+  <string name="tx_5d5929f7b41e" formatted="false">"NFC操作を確認できません。対応形式、内容、容量、書き込み保護を確認し、バックアップを保存してください。"</string>
+  <string name="tx_931bf9bff097" formatted="false">"プロトタイプ・模擬データと映像です。本物のパスワードは入力しないでください。"</string>
+  <string name="tx_b097fac49ab6" formatted="false">"プロトタイプ"</string>
+  <string name="tx_f04015a9b777" formatted="false">"操作のデモです。画像は保存していません。"</string>
+  <string name="tx_6dd443e06c51" formatted="false">"操作のデモです。外部サイトへのアクセスやアドレスの送信は行っていません。"</string>
+  <string name="tx_2cd0f3be8738" formatted="false">"キャンセル"</string>
+  <string name="tx_d54787a3b6ce" formatted="false">"メモリ内のみ。写真保存・アップロードは行いません。"</string>
+  <string name="tx_54e37a1b1fb7" formatted="false">"データ形式が無効または非対応です。元のカード・ファイルとアドレス形式を確認してください。"</string>
+  <string name="tx_31c6d3c75a21" formatted="false">"任意 · システムの安全な乱数は常に使用"</string>
+  <string name="tx_bb4b7a71f408" formatted="false">"同じウォレットとパスワード。メモも引き継ぎます。"</string>
+  <string name="tx_81c92013219d" formatted="false">"同意して続ける"</string>
+  <string name="tx_0e731363d1ba" formatted="false">"4種類のアドレスは同じ元鍵を使いますが残高は別です。実際の保管先を照合してください。"</string>
+  <string name="tx_887f8753d322" formatted="false">"4種類のアドレスはパスワード不要です。秘密鍵の復元時に入力してください。"</string>
+  <string name="tx_1aef87cbb981" formatted="false">"空または重複フレーム、もしくは有効な写真がありません。再度取得してください。"</string>
+  <string name="tx_a48e23cd97c3" formatted="false">"鍵または画像の検証に失敗しました。停止して再試行し、未検証のウォレットは使わないでください。"</string>
+  <string name="tx_2fb79b2058c3" formatted="false">"画像保存がタイムアウトしました。QRを開き直して再保存してください。"</string>
+  <string name="tx_c744e2e1e9b9" formatted="false">"この画像は平文の秘密鍵です。入手した人はBTCを送金できます。信頼できる端末内に保存し、クラウド同期や共有を避けてください。暗号化バックアップではありません。"</string>
+  <string name="tx_8cdf4cdf4c3b" formatted="false">"この画像を入手した人はBTCを移動できる可能性があります。信頼できる場所に保存し、共有・アップロードはしないでください。"</string>
+  <string name="tx_4ee93857558a" formatted="false">"画像は平文の秘密鍵であり、暗号化バックアップではありません。"</string>
+  <string name="tx_f809f8290f2f" formatted="false">"画像は消去済みです。QRを開き直してください。"</string>
+  <string name="tx_4c5ccadbe1f4" formatted="false">"画像保存を確認できません。再保存して保存先を確認してください。"</string>
+  <string name="tx_f44b0e78cc58" formatted="false">"法律が認める範囲で賠償責任を制限"</string>
+  <string name="tx_98bba9491449" formatted="false">"適用法が認め、本条項が有効な範囲で、プロジェクト関係者は使用または使用不能に伴う資産、鍵、データ等の損失について賠償責任を負いません。法律上免除できない責任（免除できない故意・重過失による責任等）は除外しません。"</string>
+  <string name="tx_c0039dc141c3" formatted="false">"アドレスQRを生成できません。再試行してください。"</string>
+  <string name="tx_4d35a56765a8" formatted="false">"データ形式が無効または非対応です。元のカード・ファイルとアドレス形式を確認してください。"</string>
+  <string name="tx_cb2db11366eb" formatted="false">"データ形式が無効または非対応です。元のカード・ファイルとアドレス形式を確認してください。"</string>
+  <string name="tx_602ccc4203f8" formatted="false">"データ形式が無効または非対応です。元のカード・ファイルとアドレス形式を確認してください。"</string>
+  <string name="tx_ed48952f3a28" formatted="false">"データ形式が無効または非対応です。元のカード・ファイルとアドレス形式を確認してください。"</string>
+  <string name="tx_42f9e26c5fa8" formatted="false">"データ形式が無効または非対応です。元のカード・ファイルとアドレス形式を確認してください。"</string>
+  <string name="tx_f1ca14769c27" formatted="false">"データ形式が無効または非対応です。元のカード・ファイルとアドレス形式を確認してください。"</string>
+  <string name="tx_ae3c42b6f605" formatted="false">"データ形式が無効または非対応です。元のカード・ファイルとアドレス形式を確認してください。"</string>
+  <string name="tx_670359f61e46" formatted="false">"データ形式が無効または非対応です。元のカード・ファイルとアドレス形式を確認してください。"</string>
+  <string name="tx_a4faef1de21e" formatted="false">"データ形式が無効または非対応です。元のカード・ファイルとアドレス形式を確認してください。"</string>
+  <string name="tx_208e6d054424" formatted="false">"バックアップ保存を確認できません。再保存してファイルを確認してください。"</string>
+  <string name="tx_04391362591f" formatted="false">"データ形式が無効または非対応です。元のカード・ファイルとアドレス形式を確認してください。"</string>
+  <string name="tx_718212dce525" formatted="false">"データ形式が無効または非対応です。元のカード・ファイルとアドレス形式を確認してください。"</string>
+  <string name="tx_30024f2f93a7" formatted="false">"データ形式が無効または非対応です。元のカード・ファイルとアドレス形式を確認してください。"</string>
+  <string name="tx_b39ce6bd43e2" formatted="false">"データ形式が無効または非対応です。元のカード・ファイルとアドレス形式を確認してください。"</string>
+  <string name="tx_a0adef29ec1d" formatted="false">"文字、数字、空白、通常の句読点のみ使用できます。絵文字や制御文字は使えません。"</string>
+  <string name="tx_e5049bc960e6" formatted="false">"メモを検証済み"</string>
+  <string name="tx_6addf141274d" formatted="false">"WIF秘密鍵をコピー"</string>
+  <string name="tx_4c6de01bbe86" formatted="false">"アドレスをコピー"</string>
+  <string name="tx_96b7d6d7932f" formatted="false">"秘密鍵をコピー"</string>
+  <string name="tx_9f7d5d389eb6" formatted="false">"BTCを移動する方法"</string>
+  <string name="tx_9d8a7c85a670" formatted="false">"例：03 - 長期保管"</string>
+  <string name="tx_d75182c59997" formatted="false">"安全性とデータの消去"</string>
+  <string name="tx_56d46c19f8d1" formatted="false">"Androidの安全な乱数を維持"</string>
+  <string name="tx_c0b3fbff51cc" formatted="false">"完了"</string>
+  <string name="tx_6ba33ad4de8f" formatted="false">"完了してホームへ"</string>
+  <string name="tx_78603d1d957a" formatted="false">"免責事項とリスクの全文"</string>
+  <string name="tx_606a2d350546" formatted="false">"空白だけのパスワードは使えません"</string>
+  <string name="tx_70705d85eaf4" formatted="false">"認証に成功し、メモと受取アドレスを照合しました。"</string>
+  <string name="tx_6d4608e990e4" formatted="false">"認証に成功し、受取アドレスを照合しました。"</string>
+  <string name="tx_9d9491d8a3ea" formatted="false">"パスワード強度・参考情報"</string>
+  <string name="tx_a7ec90b3c281" formatted="false">"強度：中・使用可。より長くしてください"</string>
+  <string name="tx_db0b40966118" formatted="false">"強度：弱・使用可。長い専用パスワードを推奨"</string>
+  <string name="tx_f39e37039a6d" formatted="false">"パスワード強度：高め · 目安です"</string>
+  <string name="tx_e449a1d17850" formatted="false">"強度：高・使い回さず保管してください"</string>
+  <string name="tx_3940d14c2300" formatted="false">"パスワードは再設定できません。カードやバックアップとは別に保管してください。"</string>
+  <string name="tx_a3661ec2a06b" formatted="false">"パスワード確認済み。実際の保管先アドレスを照合してください。"</string>
+  <string name="tx_f7ccde5b5f23" formatted="false">"6文字以上で、同じパスワードを入力してください。"</string>
+  <string name="tx_d71a50362f19" formatted="false">"暗号化バックアップを読込"</string>
+  <string name="tx_3f1a9c14fcbd" formatted="false">"データ形式が無効または非対応です。元のカード・ファイルとアドレス形式を確認してください。"</string>
+  <string name="tx_e3025c2b9a8c" formatted="false">"端末のNFC部分にカードをかざしてください"</string>
+  <string name="tx_888cc3269f57" formatted="false">"端末のNFC部分にカードをかざしてください。"</string>
+  <string name="tx_2f6cfcdd0d49" formatted="false">"端末のブラウザーでインターネットに接続します。選択したサイトはアドレスを受け取り、IPや閲覧履歴と関連付ける可能性があります。秘密鍵、パスワード、メモ、暗号化バックアップは送信しません。"</string>
+  <string name="tx_7164d7dcce03" formatted="false">"表示 "</string>
+  <string name="tx_f2c1c17e261f" formatted="false">"アドレスを表示"</string>
+  <string name="tx_e34e0d8f3f9f" formatted="false">"秘密鍵との照合済み・アドレス一致"</string>
+  <string name="tx_0d09931b152d" formatted="false">"画像保存をキャンセルしました"</string>
+  <string name="tx_9d8e4093a4db" formatted="false">"キャンセルしました。再試行できます。"</string>
+  <string name="tx_8f6f8d979c98" formatted="false">"をコピーしました"</string>
+  <string name="tx_e11c55870865" formatted="false">"暗号化データ読込済み"</string>
+  <string name="tx_b9d33622822b" formatted="false">"フレーム"</string>
+  <string name="tx_9e2dd3a98d7d" formatted="false">"NFCを有効にして戻り、再試行してください。"</string>
+  <string name="tx_6ae15fbc4b31" formatted="false">"書込を開始"</string>
+  <string name="tx_708a5bc8096c" formatted="false">"カメラで取得を開始"</string>
+  <string name="tx_a65de7300439" formatted="false">"操作確認用です。実際のQRは表示しません。"</string>
+  <string name="tx_774309b6c203" formatted="false">"現在の表示"</string>
+  <string name="tx_71d56c609ed2" formatted="false">"復号前・未検証"</string>
+  <string name="tx_1405dd6512a9" formatted="false">"秘密鍵と未照合です。復号して確認してください。"</string>
+  <string name="tx_2a199152ebb3" formatted="false">"鍵または画像の検証に失敗しました。停止して再試行し、未検証のウォレットは使わないでください。"</string>
+  <string name="tx_da432e122a25" formatted="false">"必要容量："</string>
+  <string name="tx_16136805d1b2" formatted="false">"非対応の言語の場合は英語で表示します。"</string>
+  <string name="tx_6bbcc116afce" formatted="false">"NFC設定を開く"</string>
+  <string name="tx_7f73383195fc" formatted="false">"ウォレットをカードに保存"</string>
+  <string name="tx_c93d6fdd936c" formatted="false">"撮影して取得を完了"</string>
+  <string name="tx_2e15acc56b5a" formatted="false">"別のウォレットを読み取る"</string>
+  <string name="tx_bad3182047eb" formatted="false">"受取アドレス"</string>
+  <string name="tx_4a34d2a05a90" formatted="false">"受取アドレスが無効です。照会できません。"</string>
+  <string name="tx_8ad0d107e3b1" formatted="false">"受取アドレスQR画像を保存しました"</string>
+  <string name="tx_1066146e689a" formatted="false">"データ形式が無効または非対応です。元のカード・ファイルとアドレス形式を確認してください。"</string>
+  <string name="tx_95e334ad66c8" formatted="false">"保存後、ファイルを再読み取りして照合します。"</string>
+  <string name="tx_075d2d3c6ee7" formatted="false">"データ形式が無効または非対応です。元のカード・ファイルとアドレス形式を確認してください。"</string>
+  <string name="tx_19ecb3b01400" formatted="false">"データ形式が無効または非対応です。元のカード・ファイルとアドレス形式を確認してください。"</string>
+  <string name="tx_9ac4cc9d917b" formatted="false">"画像保存画面を開けません。再試行してください。"</string>
+  <string name="tx_e7225644c1d3" formatted="false">"データ形式が無効または非対応です。元のカード・ファイルとアドレス形式を確認してください。"</string>
+  <string name="tx_66984199cd06" formatted="false">"バックアップを読めないか、サイズが大きすぎます。"</string>
+  <string name="tx_5971bf6d24f7" formatted="false">"ブラウザーを開けません。別の端末で公開アドレスを照会してください。"</string>
+  <string name="tx_e19ff563fd63" formatted="false">"データ形式が無効または非対応です。元のカード・ファイルとアドレス形式を確認してください。"</string>
+  <string name="tx_38f1e2d533d9" formatted="false">"NFC操作を確認できません。対応形式、内容、容量、書き込み保護を確認し、バックアップを保存してください。"</string>
+  <string name="tx_47d43e26cce4" formatted="false">"クリップボードにアクセスできません。再試行してください。"</string>
+  <string name="tx_6c4c37c97d1b" formatted="false">"データ形式が無効または非対応です。元のカード・ファイルとアドレス形式を確認してください。"</string>
+  <string name="tx_d0431bf91be8" formatted="false">"データ形式が無効または非対応です。元のカード・ファイルとアドレス形式を確認してください。"</string>
+  <string name="tx_9655473ab707" formatted="false">"データ形式が無効または非対応です。元のカード・ファイルとアドレス形式を確認してください。"</string>
+  <string name="tx_5f9148cbaddc" formatted="false">"復号は不要です。このアドレスのみを照会し、他の形式の残高は含みません。"</string>
+  <string name="tx_77710aedc74e" formatted="false">"日本語"</string>
+  <string name="tx_51599727d1b9" formatted="false">"旧形式のウォレット"</string>
+  <string name="tx_4e1449e7d5e5" formatted="false">"表示"</string>
+  <string name="tx_7711581a6f1b" formatted="false">"通常のWIF取り込みではTaproot復元を保証できません。実際の保管先への対応を確認してください。"</string>
+  <string name="tx_a2666f394298" formatted="false">"今は許可しない"</string>
+  <string name="tx_6503fd81d536" formatted="false">"最後にバックアップを保存"</string>
+  <string name="tx_7139c515011e" formatted="false">"16文字まで。公開保存されます。パスワードや秘密情報は入力しないでください。"</string>
+  <string name="tx_f7b24a95d1db" formatted="false">"最終写真"</string>
+  <string name="tx_58d23126e224" formatted="false">"鍵または画像の検証に失敗しました。停止して再試行し、未検証のウォレットは使わないでください。"</string>
+  <string name="tx_259a872ca177" formatted="false">"鍵または画像の検証に失敗しました。停止して再試行し、未検証のウォレットは使わないでください。"</string>
+  <string name="tx_ab501de60709" formatted="false">"バックアップ前にアプリを強制終了しないでください。"</string>
+  <string name="tx_d9e0f04ff9de" formatted="false">"コピーを確認できません。クリップボード権限を確認して再試行してください。"</string>
+  <string name="tx_f0f179a46077" formatted="false">"メモなし"</string>
+  <string name="tx_991dd7f9e675" formatted="false">"取得が完了しませんでした"</string>
+  <string name="tx_a32ec708f964" formatted="false">"データ形式が無効または非対応です。元のカード・ファイルとアドレス形式を確認してください。"</string>
+  <string name="tx_84324c8cae27" formatted="false">"本ソフトウェアは現状のまま提供され、脆弱性がないことや復元の成功を保証しません。欠陥、端末故障、パスワード紛失、カード破損、秘密鍵漏えい等で永久に失う可能性があります。使用前にバックアップと検証を行ってください。"</string>
+  <string name="tx_e6a338bdc302" formatted="false">"オンチェーン残高を見る"</string>
+  <string name="tx_be54ffff4425" formatted="false">"残高確認に秘密鍵やシードフレーズは不要です。サイトに入力したり、ウォレットを接続したりしないでください。"</string>
+  <string name="tx_e75d6689e8da" formatted="false">"書込と再読取を模擬"</string>
+  <string name="tx_f43d90a75ec5" formatted="false">"カード確認を模擬"</string>
+  <string name="tx_8c5ef3dd8080" formatted="false">"模擬映像"</string>
+  <string name="tx_4dc8f15c9c23" formatted="false">"カード認識を模擬"</string>
+  <string name="tx_b968b14c3c44" formatted="false">"取得失敗を模擬"</string>
+  <string name="tx_04f5b5bd3cd9" formatted="false">"書き込み・照合中"</string>
+  <string name="tx_3b7e27cb4379" formatted="false">"処理中"</string>
+  <string name="tx_bf19b26b491a" formatted="false">"カード確認中"</string>
+  <string name="tx_efff82d191ab" formatted="false">"生成・暗号化・復元確認中…"</string>
+  <string name="tx_d57fc495aa67" formatted="false">"復号・アドレス照合中…"</string>
+  <string name="tx_2d40e9dd3041" formatted="false">"コールドウォレット読取中"</string>
+  <string name="tx_775ed16a7f8a" formatted="false">"読取中。カードを離さないでください…"</string>
+  <string name="tx_fe35ae5322b1" formatted="false">"データ形式が無効または非対応です。元のカード・ファイルとアドレス形式を確認してください。"</string>
+  <string name="tx_93cf5fb968f5" formatted="false">"カードのアドレスです。受取前に復号して照合してください。"</string>
+  <string name="tx_cc0bcfe13c53" formatted="false">"この端末はNFC非対応です。復元には暗号化バックアップを使ってください。"</string>
+  <string name="tx_5acddb38441d" formatted="false">"ファイル保存機能がありません"</string>
+  <string name="tx_2d4fdb747a67" formatted="false">"ファイル選択機能がありません。NFCを使ってください。"</string>
+  <string name="tx_bb065d618351" formatted="false">"書き込んだカード数："</string>
+  <string name="tx_a9836e6504ed" formatted="false">"NFC操作を確認できません。対応形式、内容、容量、書き込み保護を確認し、バックアップを保存してください。"</string>
+  <string name="tx_7bd174586538" formatted="false">"サンプルアドレスです。送金しないでください。"</string>
+  <string name="tx_3981325f1cd0" formatted="false">"サイトを選ぶと、現在のアドレスをそのサイトへ送信して照会します。"</string>
+  <string name="tx_93425ea4d0e0" formatted="false">"写真は復元用ではなく、保存は不要です。生成または中止後に取得データを消去します。"</string>
+  <string name="tx_86c41c9ba95a" formatted="false">"ウォレットを生成"</string>
+  <string name="tx_20a385baf1b7" formatted="false">"鍵または画像の検証に失敗しました。停止して再試行し、未検証のウォレットは使わないでください。"</string>
+  <string name="tx_067d7b7070f8" formatted="false">"生成に失敗しました。ウォレットは作成されていません。"</string>
+  <string name="tx_4c4d1a664117" formatted="false">"生成時の復元チェックに合格"</string>
+  <string name="tx_e2470988fb35" formatted="false">"NFCカード1枚で、\n自分のBTCを保管。"</string>
+  <string name="tx_c0fcc7154b58" formatted="false">"NFCカード1枚で、自分のBTCを保管。\nオープンソースのオフラインNFCウォレット作成ツール。"</string>
+  <string name="tx_f4f5d0d5a7a1" formatted="false">"ウォレットで読み取り、このアドレスでBTCを受け取れます"</string>
+  <string name="tx_e3886f06b0c2" formatted="false">"カメラによる補助は未完了です。再試行するか、システム乱数に切り替えてください。"</string>
+  <string name="tx_e5d2c8157cb0" formatted="false">"鍵または画像の検証に失敗しました。停止して再試行し、未検証のウォレットは使わないでください。"</string>
+  <string name="tx_32bd74daaa2f" formatted="false">"カメラが生成に加わる仕組み"</string>
+  <string name="tx_d574ae07f42f" formatted="false">"取得データの準備完了・生成後に消去"</string>
+  <string name="tx_01eadf17c0c0" formatted="false">"カメラデータを取得しました"</string>
+  <string name="tx_16dfd7a23b51" formatted="false">"カメラが許可されていません"</string>
+  <string name="tx_2ca0bd5ad876" formatted="false">"カメラでランダム性を補助"</string>
+  <string name="tx_de32e20193ad" formatted="false">"わかりました"</string>
+  <string name="tx_0b3214cc91f8" formatted="false">"NFC操作を確認できません。対応形式、内容、容量、書き込み保護を確認し、バックアップを保存してください。"</string>
+  <string name="tx_4a1edb18155e" formatted="false">"保存を確認"</string>
+  <string name="tx_545ef9fb0bcf" formatted="false">"書込を確認"</string>
+  <string name="tx_aa2a9a2e2b20" formatted="false">"上書きして書き込む"</string>
+  <string name="tx_bfac7461da66" formatted="false">"オフライン作成 · パスワードで保護"</string>
+  <string name="tx_2c902f3e8d2c" formatted="false">"秘密鍵をオフラインで生成し、暗号化してカードへ。"</string>
+  <string name="tx_61f80e2016b1" formatted="false">"秘密鍵QR"</string>
+  <string name="tx_3439aad2c960" formatted="false">"秘密鍵QRを保存しました。画像を安全に保管してください。"</string>
+  <string name="tx_3a2105caac04" formatted="false">"秘密鍵とQRでBTCを操作できます。共有しないでください。"</string>
+  <string name="tx_b0251000355d" formatted="false">"秘密鍵の生成と暗号化の仕組み"</string>
+  <string name="tx_8798d03701ab" formatted="false">"秘密鍵を復元しました"</string>
+  <string name="tx_67f5f80bba40" formatted="false">"鍵または画像の検証に失敗しました。停止して再試行し、未検証のウォレットは使わないでください。"</string>
+  <string name="tx_427756372fa1" formatted="false">"ステップ1 / パスワードとメモ"</string>
+  <string name="tx_beed11f3ea3d" formatted="false">"ステップ2 / カードへ書込"</string>
+  <string name="tx_5e4c715b4306" formatted="false">"ステップ3 / 完了とバックアップ"</string>
+  <string name="tx_db318ad2805f" formatted="false">"カードを待っています…"</string>
+  <string name="tx_4eb0894dc5c3" formatted="false">"同じカードを待っています…"</string>
+  <string name="tx_ce7e2556f66d" formatted="false">"もう1つの入力源を追加"</string>
+  <string name="tx_aa51e9eb405e" formatted="false">"6文字以上。長く、他と異なるパスワードを推奨します。"</string>
+  <string name="tx_52467cca5896" formatted="false">"この端末をオフラインに保つには、別の端末で受取アドレスのQRを読み取り、照会してください。"</string>
+  <string name="tx_49bd846f4dec" formatted="false">"ウォレットを復号"</string>
+  <string name="tx_37343ee66db9" formatted="false">"復号失敗：パスワードが違うかデータが破損しています"</string>
+  <string name="tx_0a04f815a4be" formatted="false">"復号に成功しました"</string>
+  <string name="tx_a3cbe5a15cf7" formatted="false">"パスワードを設定し、NFCカードに保存"</string>
+  <string name="tx_4f53ff0d74b4" formatted="false">"パスワードを設定し、ウォレットを見分けるメモを追加します。"</string>
+  <string name="tx_127527c89c51" formatted="false">"言語 / Language"</string>
+  <string name="tx_61a1bd0312b1" formatted="false">"データ形式が無効または非対応です。元のカード・ファイルとアドレス形式を確認してください。"</string>
+  <string name="tx_6882806be0d8" formatted="false">"文字・数字・空白・一般的な記号を16文字以内で入力してください。絵文字、改行、不可視文字は使えません。"</string>
+  <string name="tx_d3382bb9acad" formatted="false">"6～1024文字の専用パスワードを使ってください"</string>
+  <string name="tx_e1461edccc60" formatted="false">"先にカードを確認してください"</string>
+  <string name="tx_262173029789" formatted="false">"先にウォレットを作成してください"</string>
+  <string name="tx_44f41c9a3131" formatted="false">"一度離してから再度かざし、ロックを確認"</string>
+  <string name="tx_ec721d66afb2" formatted="false">"以下の重要事項と全文をお読みください。"</string>
+  <string name="tx_94fc9aae4921" formatted="false">"別途暗号化バックアップを保存"</string>
+  <string name="tx_6814c1cedd23" formatted="false">"NFCを有効にしてください"</string>
+  <string name="tx_dd59f35e7289" formatted="false">"別の書き込み可能なNFCカードを用意してください。ウォレット・アドレス・パスワードは同じです。"</string>
+  <string name="tx_83b2df51c031" formatted="false">"カードをかざして先に確認"</string>
+  <string name="tx_3ed60404f305" formatted="false">"カードを確認して書込"</string>
+  <string name="tx_01667d924e7c" formatted="false">"カードをかざして読取"</string>
+  <string name="tx_fc76f3f547dd" formatted="false">"書き込んだ同じカードをかざしてください"</string>
+  <string name="tx_024e611eccc7" formatted="false">"確認した同じカードをかざしてください"</string>
+  <string name="tx_d6e3cb7ae284" formatted="false">"元のパスワードを入力してください。再設定はできません。"</string>
+  <string name="tx_a794cf9211ed" formatted="false">"復号パスワードを入力"</string>
+  <string name="tx_f7cd8038ffd8" formatted="false">"復号パスワードを入力してください（1024文字まで）"</string>
+  <string name="tx_ddf8ce3976c6" formatted="false">"NFCカードを読み取る"</string>
+  <string name="tx_4f729bb745b4" formatted="false">"ウォレットを読み取る"</string>
+  <string name="tx_6ea10ab02986" formatted="false">"別のウォレットを読み取る"</string>
+  <string name="tx_6b4ef5b7d303" formatted="false">"ウォレットを読み取る"</string>
+  <string name="tx_b2a38955cbbc" formatted="false">"読み取る前にご確認ください"</string>
+  <string name="tx_49970b35d8b0" formatted="false">"カードをかざすか、バックアップを読込"</string>
+  <string name="tx_527e08c045c3" formatted="false">"確認済みの同じカードをかざし、再読み取り照合まで離さないでください。"</string>
+  <string name="tx_bc9016054e9a" formatted="false">"同じカードをかざして永久ロック"</string>
+  <string name="tx_508e4c9ca73f" formatted="false">"NFCカードをかざすか、暗号化バックアップを読み込みます。"</string>
+  <string name="tx_8a96ae514509" formatted="false">"NFCカードをかざすか、バックアップを読み込みます。\nメモとアドレスの表示にパスワードは不要です。"</string>
+  <string name="tx_878d930524ed" formatted="false">"端末背面のNFC読取部にかざしてください"</string>
+  <string name="tx_0cd83cfe9fdf" formatted="false">"端末の言語に合わせる"</string>
+  <string name="tx_787c7c430960" formatted="false">"ソフトウェアの欠陥でBTCをすべて失う可能性"</string>
+  <string name="tx_b618585b0699" formatted="false">"身近な物に向け、カメラをゆっくり動かしてください。\n秘密鍵やパスワードなどは撮影しないでください。"</string>
+  <string name="tx_572cf45ba436" formatted="false">"戻る"</string>
+  <string name="tx_566866c64d7a" formatted="false">"BitTapについてへ戻る"</string>
+  <string name="tx_4f43c229a0c2" formatted="false">"戻る前にバックアップを保存"</string>
+  <string name="tx_bfa8ac132dd5" formatted="false">"完了画面に戻る"</string>
+  <string name="tx_e12517e89134" formatted="false">"リスク案内へ戻る"</string>
+  <string name="tx_173983928c88" formatted="false">"Androidの安全な乱数と混合します。\n写真だけから秘密鍵を生成することはありません。"</string>
+  <string name="tx_718e7b4fa1c7" formatted="false">"NFC操作を確認できません。対応形式、内容、容量、書き込み保護を確認し、バックアップを保存してください。"</string>
+  <string name="tx_237607776612" formatted="false">"NFC操作を確認できません。対応形式、内容、容量、書き込み保護を確認し、バックアップを保存してください。"</string>
+  <string name="tx_52056c380a1c" formatted="false">"NFC操作を確認できません。対応形式、内容、容量、書き込み保護を確認し、バックアップを保存してください。"</string>
+  <string name="tx_5836c07654e0" formatted="false">"データ形式が無効または非対応です。元のカード・ファイルとアドレス形式を確認してください。"</string>
+  <string name="tx_fbc75fc4847a" formatted="false">"データ形式が無効または非対応です。元のカード・ファイルとアドレス形式を確認してください。"</string>
+  <string name="tx_ebdcbdcf9c99" formatted="false">"任意"</string>
+  <string name="tx_3547e178882d" formatted="false">"エクスプローラーを選択"</string>
+  <string name="tx_fd2843b6b6a3" formatted="false">"保存先を選んで保存"</string>
+  <string name="tx_e1fe64a57661" formatted="false">"鍵または画像の検証に失敗しました。停止して再試行し、未検証のウォレットは使わないでください。"</string>
+  <string name="tx_e99e632a128c" formatted="false">"撮り直す"</string>
+  <string name="tx_b8784c8dd563" formatted="false">"再試行"</string>
+  <string name="tx_4dec52a5c8bf" formatted="false">"ウォレットのメモ"</string>
+  <string name="tx_313cd0764f94" formatted="false">"データ形式が無効または非対応です。元のカード・ファイルとアドレス形式を確認してください。"</string>
+  <string name="tx_86aeaac6b760" formatted="false">"メモと受取アドレスは公開情報です。秘密鍵はパスワードで暗号化されます。"</string>
+  <string name="tx_48feaa3eb5b8" formatted="false">"公開されたウォレットのメモは未検証で、ウォレットの出所を証明するものではありません。"</string>
+  <string name="tx_598abb77dc8e" formatted="false">"データ形式が無効または非対応です。元のカード・ファイルとアドレス形式を確認してください。"</string>
+  <string name="tx_f6428ad5a1ad" formatted="false">"メモは16文字・UTF-8で64バイトまで"</string>
+  <string name="tx_cdaef56d96db" formatted="false">"データ形式が無効または非対応です。元のカード・ファイルとアドレス形式を確認してください。"</string>
+  <string name="tx_f6cd9514f416" formatted="false">"データ形式が無効または非対応です。元のカード・ファイルとアドレス形式を確認してください。"</string>
+  <string name="tx_aa096c77e4d8" formatted="false">"ウォレットを認識しました"</string>
+  <string name="tx_ac27a35a073b" formatted="false">"秘密鍵 · WIF"</string>
+  <string name="tx_aac08d9f5f0e" formatted="false">"ウォレットの復号パスワード"</string>
+  <string name="tx_f0bc3849d39b" formatted="false">"免責事項とリスクの全文を読む"</string>
+  <string name="tx_ae6b4e57b0d2" formatted="false">"鍵または画像の検証に失敗しました。停止して再試行し、未検証のウォレットは使わないでください。"</string>
+  <string name="tx_90d37c0f93c7" formatted="false">"ウォレットと共に保存"</string>
+  <string name="tx_145219e726b8" formatted="false">"隠す"</string>
+  <string name="tx_fa53be48a3db" formatted="false">"秘密鍵を隠してホームへ"</string>
+  <string name="tx_60495b4cccfd" formatted="false">"データ形式が無効または非対応です。元のカード・ファイルとアドレス形式を確認してください。"</string>
+  <string name="tx_8aa01651a9ad" formatted="false">"カメラを使用します"</string>
+  <string name="tx_df789545c9c8" formatted="false">"データ形式が無効または非対応です。元のカード・ファイルとアドレス形式を確認してください。"</string>
+  <string name="tx_64a5f49fdbfe" formatted="false">"プレビューフレーム"</string>
+  <string name="tx_56c5cb66a9a9" formatted="false">"フレームと写真を要約した値へ"</string>
+  <string name="tx_0b051f23417c" formatted="false">"プレビューフレーム取得済み"</string>
+  <string name="tx_ae09ddfcf2f1" formatted="false">"入金前に再読取・復号で復元を確認してください。"</string>
+  <string name="tx_203c08e0d44a" formatted="false">"ホーム"</string>
+  <string name="camera_progress">%1$s %2$d / 32</string>
+  <string name="note_counter">%1$s · %2$d/16</string>
+</resources>

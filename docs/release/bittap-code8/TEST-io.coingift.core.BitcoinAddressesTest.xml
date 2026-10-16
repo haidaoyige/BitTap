@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="io.coingift.core.BitcoinAddressesTest" tests="9" skipped="0" failures="0" errors="0" timestamp="2026-10-16T07:31:52" hostname="iandeMacBook-Air.local" time="0.223">
+  <properties/>
+  <testcase name="bip86FirstReceivingOutputVector" classname="io.coingift.core.BitcoinAddressesTest" time="0.001"/>
+  <testcase name="knownScalarOneLegacyNestedAndNative" classname="io.coingift.core.BitcoinAddressesTest" time="0.001"/>
+  <testcase name="oddAndEvenYUseSameXOnlyTaprootInternalKey" classname="io.coingift.core.BitcoinAddressesTest" time="0.003"/>
+  <testcase name="exportKnownScalarsForIndependentAddressAndSpendKeyVerification" classname="io.coingift.core.BitcoinAddressesTest" time="0.006"/>
+  <testcase name="cardRoundTripAuthenticatesAllFourAddressesInCg2" classname="io.coingift.core.BitcoinAddressesTest" time="0.21"/>
+  <testcase name="bip341KeyOnlyOfficialVector" classname="io.coingift.core.BitcoinAddressesTest" time="0.001"/>
+  <testcase name="taprootUsesBech32mAndNativeUsesBech32" classname="io.coingift.core.BitcoinAddressesTest" time="0.0"/>
+  <testcase name="rejectUncompressedPubkey" classname="io.coingift.core.BitcoinAddressesTest" time="0.001"/>
+  <testcase name="bip86SecondReceivingOutputVector" classname="io.coingift.core.BitcoinAddressesTest" time="0.0"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

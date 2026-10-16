@@ -1,0 +1,17 @@
+Verifies
+Verified using v1 scheme (JAR signing): false
+Verified using v2 scheme (APK Signature Scheme v2): true
+Verified using v3 scheme (APK Signature Scheme v3): false
+Verified using v3.1 scheme (APK Signature Scheme v3.1): false
+Verified using v4 scheme (APK Signature Scheme v4): false
+Verified for SourceStamp: false
+Number of signers: 1
+Signer #1 certificate DN: CN=BitNFC Release, O=BitNFC
+Signer #1 certificate SHA-256 digest: 58b6613e32239ddf229066fa6bdf1b77579ade691a5d29b5bf621341a3c2b85a
+Signer #1 certificate SHA-1 digest: 3bb2386ecfadade6ea3efaa004a929d7f0179729
+Signer #1 certificate MD5 digest: 7501275fdd220e4a10535fb2cbf09a5d
+Signer #1 key algorithm: RSA
+Signer #1 key size (bits): 3072
+Signer #1 public key SHA-256 digest: f87a4ae1d431d3d743a8778f81db414cb1218829dd92cae9937aaa78c78f4e75
+Signer #1 public key SHA-1 digest: e0769f4f732b235bfd736272c565ef251c76b2a2
+Signer #1 public key MD5 digest: 1d7eef3281d97779e8fe3fdb1fbc5346

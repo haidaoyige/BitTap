@@ -1,0 +1,2 @@
+PASS: 80 input visibility and recovery UI assertions.
+

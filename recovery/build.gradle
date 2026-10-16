@@ -1,0 +1,4 @@
+plugins { id 'application' }
+java { sourceCompatibility = JavaVersion.VERSION_17; targetCompatibility = JavaVersion.VERSION_17 }
+dependencies { implementation project(':core'); runtimeOnly 'org.slf4j:slf4j-nop:1.7.36' }
+application { mainClass = 'io.coingift.core.RecoveryCli'; applicationName = 'bittap-recover' }

@@ -1,0 +1,2 @@
+PASS: 9 Camera2 emulator assertions; no physical-camera entropy claim.
+
