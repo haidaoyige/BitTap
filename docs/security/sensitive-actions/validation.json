@@ -1,0 +1,80 @@
+{
+  "validatedAt": "2026-10-17T10:06:44.084473+08:00",
+  "branch": "codex/android-sensitive-actions",
+  "baseCommit": "1fe0ea473bfd84db0ef036a0f2d70f449fa043d6",
+  "workingTreeChanges": true,
+  "scope": [
+    "Android 9 WIF clipboard restriction",
+    "Obscured touch cancellation and protection UI",
+    "Hide non-system overlay windows on API 31+"
+  ],
+  "unitTests": {
+    "core": {
+      "tests": 62,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "app": {
+      "tests": 14,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    }
+  },
+  "lint": {
+    "errors": 0,
+    "warnings": 0,
+    "report": "lint.txt"
+  },
+  "deviceTests": [
+    {
+      "api": 28,
+      "assertions": 116,
+      "report": "device-api28.txt",
+      "syntheticObscuredTouchFlags": true,
+      "actualDeviceSdkNotOverridden": true
+    },
+    {
+      "api": 35,
+      "assertions": 141,
+      "report": "device-api35.txt",
+      "syntheticObscuredTouchFlags": true,
+      "actualDeviceSdkNotOverridden": true
+    }
+  ],
+  "fullSmoke": {
+    "api": 35,
+    "assertions": 248,
+    "report": "smoke-api35.txt"
+  },
+  "languages": [
+    "zh",
+    "en",
+    "ja",
+    "ko"
+  ],
+  "apkSha256": "132e45480ea384040813cd6bd542361b9b92bba16087cb5544d974c6328da610",
+  "testApkSha256": "a4abc95689be1a8d0d3164e48b09f2a23914030528f2659b1c7165ddc8fad3e1",
+  "changedSourceSha256": {
+    "app/src/androidTest/java/io/coingift/android/SensitiveActionsProbe.java": "14122664ec5f96ef60d4c8acebc5a5b564bf0d4215b7f3bfe4ac87683ab3c6e9",
+    "app/src/androidTest/java/io/coingift/android/SmokeRunner.java": "07d51dccc40cfeb34bd798fa99cc6ff64f91a4d2573d89c9cd0806811c0ad213",
+    "app/src/main/AndroidManifest.xml": "ba5b4ba53abc411573bc9b8fd0d368c09e24f83031b2552afb3abde9ff326a3b",
+    "app/src/main/java/io/coingift/android/AppUi.java": "213a4dae9c53d96d706974a9da7f71d1dd7eb34fcbc335756308571e032452dd",
+    "app/src/main/java/io/coingift/android/MainActivity.java": "6c66552bced080b38a8b3856069915e2451a04fe75b3588c7054167f57105b3a",
+    "app/src/main/java/io/coingift/android/PrivateClipboardPolicy.java": "2040bfcbe1ac5d15ad1a5a9c31bfe05be1405b10942bdbb56a4caa8cb7d4b906",
+    "app/src/main/java/io/coingift/android/ProtectedScrollView.java": "106dc576ea9799f24e37920587ce0496aa92e6055c5a9c48fbea2a24bbb2ff59",
+    "app/src/main/java/io/coingift/android/WindowProtection.java": "d6af4a7ca1263de0ed211893fecdad9ea28b44d3b8b7d9d8407c8d9c3ef63f78",
+    "app/src/main/res/values-ja/strings.xml": "7e258eed801022bc4b2cae29d06de0ae84b0b6df4cb78edb43aea3633b9d7319",
+    "app/src/main/res/values-ko/strings.xml": "120e726c07bda4a6c96be023f0af38488b5d9a06af4214e23684a594677f92f8",
+    "app/src/main/res/values-zh/strings.xml": "e38e1690ce2b4dd0c31f210ad616ceefcd85a5a6cc2245b6f5435f01811c4fd5",
+    "app/src/main/res/values/strings.xml": "382ad71d63387ba5d84872e73894e039da13a5706acaa406e2e7b7d89d231e19"
+  },
+  "limitations": [
+    "API 28 does not report partial occlusion; complete occlusion tested.",
+    "Obscuration tests synthesize platform flags against production touch dispatch; not a complete malicious-overlay penetration test.",
+    "Physical NFC RF write/lock not validated by emulator.",
+    "Accessibility secret semantics and the other unapproved prototype changes are not implemented."
+  ],
+  "testHarnessAdjustment": "Bound idle waiting around continuously animated NFC scan UI; test assertions retained."
+}

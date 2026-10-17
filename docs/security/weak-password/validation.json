@@ -1,0 +1,66 @@
+{
+  "validatedAt": "2026-10-17T12:02:39.021370+08:00",
+  "branch": "codex/android-sensitive-actions",
+  "baseCommit": "1fe0ea473bfd84db0ef036a0f2d70f449fa043d6",
+  "workingTreeChanges": true,
+  "scope": "User-approved weak-password reminder before wallet creation; weak passwords still permitted after explicit consent",
+  "unitTests": {
+    "core": {
+      "tests": 62,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "app": {
+      "tests": 14,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    }
+  },
+  "lint": {
+    "errors": 0,
+    "warnings": 0,
+    "report": "lint.txt"
+  },
+  "deviceTests": [
+    {
+      "api": 35,
+      "assertions": 75,
+      "report": "device-api35.txt",
+      "fourLocales": true,
+      "realGenerationAndDecryption": true,
+      "syntheticCameraEntropyFixture": true,
+      "syntheticObscuredTouchFlags": true
+    }
+  ],
+  "fullSmoke": {
+    "api": 35,
+    "assertions": 248,
+    "report": "smoke-api35.txt"
+  },
+  "languages": [
+    "zh",
+    "en",
+    "ja",
+    "ko"
+  ],
+  "apkSha256": "5350aed69d22ab1edc9bdc18b5a740ce5200f8a46fa924cfb51b2179d7e183e0",
+  "testApkSha256": "a0b267c948fd4ce3ac91fd63ecb439dde5703811df38a614f341e5b7a66179ec",
+  "sourceSha256": {
+    "app/src/main/java/io/coingift/android/MainActivity.java": "d2feb1d01aa4a9fe8a3edbf1adae97f5e44ca6fb2fe6b0a78b9617040299ac38",
+    "app/src/main/res/drawable/ic_password_warning.xml": "158a32f2144eb37557549a3c57985e20589133357fcbf9c79d8d4ab3d1bee0bb",
+    "app/src/androidTest/java/io/coingift/android/WeakPasswordProbe.java": "0f62be757a23a791985e340b92482fcfba089101c62d27608e5a4a25e3d1622f",
+    "app/src/androidTest/java/io/coingift/android/SmokeRunner.java": "2433979b71a4ad4e90dc39c981cd7519361df371bc6f1a9df71c6be747ead15b",
+    "app/src/main/res/values/strings.xml": "cacdac84cc02c9faa5156fe86475c39fb7ff89f1c3e228ef38f140b79ab4fa8b",
+    "app/src/main/res/values-zh/strings.xml": "fc41bc4be940929faaf08b607bc1a56d77b2bdceec130c4e615330c237f16915",
+    "app/src/main/res/values-ja/strings.xml": "f185134000f5350b3eb59aec2e51152c296f124cabe0022d350f5b807811804c",
+    "app/src/main/res/values-ko/strings.xml": "75c6fad556ad06c8ec211b10d85cbdcde83a5c20ee186ec08f01495028c58d5b"
+  },
+  "limitations": [
+    "Reminder is advisory and does not remove offline guessing risk of weak passwords.",
+    "New weak-password workflow tested on API 35; prior API 28 clipboard/overlay evidence is a separate historical report.",
+    "No physical NFC RF operations or physical camera entropy claim.",
+    "No automatic unlock timeout, address verification redesign, KDF or random-source changes in this task."
+  ]
+}

@@ -15,8 +15,8 @@ android {
         applicationId 'io.coingift.android'
         minSdk 28
         targetSdk 35
-        versionCode 15
-        versionName '0.5.0'
+        versionCode 23
+        versionName '0.6.0'
         testInstrumentationRunner (project.hasProperty('bitnfcAudit') ? 'io.coingift.android.SecurityReviewRunner' : 'io.coingift.android.SmokeRunner')
     }
     compileOptions {

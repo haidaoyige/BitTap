@@ -1,0 +1,75 @@
+{
+  "validatedAt": "2026-10-17T12:16:00.259887+08:00",
+  "branch": "codex/android-sensitive-actions",
+  "baseCommit": "1fe0ea473bfd84db0ef036a0f2d70f449fa043d6",
+  "workingTreeChanges": true,
+  "scope": "New-wallet passwords require at least 10 UTF-16 code units; original short passwords remain valid for recovery",
+  "unitTests": {
+    "core": {
+      "tests": 63,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "app": {
+      "tests": 14,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    }
+  },
+  "lint": {
+    "errors": 0,
+    "warnings": 0,
+    "report": "lint.txt"
+  },
+  "deviceTests": [
+    {
+      "api": 35,
+      "assertions": 94,
+      "report": "device-api35.txt",
+      "languages": [
+        "zh",
+        "en",
+        "ja",
+        "ko"
+      ],
+      "rejectedLengths": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9
+      ],
+      "tenCharacterWeakPasswordCanGenerateAfterConsent": true,
+      "legacySixCharacterPasswordRecoversViaUi": true
+    }
+  ],
+  "apkSha256": "99e9474071a5e45fc0b94cd1dde4b3b9ea354ac9c5c60034fb77a86bf918febd",
+  "testApkSha256": "fc420d625b1799c9e670c0645413c8b13ec7424cc385fce585dfbb06f7873540",
+  "sourceSha256": {
+    "core/src/main/java/io/coingift/core/WalletCrypto.java": "7981936f5ce36730f01310fe8af24ad8b07d6f27439ee05cdd42c59a0f7db892",
+    "core/src/test/java/io/coingift/core/WalletCryptoTest.java": "2f5196acf5b91d9a578c5f3904a5c4e6b2dc41c07964ea8028d297f2efc4ab9c",
+    "core/src/test/java/io/coingift/core/PasswordStrengthTest.java": "b97dacda3dfb53a2d26ccd712b14ee58058ef6e96c3d9bc3dd15cb7c82e3d490",
+    "core/src/test/java/io/coingift/core/SecurityReviewTest.java": "c828adc3180e4af9697bee69c45e4e046738d3d636488fa416268f8882a0c546",
+    "app/src/main/java/io/coingift/android/MainActivity.java": "52ea05148c64f3a2af2eaa05e915a8599700a4a11023c53810b0b686e5ff514d",
+    "app/src/main/java/io/coingift/android/TextCatalog.java": "b33d1c29ce1c8e862e391d7531549b835aa9e090602a20a5d991d3938ddef069",
+    "app/src/main/assets/approved-copy.json": "bb222240e6ca14d3fd96ea00e9ff395221496ba4f9475870bb0b9568b6be5033",
+    "app/src/androidTest/java/io/coingift/android/WeakPasswordProbe.java": "cbf79f515e5a376364218f4c80d790920ee9bb4c99eb36dfe0de9ef8340e3d82",
+    "app/src/androidTest/java/io/coingift/android/SmokeRunner.java": "2433979b71a4ad4e90dc39c981cd7519361df371bc6f1a9df71c6be747ead15b",
+    "app/src/main/res/values/strings.xml": "aa4052ce063e67055e186378f62a38032abe7c08a2096a8f685ca726fdf3ff08",
+    "app/src/main/res/values-zh/strings.xml": "be7e25012e9873f1e430928370b73c3438163137a764b08977b433a49b742a54",
+    "app/src/main/res/values-ja/strings.xml": "ea3613e03f9fd2d91c1c4135e9835c371512bd84ef3c16e7c44a9b629c0736c1",
+    "app/src/main/res/values-ko/strings.xml": "da4fca578c60f7d12e201d5267ff9385a902bb60696af1fab9fb1e9ca7af2873"
+  },
+  "limitations": [
+    "Length is not a guarantee of password strength; existing weak-password warning remains.",
+    "Validation used an API 35 emulator and public test fixtures, not real BTC or NFC RF operations.",
+    "Previous full 248-assertion smoke report remains historical evidence in weak-password/; not rerun for this boundary change."
+  ]
+}

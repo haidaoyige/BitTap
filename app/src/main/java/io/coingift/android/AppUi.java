@@ -11,7 +11,6 @@ import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
-import android.view.WindowManager;
 import android.widget.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -33,6 +32,7 @@ final class AppUi {
     LinearLayout page;
     ScrollView scroll;
     Runnable language=()->{};
+    Runnable obscuredTouch=()->{};
 
     AppUi(Activity activity,BooleanSupplier blocked,Runnable tap){this.activity=activity;this.blocked=blocked;this.tap=tap;}
     int dp(int v){return Math.round(v*activity.getResources().getDisplayMetrics().density);}
@@ -40,7 +40,7 @@ final class AppUi {
     LinearLayout horizontal(){LinearLayout p=new LinearLayout(activity);p.setOrientation(LinearLayout.HORIZONTAL);p.setGravity(Gravity.CENTER_VERTICAL);return p;}
     void install(){
         clearInputs();passwords.clear();inputs.clear();buttons.clear();
-        scroll=new ScrollView(activity);scroll.setFillViewport(true);scroll.setBackgroundColor(BG);
+        scroll=new ProtectedScrollView(activity,()->obscuredTouch.run());scroll.setFillViewport(true);scroll.setBackgroundColor(BG);
         page=vertical();page.setClipToPadding(false);page.setClipChildren(false);page.setPadding(dp(24),dp(12),dp(24),dp(24));scroll.addView(page);
         activity.setContentView(scroll);
         scroll.setOnApplyWindowInsetsListener((v,insets)->{
@@ -76,6 +76,27 @@ final class AppUi {
     }
     void space(LinearLayout p,int size){p.addView(new View(activity),new LinearLayout.LayoutParams(1,dp(size)));}
     void stretch(){page.addView(new View(activity),new LinearLayout.LayoutParams(1,dp(22),1));}
+    boolean compactHome(){return activity.getResources().getDisplayMetrics().heightPixels/activity.getResources().getDisplayMetrics().density<700;}
+    /** Keep actions at the bottom and spend spare height around the full card illustration. */
+    void fitHomeArtwork(View artwork){fitArtwork(artwork,compactHome()?160:176);}
+    void fitArtwork(View artwork,int minimumDp){
+        LinearLayout homePage=page;ScrollView homeScroll=scroll;
+        Runnable fit=()->{
+            if(artwork.getParent()!=homePage||homeScroll.getHeight()==0||artwork.getHeight()==0)return;
+            int available=homeScroll.getHeight()-homeScroll.getPaddingTop()-homeScroll.getPaddingBottom();
+            int fixed=homePage.getPaddingTop()+homePage.getPaddingBottom();
+            for(int i=0;i<homePage.getChildCount();i++){
+                View child=homePage.getChildAt(i);if(child.getVisibility()==View.GONE)continue;
+                LinearLayout.LayoutParams params=(LinearLayout.LayoutParams)child.getLayoutParams();
+                fixed+=params.topMargin+params.bottomMargin;if(child!=artwork)fixed+=child.getHeight();
+            }
+            int height=Math.max(dp(minimumDp),available-fixed);
+            if(artwork.getLayoutParams().height!=height){artwork.getLayoutParams().height=height;artwork.requestLayout();}
+        };
+        homePage.addOnLayoutChangeListener((v,l,t,r,b,ol,ot,or,ob)->v.post(fit));
+        homeScroll.addOnLayoutChangeListener((v,l,t,r,b,ol,ot,or,ob)->v.post(fit));
+        homeScroll.post(fit);
+    }
     void note(LinearLayout p,String value){TextView t=text(p,value,12,SUB,false);t.setPadding(0,dp(8),0,dp(8));}
     void foot(String value){TextView t=text(page,value,11,SUB,false);t.setGravity(Gravity.CENTER);t.setPadding(0,dp(12),0,0);}
     void line(TextView t,float factor){t.setLineHeight(Math.round(t.getTextSize()*factor));}
@@ -102,7 +123,9 @@ final class AppUi {
             Button chip=new Button(activity);chip.setTag("language-chip");chip.setText(shortName);chip.setAllCaps(false);chip.setTextSize(12);chip.setTextColor(FG);chip.setMinWidth(0);chip.setMinimumWidth(0);chip.setMinHeight(dp(44));chip.setPadding(dp(10),dp(7),dp(10),dp(7));chip.setBackground(shape(Color.TRANSPARENT,20,true));chip.setCompoundDrawablesRelative(drawable(R.drawable.ic_globe,FG,15),null,drawable(R.drawable.ic_chevron_down,FG,15),null);chip.setCompoundDrawablePadding(dp(5));chip.setContentDescription(Texts.tr(activity,"语言 / Language"));wire(chip,language);row.addView(chip);
         }else{
             row.addView(icon(R.drawable.ic_back,"返回",back),new LinearLayout.LayoutParams(dp(44),dp(44)));
-            TextView label=new TextView(activity);label.setText(Texts.tr(activity,title));label.setGravity(Gravity.CENTER);label.setTextSize(12);label.setTextColor(SUB);row.addView(label,new LinearLayout.LayoutParams(0,-2,1));
+            TextView label=new TextView(activity);label.setTag("toolbar-title");label.setText(Texts.tr(activity,title));label.setGravity(Gravity.CENTER);label.setTextSize(20);label.setTextColor(SUB);
+            label.setIncludeFontPadding(false);label.setTypeface(Typeface.create(Typeface.DEFAULT,500,false));line(label,1.15f);label.setMaxLines(2);label.setEllipsize(android.text.TextUtils.TruncateAt.END);
+            row.addView(label,new LinearLayout.LayoutParams(0,-1,1));
         }
         if(help!=null)row.addView(icon(R.drawable.ic_help,"使用说明",help),new LinearLayout.LayoutParams(dp(44),dp(44)));
         else row.addView(new View(activity),new LinearLayout.LayoutParams(dp(44),dp(44)));
@@ -148,6 +171,14 @@ final class AppUi {
         if(icon!=0)centeredIcon(b,label,icon,primary?INK_ON_ORANGE:FG,18);
         wire(b,run);LinearLayout.LayoutParams p=new LinearLayout.LayoutParams(-1,-2);p.topMargin=dp(10);parent.addView(b,p);return b;
     }
+    /** Keep the label and embedded icon consistent with the primary action's enabled state. */
+    void primaryActionEnabled(Button button,String label,int icon,boolean enabled){
+        int foreground=enabled?INK_ON_ORANGE:SUB;
+        button.setEnabled(enabled);
+        button.setBackground(shape(enabled?ORANGE:0xffe5dfd6,15,false));
+        button.setTextColor(foreground);
+        if(icon!=0)centeredIcon(button,label,icon,foreground,18);
+    }
     Button link(LinearLayout parent,String label,int icon,Runnable run){
         Button b=new Button(activity);b.setText(Texts.tr(activity,label));b.setTextSize(12);b.setAllCaps(false);b.setTextColor(SUB);
         b.setMinHeight(dp(44));b.setPadding(dp(6),dp(8),dp(6),dp(8));b.setBackgroundColor(Color.TRANSPARENT);
@@ -178,9 +209,10 @@ final class AppUi {
         LinearLayout.LayoutParams p=new LinearLayout.LayoutParams(dp(58),dp(58));p.topMargin=dp(8);p.bottomMargin=dp(20);page.addView(box,p);
     }
     EditText input(String label,boolean password){return input(label,password,null);}
-    EditText input(String label,boolean password,TextView suffix){
-        space(page,12);LinearLayout head=horizontal();page.addView(head);TextView title=text(head,label,12,FG,true);title.setLayoutParams(new LinearLayout.LayoutParams(0,-2,1));if(suffix!=null)head.addView(suffix);space(page,8);
-        LinearLayout wrap=horizontal();wrap.setBackground(shape(Color.WHITE,13,true));page.addView(wrap,new LinearLayout.LayoutParams(-1,-2));
+    EditText input(String label,boolean password,TextView suffix){return input(page,label,password,suffix);}
+    EditText input(LinearLayout parent,String label,boolean password,TextView suffix){
+        space(parent,12);LinearLayout head=horizontal();parent.addView(head);TextView title=text(head,label,12,FG,true);title.setLayoutParams(new LinearLayout.LayoutParams(0,-2,1));if(suffix!=null)head.addView(suffix);space(parent,8);
+        LinearLayout wrap=horizontal();wrap.setBackground(shape(Color.WHITE,13,true));parent.addView(wrap,new LinearLayout.LayoutParams(-1,-2));
         EditText e=new EditText(activity);e.setTextSize(16);e.setTextColor(FG);e.setPadding(dp(14),dp(14),dp(8),dp(14));
         e.setContentDescription(Texts.tr(activity,label));e.setBackgroundColor(Color.TRANSPARENT);e.setSingleLine(password);
         e.setInputType(password?InputType.TYPE_CLASS_TEXT|InputType.TYPE_TEXT_VARIATION_PASSWORD:InputType.TYPE_CLASS_TEXT|InputType.TYPE_TEXT_FLAG_MULTI_LINE|InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS);
@@ -203,8 +235,15 @@ final class AppUi {
         }else{e.setMinLines(4);e.setGravity(Gravity.TOP);}
         return e;
     }
-    void passwordStrength(EditText input){
-        TextView label=text(page,"",11,SUB,false);label.setPadding(0,dp(6),0,0);label.setAccessibilityLiveRegion(View.ACCESSIBILITY_LIVE_REGION_POLITE);
+    /** Release detached password fields and listeners when a password sheet is dismissed. */
+    void releaseInputs(View view){
+        if(view instanceof ViewGroup){ViewGroup group=(ViewGroup)view;for(int i=0;i<group.getChildCount();i++)releaseInputs(group.getChildAt(i));}
+        if(view instanceof EditText){EditText input=(EditText)view;input.getText().clear();passwords.remove(input);inputs.remove(input);input.setOnFocusChangeListener(null);input.setOnEditorActionListener(null);}
+        if(buttons.remove(view))view.setOnClickListener(null);
+    }
+    void passwordStrength(EditText input){passwordStrength(page,input);}
+    void passwordStrength(LinearLayout parent,EditText input){
+        TextView label=text(parent,"",11,SUB,false);label.setPadding(0,dp(6),0,0);label.setAccessibilityLiveRegion(View.ACCESSIBILITY_LIVE_REGION_POLITE);
         Runnable update=()->{
             io.coingift.core.PasswordStrength.Level level=io.coingift.core.PasswordStrength.assess(input.getText());
             int color=level==io.coingift.core.PasswordStrength.Level.WEAK?ERROR:level==io.coingift.core.PasswordStrength.Level.STRONG?0xff2f6b43:ACCENT;
@@ -259,6 +298,9 @@ final class AppUi {
         return showSheet(d,title,builder,close,0);
     }
     TextView showSheet(Dialog d,String title,Consumer<LinearLayout> builder,Runnable close,int leadingIcon){
+        return showSheet(d,title,builder,close,leadingIcon,false);
+    }
+    TextView showSheet(Dialog d,String title,Consumer<LinearLayout> builder,Runnable close,int leadingIcon,boolean expanded){
         d.requestWindowFeature(Window.FEATURE_NO_TITLE);
         LinearLayout panel=vertical();panel.setPadding(dp(24),dp(13),dp(24),dp(25));panel.setBackground(shape(Color.WHITE,25,false));
         View grab=new View(activity);grab.setBackground(shape(LINE,3,false));LinearLayout.LayoutParams gp=new LinearLayout.LayoutParams(dp(32),dp(4));gp.gravity=Gravity.CENTER_HORIZONTAL;gp.bottomMargin=dp(23);panel.addView(grab,gp);
@@ -277,15 +319,19 @@ final class AppUi {
             row.addView(icon(R.drawable.ic_close,"关闭",close),new LinearLayout.LayoutParams(dp(44),dp(44)));
         }
         line(heading,1.4f);space(panel,10);builder.accept(panel);
-        ScrollView scroll=new ScrollView(activity){
+        ScrollView scroll=new ProtectedScrollView(activity,()->obscuredTouch.run()){
             @Override protected void onMeasure(int width,int height){
-                int max=(int)(getResources().getDisplayMetrics().heightPixels*.85);
+                int max=(int)(getResources().getDisplayMetrics().heightPixels*(expanded?.95:.85));
                 super.onMeasure(width,MeasureSpec.makeMeasureSpec(max,MeasureSpec.AT_MOST));
             }
         };
         scroll.addView(panel);d.setContentView(scroll);d.setCanceledOnTouchOutside(true);
         Window window=d.getWindow();
-        if(window!=null){window.setBackgroundDrawableResource(android.R.color.transparent);window.addFlags(WindowManager.LayoutParams.FLAG_SECURE);window.setGravity(Gravity.BOTTOM);window.setDimAmount(.31f);}
+        if(window!=null){window.setBackgroundDrawableResource(android.R.color.transparent);WindowProtection.secure(window);window.setGravity(Gravity.BOTTOM);window.setDimAmount(.31f);window.setSoftInputMode(android.view.WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);}
+        scroll.setOnApplyWindowInsetsListener((v,insets)->{
+            if(android.os.Build.VERSION.SDK_INT>=30){android.graphics.Insets bars=insets.getInsets(android.view.WindowInsets.Type.systemBars());android.graphics.Insets ime=insets.getInsets(android.view.WindowInsets.Type.ime());v.setPadding(0,0,0,Math.max(bars.bottom,ime.bottom));}
+            v.post(()->{View focus=v.findFocus();if(focus instanceof EditText)focus.requestRectangleOnScreen(new android.graphics.Rect(0,0,focus.getWidth(),focus.getHeight()),true);});return insets;
+        });
         d.show();if(window!=null)window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT);return heading;
     }
 }

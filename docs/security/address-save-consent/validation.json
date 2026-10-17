@@ -1,0 +1,78 @@
+{
+  "validatedAt": "2026-10-17T12:40:44.801206+08:00",
+  "branch": "codex/android-sensitive-actions",
+  "baseCommit": "1fe0ea473bfd84db0ef036a0f2d70f449fa043d6",
+  "workingTreeChanges": true,
+  "scope": "Explicit risk consent before exporting an unverified receiving-address PNG; original artwork preserved",
+  "unitTests": {
+    "core": {
+      "tests": 63,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "app": {
+      "tests": 14,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    }
+  },
+  "lint": {
+    "errors": 0,
+    "warnings": 0,
+    "report": "lint.txt"
+  },
+  "deviceTests": [
+    {
+      "api": 35,
+      "assertions": 156,
+      "report": "device-api35.txt",
+      "languages": [
+        "zh",
+        "en",
+        "ja",
+        "ko"
+      ],
+      "addressTypes": [
+        "SegWit",
+        "Legacy",
+        "P2SH",
+        "Taproot"
+      ],
+      "samePixelsAsOriginalRenderer": true,
+      "actualFileSaveAndDecode": true,
+      "syntheticObscuredTouchFlags": true
+    }
+  ],
+  "fullSmoke": {
+    "api": 35,
+    "assertions": 256,
+    "report": "smoke-api35.txt"
+  },
+  "addressRendererUnchangedFromBase": true,
+  "apkSha256": "fb11338ced1fceaf225a6388fa15f8c9725f38262ef55e0b967ed1d605c0f139",
+  "testApkSha256": "320b9a48d86e2cb9d95cfe692f6d7b6ee7a96532f638c3ebc0b8bdd1a5ab2642",
+  "sourceSha256": {
+    "app/src/main/java/io/coingift/android/MainActivity.java": "b94a7dcae4ea1bb9d861796532a88c41afee12a86782621dc5334851a41b0bdf",
+    "app/src/main/java/io/coingift/android/AppUi.java": "213a4dae9c53d96d706974a9da7f71d1dd7eb34fcbc335756308571e032452dd",
+    "app/src/main/java/io/coingift/android/AddressImageRenderer.java": "c5d05055d8e6ae1e5480f3bb3ff5aa0d664fb2b1184f8ec5d101311d6b2fc7f5",
+    "app/src/main/java/io/coingift/android/PrivateImageRenderer.java": "8d587efc13c0c2151a89aa523c1a00cdf4786445e5ebc302e748da61ae1dad90",
+    "app/src/main/java/io/coingift/android/QrCodeEncoder.java": "7f4d2e20b01811e225441c05241b3c4614485c0bcef99436cdd3be50507dbc6d",
+    "app/src/main/java/io/coingift/android/QrImageFiles.java": "197c445a6af80ed3ec6ae353c1ff38e2471ac3a303138afd1a3fd1d7513aeb8c",
+    "app/src/main/java/io/coingift/android/ProtectedScrollView.java": "106dc576ea9799f24e37920587ce0496aa92e6055c5a9c48fbea2a24bbb2ff59",
+    "app/src/main/java/io/coingift/android/WindowProtection.java": "d6af4a7ca1263de0ed211893fecdad9ea28b44d3b8b7d9d8407c8d9c3ef63f78",
+    "app/src/androidTest/java/io/coingift/android/SmokeRunner.java": "bdc007eda427482dbefe970ced8bee22062e5b5648d98536130df84fa39075a5",
+    "core/src/main/java/io/coingift/core/WalletCrypto.java": "7981936f5ce36730f01310fe8af24ad8b07d6f27439ee05cdd42c59a0f7db892",
+    "app/src/main/res/values/strings.xml": "e7b0305b0d64241a86b6323cc521730595a33798b0efdc36d0c714ba96aaee5c",
+    "app/src/main/res/values-zh/strings.xml": "52e007196a6a195d4ae8ff8789fee621b869b63c9b913fa9b6c4420acb5298c1",
+    "app/src/main/res/values-ja/strings.xml": "e50a1faf038bb51cc2206ece4e97b4ee59a3dc2db90ce60268203aa1ce1b79ff",
+    "app/src/main/res/values-ko/strings.xml": "18a9a967f275be137f68ef242771230f78bc6c30e1a73ab3b9cab25cfdd41518"
+  },
+  "limitations": [
+    "Public-fixture emulator tests, no real BTC or NFC RF operations.",
+    "System picker launch intercepted; actual file URI writes and read-back handled through production result path.",
+    "Saving after consent does not verify the address and does not remove tampering or mismatch risk.",
+    "Other unapproved address verification UI or auto-lock proposals remain out of scope."
+  ]
+}

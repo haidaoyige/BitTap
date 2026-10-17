@@ -1,0 +1,2 @@
+PASS: 75 weak-password consent assertions on API 35.
+

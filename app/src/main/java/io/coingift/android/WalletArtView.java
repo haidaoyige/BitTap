@@ -35,6 +35,8 @@ final class WalletArtView extends View {
     @Override protected void onDraw(Canvas canvas){
         super.onDraw(canvas);canvas.save();
         float scale=getResources().getDisplayMetrics().density;
+        float available=getWidth()/scale-20;float fit=Math.min(1f,available/270f);
+        if(!scanning)fit=Math.min(Math.min(fit,(getWidth()/scale)/340f),Math.max(0,(getHeight()/scale-8)/185f));
         canvas.translate(getWidth()/2f,getHeight()/2f);canvas.scale(scale,scale);
         if(scanning){
             paint.setStyle(Paint.Style.STROKE);paint.setStrokeWidth(1);paint.setColor(AppUi.LINE);
@@ -43,7 +45,7 @@ final class WalletArtView extends View {
         }
         canvas.rotate(-9);float w=233,h=145;
         // Scale to the available illustration surface, preserving the approved card proportions.
-        float available=getWidth()/scale-20;float fit=Math.min(1f,available/270f);canvas.scale(fit,fit);
+        canvas.scale(fit,fit);
         paint.setStyle(Paint.Style.FILL);paint.setColor(AppUi.ORANGE);bounds.set(-w/2,-h/2,w/2,h/2);paint.setShadowLayer(18,0,18,0x14cc7313);canvas.drawRoundRect(bounds,17,17,paint);paint.clearShadowLayer();
         paint.setStyle(Paint.Style.STROKE);paint.setStrokeWidth(.8f);paint.setColor(0x45c57216);bounds.set(-w/2+7,-h/2+4.4f,w/2-7,h/2-4.4f);canvas.drawRoundRect(bounds,9,9,paint);
         paint.setStyle(Paint.Style.FILL);paint.setColor(0xff33210d);paint.setTypeface(font);paint.setTextSize(15);
@@ -54,6 +56,6 @@ final class WalletArtView extends View {
         float textX=left+55,mid=bottom-size/2f;paint.setStyle(Paint.Style.FILL);paint.setTextSize(9);paint.setColor(0xff33210d);
         spaced(canvas,"BITCOIN · OFFLINE",textX,mid-3,1);paint.setTextSize(7.2f);paint.setColor(0xff71471d);spaced(canvas,"YOUR KEYS. YOUR BITCOIN.",textX,mid+9,.15f);
         canvas.restore();
-        if(!scanning){canvas.save();canvas.scale(scale,scale);float right=getWidth()/scale-12,badgeBottom=getHeight()/scale-22;bounds.set(right-58,badgeBottom-58,right,badgeBottom);paint.setStyle(Paint.Style.FILL);paint.setColor(Color.WHITE);paint.setShadowLayer(14,0,8,0x08594024);canvas.drawRoundRect(bounds,18,18,paint);paint.clearShadowLayer();paint.setStyle(Paint.Style.STROKE);paint.setStrokeWidth(1);paint.setColor(AppUi.LINE);canvas.drawRoundRect(bounds,18,18,paint);lock.setBounds((int)right-41,(int)badgeBottom-41,(int)right-17,(int)badgeBottom-17);lock.draw(canvas);canvas.restore();}
+        if(!scanning){canvas.save();canvas.translate(getWidth()/2f,getHeight()/2f);canvas.scale(scale*fit,scale*fit);bounds.set(112,30,170,88);paint.setStyle(Paint.Style.FILL);paint.setColor(Color.WHITE);paint.setShadowLayer(14,0,8,0x08594024);canvas.drawRoundRect(bounds,18,18,paint);paint.clearShadowLayer();paint.setStyle(Paint.Style.STROKE);paint.setStrokeWidth(1);paint.setColor(AppUi.LINE);canvas.drawRoundRect(bounds,18,18,paint);lock.setBounds(129,47,153,71);lock.draw(canvas);canvas.restore();}
     }
 }

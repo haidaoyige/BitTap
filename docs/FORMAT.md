@@ -48,7 +48,7 @@ CG1 provides only its original native SegWit claim before decryption. All four d
 
 ## Encryption, passwords and WIF
 
-Passwords are Unicode NFC-normalized and UTF-8 encoded, with whitespace and case preserved. Creation requires 6–1024 UTF-16 code units and rejects all-whitespace input; recovery accepts 1–1024. A six-character minimum does not establish password entropy.
+Passwords are Unicode NFC-normalized and UTF-8 encoded, with whitespace and case preserved. New creation requires 10–1024 UTF-16 code units and rejects all-whitespace input; recovery still accepts 1–1024 so older short-password backups remain recoverable. A ten-character minimum does not establish password entropy; guessable passwords still receive an explicit warning.
 
 Derive 32 bytes with `scrypt(passwordUtf8, salt, N=32768, r=8, p=1, dkLen=32)`, nominally about 32 MiB plus implementation overhead. Encrypt the raw 32-byte scalar using AES-256-GCM with a 128-bit tag. Use fresh random salt and nonce for each encryption. The platform `SecureRandom` supplies generation randomness; rejection sampling accepts scalars in `[1,n-1]` without modulo bias and fails closed on RNG errors.
 

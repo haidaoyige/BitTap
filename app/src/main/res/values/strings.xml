@@ -191,7 +191,7 @@
   <string name="tx_e449a1d17850" formatted="false">"Stronger password · keep it unique and secure"</string>
   <string name="tx_3940d14c2300" formatted="false">"Passwords cannot be reset. Keep yours separate from the card and backup."</string>
   <string name="tx_a3661ec2a06b" formatted="false">"Password verified. Match the actual funded address."</string>
-  <string name="tx_f7ccde5b5f23" formatted="false">"Use at least 6 characters and matching passwords."</string>
+  <string name="tx_f7ccde5b5f23" formatted="false">"Use at least 10 characters and matching passwords."</string>
   <string name="tx_d71a50362f19" formatted="false">"Import encrypted backup file"</string>
   <string name="tx_3f1a9c14fcbd" formatted="false">"Unsupported or invalid data. Check the original card/file, address type and format."</string>
   <string name="tx_e3025c2b9a8c" formatted="false">"Hold the card against the phone’s NFC area"</string>
@@ -310,7 +310,7 @@
   <string name="tx_db318ad2805f" formatted="false">"Waiting for a card…"</string>
   <string name="tx_4eb0894dc5c3" formatted="false">"Waiting for the same card…"</string>
   <string name="tx_ce7e2556f66d" formatted="false">"Add another source"</string>
-  <string name="tx_aa51e9eb405e" formatted="false">"At least 6 characters. A longer, unique password is recommended."</string>
+  <string name="tx_aa51e9eb405e" formatted="false">"At least 10 characters. A longer, unique password is recommended."</string>
   <string name="tx_52467cca5896" formatted="false">"To keep this phone offline, scan the receiving-address QR with another device and check there."</string>
   <string name="tx_49bd846f4dec" formatted="false">"Decrypt cold wallet"</string>
   <string name="tx_37343ee66db9" formatted="false">"Decryption failed: wrong password or damaged data"</string>
@@ -320,7 +320,7 @@
   <string name="tx_127527c89c51" formatted="false">"Language"</string>
   <string name="tx_61a1bd0312b1" formatted="false">"Unsupported or invalid data. Check the original card/file, address type and format."</string>
   <string name="tx_6882806be0d8" formatted="false">"Use letters, numbers, spaces or common punctuation; up to 16 characters. No emoji, line breaks or hidden characters."</string>
-  <string name="tx_d3382bb9acad" formatted="false">"Use an independent password of 6–1024 characters"</string>
+  <string name="tx_d3382bb9acad" formatted="false">"Use an independent password of 10–1024 characters"</string>
   <string name="tx_e1461edccc60" formatted="false">"Check the card first"</string>
   <string name="tx_262173029789" formatted="false">"Create a wallet first"</string>
   <string name="tx_44f41c9a3131" formatted="false">"Remove the card, then tap again to verify locking"</string>
@@ -393,4 +393,43 @@
   <string name="tx_203c08e0d44a" formatted="false">"Home"</string>
   <string name="camera_progress">%1$s %2$d / 32</string>
   <string name="note_counter">%1$s · %2$d/16</string>
+
+  <!-- Android clipboard and obscured-touch protection. -->
+  <string name="private_copy_unavailable" formatted="false">"Copy unavailable"</string>
+  <string name="private_copy_legacy_notice" formatted="false">"Private key copying is disabled on this device. On Android 9, background apps may read the clipboard."</string>
+  <string name="private_qr_retry" formatted="false">"Could not create the private key QR code. Close it and try again."</string>
+  <string name="obscured_kicker" formatted="false">"Sensitive action protection"</string>
+  <string name="obscured_title" formatted="false">"Remove the overlay\nbefore continuing."</string>
+  <string name="obscured_description" formatted="false">"Another window obscured the previous tap.\nThe action was not performed."</string>
+  <string name="obscured_remove" formatted="false">"Close chat bubbles, floating tools and other overlays."</string>
+  <string name="obscured_retry" formatted="false">"Return to the fully visible BitTap screen and tap again."</string>
+  <string name="obscured_boundary" formatted="false">"This protection has limits and cannot guarantee blocking all malicious privileged services."</string>
+  <string name="obscured_return" formatted="false">"Return to previous screen"</string>
+
+  <!-- Explicit weak-password consent before wallet generation. -->
+  <string name="weak_password_title" formatted="false">"This password\nis easy to guess."</string>
+  <string name="weak_password_description" formatted="false">"Anyone with a copy of the NFC card or backup can repeatedly guess the password on their own device. An attempt limit inside the app cannot prevent this."</string>
+  <string name="weak_password_camera" formatted="false">"Camera enhancement supplements the randomness used to generate the private key. It cannot compensate for a weak password."</string>
+  <string name="weak_password_edit" formatted="false">"Go back and strengthen password"</string>
+  <string name="weak_password_continue" formatted="false">"I understand the risk. Use this password."</string>
+  <string name="weak_password_changed" formatted="false">"The inputs changed. Tap Generate again to review and confirm."</string>
+
+  <!-- Explicit consent before exporting an unverified receiving address. -->
+  <string name="address_save_unverified_title" formatted="false">"Address not verified"</string>
+  <string name="address_save_unverified_body" formatted="false">"This address comes from public information on the card or in the backup and has not been checked against the private key. If it has been altered or does not match the key, sending BTC to it may result in loss. Decrypt and verify the address before sending BTC."</string>
+  <string name="address_save_unverified_note" formatted="false">"Saving an image does not verify the address."</string>
+  <string name="address_save_unverified_continue" formatted="false">"I understand the risk. Save anyway."</string>
+    <string name="wallet_unlock_action">Unlock cold wallet</string>
+    <string name="wallet_view_private">View private key</string>
+    <string name="wallet_transfer_help">How to transfer BTC</string>
+    <string name="wallet_read_description">Identify this wallet by its note.\nEnter your password only when you need the private key.</string>
+    <string name="wallet_recovered_description">Password and data authentication passed.\nReceiving addresses match those derived from the private key.</string>
+    <string name="wallet_note_public">Public</string>
+    <string name="wallet_address_pending">Unverified</string>
+    <string name="wallet_address_verified">Verified</string>
+    <string name="wallet_unlock_description">Enter the password set when creating this wallet.\nUnlocking checks the receiving addresses and recovers the private key.</string>
+    <string name="wallet_unlock_local">Unlocking happens on this device. Your password is not retained.</string>
+    <string name="wallet_private_description">Use only with a wallet or device you trust.\nThe private key QR code grants the same control as the private key.</string>
+    <string name="wallet_private_warning">After copying, saving or importing, transfer all BTC to a backed-up new wallet promptly and stop receiving at the old addresses.</string>
+    <string name="wallet_switch_description">Choose another NFC card,\nor import a saved encrypted backup file.</string>
 </resources>

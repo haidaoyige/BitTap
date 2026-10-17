@@ -190,7 +190,7 @@
   <string name="tx_e449a1d17850" formatted="false">"密码强度：较强 · 仍请独立使用并妥善保管"</string>
   <string name="tx_3940d14c2300" formatted="false">"密码无法重置，请与卡片和加密备份分开保管。"</string>
   <string name="tx_a3661ec2a06b" formatted="false">"密码校验通过，请核对实际存币地址。"</string>
-  <string name="tx_f7ccde5b5f23" formatted="false">"密码至少 6 个字符，且两次输入需要一致。"</string>
+  <string name="tx_f7ccde5b5f23" formatted="false">"密码至少 10 个字符，且两次输入需要一致。"</string>
   <string name="tx_d71a50362f19" formatted="false">"导入加密备份文件"</string>
   <string name="tx_3f1a9c14fcbd" formatted="false">"导出的备份不属于当前钱包"</string>
   <string name="tx_e3025c2b9a8c" formatted="false">"将卡片贴近手机背面的 NFC 感应区"</string>
@@ -309,7 +309,7 @@
   <string name="tx_db318ad2805f" formatted="false">"等待识别卡片…"</string>
   <string name="tx_4eb0894dc5c3" formatted="false">"等待贴回同一张卡片…"</string>
   <string name="tx_ce7e2556f66d" formatted="false">"给随机性，再加一份来源"</string>
-  <string name="tx_aa51e9eb405e" formatted="false">"至少 6 个字符，建议使用更长的独立密码。"</string>
+  <string name="tx_aa51e9eb405e" formatted="false">"至少 10 个字符，建议使用更长的独立密码。"</string>
   <string name="tx_52467cca5896" formatted="false">"若要保持这台手机离线，请用另一台设备扫描收款地址二维码后查询。"</string>
   <string name="tx_49bd846f4dec" formatted="false">"解密冷钱包"</string>
   <string name="tx_37343ee66db9" formatted="false">"解密失败：密码错误或卡片数据损坏"</string>
@@ -319,7 +319,7 @@
   <string name="tx_127527c89c51" formatted="false">"语言 / Language"</string>
   <string name="tx_61a1bd0312b1" formatted="false">"请使用已格式化为 NDEF 的卡片；本版不会自动格式化其他卡片"</string>
   <string name="tx_6882806be0d8" formatted="false">"请使用文字、数字、空格或常用标点，最多 16 个字符；不支持表情、换行及隐藏字符。"</string>
-  <string name="tx_d3382bb9acad" formatted="false">"请使用至少 6 个字符的独立长密码（最多 1024 字符）"</string>
+  <string name="tx_d3382bb9acad" formatted="false">"请使用至少 10 个字符的独立长密码（最多 1024 字符）"</string>
   <string name="tx_e1461edccc60" formatted="false">"请先检查卡片"</string>
   <string name="tx_262173029789" formatted="false">"请先生成冷钱包"</string>
   <string name="tx_44f41c9a3131" formatted="false">"请先移开，再贴卡核验锁定"</string>
@@ -392,4 +392,43 @@
   <string name="tx_203c08e0d44a" formatted="false">"首页"</string>
   <string name="camera_progress">%1$s %2$d / 32</string>
   <string name="note_counter">%1$s · %2$d/16</string>
+
+  <!-- Android clipboard and obscured-touch protection. -->
+  <string name="private_copy_unavailable" formatted="false">"不支持复制"</string>
+  <string name="private_copy_legacy_notice" formatted="false">"此设备不支持安全复制私钥。Android 9 上，其他后台应用可能读取剪贴板。本机已停用 WIF 复制。"</string>
+  <string name="private_qr_retry" formatted="false">"私钥二维码生成失败，请关闭后重试。"</string>
+  <string name="obscured_kicker" formatted="false">"敏感操作保护"</string>
+  <string name="obscured_title" formatted="false">"移开悬浮窗，\n再继续操作。"</string>
+  <string name="obscured_description" formatted="false">"刚才的点击受到其他窗口遮挡。\n本次操作没有执行。"</string>
+  <string name="obscured_remove" formatted="false">"关闭聊天气泡、悬浮工具等遮挡内容。"</string>
+  <string name="obscured_retry" formatted="false">"回到完整可见的 BitTap 页面后，重新点击。"</string>
+  <string name="obscured_boundary" formatted="false">"此保护有适用边界，无法保证阻止所有恶意高权限服务。"</string>
+  <string name="obscured_return" formatted="false">"返回原页面"</string>
+
+  <!-- Explicit weak-password consent before wallet generation. -->
+  <string name="weak_password_title" formatted="false">"这个密码，\n容易被猜中。"</string>
+  <string name="weak_password_description" formatted="false">"他人拿到卡片或备份副本后，可以在自己的设备上反复尝试密码。App 内的错误次数限制无法阻止这种尝试。"</string>
+  <string name="weak_password_camera" formatted="false">"相机增强用于补充私钥随机源，不能弥补弱密码。"</string>
+  <string name="weak_password_edit" formatted="false">"返回，设置更强的密码"</string>
+  <string name="weak_password_continue" formatted="false">"我理解风险，仍使用此密码"</string>
+  <string name="weak_password_changed" formatted="false">"输入内容已变更，请重新点击生成并确认。"</string>
+
+  <!-- Explicit consent before exporting an unverified receiving address. -->
+  <string name="address_save_unverified_title" formatted="false">"地址尚未核验"</string>
+  <string name="address_save_unverified_body" formatted="false">"此地址来自卡片或备份中的公开信息，尚未与私钥核对。若地址被篡改或与私钥不匹配，转入 BTC 可能造成损失。建议先解密核验地址，再转入 BTC。"</string>
+  <string name="address_save_unverified_note" formatted="false">"保存图片不会完成地址核验。"</string>
+  <string name="address_save_unverified_continue" formatted="false">"我理解风险，继续保存"</string>
+    <string name="wallet_unlock_action">解锁冷钱包</string>
+    <string name="wallet_view_private">查看私钥</string>
+    <string name="wallet_transfer_help">如何转移 BTC</string>
+    <string name="wallet_read_description">先通过备注识别这个钱包。\n需要使用私钥时，再输入密码解锁。</string>
+    <string name="wallet_recovered_description">密码与数据认证通过。\n收款地址已与私钥推导结果逐一核对。</string>
+    <string name="wallet_note_public">公开可见</string>
+    <string name="wallet_address_pending">待核验</string>
+    <string name="wallet_address_verified">已核验</string>
+    <string name="wallet_unlock_description">输入制作钱包时设置的密码。\n解锁后，将核对收款地址并恢复私钥。</string>
+    <string name="wallet_unlock_local">解锁仅在本机完成，密码不会自动保留。</string>
+    <string name="wallet_private_description">只在你信任的钱包或设备上使用。\n私钥二维码与私钥具有相同效力。</string>
+    <string name="wallet_private_warning">复制、保存或导入后，请尽快将全部 BTC 转入已备份的新钱包，并停止向旧地址收款。</string>
+    <string name="wallet_switch_description">选择另一张 NFC 卡片，\n或导入已保存的加密备份文件。</string>
 </resources>

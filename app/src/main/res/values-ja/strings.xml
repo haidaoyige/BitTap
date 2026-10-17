@@ -190,7 +190,7 @@
   <string name="tx_e449a1d17850" formatted="false">"強度：高・使い回さず保管してください"</string>
   <string name="tx_3940d14c2300" formatted="false">"パスワードは再設定できません。カードやバックアップとは別に保管してください。"</string>
   <string name="tx_a3661ec2a06b" formatted="false">"パスワード確認済み。実際の保管先アドレスを照合してください。"</string>
-  <string name="tx_f7ccde5b5f23" formatted="false">"6文字以上で、同じパスワードを入力してください。"</string>
+  <string name="tx_f7ccde5b5f23" formatted="false">"10文字以上で、同じパスワードを入力してください。"</string>
   <string name="tx_d71a50362f19" formatted="false">"暗号化バックアップを読込"</string>
   <string name="tx_3f1a9c14fcbd" formatted="false">"データ形式が無効または非対応です。元のカード・ファイルとアドレス形式を確認してください。"</string>
   <string name="tx_e3025c2b9a8c" formatted="false">"端末のNFC部分にカードをかざしてください"</string>
@@ -309,7 +309,7 @@
   <string name="tx_db318ad2805f" formatted="false">"カードを待っています…"</string>
   <string name="tx_4eb0894dc5c3" formatted="false">"同じカードを待っています…"</string>
   <string name="tx_ce7e2556f66d" formatted="false">"もう1つの入力源を追加"</string>
-  <string name="tx_aa51e9eb405e" formatted="false">"6文字以上。長く、他と異なるパスワードを推奨します。"</string>
+  <string name="tx_aa51e9eb405e" formatted="false">"10文字以上。長く、他と異なるパスワードを推奨します。"</string>
   <string name="tx_52467cca5896" formatted="false">"この端末をオフラインに保つには、別の端末で受取アドレスのQRを読み取り、照会してください。"</string>
   <string name="tx_49bd846f4dec" formatted="false">"ウォレットを復号"</string>
   <string name="tx_37343ee66db9" formatted="false">"復号失敗：パスワードが違うかデータが破損しています"</string>
@@ -319,7 +319,7 @@
   <string name="tx_127527c89c51" formatted="false">"言語 / Language"</string>
   <string name="tx_61a1bd0312b1" formatted="false">"データ形式が無効または非対応です。元のカード・ファイルとアドレス形式を確認してください。"</string>
   <string name="tx_6882806be0d8" formatted="false">"文字・数字・空白・一般的な記号を16文字以内で入力してください。絵文字、改行、不可視文字は使えません。"</string>
-  <string name="tx_d3382bb9acad" formatted="false">"6～1024文字の専用パスワードを使ってください"</string>
+  <string name="tx_d3382bb9acad" formatted="false">"10～1024文字の専用パスワードを使ってください"</string>
   <string name="tx_e1461edccc60" formatted="false">"先にカードを確認してください"</string>
   <string name="tx_262173029789" formatted="false">"先にウォレットを作成してください"</string>
   <string name="tx_44f41c9a3131" formatted="false">"一度離してから再度かざし、ロックを確認"</string>
@@ -392,4 +392,43 @@
   <string name="tx_203c08e0d44a" formatted="false">"ホーム"</string>
   <string name="camera_progress">%1$s %2$d / 32</string>
   <string name="note_counter">%1$s · %2$d/16</string>
+
+  <!-- Android clipboard and obscured-touch protection. -->
+  <string name="private_copy_unavailable" formatted="false">"コピーできません"</string>
+  <string name="private_copy_legacy_notice" formatted="false">"この端末では WIF 秘密鍵のコピーを無効にしています。Android 9 では、バックグラウンドの他のアプリにクリップボードを読み取られる可能性があります。"</string>
+  <string name="private_qr_retry" formatted="false">"秘密鍵の QR コードを生成できませんでした。閉じてからもう一度お試しください。"</string>
+  <string name="obscured_kicker" formatted="false">"重要な操作の保護"</string>
+  <string name="obscured_title" formatted="false">"重なっているウィンドウを\n閉じてください。"</string>
+  <string name="obscured_description" formatted="false">"タップ時に他のウィンドウが重なっていました。\n今回の操作は実行されていません。"</string>
+  <string name="obscured_remove" formatted="false">"チャットの吹き出しやフローティングツールなどを閉じてください。"</string>
+  <string name="obscured_retry" formatted="false">"BitTap の画面全体が見える状態に戻してから、もう一度タップしてください。"</string>
+  <string name="obscured_boundary" formatted="false">"この保護には限界があり、強い権限を持つ悪意あるサービスをすべて防げるわけではありません。"</string>
+  <string name="obscured_return" formatted="false">"元の画面に戻る"</string>
+
+  <!-- Explicit weak-password consent before wallet generation. -->
+  <string name="weak_password_title" formatted="false">"このパスワードは\n推測されやすいです。"</string>
+  <string name="weak_password_description" formatted="false">"NFC カードやバックアップのコピーを入手した人は、自分の端末で何度でもパスワードを試せます。アプリ内で試行回数を制限しても、このような試行は防げません。"</string>
+  <string name="weak_password_camera" formatted="false">"カメラによる強化は秘密鍵を生成する乱数源を補うものです。弱いパスワードを補えるわけではありません。"</string>
+  <string name="weak_password_edit" formatted="false">"戻ってパスワードを強化する"</string>
+  <string name="weak_password_continue" formatted="false">"リスクを理解し、このパスワードを使う"</string>
+  <string name="weak_password_changed" formatted="false">"入力内容が変更されました。もう一度生成ボタンを押して確認してください。"</string>
+
+  <!-- Explicit consent before exporting an unverified receiving address. -->
+  <string name="address_save_unverified_title" formatted="false">"アドレスは未検証です"</string>
+  <string name="address_save_unverified_body" formatted="false">"このアドレスはカードやバックアップ内の公開情報に基づいており、秘密鍵との照合はまだ行われていません。改ざんされていたり、秘密鍵と一致しなかったりすると、BTC を送って失うおそれがあります。送金前に復号してアドレスを検証してください。"</string>
+  <string name="address_save_unverified_note" formatted="false">"画像を保存してもアドレスの検証は完了しません。"</string>
+  <string name="address_save_unverified_continue" formatted="false">"リスクを理解して保存する"</string>
+    <string name="wallet_unlock_action">コールドウォレットを解除</string>
+    <string name="wallet_view_private">秘密鍵を確認</string>
+    <string name="wallet_transfer_help">BTC の送金方法</string>
+    <string name="wallet_read_description">メモでウォレットを確認できます。\n秘密鍵が必要なときにパスワードで解除します。</string>
+    <string name="wallet_recovered_description">パスワードとデータの認証が完了しました。\n受取アドレスを秘密鍵から導出した結果と照合済みです。</string>
+    <string name="wallet_note_public">公開情報</string>
+    <string name="wallet_address_pending">未検証</string>
+    <string name="wallet_address_verified">検証済み</string>
+    <string name="wallet_unlock_description">作成時に設定したパスワードを入力してください。\n解除後、受取アドレスを照合して秘密鍵を復元します。</string>
+    <string name="wallet_unlock_local">解除は端末内で行われます。パスワードは保持しません。</string>
+    <string name="wallet_private_description">信頼できるウォレットや端末でのみ使用してください。\n秘密鍵の QR コードは秘密鍵と同じ効力を持ちます。</string>
+    <string name="wallet_private_warning">コピー・保存・インポート後は、バックアップ済みの新しいウォレットへ全 BTC を速やかに移し、旧アドレスでの受取を停止してください。</string>
+    <string name="wallet_switch_description">別の NFC カードを読み取るか、\n保存済みの暗号化バックアップをインポートします。</string>
 </resources>

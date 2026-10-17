@@ -1,4 +1,4 @@
-# BTA-06～11 后台修订记录（未发布）
+# BTA-06～11 后台修订记录（纳入 v0.6.0）
 
 基线为 `b43a54df3254446e58ab2327f5b8f4b78911a884`（0.5.0 / 15）。
 本轮不修改 Android 业务页面、文案或交互；不覆盖历史 tag/Release。
@@ -25,7 +25,7 @@
 
 ## 尚未处理的 BTA-01～05
 
-弱密码创建策略、未认证地址的收款出口、Android 9 私钥剪贴板、遮挡/辅助功能防护、前台解锁期限仍需另行批准和实现。原型设计仅用于讨论，不应误认为这些代码已修好。Java/密码库的历史内存副本不能承诺取证级擦除。
+后续用户已批准 Android 9 私钥剪贴板限制与遮挡保护，实施及验证见 [SENSITIVE-ACTIONS.md](SENSITIVE-ACTIONS.md)。另已加入[弱密码二次提醒](WEAK-PASSWORD-CONFIRMATION.md)、[新建密码至少 10 位](PASSWORD-MINIMUM-10.md)及[待核验地址图片保存前确认](UNVERIFIED-ADDRESS-IMAGE-SAVE.md)。长度合格的弱密码与待核验地址下载仍可在用户明确同意后继续，不能据此把 BTA-01/02 的剩余风险列为已消除。code18 已接入地址专属状态；仅核验地址的独立路径、辅助功能秘密语义防护及前台解锁期限仍未实施。最新逐项盘点见 [REMEDIATION-STATUS.md](REMEDIATION-STATUS.md)。Java/密码库的历史内存副本不能承诺取证级擦除。
 
 ## 核验来源
 

@@ -32,8 +32,9 @@ public class SecurityReviewTest {
         assertArrayEquals(scalar(1),owned); // No wif(), display or clipboard call has occurred.
         key.close();assertArrayEquals(new byte[32],owned);assertNull(field.get(key));assertThrows(IllegalStateException.class,key::wif);
     }
-    @Test public void currentSixDigitPolicyAllowsOfflineDictionaryRecovery()throws Exception{
-        char[] weak="123456".toCharArray();WalletCrypto.requireNewPassword(weak);
+    @Test public void legacySixDigitPasswordStillRecoversAfterCreationPolicyChanges()throws Exception{
+        char[] weak="123456".toCharArray();assertThrows(IllegalArgumentException.class,()->WalletCrypto.requireNewPassword(weak));
+        // Fixture represents an existing short-password backup; recovery must stay compatible.
         WalletCrypto crypto=new WalletCrypto();String backup=crypto.encrypt(scalar(1),weak,WalletCrypto.Network.MAINNET);
         assertThrows(GeneralSecurityException.class,()->crypto.decrypt(backup,"000000".toCharArray()));
         try(WalletCrypto.Unlocked found=crypto.decrypt(backup,weak)){assertEquals(BitcoinAddresses.fromKey(WalletCrypto.publicKeyOf(scalar(1))).nativeSegwit,found.address);}

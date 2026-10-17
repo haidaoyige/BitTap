@@ -2,6 +2,9 @@ package io.coingift.android;
 final class TextCatalog {
 static final java.util.Map<String,Integer> IDS=new java.util.HashMap<>();
 static {
+IDS.put("解锁冷钱包",R.string.wallet_unlock_action);
+IDS.put("查看私钥",R.string.wallet_view_private);
+IDS.put("如何转移 BTC",R.string.wallet_transfer_help);
 IDS.put("",R.string.tx_e3b0c44298fc);
 IDS.put(" · 推荐",R.string.tx_37e1ec891972);
 IDS.put(" · 需确认恢复兼容",R.string.tx_99fc6ae1c2b5);
@@ -171,7 +174,7 @@ IDS.put("密码强度：较强 · 仅供参考",R.string.tx_f39e37039a6d);
 IDS.put("密码强度：较强 · 仍请独立使用并妥善保管",R.string.tx_e449a1d17850);
 IDS.put("密码无法重置，请与卡片和加密备份分开保管。",R.string.tx_3940d14c2300);
 IDS.put("密码校验通过，请核对实际存币地址。",R.string.tx_a3661ec2a06b);
-IDS.put("密码至少 6 个字符，且两次输入需要一致。",R.string.tx_f7ccde5b5f23);
+IDS.put("密码至少 10 个字符，且两次输入需要一致。",R.string.tx_f7ccde5b5f23);
 IDS.put("导入加密备份文件",R.string.tx_d71a50362f19);
 IDS.put("导出的备份不属于当前钱包",R.string.tx_3f1a9c14fcbd);
 IDS.put("将卡片贴近手机背面的 NFC 感应区",R.string.tx_e3025c2b9a8c);
@@ -290,7 +293,7 @@ IDS.put("第 3 步 / 完成与备份",R.string.tx_5e4c715b4306);
 IDS.put("等待识别卡片…",R.string.tx_db318ad2805f);
 IDS.put("等待贴回同一张卡片…",R.string.tx_4eb0894dc5c3);
 IDS.put("给随机性，再加一份来源",R.string.tx_ce7e2556f66d);
-IDS.put("至少 6 个字符，建议使用更长的独立密码。",R.string.tx_aa51e9eb405e);
+IDS.put("至少 10 个字符，建议使用更长的独立密码。",R.string.tx_aa51e9eb405e);
 IDS.put("若要保持这台手机离线，请用另一台设备扫描收款地址二维码后查询。",R.string.tx_52467cca5896);
 IDS.put("解密冷钱包",R.string.tx_49bd846f4dec);
 IDS.put("解密失败：密码错误或卡片数据损坏",R.string.tx_37343ee66db9);
@@ -300,7 +303,7 @@ IDS.put("设置解密密码，也给这个钱包留个备注。",R.string.tx_4f5
 IDS.put("语言 / Language",R.string.tx_127527c89c51);
 IDS.put("请使用已格式化为 NDEF 的卡片；本版不会自动格式化其他卡片",R.string.tx_61a1bd0312b1);
 IDS.put("请使用文字、数字、空格或常用标点，最多 16 个字符；不支持表情、换行及隐藏字符。",R.string.tx_6882806be0d8);
-IDS.put("请使用至少 6 个字符的独立长密码（最多 1024 字符）",R.string.tx_d3382bb9acad);
+IDS.put("请使用至少 10 个字符的独立长密码（最多 1024 字符）",R.string.tx_d3382bb9acad);
 IDS.put("请先检查卡片",R.string.tx_e1461edccc60);
 IDS.put("请先生成冷钱包",R.string.tx_262173029789);
 IDS.put("请先移开，再贴卡核验锁定",R.string.tx_44f41c9a3131);

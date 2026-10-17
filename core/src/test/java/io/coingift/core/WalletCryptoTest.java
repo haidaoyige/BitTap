@@ -109,6 +109,19 @@ public class WalletCryptoTest {
         assertThrows(IllegalArgumentException.class,()->WalletCrypto.requireNewPassword("12345".toCharArray()));
         assertThrows(IllegalArgumentException.class,()->WalletCrypto.requireNewPassword("              ".toCharArray()));
     }
+    @Test public void newPasswordMinimumAppliesBeforeEitherGeneratorUsesRandomness()throws Exception{
+        SecureRandom unused=new SecureRandom(){@Override public void nextBytes(byte[] b){throw new AssertionError("short password reached key generation");}};
+        WalletCrypto crypto=new WalletCrypto(unused);
+        for(int n=0;n<10;n++){
+            char[] shortPassword=Arrays.copyOf("123456789".toCharArray(),n);
+            assertThrows(IllegalArgumentException.class,()->crypto.generate(shortPassword,WalletCrypto.Network.MAINNET));
+            assertThrows(IllegalArgumentException.class,()->crypto.generate(shortPassword,WalletCrypto.Network.MAINNET,"",null));
+        }
+        WalletCrypto.requireNewPassword("1234567890".toCharArray());
+        WalletCrypto.requireNewPassword("12345678901".toCharArray());
+        char[] maximum=new char[1024];Arrays.fill(maximum,'a');WalletCrypto.requireNewPassword(maximum);
+        assertThrows(IllegalArgumentException.class,()->WalletCrypto.requireNewPassword(new char[1025]));
+    }
     @Test public void closePreventsFurtherWifAccess(){
         WalletCrypto.Unlocked u=new WalletCrypto.Unlocked(one(),WalletCrypto.Network.MAINNET);u.close();assertThrows(IllegalStateException.class,u::wif);
     }
@@ -146,8 +159,8 @@ public class WalletCryptoTest {
         }
     }
 
-    @Test public void sixCharacterPasswordCanCreateAndRecoverCard()throws Exception{
-        WalletCrypto crypto=new WalletCrypto();char[] pass="Ab9!xy".toCharArray();
+    @Test public void tenCharacterPasswordCanCreateAndRecoverCard()throws Exception{
+        WalletCrypto crypto=new WalletCrypto();char[] pass="Ab9!xy7@pq".toCharArray();
         WalletCrypto.Card card=crypto.generate(pass,WalletCrypto.Network.MAINNET);
         try(WalletCrypto.Unlocked u=crypto.decrypt(card.encrypted,pass)){assertEquals(card.address,u.address);}
     }
