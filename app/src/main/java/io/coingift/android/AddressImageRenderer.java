@@ -9,7 +9,7 @@ import android.text.TextPaint;
 import com.google.zxing.common.BitMatrix;
 import io.coingift.core.BitcoinAddresses;
 
-/** Public receiving-address artwork, rendered offline at 3x. No private key or wallet metadata. */
+/** Public receiving-address artwork with export-time verification state, rendered offline at 3x. */
 final class AddressImageRenderer {
     private static final int SCALE=3,WIDTH=408;
     private static final int BG=0xfffffcf7,INK=0xff28221c,MUTED=0xff8a7a69,LINE=0xffeee3d5;
@@ -23,21 +23,33 @@ final class AddressImageRenderer {
     }
     // SIMPLE is inlined as 0, the same strategy supported by Layout since API 23.
     @android.annotation.SuppressLint("InlinedApi")
-    static Bitmap render(Context context,String address)throws Exception{
+    static Bitmap render(Context context,String address,boolean verified)throws Exception{
         String type=addressType(address);
         TextPaint addressPaint=font(15,INK,false);addressPaint.setTypeface(Typeface.MONOSPACE);
         StaticLayout addressLines=StaticLayout.Builder.obtain(address,0,address.length(),addressPaint,322)
                 .setAlignment(Layout.Alignment.ALIGN_CENTER).setIncludePad(false)
                 .setBreakStrategy(android.graphics.text.LineBreaker.BREAK_STRATEGY_SIMPLE).setHyphenationFrequency(Layout.HYPHENATION_FREQUENCY_NONE)
                 .setLineSpacing(7,1).build();
-        float addressTop=518,addressHeight=14+14+9+addressLines.getHeight()+16;
+        StaticLayout warning=null;
+        if(!verified){
+            String text=context.getString(R.string.address_image_unverified);
+            warning=StaticLayout.Builder.obtain(text,0,text.length(),font(12,0xff8c4b13,false),299)
+                    .setIncludePad(false).setBreakStrategy(android.graphics.text.LineBreaker.BREAK_STRATEGY_SIMPLE)
+                    .setHyphenationFrequency(Layout.HYPHENATION_FREQUENCY_NONE).setLineSpacing(5,1).build();
+        }
+        float warningTop=193,warningHeight=warning==null?0:26+Math.max(16,warning.getHeight());
+        float qrTop=warning==null?200:warningTop+warningHeight+22;
+        float addressTop=qrTop+296+22,addressHeight=14+14+9+addressLines.getHeight()+16;
         float footerY=addressTop+addressHeight+24;
         int height=(int)Math.ceil(footerY+56);
         Bitmap output=Bitmap.createBitmap(WIDTH*SCALE,height*SCALE,Bitmap.Config.ARGB_8888);
         try{
-            Canvas c=new Canvas(output);c.scale(SCALE,SCALE);c.drawColor(BG);
-            Paint p=new Paint(Paint.ANTI_ALIAS_FLAG);p.setColor(LINE);p.setStyle(Paint.Style.STROKE);p.setStrokeWidth(1);
-            c.drawRoundRect(new RectF(.5f,.5f,WIDTH-.5f,height-.5f),25,25,p);
+            output.eraseColor(Color.TRANSPARENT);
+            Canvas c=new Canvas(output);c.scale(SCALE,SCALE);
+            RectF bounds=new RectF(.5f,.5f,WIDTH-.5f,height-.5f);
+            Paint p=new Paint(Paint.ANTI_ALIAS_FLAG);p.setColor(BG);c.drawRoundRect(bounds,25,25,p);
+            p.setColor(LINE);p.setStyle(Paint.Style.STROKE);p.setStrokeWidth(1);
+            c.drawRoundRect(bounds,25,25,p);
             Drawable logo=context.getDrawable(R.drawable.ic_launcher);
             logo.setBounds(28,30,67,69);logo.draw(c);
             c.drawText("BitTap",77,58,font(23,INK,true));
@@ -49,17 +61,24 @@ final class AddressImageRenderer {
             c.drawRoundRect(new RectF(28,150,28+29+typePaint.measureText(type),176),8,8,p);
             p.setColor(AppUi.ORANGE);c.drawCircle(41.5f,163,2.5f,p);c.drawText(type,51,167.5f,typePaint);
 
-            p.setColor(Color.WHITE);c.drawRoundRect(new RectF(56,200,352,496),18,18,p);
+            if(warning!=null){
+                p.setColor(0xfffff0db);c.drawRoundRect(new RectF(28,warningTop,380,warningTop+warningHeight),12,12,p);
+                Drawable alert=context.getDrawable(R.drawable.ic_warning).mutate();alert.setTint(0xff8c4b13);
+                c.save();c.translate(42,warningTop+16);alert.setBounds(0,0,16,16);alert.draw(c);c.restore();
+                c.save();c.translate(67,warningTop+13);warning.draw(c);c.restore();
+            }
+            RectF qrBounds=new RectF(56,qrTop,352,qrTop+296);
+            p.setColor(Color.WHITE);c.drawRoundRect(qrBounds,18,18,p);
             // Re-encode at export resolution; retain square black modules and a four-module quiet zone.
             Bitmap qr=qr(address,296*SCALE);
             try{
                 Paint sharp=new Paint();sharp.setFilterBitmap(false);
-                Path clip=new Path();clip.addRoundRect(new RectF(56,200,352,496),18,18,Path.Direction.CW);
-                c.save();c.clipPath(clip);c.drawBitmap(qr,null,new RectF(56,200,352,496),sharp);c.restore();
+                Path clip=new Path();clip.addRoundRect(qrBounds,18,18,Path.Direction.CW);
+                c.save();c.clipPath(clip);c.drawBitmap(qr,null,qrBounds,sharp);c.restore();
             }
             finally{qr.eraseColor(Color.WHITE);qr.recycle();}
             p.setStyle(Paint.Style.STROKE);p.setStrokeWidth(1);p.setColor(0xfff0e7dc);
-            c.drawRoundRect(new RectF(56,200,352,496),18,18,p);
+            c.drawRoundRect(qrBounds,18,18,p);
 
             p.setStyle(Paint.Style.FILL);p.setColor(0xfff6f1e9);
             c.drawRoundRect(new RectF(28,addressTop,380,addressTop+addressHeight),12,12,p);

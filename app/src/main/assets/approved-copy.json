@@ -26,9 +26,9 @@
       "remarkHint": "最多 16 个字符。公开存储，请勿填写密码或私密信息。",
       "pass": "钱包解密密码",
       "confirm": "再次输入密码",
-      "passHint": "至少 10 个字符，建议使用更长的独立密码。",
+      "passHint": "至少 10 位，须同时包含大写字母、小写字母、数字和特殊字符，输入时逐项核对。",
       "strength": "密码强度：较强 · 仅供参考",
-      "passwordNote": "密码无法重置，请与卡片和加密备份分开保管。",
+      "passwordNote": "建议使用更长、独立且难猜的密码，避开姓名、生日和常见组合。请与卡片及备份分开保管。",
       "cameraMode": "相机随机性增强",
       "cameraSub": "加入预览帧和一张照片，作为系统随机源的补充。",
       "cameraOptional": "可选 · 系统安全随机源始终启用",
@@ -36,19 +36,19 @@
       "generate": "生成冷钱包",
       "photoGenerate": "开始相机采集",
       "invalidRemark": "请使用文字、数字、空格或常用标点，最多 16 个字符；不支持表情、换行及隐藏字符。",
-      "invalidPassword": "密码至少 10 个字符，且两次输入需要一致。",
-      "disclaimer": "免责声明与风险提示",
+      "invalidPassword": "密码至少 10 位，须包含大小写字母、数字和特殊字符，且两次输入一致。",
+      "disclaimer": "风险提示",
       "beforeMake": "制作前，请确认",
       "beforeRead": "读取前，请确认",
       "agree": "同意并继续",
       "disagree": "不同意，返回首页",
       "everyTime": "仅本次操作有效，下次进入仍会再次提示。",
-      "risk1": "免费开源，不托管资金",
-      "risk1body": "BitTap 是本机私钥制作与恢复工具，不代管 BTC、私钥或密码，不提供资产保险、保本或找回保证。",
-      "risk2": "软件可能存在缺陷，BTC 可能全部丢失",
-      "risk2body": "本软件按现状提供，不保证没有漏洞或始终可正确恢复。程序缺陷、设备故障、密码遗忘、卡片损坏及私钥泄露等，都可能造成永久损失。请妥善备份并验证后再使用。",
-      "risk3": "在法律允许的范围内限制赔偿责任",
-      "risk3body": "在适用法律允许且条款有效的范围内，项目方不承担因使用或无法使用本软件产生的资产、密钥、数据及其他损失的赔偿责任。该限制不适用于法律禁止免责的情形，包括依法不得免除的故意或重大过失责任。",
+      "risk1": "自己保管，无法代为找回",
+      "risk1body": "BitTap 不托管资金。请保管好密码、私钥和备份；丢失后可能无法恢复。",
+      "risk2": "私钥泄露，资金可能被盗",
+      "risk2body": "不要向任何人提供 WIF、私钥二维码或密码。请仅在可信设备上使用。",
+      "risk3": "卡片可复制，密码需妥善保护",
+      "risk3body": "NFC 卡片可被复制，弱密码可能被破解。收款地址和钱包备注公开可读。",
       "cameraTitle": "给随机性，\n再加一份来源",
       "cameraDesc": "轻轻移动镜头，对准身边的日常物品。\n不要拍摄私钥、密码或其他私密内容。",
       "sample": "预览帧已采集",
@@ -164,15 +164,14 @@
       "confirmPrivateSave": "保存私钥二维码？",
       "privateSaveRisk": "图片包含明文私钥。任何获得图片的人，都可能转走钱包中的 BTC。请保存到可信的位置，避免上传或分享。",
       "confirmSave": "确认保存",
-      "disclaimerIntro": "请先阅读以下重要内容及完整声明。",
-      "readFullDisclaimer": "阅读完整免责声明与风险提示",
-      "legalFull": "完整免责声明与风险提示",
-      "legalDraft": "1.0 草案 · 2026-10-16",
-      "legalLanguage": "以下为完整声明中文原文，正式发布前需法律审核。",
+      "disclaimerIntro": "使用前，请了解以下风险。",
+      "readFullDisclaimer": "查看完整使用条款与风险说明",
+      "legalFull": "使用条款与风险说明",
+      "legalDraft": "版本 1.1 · 2026-10-18",
+      "legalLanguage": "请仔细阅读以下完整条款。",
       "backDisclaimer": "返回风险提示",
       "securityEntry": "私钥如何生成与加密",
       "securityNav": "安全原理与数据清理",
-      "securityLanguage": "",
       "backSecurity": "返回关于 BitTap",
       "viewBalance": "查看链上余额",
       "explorerTitle": "选择区块链浏览器",
@@ -190,7 +189,12 @@
       "livePreview": "实时预览",
       "sampling": "预览帧采集中",
       "samplingComplete": "预览帧采集完成",
-      "cancelCapture": "取消采集，返回"
+      "cancelCapture": "取消采集，返回",
+      "riskNoticeLoss": "使用本工具，可能导致全部 BTC 永久丢失。",
+      "risk4": "开源不代表绝对安全",
+      "risk4body": "软件按现状提供，可能存在缺陷。转入前请核验地址、验证备份能恢复，并先小额测试。",
+      "riskNoticeLiability": "在适用法律允许的范围内，开发者及贡献者不对使用本软件造成的损失承担赔偿责任。",
+      "riskNoticeSession": "仅本次操作有效，下次进入仍会再次提示。"
     },
     "en": {
       "home": "Home",
@@ -218,9 +222,9 @@
       "remarkHint": "Up to 16 characters. Stored publicly. Never enter passwords or secrets.",
       "pass": "Wallet decryption password",
       "confirm": "Confirm password",
-      "passHint": "At least 10 characters. A longer, unique password is recommended.",
+      "passHint": "Use at least 10 characters, including uppercase and lowercase letters, digits and symbols. Each requirement is checked as you type.",
       "strength": "Password strength: stronger · Guidance only",
-      "passwordNote": "Passwords cannot be reset. Keep yours separate from the card and backup.",
+      "passwordNote": "Use a longer, unique, hard-to-guess password. Avoid names, birthdays and common patterns. Keep it separate from the card and backup.",
       "cameraMode": "Camera randomness supplement",
       "cameraSub": "Add preview frames and a photo to the system random source.",
       "cameraOptional": "Optional · System secure randomness stays enabled",
@@ -228,19 +232,19 @@
       "generate": "Generate cold wallet",
       "photoGenerate": "Start camera capture",
       "invalidRemark": "Use letters, numbers, spaces or common punctuation; up to 16 characters. No emoji, line breaks or hidden characters.",
-      "invalidPassword": "Use at least 10 characters and matching passwords.",
-      "disclaimer": "Disclaimer & risk notice",
+      "invalidPassword": "Use 10 or more characters with uppercase and lowercase letters, digits and symbols. Both entries must match.",
+      "disclaimer": "Risk notice",
       "beforeMake": "Before creating a wallet",
       "beforeRead": "Before reading a wallet",
       "agree": "Agree & continue",
       "disagree": "Disagree, return home",
       "everyTime": "Applies to this entry only. You will be asked again next time.",
-      "risk1": "Free and open source. No custody.",
-      "risk1body": "BitTap creates and restores private keys on your device. It does not hold BTC, private keys or passwords, and offers no asset insurance, capital protection or recovery guarantee.",
-      "risk2": "Software defects may cause loss of all BTC",
-      "risk2body": "The software is provided as is, with no guarantee that it is free of vulnerabilities or that recovery will always succeed. Defects, device failures, forgotten passwords, damaged cards or exposed keys may cause permanent loss. Back up and verify before use.",
-      "risk3": "Liability is limited where the law permits",
-      "risk3body": "Where permitted by applicable law and where this limitation is valid, the project parties are not liable for loss of assets, keys, data or other damage arising from use or inability to use the software. This does not exclude liability that the law prohibits excluding, including applicable liability for intent or gross negligence.",
+      "risk1": "Self-custody; no recovery service",
+      "risk1body": "BitTap does not hold your funds. Safeguard your password, private key and backups; losing them may make recovery impossible.",
+      "risk2": "An exposed key can lead to theft",
+      "risk2body": "Do not share your WIF, private-key QR code or password with anyone. Use only devices you trust.",
+      "risk3": "Cards can be copied. Protect your password.",
+      "risk3body": "NFC cards can be copied, and weak passwords may be cracked. Receiving addresses and wallet notes are publicly readable.",
       "cameraTitle": "Add another source\nof randomness.",
       "cameraDesc": "Move the camera gently over everyday objects.\nDo not photograph keys, passwords or private information.",
       "sample": "Preview frames collected",
@@ -356,15 +360,14 @@
       "confirmPrivateSave": "Save private-key QR?",
       "privateSaveRisk": "Anyone with this image may spend the BTC. Save it in a trusted location. Do not upload or share it.",
       "confirmSave": "Confirm save",
-      "disclaimerIntro": "Read the important information below and the full notice.",
-      "readFullDisclaimer": "Read the full disclaimer and risk notice",
-      "legalFull": "Full disclaimer and risk notice",
-      "legalDraft": "Draft 1.0 · 2026-10-16",
-      "legalLanguage": "The full Chinese source text follows. Legal review is required before release.",
+      "disclaimerIntro": "Before using BitTap, understand these risks.",
+      "readFullDisclaimer": "View full terms of use and risk information",
+      "legalFull": "Terms of use and risk information",
+      "legalDraft": "Version 1.1 · 2026-10-18",
+      "legalLanguage": "Please read the full terms below carefully.",
       "backDisclaimer": "Back to risk notice",
       "securityEntry": "How keys are generated and encrypted",
       "securityNav": "Security and data cleanup",
-      "securityLanguage": "This explanation is currently available in Chinese.",
       "backSecurity": "Back to About BitTap",
       "viewBalance": "View on-chain balance",
       "explorerTitle": "Choose a block explorer",
@@ -382,7 +385,12 @@
       "livePreview": "Live preview",
       "sampling": "Collecting preview frames",
       "samplingComplete": "Preview frames collected",
-      "cancelCapture": "Cancel capture and return"
+      "cancelCapture": "Cancel capture and return",
+      "riskNoticeLoss": "Using this tool may result in the permanent loss of all your BTC.",
+      "risk4": "Open source does not guarantee security",
+      "risk4body": "The software is provided as is and may contain defects. Before sending BTC, verify the address, test backup recovery and start with a small amount.",
+      "riskNoticeLiability": "To the extent permitted by applicable law, developers and contributors are not liable for losses arising from use of this software.",
+      "riskNoticeSession": "Consent applies to this operation only. You will be asked again next time."
     },
     "ja": {
       "home": "ホーム",
@@ -410,9 +418,9 @@
       "remarkHint": "16文字まで。公開保存されます。パスワードや秘密情報は入力しないでください。",
       "pass": "ウォレットの復号パスワード",
       "confirm": "パスワードを再入力",
-      "passHint": "10文字以上。長く、他と異なるパスワードを推奨します。",
+      "passHint": "10文字以上で、英大文字・英小文字・数字・記号をすべて含めてください。入力時に各条件を確認できます。",
       "strength": "パスワード強度：高め · 目安です",
-      "passwordNote": "パスワードは再設定できません。カードやバックアップとは別に保管してください。",
+      "passwordNote": "長く、他と異なる推測されにくいパスワードを使い、氏名・誕生日・よくある組み合わせを避けてください。カードやバックアップとは別に保管してください。",
       "cameraMode": "カメラでランダム性を補助",
       "cameraSub": "プレビューフレームと写真をシステム乱数に追加します。",
       "cameraOptional": "任意 · システムの安全な乱数は常に使用",
@@ -420,19 +428,19 @@
       "generate": "ウォレットを生成",
       "photoGenerate": "カメラで取得を開始",
       "invalidRemark": "文字・数字・空白・一般的な記号を16文字以内で入力してください。絵文字、改行、不可視文字は使えません。",
-      "invalidPassword": "10文字以上で、同じパスワードを入力してください。",
-      "disclaimer": "免責事項とリスクのご案内",
+      "invalidPassword": "10文字以上で英大文字・英小文字・数字・記号をすべて含め、同じパスワードを2回入力してください。",
+      "disclaimer": "リスクのご案内",
       "beforeMake": "作成する前にご確認ください",
       "beforeRead": "読み取る前にご確認ください",
       "agree": "同意して続ける",
       "disagree": "同意せずホームへ",
       "everyTime": "今回の操作にのみ適用されます。次回も再度確認します。",
-      "risk1": "無料・オープンソース。資金を預かりません",
-      "risk1body": "BitTapは端末内で秘密鍵を作成・復元するツールです。BTC、秘密鍵、パスワードを預からず、資産保険、元本保護、復旧保証は提供しません。",
-      "risk2": "ソフトウェアの欠陥でBTCをすべて失う可能性",
-      "risk2body": "本ソフトウェアは現状のまま提供され、脆弱性がないことや復元の成功を保証しません。欠陥、端末故障、パスワード紛失、カード破損、秘密鍵漏えい等で永久に失う可能性があります。使用前にバックアップと検証を行ってください。",
-      "risk3": "法律が認める範囲で賠償責任を制限",
-      "risk3body": "適用法が認め、本条項が有効な範囲で、プロジェクト関係者は使用または使用不能に伴う資産、鍵、データ等の損失について賠償責任を負いません。法律上免除できない責任（免除できない故意・重過失による責任等）は除外しません。",
+      "risk1": "自己管理が必要です。復旧代行はできません",
+      "risk1body": "BitTap は資金を預かりません。パスワード、秘密鍵、バックアップを大切に保管してください。紛失すると復元できない場合があります。",
+      "risk2": "秘密鍵が漏れると、資金を盗まれるおそれがあります",
+      "risk2body": "WIF、秘密鍵の QR コード、パスワードは誰にも渡さないでください。信頼できる端末でのみ使用してください。",
+      "risk3": "カードは複製可能です。パスワードを守ってください",
+      "risk3body": "NFC カードは複製でき、弱いパスワードは解析される可能性があります。受取アドレスとウォレットのメモは誰でも読み取れます。",
       "cameraTitle": "ランダム性に、\nもうひとつの入力源を。",
       "cameraDesc": "身近な物に向け、カメラをゆっくり動かしてください。\n秘密鍵やパスワードなどは撮影しないでください。",
       "sample": "プレビューフレーム取得済み",
@@ -548,15 +556,14 @@
       "confirmPrivateSave": "秘密鍵QRを保存しますか？",
       "privateSaveRisk": "この画像を入手した人はBTCを移動できる可能性があります。信頼できる場所に保存し、共有・アップロードはしないでください。",
       "confirmSave": "保存を確認",
-      "disclaimerIntro": "以下の重要事項と全文をお読みください。",
-      "readFullDisclaimer": "免責事項とリスクの全文を読む",
-      "legalFull": "免責事項とリスクの全文",
-      "legalDraft": "草案1.0 · 2026-10-16",
-      "legalLanguage": "以下は中国語の全文です。正式公開前に法的確認が必要です。",
-      "backDisclaimer": "リスク案内へ戻る",
+      "disclaimerIntro": "使用前に、以下のリスクをご確認ください。",
+      "readFullDisclaimer": "利用規約とリスク説明の全文を読む",
+      "legalFull": "利用規約とリスク説明",
+      "legalDraft": "バージョン 1.1 · 2026-10-18",
+      "legalLanguage": "以下の全文をよくお読みください。",
+      "backDisclaimer": "リスクのご案内に戻る",
       "securityEntry": "秘密鍵の生成と暗号化の仕組み",
       "securityNav": "安全性とデータの消去",
-      "securityLanguage": "この説明の本文は現在、中国語で表示されます。",
       "backSecurity": "BitTapについてへ戻る",
       "viewBalance": "オンチェーン残高を見る",
       "explorerTitle": "エクスプローラーを選択",
@@ -574,7 +581,12 @@
       "livePreview": "ライブプレビュー",
       "sampling": "プレビューフレームを収集中",
       "samplingComplete": "プレビューフレーム収集完了",
-      "cancelCapture": "収集を中止して戻る"
+      "cancelCapture": "収集を中止して戻る",
+      "riskNoticeLoss": "本ツールの使用により、すべての BTC を永久に失う可能性があります。",
+      "risk4": "オープンソースでも絶対に安全とは限りません",
+      "risk4body": "本ソフトウェアは現状のまま提供され、欠陥がある可能性があります。入金前にアドレスとバックアップからの復元を確認し、まず少額で試してください。",
+      "riskNoticeLiability": "適用法が認める範囲で、開発者および貢献者は本ソフトウェアの使用により生じた損失について賠償責任を負いません。",
+      "riskNoticeSession": "同意は今回の操作にのみ有効です。次回も再度表示されます。"
     },
     "ko": {
       "home": "홈",
@@ -602,9 +614,9 @@
       "remarkHint": "최대 16자. 공개 저장됩니다. 비밀번호나 비밀 정보는 입력하지 마세요.",
       "pass": "월렛 복호화 비밀번호",
       "confirm": "비밀번호 다시 입력",
-      "passHint": "최소 10자. 길고 다른 곳에서 쓰지 않는 비밀번호를 권장합니다.",
+      "passHint": "최소 10자에 영문 대문자·소문자·숫자·특수문자를 모두 포함하세요. 입력 시 각 요건이 확인됩니다.",
       "strength": "비밀번호 강도: 높음 · 참고용",
-      "passwordNote": "비밀번호는 재설정할 수 없습니다. 카드 및 백업과 별도로 보관하세요.",
+      "passwordNote": "길고 다른 곳에서 쓰지 않는 추측하기 어려운 비밀번호를 사용하세요. 이름·생일·흔한 조합을 피하고 카드 및 백업과 별도로 보관하세요.",
       "cameraMode": "카메라로 무작위성 보완",
       "cameraSub": "미리보기 프레임과 사진을 시스템 난수에 추가합니다.",
       "cameraOptional": "선택 · 시스템 보안 난수는 항상 사용",
@@ -612,19 +624,19 @@
       "generate": "콜드월렛 생성",
       "photoGenerate": "카메라 데이터 수집 시작",
       "invalidRemark": "문자, 숫자, 공백, 일반 문장부호만 최대 16자까지 사용할 수 있습니다. 이모지, 줄바꿈, 숨김 문자는 사용할 수 없습니다.",
-      "invalidPassword": "10자 이상으로 두 비밀번호를 동일하게 입력하세요.",
-      "disclaimer": "면책 및 위험 안내",
+      "invalidPassword": "최소 10자에 영문 대문자·소문자·숫자·특수문자를 모두 포함하고 두 입력이 일치해야 합니다.",
+      "disclaimer": "위험 안내",
       "beforeMake": "만들기 전에 확인하세요",
       "beforeRead": "읽기 전에 확인하세요",
       "agree": "동의하고 계속",
       "disagree": "동의하지 않고 홈으로",
       "everyTime": "이번 진입에만 적용됩니다. 다음에는 다시 확인합니다.",
-      "risk1": "무료 오픈소스이며 자금을 맡지 않습니다",
-      "risk1body": "BitTap은 기기 안에서 개인키를 생성·복구하는 도구입니다. BTC, 개인키, 비밀번호를 보관하지 않으며 자산 보험, 원금 보호 또는 복구를 보장하지 않습니다.",
-      "risk2": "소프트웨어 결함으로 BTC 전부를 잃을 수 있습니다",
-      "risk2body": "소프트웨어는 현 상태로 제공되며 취약점이 없거나 복구가 항상 성공함을 보장하지 않습니다. 결함, 기기 고장, 비밀번호 분실, 카드 손상, 개인키 유출 등으로 영구 손실이 발생할 수 있습니다. 사용 전 백업하고 검증하세요.",
-      "risk3": "법률이 허용하는 범위에서 배상 책임 제한",
-      "risk3body": "적용 법률이 허용하고 조항이 유효한 범위에서 프로젝트 관계자는 사용 또는 사용 불능으로 인한 자산, 키, 데이터 등의 손실에 배상 책임을 지지 않습니다. 법률상 면제할 수 없는 책임(면제 불가능한 고의·중과실 책임 등)은 제외하지 않습니다.",
+      "risk1": "직접 보관해야 하며, 대신 복구해 드릴 수 없습니다",
+      "risk1body": "BitTap은 자금을 보관하지 않습니다. 비밀번호, 개인키, 백업을 안전하게 보관하세요. 분실하면 복구하지 못할 수 있습니다.",
+      "risk2": "개인키가 유출되면 자금을 도난당할 수 있습니다",
+      "risk2body": "WIF, 개인키 QR 코드, 비밀번호를 누구에게도 제공하지 마세요. 신뢰할 수 있는 기기에서만 사용하세요.",
+      "risk3": "카드는 복제할 수 있습니다. 비밀번호를 보호하세요",
+      "risk3body": "NFC 카드는 복제할 수 있으며, 약한 비밀번호는 해독될 수 있습니다. 수신 주소와 월렛 메모는 누구나 읽을 수 있습니다.",
       "cameraTitle": "무작위성에\n입력원을 하나 더.",
       "cameraDesc": "주변 사물을 향해 카메라를 천천히 움직이세요.\n개인키, 비밀번호 등 비밀 정보는 촬영하지 마세요.",
       "sample": "미리보기 프레임 수집 완료",
@@ -740,15 +752,14 @@
       "confirmPrivateSave": "개인키 QR을 저장할까요?",
       "privateSaveRisk": "이미지를 가진 사람은 BTC를 옮길 수 있습니다. 신뢰할 수 있는 위치에 저장하고 업로드하거나 공유하지 마세요.",
       "confirmSave": "저장 확인",
-      "disclaimerIntro": "아래 중요 내용과 전체 안내를 읽어 주세요.",
-      "readFullDisclaimer": "전체 면책 및 위험 안내 읽기",
-      "legalFull": "전체 면책 및 위험 안내",
-      "legalDraft": "초안1.0 · 2026-10-16",
-      "legalLanguage": "아래는 중국어 전체 원문입니다. 정식 공개 전 법률 검토가 필요합니다.",
+      "disclaimerIntro": "사용하기 전에 다음 위험을 확인해 주세요.",
+      "readFullDisclaimer": "이용약관 및 위험 설명 전문 보기",
+      "legalFull": "이용약관 및 위험 설명",
+      "legalDraft": "버전 1.1 · 2026-10-18",
+      "legalLanguage": "아래 약관 전문을 주의 깊게 읽어 주세요.",
       "backDisclaimer": "위험 안내로 돌아가기",
       "securityEntry": "개인키 생성과 암호화 원리",
       "securityNav": "보안 원리와 데이터 정리",
-      "securityLanguage": "이 설명의 본문은 현재 중국어로 제공됩니다.",
       "backSecurity": "BitTap 정보로 돌아가기",
       "viewBalance": "온체인 잔액 보기",
       "explorerTitle": "블록 탐색기 선택",
@@ -766,641 +777,653 @@
       "livePreview": "실시간 미리보기",
       "sampling": "미리보기 프레임 수집 중",
       "samplingComplete": "미리보기 프레임 수집 완료",
-      "cancelCapture": "수집 취소 후 돌아가기"
+      "cancelCapture": "수집 취소 후 돌아가기",
+      "riskNoticeLoss": "이 도구를 사용하면 BTC 전부를 영구적으로 잃을 수 있습니다.",
+      "risk4": "오픈소스라고 절대적인 안전을 보장하지는 않습니다",
+      "risk4body": "소프트웨어는 현 상태로 제공되며 결함이 있을 수 있습니다. BTC를 보내기 전에 주소를 검증하고 백업 복구를 확인한 뒤, 먼저 소액으로 시험하세요.",
+      "riskNoticeLiability": "적용 법률이 허용하는 범위에서 개발자와 기여자는 이 소프트웨어 사용으로 발생한 손실에 대해 배상 책임을 지지 않습니다.",
+      "riskNoticeSession": "동의는 이번 작업에만 적용됩니다. 다음에 진입하면 다시 표시됩니다."
     }
   },
   "legalContent": [
     {
       "type": "p",
-      "text": "**请在制作或读取冷钱包前仔细阅读，特别是第 2 条、第 6 条和第 7 条。使用本软件可能造成 BTC 全部、永久丢失；免费、开源、离线设计或通过测试，不代表软件不存在缺陷或风险。不同意本声明的，请不要继续使用本应用。**"
+      "text": "使用前，请阅读以下条款。使用 BitTap 可能导致全部 BTC 永久丢失；不同意的，请退出本次操作。"
     },
     {
       "type": "heading",
-      "text": "1. 软件性质与服务范围"
+      "text": "1. BitTap 提供什么"
     },
     {
       "type": "p",
-      "text": "BitTap 是用于在本机生成、加密、读取和恢复 BTC 私钥，并通过 NFC 卡片或加密文件保存相关数据的软件工具。本声明中的“项目方”，指与该官方版本有关的著作权人、贡献者和发布者，各方的法律身份、权利义务及责任依实际情况确定。"
-    },
-    {
-      "type": "p",
-      "text": "本软件以免费开源方式提供。项目方不因提供本软件而代用户保管 BTC、代持私钥或管理钱包，不提供交易、兑换、转账代办、资产保险或收益保障服务，也不提供投资建议。除法律另有规定或有关主体另有有效书面承诺外，项目方不承担为用户补偿资产损失的约定保证义务。"
+      "text": "BitTap 是免费开源的本机 BTC 私钥生成、加密和恢复工具。私钥以加密形式写入 NFC 卡片或保存为备份文件。本项目不托管资金，不代管私钥或密码，不提供投资建议、资产保险或收益保证。"
     },
     {
       "type": "heading",
-      "text": "2. 软件按现状提供，不作额外保证"
+      "text": "2. 请保管好私钥与备份"
     },
     {
       "type": "p",
-      "text": "**除适用法律强制要求或有关主体另有有效书面约定外，本软件及相关文档按“现状”和“可获得”状态提供，不附带任何明示或默示的保证或条件。**"
+      "text": "请妥善保管密码、卡片和备份。解密密码无法重置，私钥遗失后本项目无法代为找回，也无法撤销链上交易或追回资金。"
     },
     {
       "type": "p",
-      "text": "在上述范围内，项目方不保证软件没有程序缺陷、安全漏洞或兼容性问题，不保证随机数、密钥生成、地址推导、加解密、NFC 读写、备份或恢复在所有设备和环境下均能正确运行，也不保证软件适合用户的特定用途、持续可用、持续维护，或能够防止一切资产损失。"
-    },
-    {
-      "type": "p",
-      "text": "开源代码、测试结果、安全检查、界面中的校验提示或其他技术说明，均不构成“绝对安全”“永不丢币”“必然恢复成功”或资产价值的保证。测试或审计的结论仅适用于其实际覆盖的版本和范围。"
+      "text": "WIF 私钥和私钥二维码均可控制资金，请勿分享或上传。私钥图片、剪贴板、输入法及云同步可能暴露敏感信息。"
     },
     {
       "type": "heading",
-      "text": "3. 可能发生全部且不可逆的损失"
+      "text": "3. 可能发生哪些损失"
     },
     {
       "type": "p",
-      "text": "**用户应理解，使用、无法使用或错误使用本软件，均可能导致 BTC 部分或全部丢失，且无法找回。**风险包括但不限于："
-    },
-    {
-      "type": "list",
-      "items": [
-        "软件、依赖库或密码学实现存在缺陷，或设备的随机源、系统、固件及硬件出现问题；",
-        "手机遭入侵，恶意软件、输入法、剪贴板、屏幕录制、截图、同步或备份功能暴露敏感信息；",
-        "密码遗忘、密码强度不足、私钥泄露，或明文私钥及私钥二维码图片被他人获取；",
-        "NFC 卡片被复制、篡改、损坏或遗失，或数据写入、读回、导出、保存及读取失败；",
-        "收款地址错误、地址类型不一致、目标钱包不兼容，或使用未经验证的备份；",
-        "第三方修改软件、伪造安装包、恶意网站、钓鱼、社会工程或第三方服务故障。"
-      ]
+      "text": "软件按现状提供，不保证无缺陷、绝对安全、持续可用或必然恢复成功。软件或依赖缺陷、设备故障、恶意程序、密码遗忘、私钥泄露、卡片损坏及备份错误等，均可能导致永久损失。开源、离线、测试或审计不能消除这些风险。"
     },
     {
       "type": "p",
-      "text": "项目方通常无法重置解密密码、还原遗失的私钥、撤销链上交易或追回被盗、误转的 BTC。是否最终承担法律责任，依适用法律、具体事实和有效约定确定，不由上述风险列举单独决定。"
+      "text": "NFC 卡片可被复制，复制后的加密数据可被离线尝试密码。收款地址和钱包备注公开可读；待核验地址不能证明它与加密私钥一致。"
     },
     {
       "type": "heading",
-      "text": "4. 用户应采取的保护措施"
+      "text": "4. 使用前请先验证"
     },
     {
       "type": "p",
-      "text": "用户应自行评估设备与软件来源的可信程度，妥善保管密码、卡片和备份；先验证备份可恢复、私钥与实际存币地址一致，再决定是否向地址转入 BTC。小额测试、备份和校验可以降低风险，但不能消除风险。"
+      "text": "仅使用可信来源的软件和设备。转入 BTC 前，请核验完整地址及地址类型，确认备份能恢复，并先小额测试。这些措施可以降低风险，但不能消除风险。"
     },
     {
       "type": "p",
-      "text": "NFC 卡片不是不可复制的安全芯片。钱包备注及公开地址可被读取，不能仅凭备注或未解密的地址确认卡片来源、真实性或私钥归属。"
-    },
-    {
-      "type": "p",
-      "text": "私钥、WIF 文本和私钥二维码图片属于敏感明文。请勿向项目方、AI、网站、客服或其他第三方提供这些信息；提交问题时，也不要附上真实私钥、密码或包含这些信息的截图、日志和文件。"
-    },
-    {
-      "type": "p",
-      "text": "用户未采取保护措施可能影响损失发生及责任认定，但本条不免除项目方依法应承担的责任。"
+      "text": "第三方钱包、网站和修改版不属于本项目的安全保证范围。查询余额可能向第三方暴露地址和 IP；查询无需提供私钥、密码、连接钱包或签名。"
     },
     {
       "type": "heading",
-      "text": "5. 第三方软件、网站及修改版本"
+      "text": "5. 责任范围"
     },
     {
       "type": "p",
-      "text": "第三方钱包、区块链浏览器、设备、卡片和系统服务由其提供者独立运营。相关链接、名称或兼容性说明不构成项目方对第三方安全性、数据准确性、持续可用性或履约能力的保证。"
-    },
-    {
-      "type": "p",
-      "text": "在第三方浏览器查询余额时，所查询的公开地址及来访 IP 等信息可能被第三方接收、记录或关联。查询余额不需要私钥、助记词、解密密码、连接钱包或签名。希望制作私钥的设备保持离线的用户，应使用另一台设备查询公开地址。"
-    },
-    {
-      "type": "p",
-      "text": "第三方修改、重新打包、分发或销售软件，或作出额外服务承诺，不代表原项目方授权其作出担保，也不使其他贡献者自动承担该第三方的额外义务。相关责任仍依适用法律和事实确定。"
+      "text": "在适用法律允许且条款有效的范围内，除另有有效书面约定外，相关著作权人、开发者、贡献者及发布者，不对因使用、无法使用本软件或依赖其结果产生的资产、密钥、数据及其他直接或间接损失承担赔偿责任。"
     },
     {
       "type": "heading",
-      "text": "6. 责任限制"
+      "text": "6. 开源许可"
     },
     {
       "type": "p",
-      "text": "**仅在适用法律允许、且本条责任限制依法有效的范围内，除有关主体另有有效书面约定外，项目方不对因使用、无法使用或依赖本软件及相关文档而产生的 BTC 或其他资产损失、密钥或数据丢失、恢复费用、利润或机会损失，以及其他直接、间接、附带、特殊或后果性损害承担赔偿责任。**"
+      "text": "BitTap 按 Apache License 2.0 开源，第三方组件遵循各自许可证。"
     },
     {
       "type": "p",
-      "text": "在上述范围内，该限制适用于基于合同、侵权或其他法律依据提出的请求，也适用于已被告知相关损失可能发生的情形。"
-    },
-    {
-      "type": "p",
-      "text": "**本条必须与第 7 条共同理解。它不表示所有软件缺陷均可免责，也不要求用户放弃依法不得放弃的请求权或救济权。**"
-    },
-    {
-      "type": "heading",
-      "text": "7. 法律保留与开源许可证"
-    },
-    {
-      "type": "p",
-      "text": "**本声明不排除或限制适用法律禁止排除或限制的责任，包括依法不得免除的故意或重大过失造成财产损失的责任、人身损害责任，以及其他法定责任。**"
-    },
-    {
-      "type": "p",
-      "text": "任何条款因适用法律而无效、不成为合同内容或不可执行的，应依法律处理；其他可独立适用的条款不因此当然失效。"
-    },
-    {
-      "type": "p",
-      "text": "本软件的开源授权范围及相关条件，以仓库随附的 Apache License 2.0 和各第三方组件许可证为准。本声明是面向应用用户的风险说明与责任条款草案，不是 Apache License 2.0 的官方译文，不修改或替代其原文，也不撤销或另行限制该许可证已经授予的开源使用、复制、修改和分发权利。"
-    },
-    {
-      "type": "heading",
-      "text": "8. 阅读与选择"
-    },
-    {
-      "type": "p",
-      "text": "继续本次操作前，请确认已阅读并理解上述风险、无额外保证及责任限制条款。不同意的，可以退出操作；如对重要条款存在疑问，应先取得解释或专业意见，再决定是否使用。"
-    },
-    {
-      "type": "p",
-      "text": "点击“同意并继续”用于表达对本次操作所展示条款的接受，不构成对法律规定不得放弃权利的放弃，也不单独决定任何争议中的最终责任。"
+      "text": "继续操作前，请阅读并同意本次展示的使用条款与风险说明。"
     }
   ],
   "legalTranslations": {
     "en": [
       {
         "type": "p",
-        "text": "**Before creating or reading a cold wallet, read this notice carefully, especially Sections 2, 6 and 7. Using this software may result in the permanent loss of all BTC. Being free, open source, designed for offline use, or tested does not mean that the software is free of defects or risks. If you do not agree to this notice, do not continue using the application.**"
+        "text": "Before using BitTap, read these terms. Use may result in the permanent loss of all BTC. If you disagree, exit this operation."
       },
       {
         "type": "heading",
-        "text": "1. Nature of the software and scope of services"
+        "text": "1. What BitTap provides"
       },
       {
         "type": "p",
-        "text": "BitTap is a software tool for generating, encrypting, reading and restoring BTC private keys on the user's device, and for storing related data on NFC cards or in encrypted files. In this notice, the “Project Parties” means the copyright holders, contributors and publishers associated with the relevant official version. Each party's legal status, rights, obligations and liability are determined by the actual circumstances."
-      },
-      {
-        "type": "p",
-        "text": "The software is provided free of charge and as open source. Providing the software does not mean that the Project Parties hold BTC or private keys on users' behalf or manage their wallets. The Project Parties do not provide trading, exchange, transfer execution, asset insurance or guaranteed-return services, or investment advice. Except as otherwise required by law or provided in a valid written undertaking by the relevant party, the Project Parties do not undertake a contractual guarantee to compensate users for asset losses."
+        "text": "BitTap is a free, open-source tool for generating, encrypting and restoring BTC private keys on your device. Private keys are encrypted before being written to an NFC card or saved as a backup file. The project does not hold funds or safeguard keys or passwords on your behalf, and offers no investment advice, asset insurance or guaranteed returns."
       },
       {
         "type": "heading",
-        "text": "2. Software provided as is, without additional warranties"
+        "text": "2. Safeguard your keys and backups"
       },
       {
         "type": "p",
-        "text": "**Unless required by applicable law or otherwise validly agreed in writing by the relevant party, the software and related documentation are provided on an “as is” and “as available” basis, without any express or implied warranties or conditions.**"
+        "text": "Keep your password, cards and backups safe. The decryption password cannot be reset. The project cannot recover lost private keys, reverse on-chain transactions or retrieve funds."
       },
       {
         "type": "p",
-        "text": "Within that scope, the Project Parties do not warrant that the software is free of programming defects, security vulnerabilities or compatibility issues; that random-number generation, key generation, address derivation, encryption, decryption, NFC reading and writing, backups or recovery will work correctly on every device or in every environment; or that the software will be suitable for a particular purpose, remain available or maintained, or prevent every loss of assets."
-      },
-      {
-        "type": "p",
-        "text": "Open-source code, test results, security checks, verification messages in the interface and other technical information do not constitute guarantees of absolute security, freedom from loss of BTC, successful recovery or asset value. Test or audit findings apply only to the versions and scope actually covered."
+        "text": "A WIF private key and its QR code can each control the funds. Do not share or upload them. Private-key images, the clipboard, input methods and cloud synchronization may expose sensitive information."
       },
       {
         "type": "heading",
-        "text": "3. Risk of total and irreversible loss"
+        "text": "3. What can go wrong"
       },
       {
         "type": "p",
-        "text": "**Users should understand that use, inability to use or misuse of the software may cause the loss of some or all BTC, with no possibility of recovery.** Risks include, but are not limited to:"
-      },
-      {
-        "type": "list",
-        "items": [
-          "Defects in the software, dependencies or cryptographic implementation, or problems with the device's random source, operating system, firmware or hardware;",
-          "A compromised phone, or exposure of sensitive information through malware, input methods, the clipboard, screen recordings, screenshots, synchronization or backup functions;",
-          "Forgotten or weak passwords, exposed private keys, or third parties obtaining plaintext private keys or private-key QR-code images;",
-          "NFC cards being copied, altered, damaged or lost, or failures to write, read back, export, save or read data;",
-          "Incorrect receiving addresses, mismatched address types, incompatible destination wallets or use of unverified backups;",
-          "Third-party software modifications, counterfeit installation packages, malicious websites, phishing, social engineering or third-party service failures."
-        ]
+        "text": "The software is provided as is, without guarantees that it is free of defects, absolutely secure, continuously available or always recoverable. Software or dependency defects, device failures, malware, forgotten passwords, exposed keys, damaged cards and backup errors may cause permanent loss. Open source, offline use, testing and audits cannot eliminate these risks."
       },
       {
         "type": "p",
-        "text": "The Project Parties generally cannot reset decryption passwords, reconstruct lost private keys, reverse on-chain transactions or recover stolen or mistakenly transferred BTC. Ultimate legal liability is determined by applicable law, the specific facts and valid agreements, and is not determined solely by this list of risks."
+        "text": "NFC cards can be copied, and copied encrypted data can be subjected to offline password guessing. Receiving addresses and wallet notes are publicly readable. An unverified address does not prove that it corresponds to the encrypted private key."
       },
       {
         "type": "heading",
-        "text": "4. Protective measures for users"
+        "text": "4. Verify before use"
       },
       {
         "type": "p",
-        "text": "Users should assess the trustworthiness of their devices and software sources and safeguard passwords, cards and backups. Before deciding whether to send BTC to an address, verify that the backup can be restored and that the private key corresponds to the address actually used to hold BTC. Small-value tests, backups and verification may reduce risk but cannot eliminate it."
+        "text": "Use software and devices from sources you trust. Before sending BTC, verify the full address and address type, confirm that the backup can be restored and start with a small-value test. These measures can reduce risk but cannot eliminate it."
       },
       {
         "type": "p",
-        "text": "An NFC card is not an unclonable secure element. Wallet notes and public addresses can be read. A note or an address that has not been checked through decryption is not, by itself, proof of the card's origin, authenticity or ownership of its private key."
-      },
-      {
-        "type": "p",
-        "text": "Private keys, WIF text and private-key QR-code images are sensitive plaintext information. Do not provide them to the Project Parties, AI services, websites, support personnel or other third parties. When reporting a problem, do not include real private keys, passwords, or screenshots, logs or files containing them."
-      },
-      {
-        "type": "p",
-        "text": "A user's failure to take protective measures may affect the occurrence of a loss and the assessment of liability, but this section does not relieve the Project Parties of liability imposed by law."
+        "text": "Third-party wallets, websites and modified versions are outside the project’s security guarantees. Balance queries may reveal your address and IP to third parties. Checking a balance does not require a private key, password, wallet connection or signature."
       },
       {
         "type": "heading",
-        "text": "5. Third-party software, websites and modified versions"
+        "text": "5. Scope of liability"
       },
       {
         "type": "p",
-        "text": "Third-party wallets, block explorers, devices, cards and system services are independently operated by their providers. Links, names and compatibility information do not constitute a warranty by the Project Parties of a third party's security, data accuracy, continued availability or ability to perform its obligations."
-      },
-      {
-        "type": "p",
-        "text": "When checking a balance using a third-party explorer, the queried public address, visiting IP address and other information may be received, recorded or associated by that third party. A balance check does not require a private key, seed phrase, decryption password, wallet connection or signature. Users who want the device used to create private keys to remain offline should query public addresses on another device."
-      },
-      {
-        "type": "p",
-        "text": "A third party's modification, repackaging, distribution or sale of the software, or its additional service commitments, does not mean that the original Project Parties have authorized it to give warranties, nor does it automatically impose that third party's additional obligations on other contributors. Relevant liability remains subject to applicable law and the facts."
+        "text": "To the extent permitted by applicable law and to the extent these terms are valid, and unless otherwise validly agreed in writing, the relevant copyright holders, developers, contributors and publishers shall not be liable for loss of assets, keys or data, or other direct or indirect loss arising from use of, inability to use or reliance on the software or its results."
       },
       {
         "type": "heading",
-        "text": "6. Limitation of liability"
+        "text": "6. Open-source license"
       },
       {
         "type": "p",
-        "text": "**Only to the extent permitted by applicable law and to the extent this limitation is legally valid, and except as otherwise validly agreed in writing by the relevant party, the Project Parties shall not be liable for loss of BTC or other assets, loss of keys or data, recovery costs, lost profits or opportunities, or other direct, indirect, incidental, special or consequential damage arising from use of, inability to use or reliance on the software or related documentation.**"
+        "text": "BitTap is licensed under the Apache License 2.0. Third-party components are subject to their respective licenses."
       },
       {
         "type": "p",
-        "text": "Within that scope, this limitation applies to claims based on contract, tort or any other legal theory, including where the possibility of such loss has been communicated."
-      },
-      {
-        "type": "p",
-        "text": "**This section must be read together with Section 7. It does not mean that liability for every software defect can be excluded, and it does not require users to waive claims or remedies that cannot legally be waived.**"
-      },
-      {
-        "type": "heading",
-        "text": "7. Mandatory legal protections and open-source licenses"
-      },
-      {
-        "type": "p",
-        "text": "**This notice does not exclude or limit liability that applicable law prohibits excluding or limiting, including liability for property damage caused intentionally or by gross negligence where such liability cannot legally be excluded, liability for personal injury, and other statutory liability that cannot be excluded or limited.**"
-      },
-      {
-        "type": "p",
-        "text": "If any provision is invalid, does not form part of the contract or is unenforceable under applicable law, it shall be dealt with in accordance with that law. Other provisions that can apply independently do not automatically become invalid as a result."
-      },
-      {
-        "type": "p",
-        "text": "The software's open-source permissions and conditions are governed by the Apache License 2.0 included in the repository and the respective licenses of third-party components. This notice is a draft risk notice and set of liability terms for application users. It is not an official translation of the Apache License 2.0, does not amend or replace its original text, and does not revoke or impose additional restrictions on the rights to use, copy, modify and distribute that the license already grants."
-      },
-      {
-        "type": "heading",
-        "text": "8. Reading and choice"
-      },
-      {
-        "type": "p",
-        "text": "Before continuing this operation, confirm that you have read and understood the risks, absence of additional warranties and limitations of liability above. If you disagree, you may exit the operation. If you have questions about important terms, obtain an explanation or professional advice before deciding whether to use the software."
-      },
-      {
-        "type": "p",
-        "text": "Clicking “Agree & continue” expresses acceptance of the terms displayed for the current operation. It does not waive rights that cannot legally be waived and does not, by itself, determine ultimate liability in a dispute."
+        "text": "Before continuing, read and agree to the terms of use and risk information displayed for this operation."
       }
     ],
     "ja": [
       {
         "type": "p",
-        "text": "**コールドウォレットを作成・読み取る前に、特に第2項、第6項、第7項をよくお読みください。本ソフトウェアの使用により、すべてのBTCを永久に失う可能性があります。無料、オープンソース、オフライン利用を前提とした設計、またはテスト済みであることは、欠陥やリスクがないことを意味しません。本案内に同意しない場合は、本アプリの使用を続けないでください。**"
+        "text": "使用前に、以下の規約をお読みください。BitTap の使用により、すべての BTC を永久に失う可能性があります。同意しない場合は、今回の操作を終了してください。"
       },
       {
         "type": "heading",
-        "text": "1. ソフトウェアの性質とサービスの範囲"
+        "text": "1. BitTap が提供するもの"
       },
       {
         "type": "p",
-        "text": "BitTapは、端末内でBTCの秘密鍵を生成・暗号化・読取・復元し、関連データをNFCカードまたは暗号化ファイルに保存するためのソフトウェアツールです。本案内で「プロジェクト関係者」とは、該当する公式バージョンに関わる著作権者、貢献者および配布者を指します。各当事者の法的地位、権利義務および責任は、実際の事情に基づいて判断されます。"
-      },
-      {
-        "type": "p",
-        "text": "本ソフトウェアは無料のオープンソースとして提供されます。その提供によって、プロジェクト関係者がユーザーのBTCや秘密鍵を預かったり、ウォレットを管理したりするものではありません。売買、交換、送金代行、資産保険、利益保証のサービスや投資助言は提供しません。法律に別段の定めがある場合、または該当する当事者が有効な書面による約束をした場合を除き、プロジェクト関係者はユーザーの資産損失を補償する契約上の保証義務を負いません。"
+        "text": "BitTap は、端末内で BTC の秘密鍵を生成・暗号化・復元する無料のオープンソースツールです。秘密鍵は暗号化したうえで NFC カードに書き込むか、バックアップファイルとして保存します。本プロジェクトは資金、秘密鍵、パスワードを預からず、投資助言、資産保険、利益保証を提供しません。"
       },
       {
         "type": "heading",
-        "text": "2. 現状のままの提供と追加の保証の否認"
+        "text": "2. 秘密鍵とバックアップを大切に保管してください"
       },
       {
         "type": "p",
-        "text": "**適用法により義務付けられる場合、または該当する当事者が書面で別途有効に合意した場合を除き、本ソフトウェアおよび関連文書は「現状のまま」かつ「提供可能な状態」で提供され、明示・黙示を問わず、いかなる保証または条件も伴いません。**"
+        "text": "パスワード、カード、バックアップを安全に保管してください。復号パスワードは再設定できません。本プロジェクトは、紛失した秘密鍵の復旧代行、オンチェーン取引の取消し、資金の回収はできません。"
       },
       {
         "type": "p",
-        "text": "上記の範囲において、プロジェクト関係者は、プログラムの欠陥、セキュリティ上の脆弱性、互換性の問題がないこと、乱数生成、鍵生成、アドレス導出、暗号化・復号、NFCの読取・書込、バックアップまたは復元がすべての端末・環境で正しく動作することを保証しません。また、特定の目的への適合性、継続的な利用可能性・保守、またはあらゆる資産損失の防止も保証しません。"
-      },
-      {
-        "type": "p",
-        "text": "公開ソースコード、テスト結果、安全性の確認、画面の検証メッセージその他の技術情報は、「絶対に安全」「BTCを失わない」「必ず復元できる」ことや、資産価値の保証にはなりません。テストまたは監査の結論は、実際に対象となったバージョンと範囲にのみ適用されます。"
+        "text": "WIF 秘密鍵も秘密鍵の QR コードも、資金を操作できる情報です。共有・アップロードしないでください。秘密鍵画像、クリップボード、入力システム、クラウド同期から機密情報が漏れる可能性があります。"
       },
       {
         "type": "heading",
-        "text": "3. 全額かつ回復不能な損失の可能性"
+        "text": "3. 起こりうる損失"
       },
       {
         "type": "p",
-        "text": "**ユーザーは、本ソフトウェアの使用、使用不能または誤使用により、BTCの一部または全部を失い、回復できなくなる可能性があることを理解する必要があります。**リスクには、以下が含まれますが、これらに限られません。"
-      },
-      {
-        "type": "list",
-        "items": [
-          "本ソフトウェア、依存ライブラリ、暗号実装の欠陥、または端末の乱数源、OS、ファームウェア、ハードウェアの問題。",
-          "スマートフォンへの侵入、マルウェア、入力システム、クリップボード、画面録画、スクリーンショット、同期・バックアップ機能を通じた機密情報の漏えい。",
-          "パスワードの紛失や強度不足、秘密鍵の漏えい、または第三者による平文秘密鍵・秘密鍵QRコード画像の取得。",
-          "NFCカードの複製、改ざん、破損、紛失、またはデータの書込、再読取、書出し、保存、読取の失敗。",
-          "受取アドレスの誤り、アドレス形式の不一致、移行先ウォレットの非互換、または未検証バックアップの使用。",
-          "第三者によるソフトウェアの改変、偽のインストールパッケージ、不正なウェブサイト、フィッシング、ソーシャルエンジニアリング、第三者サービスの障害。"
-        ]
+        "text": "ソフトウェアは現状のまま提供され、欠陥がないこと、絶対的な安全性、継続的な利用可能性、復元の成功を保証しません。ソフトウェアや依存ライブラリの欠陥、端末故障、マルウェア、パスワード紛失、秘密鍵漏えい、カード破損、バックアップの誤りなどにより、回復不能な損失が生じる可能性があります。オープンソース、オフライン使用、テスト、監査によっても、これらのリスクはなくなりません。"
       },
       {
         "type": "p",
-        "text": "プロジェクト関係者は通常、復号パスワードの再設定、紛失した秘密鍵の復元、オンチェーン取引の取消し、盗難・誤送金されたBTCの回収を行えません。最終的な法的責任は、適用法、具体的な事実および有効な合意に基づいて判断され、このリスクの列挙だけで決まるものではありません。"
+        "text": "NFC カードは複製でき、複製した暗号化データに対してオフラインでパスワードを繰り返し試すことができます。受取アドレスとウォレットのメモは誰でも読み取れます。未検証のアドレスは、暗号化された秘密鍵との一致を証明しません。"
       },
       {
         "type": "heading",
-        "text": "4. ユーザーが講じるべき保護措置"
+        "text": "4. 使用前に検証してください"
       },
       {
         "type": "p",
-        "text": "ユーザーは端末とソフトウェアの入手元の信頼性を評価し、パスワード、カード、バックアップを適切に保管してください。アドレスへのBTC送付を判断する前に、バックアップから復元できること、秘密鍵が実際にBTCを保管するアドレスと一致することを確認してください。少額でのテスト、バックアップ、検証はリスクを減らすことができますが、なくすことはできません。"
+        "text": "信頼できる入手元のソフトウェアと端末のみを使用してください。BTC を送る前に、完全なアドレスとアドレス形式を照合し、バックアップから復元できることを確認して、まず少額で試してください。これらの対策はリスクを減らせますが、なくすことはできません。"
       },
       {
         "type": "p",
-        "text": "NFCカードは複製不能なセキュアエレメントではありません。ウォレットのメモと公開アドレスは読み取られる可能性があり、メモや復号による照合をしていないアドレスだけでは、カードの出所・真正性や秘密鍵の帰属を確認できません。"
-      },
-      {
-        "type": "p",
-        "text": "秘密鍵、WIFテキスト、秘密鍵QRコード画像は、機密性の高い平文情報です。プロジェクト関係者、AIサービス、ウェブサイト、サポート担当者その他の第三者に提供しないでください。問題を報告する際も、実際の秘密鍵、パスワード、またはそれらを含むスクリーンショット、ログ、ファイルを添付しないでください。"
-      },
-      {
-        "type": "p",
-        "text": "保護措置を講じなかったことは、損失の発生や責任の判断に影響する可能性がありますが、本項はプロジェクト関係者が法律上負う責任を免除するものではありません。"
+        "text": "第三者のウォレット、ウェブサイト、改変版は、本プロジェクトの安全性保証の対象外です。残高照会により、アドレスや IP が第三者に伝わる可能性があります。残高照会に秘密鍵、パスワード、ウォレット接続、署名は不要です。"
       },
       {
         "type": "heading",
-        "text": "5. 第三者のソフトウェア・サイト・改変版"
+        "text": "5. 責任の範囲"
       },
       {
         "type": "p",
-        "text": "第三者のウォレット、ブロックエクスプローラー、端末、カード、システムサービスは、それぞれの提供者が独立して運営します。リンク、名称、互換性の説明は、第三者の安全性、データの正確性、継続的な利用可能性、義務履行能力について、プロジェクト関係者が保証するものではありません。"
-      },
-      {
-        "type": "p",
-        "text": "第三者のエクスプローラーで残高を照会すると、照会対象の公開アドレス、アクセス元IPなどの情報が第三者に受信・記録・関連付けされる可能性があります。残高照会には、秘密鍵、シードフレーズ、復号パスワード、ウォレット接続、署名は不要です。秘密鍵を作成する端末をオフラインに保ちたい場合は、別の端末で公開アドレスを照会してください。"
-      },
-      {
-        "type": "p",
-        "text": "第三者によるソフトウェアの改変、再パッケージ化、配布、販売、追加のサービス上の約束は、元のプロジェクト関係者がその保証を承認したことを意味せず、他の貢献者に当該第三者の追加義務を自動的に負わせるものでもありません。関連する責任は、適用法および事実に基づいて判断されます。"
+        "text": "適用法が認め、本規約が有効な範囲で、かつ書面による別途の有効な合意がある場合を除き、関連する著作権者、開発者、貢献者、配布者は、本ソフトウェアの使用、使用不能、またはその結果への依拠から生じる資産・鍵・データの損失、その他の直接的・間接的損失について賠償責任を負いません。"
       },
       {
         "type": "heading",
-        "text": "6. 責任の制限"
+        "text": "6. オープンソースライセンス"
       },
       {
         "type": "p",
-        "text": "**適用法が認め、本項の責任制限が法的に有効な範囲に限り、かつ該当する当事者が書面で別途有効に合意した場合を除き、プロジェクト関係者は、本ソフトウェア・関連文書の使用、使用不能またはそれらへの依拠から生じるBTCその他の資産の損失、鍵・データの喪失、復元費用、利益・機会の喪失、その他の直接的、間接的、付随的、特別または結果的な損害について、賠償責任を負いません。**"
+        "text": "BitTap は Apache License 2.0 に基づいて公開されています。第三者のコンポーネントには、それぞれのライセンスが適用されます。"
       },
       {
         "type": "p",
-        "text": "上記の範囲において、この制限は、契約、不法行為その他の法的根拠による請求に適用され、そのような損失の可能性を知らされていた場合にも適用されます。"
-      },
-      {
-        "type": "p",
-        "text": "**本項は必ず第7項と併せて理解してください。すべてのソフトウェアの欠陥について免責されることを意味せず、法律上放棄できない請求権や救済をユーザーに放棄させるものでもありません。**"
-      },
-      {
-        "type": "heading",
-        "text": "7. 法律上の権利・責任の留保とオープンソースライセンス"
-      },
-      {
-        "type": "p",
-        "text": "**本案内は、適用法が除外・制限を禁じる責任を除外・制限しません。これには、法律上免除できない故意または重大な過失による財産損害の責任、人身損害の責任、その他除外・制限できない法定責任が含まれます。**"
-      },
-      {
-        "type": "p",
-        "text": "いずれかの条項が適用法により無効となり、契約の内容とならず、または執行不能となる場合は、法律に従って取り扱われます。独立して適用できる他の条項が、それだけで当然に無効となるものではありません。"
-      },
-      {
-        "type": "p",
-        "text": "本ソフトウェアのオープンソースとしての許諾範囲と条件は、リポジトリに同梱されるApache License 2.0および各第三者コンポーネントのライセンスに従います。本案内はアプリ利用者向けのリスク説明・責任条項の草案であり、Apache License 2.0の公式訳ではありません。その原文を変更・置換せず、同ライセンスが既に許諾する使用、複製、改変、配布の権利を撤回したり、追加で制限したりするものではありません。"
-      },
-      {
-        "type": "heading",
-        "text": "8. 閲読と選択"
-      },
-      {
-        "type": "p",
-        "text": "今回の操作を続ける前に、上記のリスク、追加保証の否認、責任制限を読み、理解したことを確認してください。同意しない場合は操作を終了できます。重要な条項に疑問がある場合は、説明または専門家の助言を受けてから、使用するかどうか判断してください。"
-      },
-      {
-        "type": "p",
-        "text": "「同意して続ける」の選択は、今回の操作で表示された条項への同意を示すためのものです。法律上放棄できない権利を放棄するものではなく、紛争における最終的な責任をそれだけで決めるものでもありません。"
+        "text": "操作を続ける前に、今回表示された利用規約とリスク説明を読み、同意してください。"
       }
     ],
     "ko": [
       {
         "type": "p",
-        "text": "**콜드월렛을 만들거나 읽기 전에 이 안내, 특히 제2항, 제6항, 제7항을 주의 깊게 읽어 주세요. 소프트웨어 사용으로 BTC 전부를 영구적으로 잃을 수 있습니다. 무료, 오픈소스, 오프라인 사용을 위한 설계 또는 테스트 완료가 결함이나 위험이 없다는 뜻은 아닙니다. 동의하지 않으면 앱 사용을 계속하지 마세요.**"
+        "text": "사용하기 전에 다음 약관을 읽어 주세요. BitTap 사용으로 BTC 전부를 영구적으로 잃을 수 있습니다. 동의하지 않으면 이번 작업을 종료하세요."
       },
       {
         "type": "heading",
-        "text": "1. 소프트웨어의 성격과 서비스 범위"
+        "text": "1. BitTap이 제공하는 기능"
       },
       {
         "type": "p",
-        "text": "BitTap은 기기 안에서 BTC 개인키를 생성·암호화·읽기·복구하고, 관련 데이터를 NFC 카드 또는 암호화 파일에 저장하기 위한 소프트웨어 도구입니다. 이 안내의 “프로젝트 관계자”란 해당 공식 버전과 관련된 저작권자, 기여자 및 배포자를 뜻합니다. 각 당사자의 법적 지위, 권리·의무 및 책임은 실제 사정에 따라 판단됩니다."
-      },
-      {
-        "type": "p",
-        "text": "이 소프트웨어는 무료 오픈소스로 제공됩니다. 소프트웨어를 제공한다는 이유로 프로젝트 관계자가 사용자의 BTC나 개인키를 대신 보관하거나 월렛을 관리하는 것은 아닙니다. 매매, 교환, 송금 대행, 자산 보험, 수익 보장 서비스 또는 투자 조언을 제공하지 않습니다. 법률에 달리 정함이 있거나 해당 당사자가 유효한 서면 약속을 한 경우를 제외하고, 프로젝트 관계자는 사용자의 자산 손실을 보상할 계약상 보증 의무를 부담하지 않습니다."
+        "text": "BitTap은 기기 안에서 BTC 개인키를 생성·암호화·복구하는 무료 오픈소스 도구입니다. 개인키를 암호화한 뒤 NFC 카드에 쓰거나 백업 파일로 저장합니다. 이 프로젝트는 자금, 개인키, 비밀번호를 대신 보관하지 않으며 투자 조언, 자산 보험 또는 수익 보장을 제공하지 않습니다."
       },
       {
         "type": "heading",
-        "text": "2. 현 상태 제공 및 추가 보증의 부인"
+        "text": "2. 개인키와 백업을 안전하게 보관하세요"
       },
       {
         "type": "p",
-        "text": "**적용 법률이 요구하거나 해당 당사자가 서면으로 달리 유효하게 합의한 경우를 제외하고, 소프트웨어와 관련 문서는 “현 상태” 및 “제공 가능한 상태”로 제공되며 명시적이든 묵시적이든 어떠한 보증이나 조건도 수반하지 않습니다.**"
+        "text": "비밀번호, 카드, 백업을 안전하게 보관하세요. 복호화 비밀번호는 재설정할 수 없습니다. 이 프로젝트는 분실한 개인키를 대신 복구하거나 온체인 거래를 취소하거나 자금을 회수할 수 없습니다."
       },
       {
         "type": "p",
-        "text": "위 범위에서 프로젝트 관계자는 프로그램 결함, 보안 취약점 또는 호환성 문제가 없음을 보장하지 않습니다. 난수 생성, 키 생성, 주소 도출, 암호화·복호화, NFC 읽기·쓰기, 백업 또는 복구가 모든 기기와 환경에서 올바르게 작동함을 보장하지 않으며, 특정 목적에의 적합성, 지속적인 이용 가능성·유지보수 또는 모든 자산 손실의 방지를 보장하지 않습니다."
-      },
-      {
-        "type": "p",
-        "text": "공개 소스코드, 테스트 결과, 보안 점검, 화면의 검증 메시지 또는 기타 기술 정보는 “절대적 안전”, “BTC 손실 없음”, “복구 성공 보장” 또는 자산 가치의 보증이 아닙니다. 테스트나 감사의 결론은 실제로 검토한 버전과 범위에만 적용됩니다."
+        "text": "WIF 개인키와 개인키 QR 코드는 각각 자금을 제어할 수 있습니다. 공유하거나 업로드하지 마세요. 개인키 이미지, 클립보드, 입력기, 클라우드 동기화를 통해 민감 정보가 노출될 수 있습니다."
       },
       {
         "type": "heading",
-        "text": "3. 전액 및 회복 불가능한 손실의 가능성"
+        "text": "3. 발생할 수 있는 손실"
       },
       {
         "type": "p",
-        "text": "**사용자는 소프트웨어의 사용, 사용 불능 또는 잘못된 사용으로 BTC 일부 또는 전부를 잃고 복구하지 못할 수 있음을 이해해야 합니다.** 위험에는 다음이 포함되지만 이에 한정되지 않습니다."
-      },
-      {
-        "type": "list",
-        "items": [
-          "소프트웨어, 의존 라이브러리 또는 암호 구현의 결함, 기기의 난수원·운영체제·펌웨어·하드웨어 문제.",
-          "휴대전화 침해, 악성 소프트웨어, 입력기, 클립보드, 화면 녹화, 스크린샷, 동기화·백업 기능을 통한 민감 정보 노출.",
-          "비밀번호 분실이나 취약한 비밀번호, 개인키 유출, 제3자의 평문 개인키 또는 개인키 QR 코드 이미지 취득.",
-          "NFC 카드 복제·변조·손상·분실, 데이터 쓰기·다시 읽기·내보내기·저장·읽기 실패.",
-          "잘못된 받는 주소, 주소 유형 불일치, 대상 월렛의 비호환 또는 검증하지 않은 백업 사용.",
-          "제3자의 소프트웨어 수정, 위조 설치 패키지, 악성 웹사이트, 피싱, 사회공학 공격 또는 제3자 서비스 장애."
-        ]
+        "text": "소프트웨어는 현 상태로 제공되며 결함이 없음, 절대적인 안전, 지속적인 이용 가능성 또는 복구 성공을 보장하지 않습니다. 소프트웨어·의존 라이브러리의 결함, 기기 고장, 악성 프로그램, 비밀번호 분실, 개인키 유출, 카드 손상, 백업 오류 등은 영구적인 손실을 초래할 수 있습니다. 오픈소스, 오프라인 사용, 테스트, 감사로도 이러한 위험을 없앨 수는 없습니다."
       },
       {
         "type": "p",
-        "text": "프로젝트 관계자는 일반적으로 복호화 비밀번호를 재설정하거나 분실한 개인키를 재구성하거나 온체인 거래를 취소하거나 도난·오송금된 BTC를 회수할 수 없습니다. 최종 법적 책임은 적용 법률, 구체적인 사실 및 유효한 합의에 따라 판단되며, 위 위험 목록만으로 결정되지 않습니다."
+        "text": "NFC 카드는 복제할 수 있으며, 복제된 암호화 데이터에 대해 오프라인에서 비밀번호를 반복해서 추측할 수 있습니다. 수신 주소와 월렛 메모는 누구나 읽을 수 있습니다. 검증되지 않은 주소는 암호화된 개인키와 일치한다는 증거가 아닙니다."
       },
       {
         "type": "heading",
-        "text": "4. 사용자가 취해야 할 보호 조치"
+        "text": "4. 사용 전에 먼저 검증하세요"
       },
       {
         "type": "p",
-        "text": "사용자는 기기와 소프트웨어 입수 경로의 신뢰성을 평가하고 비밀번호, 카드, 백업을 안전하게 보관해야 합니다. 주소로 BTC를 보낼지 결정하기 전에 백업에서 복구할 수 있는지, 개인키가 실제 BTC 보관 주소와 일치하는지 확인하세요. 소액 테스트, 백업 및 검증은 위험을 줄일 수 있지만 없앨 수는 없습니다."
+        "text": "신뢰할 수 있는 출처의 소프트웨어와 기기만 사용하세요. BTC를 보내기 전에 전체 주소와 주소 유형을 대조하고 백업에서 복구할 수 있는지 확인한 뒤, 먼저 소액으로 시험하세요. 이러한 조치는 위험을 줄일 수 있지만 없앨 수는 없습니다."
       },
       {
         "type": "p",
-        "text": "NFC 카드는 복제 불가능한 보안 칩이 아닙니다. 월렛 메모와 공개 주소는 읽힐 수 있으므로 메모 또는 복호화를 통한 대조를 하지 않은 주소만으로 카드의 출처·진위나 개인키의 귀속을 확인할 수 없습니다."
-      },
-      {
-        "type": "p",
-        "text": "개인키, WIF 텍스트, 개인키 QR 코드 이미지는 민감한 평문 정보입니다. 프로젝트 관계자, AI 서비스, 웹사이트, 고객 지원 담당자 또는 기타 제3자에게 제공하지 마세요. 문제를 신고할 때에도 실제 개인키, 비밀번호 또는 이를 포함한 스크린샷·로그·파일을 첨부하지 마세요."
-      },
-      {
-        "type": "p",
-        "text": "보호 조치를 취하지 않은 사실은 손실 발생과 책임 판단에 영향을 줄 수 있지만, 이 항은 프로젝트 관계자가 법률상 부담해야 하는 책임을 면제하지 않습니다."
+        "text": "제3자 월렛, 웹사이트, 수정 버전은 이 프로젝트의 보안 보장 범위에 포함되지 않습니다. 잔액 조회 시 주소와 IP가 제3자에게 노출될 수 있습니다. 잔액 조회에는 개인키, 비밀번호, 월렛 연결 또는 서명이 필요하지 않습니다."
       },
       {
         "type": "heading",
-        "text": "5. 제3자 소프트웨어·웹사이트·수정 버전"
+        "text": "5. 책임 범위"
       },
       {
         "type": "p",
-        "text": "제3자 월렛, 블록 탐색기, 기기, 카드 및 시스템 서비스는 각 제공자가 독립적으로 운영합니다. 링크, 명칭 또는 호환성 설명은 프로젝트 관계자가 제3자의 보안, 데이터 정확성, 지속적인 이용 가능성 또는 의무 이행 능력을 보증한다는 뜻이 아닙니다."
-      },
-      {
-        "type": "p",
-        "text": "제3자 탐색기로 잔액을 조회하면 조회한 공개 주소, 접속 IP 등의 정보를 제3자가 수신·기록·연결할 수 있습니다. 잔액 조회에는 개인키, 시드 문구, 복호화 비밀번호, 월렛 연결 또는 서명이 필요하지 않습니다. 개인키를 만드는 기기를 오프라인으로 유지하려면 다른 기기에서 공개 주소를 조회하세요."
-      },
-      {
-        "type": "p",
-        "text": "제3자의 소프트웨어 수정·재패키징·배포·판매 또는 추가 서비스 약속은 원래 프로젝트 관계자가 해당 보증을 승인했다는 뜻이 아니며, 다른 기여자에게 그 제3자의 추가 의무를 자동으로 부담시키지도 않습니다. 관련 책임은 적용 법률과 사실에 따라 판단됩니다."
+        "text": "적용 법률이 허용하고 이 약관이 유효한 범위에서, 그리고 별도의 유효한 서면 합의가 있는 경우를 제외하고, 관련 저작권자, 개발자, 기여자 및 배포자는 이 소프트웨어의 사용, 사용 불능 또는 그 결과에 대한 의존으로 발생한 자산·키·데이터 손실이나 기타 직접적·간접적 손실에 대해 배상 책임을 지지 않습니다."
       },
       {
         "type": "heading",
-        "text": "6. 책임 제한"
+        "text": "6. 오픈소스 라이선스"
       },
       {
         "type": "p",
-        "text": "**적용 법률이 허용하고 이 책임 제한이 법적으로 유효한 범위에서만, 그리고 해당 당사자가 서면으로 달리 유효하게 합의한 경우를 제외하고, 프로젝트 관계자는 소프트웨어·관련 문서의 사용, 사용 불능 또는 이에 대한 의존으로 발생하는 BTC나 기타 자산의 손실, 키·데이터 손실, 복구 비용, 이익·기회 상실 또는 기타 직접적·간접적·부수적·특별·결과적 손해에 대해 배상 책임을 지지 않습니다.**"
+        "text": "BitTap은 Apache License 2.0에 따라 공개됩니다. 제3자 구성요소에는 각각의 라이선스가 적용됩니다."
       },
       {
         "type": "p",
-        "text": "위 범위에서 이 제한은 계약, 불법행위 또는 기타 법적 근거에 따른 청구에 적용되며, 해당 손실의 가능성을 통지받은 경우에도 적용됩니다."
-      },
-      {
-        "type": "p",
-        "text": "**이 항은 반드시 제7항과 함께 이해해야 합니다. 모든 소프트웨어 결함에 대한 책임이 면제된다는 뜻이 아니며, 법률상 포기할 수 없는 청구권이나 구제 수단을 사용자에게 포기하도록 요구하지 않습니다.**"
-      },
-      {
-        "type": "heading",
-        "text": "7. 법정 권리·책임의 유보 및 오픈소스 라이선스"
-      },
-      {
-        "type": "p",
-        "text": "**이 안내는 적용 법률이 배제·제한을 금지하는 책임을 배제하거나 제한하지 않습니다. 여기에는 법률상 면제할 수 없는 고의 또는 중대한 과실로 인한 재산 손해 책임, 신체 손해 책임 및 기타 배제·제한할 수 없는 법정 책임이 포함됩니다.**"
-      },
-      {
-        "type": "p",
-        "text": "어떤 조항이 적용 법률에 따라 무효이거나 계약 내용이 되지 않거나 집행할 수 없는 경우에는 해당 법률에 따라 처리합니다. 독립적으로 적용할 수 있는 다른 조항이 그 이유만으로 자동으로 무효가 되는 것은 아닙니다."
-      },
-      {
-        "type": "p",
-        "text": "소프트웨어의 오픈소스 이용 허락 범위와 조건은 저장소에 포함된 Apache License 2.0 및 각 제3자 구성요소의 라이선스에 따릅니다. 이 안내는 앱 사용자용 위험 설명과 책임 조항의 초안이며 Apache License 2.0의 공식 번역이 아닙니다. 해당 원문을 수정·대체하지 않으며, 라이선스가 이미 부여한 사용·복제·수정·배포 권리를 철회하거나 추가로 제한하지 않습니다."
-      },
-      {
-        "type": "heading",
-        "text": "8. 읽기 및 선택"
-      },
-      {
-        "type": "p",
-        "text": "이번 작업을 계속하기 전에 위 위험, 추가 보증의 부인 및 책임 제한을 읽고 이해했는지 확인하세요. 동의하지 않으면 작업을 종료할 수 있습니다. 중요한 조항에 의문이 있으면 설명이나 전문가 의견을 구한 후 사용 여부를 결정하세요."
-      },
-      {
-        "type": "p",
-        "text": "“동의하고 계속”을 누르는 것은 이번 작업에서 표시된 조항에 대한 동의를 나타냅니다. 법률상 포기할 수 없는 권리를 포기하는 것이 아니며, 분쟁의 최종 책임을 그 자체만으로 결정하지 않습니다."
+        "text": "작업을 계속하기 전에 이번에 표시된 이용약관 및 위험 설명을 읽고 동의해 주세요."
       }
     ]
   },
   "securityContent": {
-    "title": "BitTap 如何保护你的私钥？",
-    "intro": "BTC 记录在比特币区块链上，NFC 卡片保存的是加密后的私钥备份。私钥决定谁能控制对应的 BTC，密码则用于保护这份备份。",
-    "sections": [
-      {
-        "title": "1. 标准模式：使用手机的安全随机源",
-        "paragraphs": [
-          "每次创建钱包，BitTap 都从安卓系统的安全随机源取得新的随机数据，并检查是否符合比特币私钥的有效范围。不符合要求就重新生成；随机源报错时停止操作，不改用时间戳等弱随机方式。",
-          "你的密码、钱包备注或创建时间，都不是生成私钥的依据。密码负责保护私钥，不决定私钥是什么。"
-        ]
-      },
-      {
-        "title": "2. 增强模式：加入相机输入，保留系统随机源（可选增强模式）",
-        "paragraphs": [
-          "开启增强模式后，BitTap 会在你移动相机时采集部分预览画面，并拍摄最终照片。应用通过 SHA-256 将这些数据整理成摘要，再与安卓安全随机数据通过 HMAC-SHA256 混合，用于生成私钥。",
-          "可以把它理解为：在系统随机数之外，再加入一份来自相机的输入。它不是只靠照片生成钱包，也不是用照片代替系统随机源。系统随机源报错时停止生成；相机采集失败时，不会假装增强成功，用户可以重试或明确切回标准模式。",
-          "采集图像只在本次操作的内存中处理，不自动保存到相册、不上传；生成完成或取消时，清理本应用持有的照片、画面摘要和混合中间数据。照片不是密码，恢复钱包不需要保留照片或重拍同一场景。",
-          "SHA-256 不会凭空创造随机性，相机输入也不代表已证明增加了多少位安全性。增强模式不能保护已经被入侵的手机。"
-        ]
-      },
-      {
-        "title": "3. 收款地址按比特币规则从密钥推导",
-        "paragraphs": [
-          "BitTap 按比特币的密码学规则，从同一份密钥材料推导 SegWit、Legacy、P2SH 和 Taproot 四种收款地址。它们共用同一份原始私钥材料，余额分别记录。",
-          "公开地址用于收款和查询，不是私钥，也不能代替私钥转走 BTC。"
-        ]
-      },
-      {
-        "title": "4. 先处理密码，再为私钥加密",
-        "paragraphs": [
-          "BitTap 不直接把输入的密码当作加密密钥，而是通过 scrypt，加上每次新生成的随机“盐”，得到用于加密的密钥。你可以把它理解为：让每次猜测密码都需要消耗额外的计算和内存资源，提高批量猜密码的成本。",
-          "随后使用 AES-256-GCM 加密私钥。这一方式既保护私钥内容，也对密文和受保护的地址与钱包备注信息进行完整性校验；数据被改动时，校验会失败。每次加密使用新的随机参数，密码本身不存入卡片或备份文件。"
-        ]
-      },
-      {
-        "title": "5. 生成、写卡和解密时，都有对应的校验",
-        "paragraphs": [
-          "生成后，BitTap 会立即尝试解密刚产生的备份，确认恢复出的私钥与原私钥一致；写卡后，再读回核对写入的数据。",
-          "日后解密时，还会从恢复的私钥重新推导收款地址，与卡片记录逐项核对。只有通过后，才显示“已与私钥核对，地址正确”。没有输入密码时看到的地址，只是卡片中公开保存的地址，尚未完成这一步验证。",
-          "这些检查能发现所覆盖的错误，但不构成没有软件缺陷或绝不丢币的保证，也不能证明整张卡片的来源。"
-        ]
-      },
-      {
-        "title": "6. 明文私钥用完即清理，制作完成后清理本次会话",
-        "paragraphs": [
-          "生成、加密并完成恢复校验后，应用就清理本次生成操作持有的明文私钥。**这一步发生在进入写卡页面之前，不需要等到卡片写完。**用于加密的派生密钥和本次操作的密码缓冲，也会在各自使用结束后清理。",
-          "后续写入 NFC 卡片、保存加密备份和制作同一钱包的其他卡片，使用的是加密数据及公开地址，不需要一直保留明文私钥。",
-          "写卡后，应用会读回核对。为了让你完成必需的文件备份，或继续写入另一张 NFC 卡，本次加密数据会暂时保留在操作会话中。**完成备份并点击“完成，返回首页”后，应用再清理本次会话中的加密数据、地址和相关界面状态，不在应用内建立钱包历史列表。**",
-          "你主动写入的 NFC 卡片、保存到外部位置的加密备份，以及另行导出的文件或图片，不会随着返回首页而被删除。清理的是应用当前会话，不是用户保存的恢复材料。"
-        ]
-      },
-      {
-        "title": "7. 卡片被复制，不等于私钥已经被解密",
-        "paragraphs": [
-          "复制者能够取得公开地址和加密备份，但在正常实现、设备可信且密码足够强的前提下，无法仅靠复制卡片直接读取明文私钥。",
-          "不过，复制者可以离线反复猜密码，因此密码越短、越常见，风险越高。scrypt 能提高猜测成本，不能把弱密码变成强密码。请使用独立长密码，并与卡片分开保管；忘记密码且没有其他有效恢复材料时，项目方无法重置密码或找回 BTC。"
-        ]
-      },
-      {
-        "title": "8. 密钥处理在本机完成，手机本身仍需可信",
-        "paragraphs": [
-          "私钥生成、加密和解密在本机进行，不需要把私钥或密码交给服务器。解密读取已有钱包时，明文私钥必须暂时存在于应用内存中，即使界面默认隐藏也不等于内存中没有私钥；返回首页时，应用会清理当前会话持有的私钥、密码和相关数据。",
-          "这不代表操作系统或第三方组件中的所有副本都能被证明彻底擦除，也不能抵御已经被入侵的手机。NFC 卡片是加密备份载体，不具备专用硬件钱包的独立签名与密钥隔离能力。"
-        ]
-      }
-    ],
-    "related": [
-      {
-        "title": "Bitcoin Core",
-        "text": "使用强随机数生成合法密钥，并提供本地钱包的密码加密。BitTap 没有直接使用 Bitcoin Core 的随机数实现；Core 的钱包加密实现包含 AES-256-CBC，不能说两者加密流程相同。"
-      },
-      {
-        "title": "Electrum",
-        "text": "用密码加密种子或私钥等敏感材料，需要使用时才解密。Electrum 的种子和私钥使用 AES-256-CBC，钱包文件另有加密层；BitTap 当前采用 scrypt + AES-256-GCM，是独立私钥备份，格式不同。"
-      },
-      {
-        "title": "SeedSigner · 增强模式的参考",
-        "text": "其相机熵方案会使用预览帧和最终照片等数据。BitTap 保留安卓安全随机源，再通过独立的 HMAC-SHA256 混合相机摘要；本版本的真实手机相机尚待验收。不能宣称采用同一算法或具有相同安全性。"
-      }
-    ],
-    "caution": "相近的是设计思路，不代表代码相同、安全性相同、格式兼容，或得到这些项目的认证与背书。",
-    "compatibility": "BitTap 当前生成的 CG3（兼容旧 CG2 / CG1） 加密备份是项目自定义格式，不是 BIP38，也不能直接作为 Bitcoin Core 或 Electrum 的钱包文件使用。需要先用 BitTap 或离线恢复工具解密，再将 BTC 主网压缩 WIF 私钥导入支持该格式及对应地址类型的钱包。"
+    "zh": {
+      "title": "BitTap 如何保护你的私钥？",
+      "intro": "BTC 记录在比特币区块链上，NFC 卡片保存的是加密后的私钥备份。私钥决定谁能控制对应的 BTC，密码则用于保护这份备份。",
+      "sections": [
+        {
+          "title": "1. 标准模式：使用手机的安全随机源",
+          "paragraphs": [
+            "每次创建钱包，BitTap 都从安卓系统的安全随机源取得新的随机数据，并检查是否符合比特币私钥的有效范围。不符合要求就重新生成；随机源报错时停止操作，不改用时间戳等弱随机方式。",
+            "你的密码、钱包备注或创建时间，都不是生成私钥的依据。密码负责保护私钥，不决定私钥是什么。"
+          ]
+        },
+        {
+          "title": "2. 增强模式：加入相机输入，保留系统随机源（可选增强模式）",
+          "paragraphs": [
+            "开启增强模式后，BitTap 会在你移动相机时采集 32 个有效预览帧，并拍摄最终照片。应用通过 SHA-256 将图像数据整理成摘要，再与安卓安全随机数据通过 HMAC-SHA256 混合，用于生成私钥。系统随机输入在相机采集开始前取得。",
+            "可以把它理解为：在系统随机数之外，再加入一份来自相机的输入。它不是只靠照片生成钱包，也不是用照片代替系统随机源。系统随机源报错时停止生成；相机采集失败时，不会假装增强成功，用户可以重试或明确切回标准模式。",
+            "采集图像只在本次操作的内存中处理，不自动保存到相册、不上传；生成完成或取消时，清理本应用持有的照片、画面摘要和混合中间数据。照片不是密码，恢复钱包不需要保留照片或重拍同一场景。",
+            "SHA-256 不会凭空创造随机性，相机输入也不代表已证明增加了多少位安全性。增强模式不能保护已经被入侵的手机。"
+          ]
+        },
+        {
+          "title": "3. 收款地址按比特币规则从密钥推导",
+          "paragraphs": [
+            "BitTap 按比特币的密码学规则，从同一份密钥材料推导 SegWit、Legacy、P2SH 和 Taproot 四种收款地址。它们共用同一份原始私钥材料，余额分别记录。",
+            "公开地址用于收款和查询，不是私钥，也不能代替私钥转走 BTC。"
+          ]
+        },
+        {
+          "title": "4. 先处理密码，再为私钥加密",
+          "paragraphs": [
+            "BitTap 不直接把输入的密码当作加密密钥，而是通过 scrypt，加上每次新生成的随机“盐”，得到用于加密的密钥。你可以把它理解为：让每次猜测密码都需要消耗额外的计算和内存资源，提高批量猜密码的成本。",
+            "随后使用 AES-256-GCM 加密私钥。这一方式既保护私钥内容，也对密文和受保护的地址与钱包备注信息进行完整性校验；数据被改动时，校验会失败。每次加密使用新的随机参数，密码本身不存入卡片或备份文件。",
+            "收款地址和钱包备注是公开信息，不进行加密，任何能读取卡片或备份的人都可能看见。解密成功前，它们只是待核验的信息；完整性保护不等于内容保密。",
+            "新建密码必须至少 10 个字符，同时包含英文大写字母、英文小写字母、数字和特殊字符。这只是格式底线，请使用独立、足够长且难猜的密码，避免常见组合。"
+          ]
+        },
+        {
+          "title": "5. 生成、写卡和解密时，都有对应的校验",
+          "paragraphs": [
+            "生成后，BitTap 会立即尝试解密刚产生的备份，确认恢复出的私钥与原私钥一致；写卡后，再读回核对写入的数据。",
+            "日后解密时，还会从恢复的私钥重新推导收款地址，与卡片记录逐项核对。只有通过后，才显示“已与私钥核对，地址正确”。没有输入密码时看到的地址，只是卡片中公开保存的地址，尚未完成这一步验证。",
+            "未核验收款地址的导出图片会保留风险提示，但提示本身不代表地址已经核验。这些检查能发现所覆盖的错误，不构成没有软件缺陷或绝不丢币的保证，也不能证明整张卡片的来源。"
+          ]
+        },
+        {
+          "title": "6. 明文私钥用完即清理，制作完成后清理本次会话",
+          "paragraphs": [
+            "生成、加密并完成恢复校验后，应用就清理本次生成操作持有的明文私钥。**这一步发生在进入写卡页面之前，不需要等到卡片写完。**用于加密的派生密钥和本次操作的密码缓冲，也会在各自使用结束后清理。",
+            "后续写入 NFC 卡片、保存加密备份和制作同一钱包的其他卡片，使用的是加密数据及公开地址，不需要一直保留明文私钥。",
+            "写卡后，应用会读回核对。为了让你完成必需的文件备份，或继续写入另一张 NFC 卡，本次加密数据会暂时保留在操作会话中。**完成备份并点击“完成，返回首页”后，应用再清理本次会话中的加密数据、地址和相关界面状态，不在应用内建立钱包历史列表。**",
+            "你主动写入的 NFC 卡片、保存到外部位置的加密备份，以及另行导出的文件或图片，不会随着返回首页而被删除。清理的是应用当前会话，不是用户保存的恢复材料。"
+          ]
+        },
+        {
+          "title": "7. 卡片被复制，不等于私钥已经被解密",
+          "paragraphs": [
+            "复制者能够取得公开地址和加密备份，但在正常实现、设备可信且密码足够强的前提下，无法仅靠复制卡片直接读取明文私钥。",
+            "不过，复制者可以离线反复猜密码，因此密码越短、越常见，风险越高。scrypt 能提高猜测成本，不能把弱密码变成强密码。请使用独立长密码，并与卡片分开保管；忘记密码且没有其他有效恢复材料时，项目方无法重置密码或找回 BTC。"
+          ]
+        },
+        {
+          "title": "8. 密钥处理在本机完成，手机本身仍需可信",
+          "paragraphs": [
+            "私钥生成、加密和解密在本机进行，不需要把私钥或密码交给服务器。解密读取已有钱包时，明文私钥必须暂时存在于应用内存中，即使界面默认隐藏也不等于内存中没有私钥。",
+            "解锁后最长保留 2 分钟，连续 60 秒没有操作会自动锁定，以较早者为准。锁定时清理当前会话中的私钥与临时敏感展示；返回首页或将应用切到后台，也会清理解锁会话。",
+            "主动查看私钥时，应用使用专用绘制区域展示文字，不把 WIF 作为普通辅助功能文本提供。明确复制私钥或保存图片仍会产生明文材料，请只在可信设备和钱包间使用。",
+            "这不代表操作系统或第三方组件中的所有副本都能被证明彻底擦除，也不能抵御已经被入侵的手机。NFC 卡片是加密备份载体，不具备专用硬件钱包的独立签名与密钥隔离能力。"
+          ]
+        }
+      ],
+      "related": [
+        {
+          "title": "Bitcoin Core",
+          "text": "使用强随机数生成合法密钥，并提供本地钱包的密码加密。BitTap 没有直接使用 Bitcoin Core 的随机数实现；Core 的钱包加密实现包含 AES-256-CBC，不能说两者加密流程相同。"
+        },
+        {
+          "title": "Electrum",
+          "text": "用密码加密种子或私钥等敏感材料，需要使用时才解密。Electrum 的种子和私钥使用 AES-256-CBC，钱包文件另有加密层；BitTap 当前采用 scrypt + AES-256-GCM，是独立私钥备份，格式不同。"
+        },
+        {
+          "title": "SeedSigner · 增强模式的参考",
+          "text": "其相机熵方案会使用预览帧和最终照片等数据。BitTap 保留安卓安全随机源，再通过独立的 HMAC-SHA256 混合相机摘要；相机输入仍依赖手机硬件和系统。不能宣称采用同一算法或具有相同安全性。"
+        }
+      ],
+      "caution": "相近的是设计思路，不代表代码相同、安全性相同、格式兼容，或得到这些项目的认证与背书。",
+      "compatibility": "BitTap 当前生成 CG3 加密备份，并支持恢复旧 CG2 / CG1。这是项目自定义格式，不是 BIP38，也不能直接作为 Bitcoin Core 或 Electrum 的钱包文件使用。需要先用 BitTap 或离线恢复工具解密，再将 BTC 主网压缩 WIF 私钥导入支持该格式及对应地址类型的钱包。",
+      "cleanup": "明文私钥在写卡前清理；密文在完成备份并返回首页后清理。相机增强为可选模式。",
+      "relatedTitle": "与哪些开源钱包有相近思路？"
+    },
+    "en": {
+      "title": "How does BitTap protect your private key?",
+      "intro": "BTC is recorded on the Bitcoin blockchain. The NFC card stores an encrypted backup of the private key. The private key controls the corresponding BTC; your password protects that backup.",
+      "cleanup": "Plaintext keys are cleared before card writing. The encrypted session is cleared after you save the backup and return home. Camera enhancement is optional.",
+      "relatedTitle": "Which open-source wallets use similar ideas?",
+      "sections": [
+        {
+          "title": "1. Standard mode: your phone’s secure random source",
+          "paragraphs": [
+            "Each time you create a wallet, BitTap obtains fresh data from Android’s cryptographically secure random source and checks that it falls within the valid range for a Bitcoin private key. Invalid candidates are retried. If the random source fails, generation stops instead of falling back to timestamps or other weak sources.",
+            "Your password, wallet note and creation time do not determine the private key. The password protects the key; it does not choose the key."
+          ]
+        },
+        {
+          "title": "2. Enhanced mode: add camera input while keeping system randomness (optional)",
+          "paragraphs": [
+            "When enhancement is enabled, BitTap collects 32 valid preview frames as you move the camera, then captures a final photo. SHA-256 turns the image data into digests. HMAC-SHA256 mixes the camera digests with secure Android random data to generate the private key. The system random input is obtained before camera collection begins.",
+            "Think of this as adding camera input to the system randomness. A photo does not generate the wallet on its own or replace the system random source. A system random-source failure stops generation. Failed camera collection is never presented as successful enhancement: you can retry or explicitly switch to standard mode.",
+            "Captured images are processed only in memory for the current operation. They are not automatically saved to your gallery or uploaded. When key generation finishes or the operation is cancelled, the app clears its copies of the photos, frame digests and mixing intermediates. The photo is not a password: recovery does not require keeping it or photographing the same scene again.",
+            "SHA-256 does not create entropy from nothing. Camera input is not proof of any particular increase in security bits, and enhanced mode cannot protect a compromised phone."
+          ]
+        },
+        {
+          "title": "3. Receiving addresses are derived using Bitcoin rules",
+          "paragraphs": [
+            "BitTap derives SegWit, Legacy, P2SH and Taproot receiving addresses from the same underlying key material using Bitcoin’s cryptographic rules. Their balances are recorded separately.",
+            "Public addresses are for receiving BTC and looking up transactions. They are not private keys and cannot, on their own, authorize spending."
+          ]
+        },
+        {
+          "title": "4. Derive an encryption key from your password",
+          "paragraphs": [
+            "BitTap does not use your password directly as an encryption key. It uses scrypt with a fresh random salt to derive the key. This makes each password guess require additional computation and memory, increasing the cost of guessing many passwords.",
+            "AES-256-GCM then encrypts the private key and authenticates the ciphertext and the protected address and wallet-note fields. Altering authenticated data causes verification to fail. New random parameters are used for each encryption. The password itself is not stored on the card or in the backup file.",
+            "Receiving addresses and the wallet note remain public and unencrypted. Anyone who can read the card or backup may see them. They are unverified until successful decryption; integrity protection does not make these fields confidential.",
+            "New passwords must have at least 10 characters and include uppercase and lowercase English letters, a digit and a special character. This is only a format requirement. Use a unique, long, hard-to-guess password and avoid common patterns."
+          ]
+        },
+        {
+          "title": "5. Checks during generation, card writing and decryption",
+          "paragraphs": [
+            "After generation, BitTap immediately decrypts the new backup to check that the recovered private key matches the original. After writing a card, it reads the data back and compares it with what was written.",
+            "When you decrypt later, the app derives the receiving addresses again from the recovered private key and checks them against the card’s recorded addresses. Only after these checks pass are the addresses marked as verified against the private key. Addresses shown before password entry are public claims from the card and have not passed this check.",
+            "Exported images of unverified receiving addresses retain a warning. That warning does not verify an address. These checks can detect the errors they cover, but they do not guarantee bug-free software or prevent every loss, and they do not establish the origin of an entire card."
+          ]
+        },
+        {
+          "title": "6. Clear plaintext keys after use and the session when finished",
+          "paragraphs": [
+            "After generation, encryption and the recovery check, the app clears the plaintext private key held by that generation operation. **This happens before the card-writing page opens, not after the card has been written.** Derived encryption keys and operation-specific password buffers are also cleared after use.",
+            "Writing NFC cards, saving the encrypted backup and writing additional cards for the same wallet use encrypted data and public addresses. These steps do not need to keep the plaintext private key.",
+            "The card is read back after writing. Encrypted data remains temporarily in the operation session so you can save the required file backup or write another NFC card. **After saving the backup and choosing “Finish and return home”, the app clears this session’s encrypted data, addresses and related UI state. It does not build an in-app wallet history.**",
+            "Cards you wrote, encrypted backups saved externally, and files or images you explicitly exported are not deleted when you return home. Cleanup applies to the current app session, not to your saved recovery materials."
+          ]
+        },
+        {
+          "title": "7. Copying a card does not decrypt the private key",
+          "paragraphs": [
+            "Someone copying the card can obtain its public addresses and encrypted backup. With a correct implementation, a trustworthy device and a sufficiently strong password, copying alone does not reveal the plaintext private key.",
+            "However, the copy allows repeated offline password guesses. Short or common passwords are riskier. scrypt raises the cost of guessing; it does not turn a weak password into a strong one. Keep a unique, long password separately from the card. If you forget it and have no other usable recovery material, the project cannot reset the password or recover your BTC."
+          ]
+        },
+        {
+          "title": "8. Processing stays on your phone; the phone must be trustworthy",
+          "paragraphs": [
+            "Key generation, encryption and decryption run locally without sending your private key or password to a server. Decrypting an existing wallet necessarily places the plaintext key in app memory temporarily. Hiding it on screen does not mean it is absent from memory.",
+            "An unlocked session lasts at most 2 minutes and locks after 60 seconds without interaction, whichever comes first. When it locks, the app clears the session’s private key and temporary sensitive displays. Returning home or moving the app to the background also clears the unlocked session.",
+            "When you choose to view a private key, its text is drawn in a dedicated view instead of exposing the WIF as ordinary accessibility text. Explicitly copying a key or saving its image still creates plaintext material; use these only with devices and wallets you trust.",
+            "Cleanup cannot prove that every copy held by the operating system or third-party components has been erased, and it cannot protect a compromised phone. An NFC card is an encrypted-backup carrier. It does not provide a dedicated hardware wallet’s isolated keys or independent signing."
+          ]
+        }
+      ],
+      "related": [
+        {
+          "title": "Bitcoin Core",
+          "text": "Bitcoin Core uses strong randomness to generate valid keys and supports password encryption of local wallets. BitTap does not directly use Core’s random-number implementation. Core’s wallet-encryption code includes AES-256-CBC, so the encryption workflows should not be described as identical."
+        },
+        {
+          "title": "Electrum",
+          "text": "Electrum password-encrypts sensitive material such as seeds and private keys, decrypting it when needed. Its seed and private-key encryption uses AES-256-CBC, with a separate wallet-file encryption layer. BitTap uses scrypt + AES-256-GCM for an individual private-key backup in a different format."
+        },
+        {
+          "title": "SeedSigner · a reference for camera enhancement",
+          "text": "Its camera-entropy approach uses preview frames and a final photo. BitTap retains Android’s secure random source and uses its own HMAC-SHA256 mixing of camera digests. Camera input still depends on the phone’s hardware and operating system. This does not mean the algorithms or security are the same."
+        }
+      ],
+      "caution": "Similar design ideas do not mean identical code, equivalent security, compatible formats, or certification or endorsement by these projects.",
+      "compatibility": "BitTap currently creates CG3 encrypted backups and can recover older CG2 / CG1 backups. This is a project-specific format, not BIP38, and it cannot be opened directly as a Bitcoin Core or Electrum wallet file. First decrypt it with BitTap or the offline recovery tool, then import the BTC mainnet compressed WIF private key into a wallet that supports both the format and the corresponding address type."
+    },
+    "ja": {
+      "title": "BitTap は秘密鍵をどのように保護する？",
+      "intro": "BTC はビットコインのブロックチェーンに記録されています。NFC カードに保存されるのは、暗号化された秘密鍵のバックアップです。対応する BTC を動かす権限を持つのが秘密鍵で、そのバックアップを守るのがパスワードです。",
+      "cleanup": "平文の秘密鍵はカード書き込み前に消去します。暗号化データはバックアップ保存後、ホームに戻るとセッションから消去します。カメラによる強化は任意です。",
+      "relatedTitle": "似た考え方を採用するオープンソースウォレットは？",
+      "sections": [
+        {
+          "title": "1. 標準モード：端末の安全な乱数源を使う",
+          "paragraphs": [
+            "ウォレットを作成するたびに、BitTap は Android の暗号学的に安全な乱数源から新しいデータを取得し、ビットコイン秘密鍵の有効範囲内か確認します。範囲外なら再生成します。乱数源でエラーが起きた場合は処理を停止し、時刻などの弱い乱数源には切り替えません。",
+            "パスワード、ウォレットのメモ、作成時刻で秘密鍵が決まることはありません。パスワードは秘密鍵を保護するためのもので、秘密鍵そのものを決めるものではありません。"
+          ]
+        },
+        {
+          "title": "2. 強化モード：システム乱数を保ち、カメラ入力を追加する（任意）",
+          "paragraphs": [
+            "強化モードでは、カメラを動かしている間に有効なプレビューフレームを 32 枚収集し、最後に写真を 1 枚撮影します。画像データを SHA-256 でダイジェストにまとめ、Android の安全な乱数データと HMAC-SHA256 で混合して秘密鍵を生成します。システム乱数の入力は、カメラ収集を始める前に取得します。",
+            "システム乱数に、カメラからの入力をもう一つ加える仕組みです。写真だけでウォレットを作るわけでも、写真がシステム乱数源の代わりになるわけでもありません。システム乱数源のエラー時は生成を停止します。カメラ収集に失敗した場合も成功とは表示せず、再試行するか、明示的に標準モードへ切り替えられます。",
+            "収集画像は今回の処理中のメモリ内だけで扱い、写真ライブラリへの自動保存やアップロードは行いません。秘密鍵の生成完了または操作のキャンセル時に、アプリが保持する写真、フレームのダイジェスト、混合処理の中間データを消去します。写真はパスワードではありません。復元のために写真を保管したり、同じ風景を撮り直したりする必要はありません。",
+            "SHA-256 が無からランダム性を作ることはありません。カメラ入力によって何ビット分の安全性が増すかを証明しているわけではなく、侵害された端末を強化モードで保護することもできません。"
+          ]
+        },
+        {
+          "title": "3. ビットコインの規則に従って受取アドレスを導出する",
+          "paragraphs": [
+            "BitTap は同じ元の鍵データから、ビットコインの暗号学的な規則に従い SegWit、Legacy、P2SH、Taproot の 4 種類の受取アドレスを導出します。それぞれの残高は別々に記録されます。",
+            "公開アドレスは受取や取引の確認に使うもので、秘密鍵ではありません。アドレスだけで BTC を送金することはできません。"
+          ]
+        },
+        {
+          "title": "4. パスワードから暗号化用の鍵を作る",
+          "paragraphs": [
+            "入力したパスワードを、そのまま暗号化鍵として使うことはありません。毎回新しいランダムなソルトを加え、scrypt で暗号化用の鍵を導出します。これによりパスワードを一つ推測するたびに追加の計算とメモリが必要になり、大量の推測にかかるコストを高めます。",
+            "続いて AES-256-GCM で秘密鍵を暗号化し、暗号文と保護対象のアドレス・ウォレットメモの完全性を検証します。認証対象のデータが変更されると検証に失敗します。暗号化のたびに新しい乱数パラメータを使い、パスワード自体はカードやバックアップファイルに保存しません。",
+            "受取アドレスとウォレットのメモは暗号化されず、公開情報として残ります。カードやバックアップを読み取れる人には見える可能性があります。復号が成功するまでは未検証の情報です。完全性の保護は、これらの内容を秘密にするものではありません。",
+            "新しいパスワードは 10 文字以上で、英大文字・英小文字・数字・記号をすべて含める必要があります。これは形式上の最低条件です。使い回さず、十分に長く推測しにくいパスワードを設定し、よくある組み合わせは避けてください。"
+          ]
+        },
+        {
+          "title": "5. 生成・カード書き込み・復号の各段階で確認する",
+          "paragraphs": [
+            "生成後、作成したばかりのバックアップをすぐに復号し、復元した秘密鍵が元の秘密鍵と一致するか確認します。カードへの書き込み後もデータを読み戻し、書き込んだ内容と照合します。",
+            "後日復号する際は、復元した秘密鍵から受取アドレスを再導出し、カードに記録された各アドレスと照合します。この確認を通過して初めて、秘密鍵と照合済みのアドレスとして表示します。パスワード入力前に表示されるアドレスは、カードに公開情報として保存されたもので、まだこの確認を通過していません。",
+            "未検証アドレスの書き出し画像にも注意文を残しますが、注意文があるだけでアドレスの検証が済むわけではありません。これらの確認は対象の誤りを検出するためのもので、不具合がないことや資産を絶対に失わないことを保証せず、カード全体の出所を証明するものでもありません。"
+          ]
+        },
+        {
+          "title": "6. 平文の秘密鍵は使用後に、セッションは作業完了後に消去する",
+          "paragraphs": [
+            "生成、暗号化、復元確認が完了すると、その生成処理が保持していた平文の秘密鍵を消去します。**カードへの書き込み完了を待つのではなく、書き込み画面に進む前に行います。**導出した暗号化鍵と今回の処理用パスワードバッファも、それぞれ使用後に消去します。",
+            "NFC カードへの書き込み、暗号化バックアップの保存、同じウォレットの追加カード作成には、暗号化データと公開アドレスを使います。これらの手順のために平文の秘密鍵を保持し続ける必要はありません。",
+            "書き込み後はカードを読み戻して照合します。必須のファイルバックアップを保存したり、別の NFC カードに書き込んだりできるよう、暗号化データは作業セッションに一時的に保持します。**バックアップ保存後に「完了してホームへ戻る」を選ぶと、今回のセッションの暗号化データ、アドレス、関連する画面状態を消去します。アプリ内にウォレットの履歴一覧は作りません。**",
+            "書き込んだ NFC カード、外部に保存した暗号化バックアップ、明示的に書き出したファイルや画像は、ホームに戻っても削除されません。消去の対象は現在のアプリ内セッションであり、保存済みの復元資料ではありません。"
+          ]
+        },
+        {
+          "title": "7. カードをコピーされても、秘密鍵が復号されたとは限らない",
+          "paragraphs": [
+            "カードをコピーした人は公開アドレスと暗号化バックアップを取得できます。ただし、実装が正しく、端末が信頼でき、パスワードが十分に強いという前提では、コピーするだけで平文の秘密鍵を読むことはできません。",
+            "一方、コピーしたデータを使ってオフラインで何度でもパスワードを推測できます。短いものやよく使われるパスワードほど危険です。scrypt は推測のコストを高めますが、弱いパスワードを強くするものではありません。使い回さない長いパスワードを設定し、カードとは別に保管してください。忘れてしまい、ほかに有効な復元資料もない場合、プロジェクト側がパスワードをリセットしたり BTC を取り戻したりすることはできません。"
+          ]
+        },
+        {
+          "title": "8. 処理は端末内で完結するが、端末自体の信頼性が必要",
+          "paragraphs": [
+            "秘密鍵の生成、暗号化、復号は端末内で行い、秘密鍵やパスワードをサーバーに送る必要はありません。既存ウォレットを復号する間は、平文の秘密鍵が一時的にアプリのメモリに存在する必要があります。画面で非表示でも、メモリにないという意味ではありません。",
+            "解除状態は最大 2 分間で、60 秒間操作がない場合はその時点で自動ロックします。早く到達した方の期限を適用し、セッションの秘密鍵と一時的な機密表示を消去します。ホームに戻った場合やアプリがバックグラウンドに移った場合も、解除中のセッションを消去します。",
+            "秘密鍵の表示を選ぶと、専用の描画領域で文字を表示し、WIF を通常のアクセシビリティ用テキストとしては提供しません。ただし、明示的なコピーや画像保存では平文の資料が作られます。信頼できる端末やウォレットとの間でのみ扱ってください。",
+            "消去処理によって、OS や第三者コンポーネントが保持するすべての複製まで完全に消去されたと証明できるわけではなく、侵害された端末にも対抗できません。NFC カードは暗号化バックアップの保存媒体であり、専用ハードウェアウォレットの鍵の隔離や独立した署名機能はありません。"
+          ]
+        }
+      ],
+      "related": [
+        {
+          "title": "Bitcoin Core",
+          "text": "安全な乱数で有効な鍵を生成し、ローカルウォレットのパスワード暗号化に対応しています。BitTap は Bitcoin Core の乱数実装を直接使っていません。Core のウォレット暗号化コードには AES-256-CBC が含まれており、両者の暗号化手順が同じとはいえません。"
+        },
+        {
+          "title": "Electrum",
+          "text": "シードや秘密鍵などの機密情報をパスワードで暗号化し、必要なときに復号します。シードと秘密鍵の暗号化には AES-256-CBC を使用し、ウォレットファイルには別の暗号化層があります。BitTap は scrypt + AES-256-GCM を使う単一秘密鍵のバックアップで、形式も異なります。"
+        },
+        {
+          "title": "SeedSigner · カメラ強化の参考",
+          "text": "カメラのエントロピーを使う方式では、プレビューフレームや最後の写真を利用します。BitTap は Android の安全な乱数源を維持し、独自の HMAC-SHA256 処理でカメラのダイジェストを混合します。カメラ入力は端末のハードウェアと OS に依存します。同じアルゴリズムや同等の安全性を意味するものではありません。"
+        }
+      ],
+      "caution": "似ているのは設計の考え方です。同一のコード、同等の安全性、形式の互換性、各プロジェクトによる認証や推奨を意味しません。",
+      "compatibility": "BitTap が現在作成する暗号化バックアップは CG3 で、旧 CG2 / CG1 の復元にも対応します。プロジェクト独自の形式であり、BIP38 ではなく、Bitcoin Core や Electrum のウォレットファイルとして直接使うこともできません。先に BitTap またはオフライン復元ツールで復号し、BTC メインネット用の圧縮 WIF 秘密鍵を、その形式と対応するアドレスタイプをサポートするウォレットに取り込んでください。"
+    },
+    "ko": {
+      "title": "BitTap은 개인 키를 어떻게 보호하나요?",
+      "intro": "BTC는 비트코인 블록체인에 기록됩니다. NFC 카드에는 암호화된 개인 키 백업이 저장됩니다. 해당 BTC를 제어하는 것은 개인 키이며, 비밀번호는 이 백업을 보호합니다.",
+      "cleanup": "평문 개인 키는 카드에 쓰기 전에 정리합니다. 암호화된 세션 데이터는 백업을 저장하고 홈으로 돌아가면 정리합니다. 카메라 강화는 선택 사항입니다.",
+      "relatedTitle": "비슷한 설계 원리를 사용하는 오픈소스 지갑은?",
+      "sections": [
+        {
+          "title": "1. 기본 모드: 휴대전화의 안전한 난수원 사용",
+          "paragraphs": [
+            "지갑을 만들 때마다 BitTap은 안드로이드의 암호학적으로 안전한 난수원에서 새로운 데이터를 얻고, 비트코인 개인 키의 유효 범위에 속하는지 확인합니다. 범위를 벗어나면 다시 생성합니다. 난수원에 오류가 발생하면 생성을 중단하며, 시각 정보 등 취약한 난수원으로 대체하지 않습니다.",
+            "비밀번호, 지갑 메모, 생성 시각이 개인 키를 결정하지 않습니다. 비밀번호는 개인 키를 보호하는 용도이며, 어떤 개인 키가 생성될지를 정하지 않습니다."
+          ]
+        },
+        {
+          "title": "2. 강화 모드: 시스템 난수를 유지하고 카메라 입력 추가 (선택 사항)",
+          "paragraphs": [
+            "강화 모드를 켜면 카메라를 움직이는 동안 유효한 미리보기 프레임 32개를 수집하고 마지막 사진을 촬영합니다. SHA-256으로 이미지 데이터의 다이제스트를 만들고, HMAC-SHA256으로 안드로이드의 안전한 난수 데이터와 혼합하여 개인 키를 생성합니다. 시스템 난수 입력은 카메라 수집을 시작하기 전에 얻습니다.",
+            "시스템 난수에 카메라 입력을 하나 더 추가하는 방식입니다. 사진만으로 지갑을 만들거나 시스템 난수원을 사진으로 대체하지 않습니다. 시스템 난수원에 오류가 나면 생성을 중단합니다. 카메라 수집에 실패했는데 강화가 성공했다고 표시하지 않으며, 다시 시도하거나 사용자가 명시적으로 기본 모드로 전환할 수 있습니다.",
+            "수집한 이미지는 이번 작업의 메모리 안에서만 처리하며, 갤러리에 자동 저장하거나 업로드하지 않습니다. 개인 키 생성이 완료되거나 작업을 취소하면 앱이 보유한 사진, 프레임 다이제스트, 혼합 과정의 중간 데이터를 정리합니다. 사진은 비밀번호가 아닙니다. 지갑 복구를 위해 사진을 보관하거나 같은 장면을 다시 촬영할 필요가 없습니다.",
+            "SHA-256이 없는 무작위성을 만들어 내지는 않습니다. 카메라 입력으로 보안성이 몇 비트 높아지는지 증명한 것도 아닙니다. 이미 침해된 휴대전화는 강화 모드로 보호할 수 없습니다."
+          ]
+        },
+        {
+          "title": "3. 비트코인 규칙에 따라 받는 주소 도출",
+          "paragraphs": [
+            "BitTap은 동일한 원본 키 자료에서 비트코인의 암호학적 규칙에 따라 SegWit, Legacy, P2SH, Taproot의 네 가지 받는 주소를 도출합니다. 각 주소의 잔액은 별도로 기록됩니다.",
+            "공개 주소는 BTC를 받거나 거래를 조회하는 데 사용합니다. 개인 키가 아니며, 주소만으로 BTC를 전송할 권한을 얻을 수 없습니다."
+          ]
+        },
+        {
+          "title": "4. 비밀번호로 암호화 키 도출",
+          "paragraphs": [
+            "입력한 비밀번호를 암호화 키로 직접 사용하지 않습니다. 매번 새로 생성한 무작위 솔트를 더하고 scrypt로 암호화 키를 도출합니다. 이 과정은 비밀번호를 한 번 추측할 때마다 추가 계산과 메모리를 필요로 하게 하여, 대량 추측의 비용을 높입니다.",
+            "그다음 AES-256-GCM으로 개인 키를 암호화하고, 암호문과 보호 대상 주소·지갑 메모의 무결성을 인증합니다. 인증 대상 데이터가 변경되면 검증에 실패합니다. 암호화할 때마다 새로운 난수 매개변수를 사용하며, 비밀번호 자체는 카드나 백업 파일에 저장하지 않습니다.",
+            "받는 주소와 지갑 메모는 암호화하지 않고 공개 정보로 남습니다. 카드나 백업을 읽을 수 있는 사람은 이 내용을 볼 수 있습니다. 복호화에 성공하기 전까지는 미검증 정보이며, 무결성 보호가 이 정보를 비공개로 만드는 것은 아닙니다.",
+            "새 비밀번호는 최소 10자이며 영문 대문자·소문자, 숫자, 특수 문자를 모두 포함해야 합니다. 이는 형식상의 최소 조건일 뿐입니다. 다른 곳에서 사용하지 않는 길고 추측하기 어려운 비밀번호를 설정하고 흔한 조합은 피하세요."
+          ]
+        },
+        {
+          "title": "5. 생성·카드 쓰기·복호화 단계별 검증",
+          "paragraphs": [
+            "생성 직후 새 백업을 바로 복호화하여 복구한 개인 키가 원본과 같은지 확인합니다. 카드에 쓴 뒤에도 데이터를 다시 읽어 기록한 내용과 비교합니다.",
+            "나중에 복호화할 때는 복구한 개인 키에서 받는 주소를 다시 도출하고 카드에 기록된 주소와 하나씩 대조합니다. 이 검사를 통과해야 개인 키와 대조한 주소로 표시합니다. 비밀번호를 입력하기 전에 보이는 주소는 카드에 공개 정보로 저장된 주소이며, 아직 이 검사를 거치지 않았습니다.",
+            "미검증 주소를 내보낸 이미지에도 주의 문구를 남깁니다. 문구가 있다고 주소가 검증되는 것은 아닙니다. 이러한 검사는 대상 오류를 찾는 수단이며, 소프트웨어에 결함이 없거나 자산을 절대로 잃지 않는다는 보장이 아닙니다. 카드 전체의 출처를 증명하지도 않습니다."
+          ]
+        },
+        {
+          "title": "6. 평문 개인 키는 사용 후, 세션은 작업 완료 후 정리",
+          "paragraphs": [
+            "생성·암호화·복구 검증을 마치면 이번 생성 작업이 보유한 평문 개인 키를 정리합니다. **카드 쓰기가 끝날 때까지 기다리는 것이 아니라, 카드 쓰기 화면으로 이동하기 전에 처리합니다.** 도출한 암호화 키와 이번 작업의 비밀번호 버퍼도 각각 사용이 끝나면 정리합니다.",
+            "NFC 카드 쓰기, 암호화 백업 저장, 같은 지갑의 추가 카드 만들기에는 암호화된 데이터와 공개 주소를 사용합니다. 이러한 작업을 위해 평문 개인 키를 계속 보관할 필요는 없습니다.",
+            "카드에 쓴 뒤 다시 읽어 대조합니다. 필수 파일 백업을 저장하거나 다른 NFC 카드에 계속 쓸 수 있도록 암호화 데이터는 작업 세션에 잠시 남습니다. **백업을 저장하고 ‘완료 후 홈으로 돌아가기’를 선택하면 이번 세션의 암호화 데이터, 주소, 관련 화면 상태를 정리합니다. 앱 안에 지갑 기록 목록을 만들지 않습니다.**",
+            "직접 기록한 NFC 카드, 외부에 저장한 암호화 백업, 명시적으로 내보낸 파일이나 이미지는 홈으로 돌아가도 삭제하지 않습니다. 정리 대상은 현재 앱 세션이며, 저장해 둔 복구 자료가 아닙니다."
+          ]
+        },
+        {
+          "title": "7. 카드가 복제되어도 개인 키가 복호화된 것은 아님",
+          "paragraphs": [
+            "카드를 복제한 사람은 공개 주소와 암호화 백업을 얻을 수 있습니다. 다만 구현이 올바르고 기기를 신뢰할 수 있으며 비밀번호가 충분히 강하다는 전제에서, 복제만으로 평문 개인 키를 바로 읽을 수는 없습니다.",
+            "하지만 복제본으로 오프라인에서 비밀번호를 반복해서 추측할 수 있습니다. 짧거나 흔한 비밀번호일수록 위험합니다. scrypt는 추측 비용을 높일 뿐 약한 비밀번호를 강하게 만들지 않습니다. 다른 곳에서 쓰지 않는 긴 비밀번호를 카드와 분리해 보관하세요. 비밀번호를 잊고 다른 유효한 복구 자료도 없다면 프로젝트 측에서 비밀번호를 재설정하거나 BTC를 되찾아 줄 수 없습니다."
+          ]
+        },
+        {
+          "title": "8. 처리는 기기 안에서 이루어지지만 기기 자체를 신뢰할 수 있어야 함",
+          "paragraphs": [
+            "개인 키 생성·암호화·복호화는 기기에서 수행하며, 개인 키나 비밀번호를 서버에 전달할 필요가 없습니다. 기존 지갑을 복호화하는 동안 평문 개인 키는 앱 메모리에 일시적으로 존재해야 합니다. 화면에서 숨겨져 있다고 메모리에 없는 것은 아닙니다.",
+            "잠금 해제 세션은 최대 2분이며, 60초 동안 조작이 없으면 자동으로 잠급니다. 두 조건 중 먼저 도달하는 시점에 세션의 개인 키와 일시적인 민감 정보 표시를 정리합니다. 홈으로 돌아가거나 앱이 백그라운드로 이동해도 잠금 해제 세션을 정리합니다.",
+            "개인 키 보기를 선택하면 전용 그리기 영역에 글자를 표시하며, WIF를 일반 접근성 텍스트로 제공하지 않습니다. 다만 명시적으로 복사하거나 이미지를 저장하면 평문 자료가 만들어집니다. 신뢰할 수 있는 기기와 지갑 사이에서만 사용하세요.",
+            "정리했다고 운영체제나 타사 구성요소가 보유한 모든 복사본까지 완전히 지워졌다고 증명할 수는 없으며, 침해된 휴대전화도 방어할 수 없습니다. NFC 카드는 암호화 백업 저장 매체로, 전용 하드웨어 지갑의 키 격리나 독립 서명 기능을 제공하지 않습니다."
+          ]
+        }
+      ],
+      "related": [
+        {
+          "title": "Bitcoin Core",
+          "text": "안전한 난수로 유효한 키를 생성하고 로컬 지갑의 비밀번호 암호화를 지원합니다. BitTap은 Bitcoin Core의 난수 구현을 직접 사용하지 않습니다. Core의 지갑 암호화 코드에는 AES-256-CBC가 포함되므로 두 암호화 절차가 동일하다고 할 수 없습니다."
+        },
+        {
+          "title": "Electrum",
+          "text": "시드나 개인 키 같은 민감한 자료를 비밀번호로 암호화하고 필요할 때 복호화합니다. 시드와 개인 키의 암호화에는 AES-256-CBC를 사용하며 지갑 파일에는 별도의 암호화 계층이 있습니다. BitTap은 scrypt + AES-256-GCM을 사용하는 단일 개인 키 백업으로, 형식도 다릅니다."
+        },
+        {
+          "title": "SeedSigner · 카메라 강화의 참고 사례",
+          "text": "카메라 엔트로피 방식에서 미리보기 프레임과 마지막 사진을 사용합니다. BitTap은 안드로이드의 안전한 난수원을 유지하고 자체 HMAC-SHA256 처리로 카메라 다이제스트를 혼합합니다. 카메라 입력은 휴대전화 하드웨어와 운영체제에 의존합니다. 알고리즘이나 보안성이 같다는 뜻은 아닙니다."
+        }
+      ],
+      "caution": "비슷한 것은 설계 원리입니다. 코드나 보안성이 같거나 형식이 호환된다는 뜻이 아니며, 해당 프로젝트의 인증이나 보증을 받은 것도 아닙니다.",
+      "compatibility": "BitTap은 현재 CG3 암호화 백업을 생성하며 이전 CG2 / CG1도 복구할 수 있습니다. 프로젝트 자체 형식으로 BIP38이 아니며, Bitcoin Core나 Electrum의 지갑 파일로 직접 사용할 수 없습니다. 먼저 BitTap 또는 오프라인 복구 도구로 복호화한 다음, 해당 형식과 주소 유형을 지원하는 지갑으로 BTC 메인넷 압축 WIF 개인 키를 가져오세요."
+    }
   },
   "transferCopy": {
     "zh": {

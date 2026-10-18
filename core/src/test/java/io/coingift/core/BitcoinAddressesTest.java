@@ -53,7 +53,7 @@ public class BitcoinAddressesTest {
         assertThrows(IllegalArgumentException.class,()->BitcoinAddresses.fromKey(key));
     }
     @Test public void cardRoundTripAuthenticatesAllFourAddressesInCg2() throws Exception {
-        WalletCrypto crypto=new WalletCrypto();char[] pass="fixture six chars".toCharArray();
+        WalletCrypto crypto=new WalletCrypto();char[] pass="Public-fixture-Only9!".toCharArray();
         WalletCrypto.Card card=crypto.generate(pass,WalletCrypto.Network.MAINNET);
         assertTrue(card.encrypted.startsWith("CG2:"));assertTrue(crypto.inspect(card.encrypted).addresses.sameAs(card.addresses));assertEquals(card.address,card.addresses.nativeSegwit);
         try(WalletCrypto.Unlocked u=crypto.decrypt(card.encrypted,pass)){

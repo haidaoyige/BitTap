@@ -9,11 +9,16 @@ import android.widget.ScrollView;
 @android.annotation.SuppressLint("ViewConstructor") // Constructed by AppUi, never inflated from XML.
 class ProtectedScrollView extends ScrollView {
     private final Runnable onRejected;
+    private final java.util.function.BooleanSupplier interaction;
     private boolean rejectedGesture;
 
     ProtectedScrollView(Context context, Runnable onRejected) {
+        this(context,onRejected,()->false);
+    }
+    ProtectedScrollView(Context context,Runnable onRejected,java.util.function.BooleanSupplier interaction){
         super(context);
         this.onRejected = onRejected;
+        this.interaction=interaction;
     }
 
     @Override public boolean dispatchTouchEvent(MotionEvent event) {
@@ -36,6 +41,11 @@ class ProtectedScrollView extends ScrollView {
             if (action == MotionEvent.ACTION_UP || action == MotionEvent.ACTION_CANCEL) rejectedGesture = false;
             return true;
         }
+        if((action==MotionEvent.ACTION_DOWN||action==MotionEvent.ACTION_MOVE||action==MotionEvent.ACTION_UP)&&interaction.getAsBoolean())return true;
         return super.dispatchTouchEvent(event);
+    }
+    @Override public boolean dispatchKeyEvent(android.view.KeyEvent event){
+        if(event.getAction()==android.view.KeyEvent.ACTION_DOWN&&interaction.getAsBoolean())return true;
+        return super.dispatchKeyEvent(event);
     }
 }

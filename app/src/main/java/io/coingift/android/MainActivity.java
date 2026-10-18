@@ -29,6 +29,7 @@ import io.coingift.core.BitcoinAddresses;
 import io.coingift.core.CreationSession;
 import io.coingift.core.WalletCrypto;
 import io.coingift.core.PasswordStrength;
+import io.coingift.core.NewPasswordPolicy;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
@@ -36,7 +37,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 /** Offline guided workflow. Wallet state is memory-only and is cleared when returning home. */
-public final class MainActivity extends Activity implements NfcAdapter.ReaderCallback {
+public final class MainActivity extends Activity implements NfcAdapter.ReaderCallback,DocumentIo.Listener {
     private final ExecutorService worker=Executors.newSingleThreadExecutor();
     private final Handler handler=new Handler(Looper.getMainLooper());
     private final WalletCrypto crypto=new WalletCrypto();
@@ -52,10 +53,19 @@ public final class MainActivity extends Activity implements NfcAdapter.ReaderCal
 
     private CreationSession session;
     private WalletCrypto.Unlocked unlocked;
+    private final UnlockDeadline unlockDeadline=new UnlockDeadline();
+    private Dialog autoLockDialog;
+    private final Runnable checkUnlockDeadline=this::tickUnlockedSession;
     private NfcAdapter nfc;
     private NfcCards.Candidate candidate;
     private String screen="home",incoming,exportData,exportAction;
     private boolean copyWriting,busy,fileBusy,resumed;
+    private DocumentIo.Job fileJob;
+    private CreationSession fileOwner;
+    private String fileThen,filePayload;
+    private boolean filePrivate;
+    private AlertDialog fileProgress,fileErrorDialog;
+    private final Runnable expireFileTask=()->{if(fileJob!=null)cancelDocumentOperation(false);};
     private volatile int epoch;
     private volatile boolean nfcBusy;
     private volatile Mode mode=Mode.NONE;
@@ -63,17 +73,22 @@ public final class MainActivity extends Activity implements NfcAdapter.ReaderCal
     private static final int IMPORT=21,EXPORT=22,EXPORT_QR=23;
     private Dialog sheet;
     private NfcScanDialog nfcDialog;
-    private AlertDialog workDialog;
+    private Dialog workDialog;
+    private Button workSubmit,creationSubmit,unlockSubmit;
+    private String workLabel;private int workIcon;
+    private final java.util.Map<EditText,CharSequence> workHints=new java.util.IdentityHashMap<>();
     private Dialog qrDialog,qrSaveConfirm,copyConfirm,weakPasswordConfirm,unlockDialog,creationDialog;
     private TextView unlockFeedback,creationFeedback;
     private TextView copyConfirmFeedback;
     private TextView qrFeedback;
     private byte[] pendingQrImage;
     private boolean pendingQrPrivate;
-    private final Runnable expireQrExport=()->{if(pendingQrImage!=null){clearPendingQrImage();whenResumed(()->error("图片保存已超时，请重新打开二维码保存。"));}};
+    private long pendingQrDeadline;
+    private final Runnable expireQrExport=()->{if(pendingQrImage!=null){clearPendingQrImage();whenResumed(()->showDocumentError(true));}};
     private Bitmap qrBitmap;
     private ImageView qrImage;
-    private TextView secretView,feedback;
+    private PrivateKeyView secretView;
+    private TextView feedback;
     private Button secretToggle;
     private Runnable afterResume;
     private String clipboardMarker,publicClipboardMarker;
@@ -81,10 +96,9 @@ public final class MainActivity extends Activity implements NfcAdapter.ReaderCal
     private final java.util.Set<char[]> pendingPasswords=new java.util.HashSet<>();
     private long clipboardExpiry;
     private final Runnable hideSecret=()->{
-        if(secretView!=null)secretView.setText("••••  ••••  ••••  ••••");
+        if(secretView!=null)secretView.clear();
         if(secretToggle!=null){secretToggle.setText(tr("显示"));secretToggle.setCompoundDrawablesRelative(ui.drawable(R.drawable.ic_eye_open,AppUi.ACCENT,14),null,null,null);}
     };
-    private final Runnable hideQr=this::dismissQr;
     private final Runnable clearPrivateClipboard=this::expirePrivateClipboard;
 
     /** Deliberately not Parcelable/Serializable: survives configuration changes in memory only. */
@@ -109,7 +123,7 @@ public final class MainActivity extends Activity implements NfcAdapter.ReaderCal
         if(state!=null)state.clear(); // Ignore legacy wallet state saved by earlier versions.
         super.onCreate(state);WindowProtection.secure(getWindow());
         if(Build.VERSION.SDK_INT>=30)getWindow().setDecorFitsSystemWindows(false);
-        ui=new AppUi(this,()->busy||fileBusy,this::tap);ui.language=this::language;ui.obscuredTouch=this::onObscuredTouch;copy=new ApprovedCopy(this);helpPages=new HelpPages(ui,copy);nfc=NfcAdapter.getDefaultAdapter(this);
+        ui=new AppUi(this,()->busy||fileBusy||expireUnlockedIfNeeded(),this::tap);ui.language=this::language;ui.obscuredTouch=this::onObscuredTouch;ui.interaction=this::privateInteraction;copy=new ApprovedCopy(this);helpPages=new HelpPages(ui,copy);nfc=NfcAdapter.getDefaultAdapter(this);
         if(Build.VERSION.SDK_INT>=33)getOnBackInvokedDispatcher().registerOnBackInvokedCallback(android.window.OnBackInvokedDispatcher.PRIORITY_DEFAULT,this::back);
         Object retained=getLastNonConfigurationInstance();if(retained instanceof RetainedFlow)((RetainedFlow)retained).restore(this);
         render();if(reopenLanguage&&screen.equals("home")){reopenLanguage=false;language();}
@@ -126,6 +140,7 @@ public final class MainActivity extends Activity implements NfcAdapter.ReaderCal
         if(afterResume!=null){Runnable next=afterResume;afterResume=null;next.run();}
     }
     @Override protected void onPause(){
+        dismissAutoLockDialog();dismissFileError();cancelDocumentOperation(true);
         resumed=false;epoch++;busy=false;if(mode==Mode.LOCK||mode==Mode.VERIFY_LOCK)lockStatus="unknown";mode=Mode.NONE;clearCamera();if(screen.equals("camera")||screen.equals("review"))screen="setup";
         if(nfc!=null)nfc.disableReaderMode(this);
         closeSheet();dismissNfc();dismissWork();dismissQr();ui.clearPasswords();wipePendingPasswords();closeUnlocked();hideSecret.run();
@@ -143,7 +158,8 @@ public final class MainActivity extends Activity implements NfcAdapter.ReaderCal
     }
     @Override public void onBackPressed(){back();}
     private void back(){
-        if(busy||fileBusy)return;
+        if(fileBusy){cancelDocumentOperation(false);return;}
+        if(busy)return;
         switch(screen){
             case "home":finish();break;
             case "setup":navigate("home");break;
@@ -234,27 +250,46 @@ public final class MainActivity extends Activity implements NfcAdapter.ReaderCal
         };
         note.addTextChangedListener(changed);
         owner.setOnDismissListener(d->{
+            if(busy&&workDialog==owner)cancelWork();
             closeWeakPasswordConfirm();note.removeTextChangedListener(changed);
             if(owner.getWindow()!=null)ui.releaseInputs(owner.getWindow().getDecorView());
-            if(creationDialog==owner){creationDialog=null;creationFeedback=null;}
+            if(creationDialog==owner){creationDialog=null;creationFeedback=null;creationSubmit=null;}
         });
         ui.showSheet(owner,copy.ui("creationPasswordTitle"),p->{
             ui.note(p,copy.ui("creationPasswordDescription"));
-            EditText first=ui.input(p,copy.ui("pass"),true,null);ui.passwordStrength(p,first);ui.helper(p,copy.ui("passHint"));
+            EditText first=ui.input(p,copy.ui("pass"),true,null);first.setHint(getString(R.string.new_password_placeholder));
+            ui.helper(p,copy.ui("passHint"));ui.passwordRequirements(p,first);
             EditText second=ui.input(p,copy.ui("confirm"),true,null);
             first.addTextChangedListener(changed);second.addTextChangedListener(changed);
             creationFeedback=ui.text(p,"",12,AppUi.ERROR,false);creationFeedback.setVisibility(View.GONE);creationFeedback.setAccessibilityLiveRegion(View.ACCESSIBILITY_LIVE_REGION_POLITE);
+            TextView feedback=creationFeedback;
             ui.callout(p,R.drawable.ic_key,copy.ui("passwordNote"));ui.space(p,14);
-            ui.action(p,copy.ui("creationConfirmGenerate"),true,R.drawable.ic_lock,()->requestWalletGeneration(first,second,note,revision));
-            ui.link(p,copy.ui("cancel"),0,this::closeCreationDialog);
+            Button generate=ui.action(p,copy.ui("creationConfirmGenerate"),true,R.drawable.ic_lock,()->requestWalletGeneration(first,second,note,revision));
+            creationSubmit=generate;
+            Runnable validate=()->{
+                if(busy)return;
+                boolean format=NewPasswordPolicy.inspect(first.getText()).satisfied();
+                boolean same=second.length()>0&&android.text.TextUtils.equals(first.getText(),second.getText());
+                ui.primaryActionEnabled(generate,copy.ui("creationConfirmGenerate"),R.drawable.ic_lock,format&&same);
+                feedback.setText(second.length()>0?getString(same?(format?R.string.new_password_ready:R.string.new_password_incomplete):R.string.new_password_mismatch):format?getString(R.string.new_password_repeat):"");
+                feedback.setTextColor(same?AppUi.ACCENT:AppUi.ERROR);
+                feedback.setVisibility(feedback.length()==0?View.GONE:View.VISIBLE);
+            };
+            android.text.TextWatcher validateChanged=new android.text.TextWatcher(){
+                public void beforeTextChanged(CharSequence x,int start,int count,int after){}
+                public void onTextChanged(CharSequence x,int start,int before,int count){validate.run();}
+                public void afterTextChanged(android.text.Editable x){}
+            };
+            first.addTextChangedListener(validateChanged);second.addTextChangedListener(validateChanged);validate.run();
+            ui.link(p,copy.ui("cancel"),0,this::closeCreationDialog).setTag("password-cancel");
             first.setImeOptions(first.getImeOptions()|android.view.inputmethod.EditorInfo.IME_ACTION_NEXT);
             first.setOnEditorActionListener((v,action,event)->{if(action==android.view.inputmethod.EditorInfo.IME_ACTION_NEXT){second.requestFocus();return true;}return false;});
             second.setImeOptions(second.getImeOptions()|android.view.inputmethod.EditorInfo.IME_ACTION_DONE);
             second.setOnEditorActionListener((v,action,event)->{if(action==android.view.inputmethod.EditorInfo.IME_ACTION_DONE){requestWalletGeneration(first,second,note,revision);return true;}return false;});
-        },this::closeCreationDialog);secure(owner);
+        },this::closeCreationDialog);bindPasswordDismiss(owner);secure(owner);
     }
     private void closeCreationDialog(){
-        closeWeakPasswordConfirm();Dialog owner=creationDialog;creationDialog=null;creationFeedback=null;
+        closeWeakPasswordConfirm();Dialog owner=creationDialog;creationDialog=null;creationFeedback=null;creationSubmit=null;
         if(owner!=null){hideKeyboard();owner.dismiss();}
     }
     private boolean currentSetup(EditText first,EditText second,EditText note){
@@ -305,9 +340,9 @@ public final class MainActivity extends Activity implements NfcAdapter.ReaderCal
         try{normalized=validateWalletInputs(a,b,note);}
         catch(IllegalArgumentException ex){WalletCrypto.wipe(a);WalletCrypto.wipe(b);error(ex.getMessage());return;}
         WalletCrypto.wipe(b);setupNote=normalized;CameraEntropy entropy=enhanced?cameraEntropy:null;cameraEntropy=null;
-        trackPassword(a);ui.clearPasswords();hideKeyboard();closeCreationDialog();render();int token=begin("正在生成、加密并验证恢复结果…");
+        trackPassword(a);hideKeyboard();int token=begin(creationDialog,creationSubmit,copy.ui("creationConfirmGenerate"),R.drawable.ic_lock);ui.clearPasswords();
         worker.execute(()->{try{WalletCrypto.Card result=crypto.generate(a,WalletCrypto.Network.MAINNET,normalized,entropy);
-            runOnUiThread(()->{if(epoch!=token||!resumed)return;endWork();session=new CreationSession(result.encrypted);copyWriting=false;lockAfterWrite=false;lockStatus="";screen="write";render();});
+            runOnUiThread(()->{if(epoch!=token||!resumed)return;endWork();closeCreationDialog();session=new CreationSession(result.encrypted);copyWriting=false;lockAfterWrite=false;lockStatus="";screen="write";render();});
         }catch(Exception ex){failure(token,ex,"生成失败，未创建冷钱包");}finally{forgetPassword(a);if(entropy!=null)entropy.close();}});
     }
     private void requestCamera(){
@@ -424,30 +459,31 @@ public final class MainActivity extends Activity implements NfcAdapter.ReaderCal
         if(!resumed||busy||fileBusy||incoming==null||!screen.equals("unlock")||unlockDialog!=null)return;
         closeSheet();Dialog owner=new Dialog(this);unlockDialog=owner;
         owner.setOnDismissListener(d->{
+            if(busy&&workDialog==owner)cancelWork();
             if(owner.getWindow()!=null)ui.releaseInputs(owner.getWindow().getDecorView());
-            if(unlockDialog==owner){unlockDialog=null;unlockFeedback=null;}
+            if(unlockDialog==owner){unlockDialog=null;unlockFeedback=null;unlockSubmit=null;}
         });
         ui.showSheet(owner,getString(R.string.wallet_unlock_action),p->{
             ui.note(p,getString(R.string.wallet_unlock_description));
             EditText pass=ui.input(p,"钱包解密密码",true,null);
             ui.helper(p,getString(R.string.wallet_unlock_local));
             unlockFeedback=ui.text(p,"",12,AppUi.ERROR,false);unlockFeedback.setVisibility(View.GONE);unlockFeedback.setAccessibilityLiveRegion(View.ACCESSIBILITY_LIVE_REGION_POLITE);
-            ui.space(p,13);ui.action(p,getString(R.string.wallet_unlock_action),true,R.drawable.ic_unlock,()->unlockFromDialog(owner,pass));
-            ui.link(p,"取消",0,this::closeUnlockDialog);
+            ui.space(p,13);unlockSubmit=ui.action(p,getString(R.string.wallet_unlock_action),true,R.drawable.ic_unlock,()->unlockFromDialog(owner,pass));
+            ui.link(p,"取消",0,this::closeUnlockDialog).setTag("password-cancel");
             pass.setImeOptions(pass.getImeOptions()|android.view.inputmethod.EditorInfo.IME_ACTION_DONE);
             pass.setOnEditorActionListener((v,action,event)->{if(action==android.view.inputmethod.EditorInfo.IME_ACTION_DONE){unlockFromDialog(owner,pass);return true;}return false;});
-        },this::closeUnlockDialog);secure(owner);
+        },this::closeUnlockDialog);bindPasswordDismiss(owner);secure(owner);
     }
     private void unlockFromDialog(Dialog owner,EditText pass){
         if(unlockDialog!=owner||!owner.isShowing()||!resumed||busy||fileBusy||incoming==null||!screen.equals("unlock"))return;
         char[] password=chars(pass);
         if(password.length==0){WalletCrypto.wipe(password);unlockFeedback.setText(tr("请输入解密密码"));unlockFeedback.setVisibility(View.VISIBLE);return;}
         // Old backups can have shorter passwords; the ten-character minimum applies only to creation.
-        trackPassword(password);hideKeyboard();closeUnlockDialog();int token=begin("正在解密并核对收款地址…");String encrypted=incoming;boolean bip38=encrypted.startsWith("6P");
+        trackPassword(password);hideKeyboard();int token=begin(owner,unlockSubmit,getString(R.string.wallet_unlock_action),R.drawable.ic_unlock);ui.clearPasswords();String encrypted=incoming;boolean bip38=encrypted.startsWith("6P");
         worker.execute(()->{
             try{
                 WalletCrypto.Unlocked result=bip38?crypto.importBip38(encrypted,password):crypto.decrypt(encrypted,password);
-                runOnUiThread(()->{if(epoch!=token||!resumed){result.close();return;}endWork();closeUnlocked();unlocked=result;screen="revealed";render();haptic(true);});
+                runOnUiThread(()->{if(epoch!=token||!resumed){result.close();return;}endWork();closeUnlockDialog();closeUnlocked();unlocked=result;unlockDeadline.start(android.os.SystemClock.elapsedRealtime());screen="revealed";render();tickUnlockedSession();haptic(true);});
             }catch(Exception ex){runOnUiThread(()->{
                 if(epoch!=token||!resumed)return;endWork();showUnlockDialog();
                 if(unlockFeedback!=null){unlockFeedback.setText(tr("解密失败：密码错误或卡片数据损坏"));unlockFeedback.setVisibility(View.VISIBLE);}haptic(false);
@@ -455,7 +491,7 @@ public final class MainActivity extends Activity implements NfcAdapter.ReaderCal
         });
     }
     private void closeUnlockDialog(){
-        Dialog owner=unlockDialog;unlockDialog=null;unlockFeedback=null;if(owner!=null)owner.dismiss();
+        Dialog owner=unlockDialog;unlockDialog=null;unlockFeedback=null;unlockSubmit=null;if(owner!=null)owner.dismiss();
     }
     private void revealed(){
         recoveryHeading(true);
@@ -587,7 +623,7 @@ public final class MainActivity extends Activity implements NfcAdapter.ReaderCal
         if(session==null)return;exportData=session.encrypted;exportAction=then;
         Intent intent=new Intent(Intent.ACTION_CREATE_DOCUMENT);intent.setType("text/plain");intent.addCategory(Intent.CATEGORY_OPENABLE);
         String address=session.addresses.nativeSegwit;intent.putExtra(Intent.EXTRA_TITLE,"bittap-mainnet-"+address.substring(address.length()-8)+".txt");
-        try{startActivityForResult(intent,EXPORT);}catch(android.content.ActivityNotFoundException ex){exportData=null;exportAction=null;error("此设备没有文件保存工具");}
+        try{startActivityForResult(intent,EXPORT);}catch(android.content.ActivityNotFoundException ex){exportData=null;exportAction=null;showDocumentError(true);}
     }
     private void openBackup(){
         Intent intent=new Intent(Intent.ACTION_OPEN_DOCUMENT);intent.setType("*/*");intent.addCategory(Intent.CATEGORY_OPENABLE);
@@ -598,26 +634,53 @@ public final class MainActivity extends Activity implements NfcAdapter.ReaderCal
         if(request==EXPORT_QR){finishQrImageExport(result,intent);return;}
         if(request!=EXPORT&&request!=IMPORT)return;
         if(result!=RESULT_OK||intent==null||intent.getData()==null){exportData=null;exportAction=null;return;}
-        android.net.Uri uri=intent.getData();fileBusy=true;
+        android.net.Uri uri=intent.getData();
         if(request==EXPORT){
             String data=exportData,then=exportAction;CreationSession owner=session;exportData=null;exportAction=null;
-            if(data==null||owner==null){fileBusy=false;return;}
-            worker.execute(()->{
-                try{
-                    BackupFiles.writeAndVerify(data,()->getContentResolver().openOutputStream(uri,"wt"),()->getContentResolver().openInputStream(uri));
-                    runOnUiThread(()->{fileBusy=false;if(isDestroyed()||session!=owner||!owner.encrypted.equals(data))return;owner.markBackupSaved(data);
-                        whenResumed(()->{if("copy".equals(then))anotherCard();else if("home".equals(then))leaveCreation();else render();toast("加密备份已保存并核对");});});
-                }catch(Exception ex){runOnUiThread(()->{fileBusy=false;whenResumed(()->error("备份未确认保存成功，请重新保存并核对文件"));});}
-            });
-        }else{
-            worker.execute(()->{
-                try(InputStream in=getContentResolver().openInputStream(uri)){
-                    if(in==null)throw new java.io.IOException();String data=new String(BackupFiles.readBounded(in),StandardCharsets.UTF_8).trim();
-                    runOnUiThread(()->{fileBusy=false;whenResumed(()->acceptIncoming(data));});
-                }catch(Exception ex){runOnUiThread(()->{fileBusy=false;whenResumed(()->error("无法打开备份文件，文件过大或读取失败"));});}
-            });
-        }
+            if(data!=null&&owner!=null)startDocumentOperation(uri,DocumentIo.Kind.BACKUP,data,null,owner,then,false);
+        }else startDocumentOperation(uri,DocumentIo.Kind.IMPORT,null,null,null,null,false);
     }
+    private void startDocumentOperation(android.net.Uri uri,DocumentIo.Kind kind,String encrypted,byte[] png,CreationSession owner,String then,boolean privateImage){
+        startDocumentOperation(uri,kind,encrypted,png,owner,then,privateImage,Long.MAX_VALUE);
+    }
+    private void startDocumentOperation(android.net.Uri uri,DocumentIo.Kind kind,String encrypted,byte[] png,CreationSession owner,String then,boolean privateImage,long maximumDeadline){
+        cancelDocumentOperation(true);dismissFileError();fileBusy=true;fileOwner=owner;fileThen=then;filePayload=encrypted;filePrivate=privateImage;
+        fileJob=DocumentIo.start(this,uri,kind,encrypted,png,this,maximumDeadline);DocumentIo.Job active=fileJob;
+        handler.postDelayed(expireFileTask,Math.max(1,active.deadline-android.os.SystemClock.elapsedRealtime()));
+        whenResumed(()->{
+            if(fileJob!=active||isFinishing()||isDestroyed())return;
+            fileProgress=new AlertDialog.Builder(this).setTitle(kind==DocumentIo.Kind.IMPORT?R.string.file_io_importing:R.string.file_io_saving)
+                .setMessage(R.string.file_io_wait).setNegativeButton(Texts.tr(this,"取消"),(d,w)->{if(fileJob==active)cancelDocumentOperation(false);}).create();
+            fileProgress.setOnCancelListener(d->{if(fileJob==active)cancelDocumentOperation(false);});fileProgress.setCanceledOnTouchOutside(false);fileProgress.show();secure(fileProgress);
+        });
+    }
+    private void dismissFileProgress(){AlertDialog owner=fileProgress;fileProgress=null;if(owner!=null)owner.dismiss();}
+    private void cancelDocumentOperation(boolean quiet){
+        DocumentIo.Job job=fileJob;if(job==null)return;
+        boolean saving=job.kind!=DocumentIo.Kind.IMPORT;fileJob=null;fileBusy=false;fileOwner=null;fileThen=null;filePayload=null;filePrivate=false;
+        handler.removeCallbacks(expireFileTask);dismissFileProgress();job.cancel();
+        if(!quiet)whenResumed(()->showDocumentError(saving));
+    }
+    @Override public void documentFinished(DocumentIo.Job job,boolean success,String imported){
+        if(fileJob!=job||isDestroyed()||isFinishing())return;
+        if(job.expired()){cancelDocumentOperation(false);return;}
+        CreationSession owner=fileOwner;String then=fileThen,data=filePayload;boolean privateImage=filePrivate;
+        fileJob=null;fileBusy=false;fileOwner=null;fileThen=null;filePayload=null;filePrivate=false;handler.removeCallbacks(expireFileTask);dismissFileProgress();
+        if(!success){whenResumed(()->showDocumentError(job.kind!=DocumentIo.Kind.IMPORT));return;}
+        if(job.kind==DocumentIo.Kind.IMPORT){whenResumed(()->acceptIncoming(imported));return;}
+        if(job.kind==DocumentIo.Kind.BACKUP){
+            if(session!=owner||owner==null||!owner.encrypted.equals(data))return;
+            owner.markBackupSaved(data);
+            whenResumed(()->{if("copy".equals(then))anotherCard();else if("home".equals(then))leaveCreation();else render();toast("加密备份已保存并核对");});
+        }else whenResumed(()->toast(privateImage?"私钥二维码图片已保存，请妥善保管":"收款地址二维码图片已保存"));
+    }
+    private void showDocumentError(boolean saving){
+        if(!resumed||isDestroyed()||isFinishing())return;dismissFileError();
+        AlertDialog owner=new AlertDialog.Builder(this).setTitle(saving?R.string.file_io_save_failed:R.string.file_io_import_failed)
+            .setMessage(saving?R.string.file_io_save_error:R.string.file_io_import_error).setPositiveButton(R.string.auto_lock_ok,(d,w)->{}).create();
+        fileErrorDialog=owner;owner.setCancelable(false);owner.setOnDismissListener(d->{if(fileErrorDialog==owner)fileErrorDialog=null;});owner.show();secure(owner);
+    }
+    private void dismissFileError(){AlertDialog owner=fileErrorDialog;fileErrorDialog=null;if(owner!=null)owner.dismiss();}
     private void arm(Mode desired){
         if(nfc==null){error("此设备不支持 NFC，读取时可改用加密备份文件。");return;}
         if(!nfc.isEnabled()){
@@ -684,15 +747,56 @@ public final class MainActivity extends Activity implements NfcAdapter.ReaderCal
         if(ex instanceof IllegalArgumentException||ex instanceof IllegalStateException)return ex.getMessage();
         return "NFC 操作失败或中断，请重新贴卡并检查数据。";
     }
-    private int begin(String message){
-        busy=true;for(View b:ui.buttons)b.setEnabled(false);
-        workDialog=new AlertDialog.Builder(this).setTitle(tr("正在处理")).setMessage(tr(message)).setNegativeButton(tr("取消"),(d,w)->cancelWork()).create();
-        workDialog.setCanceledOnTouchOutside(false);workDialog.setOnCancelListener(d->cancelWork());workDialog.show();secure(workDialog);return epoch;
+    private void bindPasswordDismiss(Dialog owner){
+        bindPasswordDismiss(owner,owner.getWindow().getDecorView());
+        owner.setOnCancelListener(d->{if(busy&&workDialog==owner)cancelWork();});
     }
-    private void cancelWork(){epoch++;wipePendingPasswords();endWork();toast("已取消，可以重新操作");}
-    private void endWork(){busy=false;dismissWork();for(View b:ui.buttons)b.setEnabled(true);}
-    private void dismissWork(){if(workDialog!=null){Dialog d=workDialog;workDialog=null;d.dismiss();}}
-    private void failure(int token,Exception ex,String fallback){runOnUiThread(()->{if(epoch!=token||!resumed)return;endWork();error(ex instanceof IllegalArgumentException?ex.getMessage():fallback);});}
+    private void bindPasswordDismiss(Dialog owner,View view){
+        if("sheet-close".equals(view.getTag())||"password-cancel".equals(view.getTag())){
+            view.setOnClickListener(v->{
+                if(!resumed||!owner.isShowing())return;
+                if(busy){if(workDialog==owner)cancelWork();return;}
+                if(owner==creationDialog)closeCreationDialog();else if(owner==unlockDialog)closeUnlockDialog();
+            });
+        }
+        if(view instanceof android.view.ViewGroup){android.view.ViewGroup group=(android.view.ViewGroup)view;for(int i=0;i<group.getChildCount();i++)bindPasswordDismiss(owner,group.getChildAt(i));}
+    }
+    private int begin(Dialog owner,Button submit,String label,int icon){
+        busy=true;workDialog=owner;workSubmit=submit;workLabel=label;workIcon=icon;
+        for(View button:ui.buttons)button.setEnabled(false);
+        for(EditText input:ui.passwords){
+            workHints.put(input,input.getHint());input.setEnabled(false);input.setHint("••••••••••••");
+            input.setTransformationMethod(android.text.method.PasswordTransformationMethod.getInstance());
+            if(input.getParent() instanceof LinearLayout){LinearLayout row=(LinearLayout)input.getParent();for(int i=0;i<row.getChildCount();i++)if(row.getChildAt(i) instanceof ImageButton){ImageButton eye=(ImageButton)row.getChildAt(i);eye.setImageDrawable(ui.drawable(R.drawable.ic_eye_closed,AppUi.SUB,20));eye.setContentDescription(tr("显示")+input.getContentDescription());}}
+        }
+        enablePasswordDismiss(owner.getWindow().getDecorView());
+        ui.loadingAction(submit,getString(R.string.crypto_processing));owner.setCanceledOnTouchOutside(false);return epoch;
+    }
+    private void enablePasswordDismiss(View view){
+        if("sheet-close".equals(view.getTag())||"password-cancel".equals(view.getTag()))view.setEnabled(true);
+        if(view instanceof android.view.ViewGroup){android.view.ViewGroup group=(android.view.ViewGroup)view;for(int i=0;i<group.getChildCount();i++)enablePasswordDismiss(group.getChildAt(i));}
+    }
+    private void cancelWork(){
+        Dialog owner=workDialog;epoch++;wipePendingPasswords();endWork();if(owner!=null)owner.dismiss();
+        if(resumed&&screen.equals("setup"))render();toast("已取消，可以重新操作");
+    }
+    private void endWork(){
+        busy=false;Dialog owner=workDialog;workDialog=null;
+        for(View button:ui.buttons)button.setEnabled(true);
+        if(workSubmit!=null)ui.primaryActionEnabled(workSubmit,workLabel,workIcon,true);
+        workSubmit=null;workLabel=null;workIcon=0;
+        java.util.Map<EditText,CharSequence> hints=new java.util.IdentityHashMap<>(workHints);workHints.clear();
+        for(java.util.Map.Entry<EditText,CharSequence> entry:hints.entrySet()){
+            EditText input=entry.getKey();input.setEnabled(true);input.setHint(entry.getValue());input.setText("");
+        }
+        if(owner!=null&&owner.isShowing())owner.setCanceledOnTouchOutside(true);
+    }
+    private void dismissWork(){Dialog owner=workDialog;if(owner!=null){endWork();owner.dismiss();}}
+    private void failure(int token,Exception ex,String fallback){runOnUiThread(()->{
+        if(epoch!=token||!resumed)return;endWork();
+        if(screen.equals("setup")&&enhanced&&cameraEntropy==null){closeCreationDialog();render();}
+        error(ex instanceof IllegalArgumentException?ex.getMessage():fallback);
+    });}
     private void closeSheet(){closeUnlockDialog();closeCreationDialog();if(sheet!=null){Dialog d=sheet;sheet=null;d.dismiss();}}
     private void secure(Dialog dialog){WindowProtection.secure(dialog.getWindow());}
     private void error(String message){if(creationFeedback!=null){creationFeedback.setText(tr(message));creationFeedback.setVisibility(View.VISIBLE);}if(feedback!=null){feedback.setText(tr(message));feedback.setVisibility(View.VISIBLE);}toast(message);haptic(false);}
@@ -707,6 +811,7 @@ public final class MainActivity extends Activity implements NfcAdapter.ReaderCal
         handler.removeCallbacks(clearPrivateClipboard);clipboardMarker=null;clipboardExpiry=0;if(feedback!=null)feedback.setVisibility(View.GONE);if(qrFeedback!=null)qrFeedback.setVisibility(View.GONE);toast(label+"已复制");
     }
     private void requestPrivateCopy(){
+        if(expireUnlockedIfNeeded())return;
         if(!PrivateClipboardPolicy.allowsCopy(Build.VERSION.SDK_INT)){error(getString(R.string.private_copy_legacy_notice));return;}
         if(unlocked==null||!resumed||copyConfirm!=null)return;
         closeQrSaveConfirm();Dialog owner=new Dialog(this);copyConfirm=owner;
@@ -732,6 +837,7 @@ public final class MainActivity extends Activity implements NfcAdapter.ReaderCal
         Dialog owner=copyConfirm;copyConfirm=null;copyConfirmFeedback=null;if(owner!=null)owner.dismiss();
     }
     private boolean copyPrivateKey(){
+        if(expireUnlockedIfNeeded())return false;
         if(!PrivateClipboardPolicy.allowsCopy(Build.VERSION.SDK_INT)){error(getString(R.string.private_copy_legacy_notice));return false;}
         if(unlocked==null||!resumed)return false;ClipboardManager clipboard=(ClipboardManager)getSystemService(CLIPBOARD_SERVICE);
         if(clipboard==null){error("无法访问剪贴板，请重试");return false;}
@@ -767,6 +873,7 @@ public final class MainActivity extends Activity implements NfcAdapter.ReaderCal
     private synchronized void wipePendingPasswords(){for(char[] value:pendingPasswords)WalletCrypto.wipe(value);pendingPasswords.clear();}
     private void clearCandidate(){if(candidate!=null){WalletCrypto.wipe(candidate.uid);WalletCrypto.wipe(candidate.previous);candidate=null;}}
     private void clearWalletSession(boolean clipboard){
+        dismissAutoLockDialog();dismissFileError();cancelDocumentOperation(true);
         epoch++;mode=Mode.NONE;handler.removeCallbacksAndMessages(null);afterResume=null;clearCamera();setupNote="";enhanced=false;lockAfterWrite=false;lockStatus="";protectionReturn="home";
         closeSheet();dismissNfc();dismissWork();dismissQr();hideSecret.run();closeUnlocked();wipePendingPasswords();
         if(ui!=null){ui.clearInputs();ui.buttons.clear();}
@@ -782,11 +889,10 @@ public final class MainActivity extends Activity implements NfcAdapter.ReaderCal
     }
     private int qrSize(){return Math.max(160,Math.min(ui.dp(240),getResources().getDisplayMetrics().widthPixels-ui.dp(104)));}
     private void showPrivateQr(){
-        if(unlocked==null)return;
+        if(expireUnlockedIfNeeded()||unlocked==null)return;
         try{
             dismissQr();int size=Math.min(qrSize(),ui.dp(180));
             showQrSheet("WIF 私钥",null,false,true,QrCodeEncoder.wif(unlocked.wif(),size),size);
-            handler.postDelayed(hideQr,60000);
         }catch(Exception ex){dismissQr();error(PrivateClipboardPolicy.allowsCopy(Build.VERSION.SDK_INT)?"二维码生成失败，请改用复制私钥":getString(R.string.private_qr_retry));}
     }
     private void showQrSheet(String type,String address,boolean verified,boolean privateKey,BitMatrix matrix,int size){
@@ -801,12 +907,18 @@ public final class MainActivity extends Activity implements NfcAdapter.ReaderCal
             TextView network=new TextView(this);network.setText(R.string.btc_mainnet);network.setTextSize(11);network.setTextColor(AppUi.ACCENT);
             network.setPadding(0,0,0,0);top.addView(network);
             ui.space(card,8);card.addView(qrPanel(matrix,size,privateKey?"WIF 私钥二维码，仅供自己的钱包扫入":"BTC 收款地址二维码"));
-            {
-                TextView value=ui.text(card,"",privateKey?13:12,AppUi.FG,false);value.setText(privateKey?unlocked.wif():address);value.setTypeface(Typeface.MONOSPACE);value.setGravity(Gravity.CENTER);
+            if(privateKey){
+                secretView=new PrivateKeyView(this,unlocked.wif());
+                secretView.setBackground(ui.shape(0xfff5efe6,11,false));
+                card.addView(secretView,new LinearLayout.LayoutParams(-1,-2));
+                if(Build.VERSION.SDK_INT>=34)qrImage.setAccessibilityDataSensitive(View.ACCESSIBILITY_DATA_SENSITIVE_YES);
+                qrImage.setImportantForAutofill(View.IMPORTANT_FOR_AUTOFILL_NO_EXCLUDE_DESCENDANTS);
+                if(Build.VERSION.SDK_INT>=30)qrImage.setImportantForContentCapture(View.IMPORTANT_FOR_CONTENT_CAPTURE_NO_EXCLUDE_DESCENDANTS);
+            }else{
+                TextView value=ui.text(card,"",12,AppUi.FG,false);value.setText(address);value.setTypeface(Typeface.MONOSPACE);value.setGravity(Gravity.CENTER);
                 value.setSingleLine(false);value.setHorizontallyScrolling(false);value.setHyphenationFrequency(android.text.Layout.HYPHENATION_FREQUENCY_NONE);
                 value.setSaveEnabled(false);value.setTextIsSelectable(false);value.setImportantForAutofill(View.IMPORTANT_FOR_AUTOFILL_NO_EXCLUDE_DESCENDANTS);
-                value.setPadding(privateKey?ui.dp(12):0,ui.dp(12),privateKey?ui.dp(12):0,ui.dp(12));
-                if(privateKey){secretView=value;value.setBackground(ui.shape(0xfff5efe6,11,false));}
+                value.setPadding(0,ui.dp(12),0,ui.dp(12));
             }
             if(privateKey){
                 ui.callout(p,R.drawable.ic_key,getString(R.string.wallet_private_warning));
@@ -850,9 +962,10 @@ public final class MainActivity extends Activity implements NfcAdapter.ReaderCal
     }
     private boolean currentQr(Dialog owner){return qrDialog==owner&&owner.isShowing()&&qrBitmap!=null&&resumed&&!busy&&!fileBusy;}
     private void requestQrImageSave(Dialog qrOwner,boolean privateKey,String address,boolean verified){
+        if(privateKey&&expireUnlockedIfNeeded())return;
         if(!currentQr(qrOwner)||pendingQrImage!=null||qrSaveConfirm!=null)return;
         closeCopyConfirm();
-        if(!privateKey&&verified){beginQrImageExport(false,address);return;}
+        if(!privateKey&&verified){beginQrImageExport(false,address,true);return;}
         if(privateKey&&unlocked==null)return;
         Dialog owner=new Dialog(this);qrSaveConfirm=owner;int token=epoch;Bitmap original=qrBitmap;
         owner.setOnDismissListener(d->{if(qrSaveConfirm==owner)qrSaveConfirm=null;});
@@ -862,56 +975,80 @@ public final class MainActivity extends Activity implements NfcAdapter.ReaderCal
             if(!privateKey)ui.callout(p,R.drawable.ic_password_warning,getString(R.string.address_save_unverified_note));
             ui.action(p,privateKey?"确认保存":getString(R.string.address_save_unverified_continue),true,R.drawable.ic_download,()->{
                 if(qrSaveConfirm!=owner||!owner.isShowing()||!currentQr(qrOwner)||epoch!=token||qrBitmap!=original)return;
-                closeQrSaveConfirm();beginQrImageExport(privateKey,address);
+                closeQrSaveConfirm();beginQrImageExport(privateKey,address,verified);
             });
             ui.link(p,"取消",0,cancel);
         },cancel,privateKey?0:R.drawable.ic_password_warning);secure(owner);
     }
-    private void beginQrImageExport(boolean privateKey,String address){
+    private void beginQrImageExport(boolean privateKey,String address,boolean verified){
+        if(privateKey&&expireUnlockedIfNeeded())return;
         if(qrBitmap==null||!resumed||pendingQrImage!=null||(privateKey&&unlocked==null))return;
         try{
-            Bitmap artwork=privateKey?PrivateImageRenderer.render(Texts.wrap(this),unlocked.wif()):AddressImageRenderer.render(Texts.wrap(this),address);
+            Bitmap artwork=privateKey?PrivateImageRenderer.render(Texts.wrap(this),unlocked.wif()):AddressImageRenderer.render(Texts.wrap(this),address,verified);
             try{pendingQrImage=QrImageFiles.encode(artwork);}
             finally{artwork.eraseColor(Color.WHITE);artwork.recycle();}
             pendingQrPrivate=privateKey;
-            handler.postDelayed(expireQrExport,180000);
+            if(privateKey&&expireUnlockedIfNeeded())return;
+            long now=android.os.SystemClock.elapsedRealtime();
+            pendingQrDeadline=privateKey?now+unlockDeadline.remaining(now):now+180000;
+            handler.postDelayed(expireQrExport,Math.max(1,pendingQrDeadline-now));
             Intent intent=new Intent(Intent.ACTION_CREATE_DOCUMENT);intent.setType("image/png");intent.addCategory(Intent.CATEGORY_OPENABLE);
             intent.putExtra(Intent.EXTRA_TITLE,privateKey?"bittap-private-key-qr.png":"bittap-address-qr.png");
             startActivityForResult(intent,EXPORT_QR);
-        }catch(Exception ex){clearPendingQrImage();error("无法打开图片保存工具，请重试");}
+        }catch(Exception ex){clearPendingQrImage();showDocumentError(true);}
     }
     private void finishQrImageExport(int result,Intent intent){
         if(result!=RESULT_OK||intent==null||intent.getData()==null){clearPendingQrImage();whenResumed(()->toast("已取消保存图片"));return;}
-        byte[] png=pendingQrImage;boolean privateKey=pendingQrPrivate;
-        pendingQrImage=null;pendingQrPrivate=false;handler.removeCallbacks(expireQrExport);
-        if(png==null){whenResumed(()->error("图片已清除，请重新打开二维码保存。"));return;}
-        android.net.Uri uri=intent.getData();fileBusy=true;
-        worker.execute(()->{
-            boolean saved=false;
-            try{QrImageFiles.writeAndVerify(png,()->getContentResolver().openOutputStream(uri,"wt"),()->getContentResolver().openInputStream(uri));saved=true;}
-            catch(Exception ignored){/* No success message without a completed close and exact read-back. */}
-            finally{Arrays.fill(png,(byte)0);}
-            final boolean verified=saved;
-            runOnUiThread(()->{fileBusy=false;whenResumed(()->{
-                if(verified)toast(privateKey?"私钥二维码图片已保存，请妥善保管":"收款地址二维码图片已保存");
-                else error("图片未确认保存成功，请重新保存并检查所选位置。");
-            });});
-        });
+        byte[] png=pendingQrImage;boolean privateKey=pendingQrPrivate;long deadline=pendingQrDeadline;
+        pendingQrImage=null;pendingQrPrivate=false;pendingQrDeadline=0;handler.removeCallbacks(expireQrExport);
+        if(png==null){whenResumed(()->showDocumentError(true));return;}
+        if(privateKey&&deadline>0&&android.os.SystemClock.elapsedRealtime()>=deadline){Arrays.fill(png,(byte)0);whenResumed(()->showDocumentError(true));return;}
+        startDocumentOperation(intent.getData(),DocumentIo.Kind.PNG,null,png,null,null,privateKey,privateKey&&deadline>0?deadline:Long.MAX_VALUE);
     }
     private void clearPendingQrImage(){
-        handler.removeCallbacks(expireQrExport);if(pendingQrImage!=null){Arrays.fill(pendingQrImage,(byte)0);pendingQrImage=null;}pendingQrPrivate=false;
+        handler.removeCallbacks(expireQrExport);if(pendingQrImage!=null){Arrays.fill(pendingQrImage,(byte)0);pendingQrImage=null;}pendingQrPrivate=false;pendingQrDeadline=0;
     }
     private void closeQrSaveConfirm(){if(qrSaveConfirm!=null){Dialog d=qrSaveConfirm;qrSaveConfirm=null;d.dismiss();}}
     private void clearQrBitmap(){
-        closeCopyConfirm();closeQrSaveConfirm();handler.removeCallbacks(hideQr);qrFeedback=null;
+        closeCopyConfirm();closeQrSaveConfirm();qrFeedback=null;
         hideSecret.run();secretView=null;
         if(qrImage!=null){qrImage.setImageBitmap(null);qrImage=null;}
         if(qrBitmap!=null){qrBitmap.eraseColor(Color.WHITE);qrBitmap.recycle();qrBitmap=null;}qrDialog=null;
     }
     private void dismissQr(){if(qrDialog!=null)qrDialog.dismiss();clearQrBitmap();}
-    private void closeUnlocked(){closeCopyConfirm();handler.removeCallbacks(hideSecret);hideSecret.run();if(unlocked!=null){unlocked.close();unlocked=null;}}
+    private void closeUnlocked(){unlockDeadline.clear();handler.removeCallbacks(checkUnlockDeadline);closeCopyConfirm();handler.removeCallbacks(hideSecret);hideSecret.run();if(unlocked!=null){unlocked.close();unlocked=null;}}
+    /** Called only by accepted touch/key events or semantic button actions, never by redraws. */
+    private boolean privateInteraction(){
+        if(unlocked==null||!unlockDeadline.active())return false;
+        if(!unlockDeadline.interact(android.os.SystemClock.elapsedRealtime())){handler.post(checkUnlockDeadline);return true;}
+        return false;
+    }
+    private boolean expireUnlockedIfNeeded(){
+        if(unlocked==null||!unlockDeadline.active())return false;
+        UnlockDeadline.Cause cause=unlockDeadline.cause(android.os.SystemClock.elapsedRealtime());
+        if(cause==UnlockDeadline.Cause.NONE)return false;
+        epoch++;closeSheet();dismissQr();clearPendingQrImage();ui.clearPasswords();wipePendingPasswords();closeUnlocked();
+        clipboardExpiry=0;expirePrivateClipboard();screen="unlock";render();
+        if(resumed){
+            dismissAutoLockDialog();Dialog owner=new Dialog(this);autoLockDialog=owner;
+            ui.statusSheet(owner,getString(R.string.auto_lock_title),R.drawable.ic_lock,p->{
+                TextView reason=ui.text(p,getString(cause==UnlockDeadline.Cause.IDLE?R.string.auto_lock_idle_body:R.string.auto_lock_max_body),15,AppUi.SUB,false);ui.line(reason,1.9f);
+                ui.callout(p,R.drawable.ic_shield,getString(R.string.auto_lock_cleared));ui.space(p,17);
+                Button dismiss=ui.action(p,getString(R.string.auto_lock_dismiss),true,0,()->{});
+                dismiss.setOnClickListener(v->{if(autoLockDialog==owner&&owner.isShowing())owner.dismiss();});
+            });
+            owner.setCancelable(false);owner.setCanceledOnTouchOutside(false);owner.setOnDismissListener(d->{if(autoLockDialog==owner)autoLockDialog=null;});secure(owner);
+        }
+        return true;
+    }
+    private void tickUnlockedSession(){
+        handler.removeCallbacks(checkUnlockDeadline);
+        if(expireUnlockedIfNeeded()||unlocked==null||!unlockDeadline.active())return;
+        handler.postDelayed(checkUnlockDeadline,Math.min(1000,Math.max(1,unlockDeadline.remaining(android.os.SystemClock.elapsedRealtime()))));
+    }
+    private void dismissAutoLockDialog(){Dialog owner=autoLockDialog;autoLockDialog=null;if(owner!=null)owner.dismiss();}
     private char[] chars(EditText input){char[] a=new char[input.length()];input.getText().getChars(0,input.length(),a,0);return a;}
-    private void hideKeyboard(){InputMethodManager imm=(InputMethodManager)getSystemService(INPUT_METHOD_SERVICE);View v=unlockDialog!=null?unlockDialog.getCurrentFocus():getCurrentFocus();if(imm!=null&&v!=null)imm.hideSoftInputFromWindow(v.getWindowToken(),0);}
-    private void tap(){getWindow().getDecorView().performHapticFeedback(HapticFeedbackConstants.KEYBOARD_TAP);}
+    private void hideKeyboard(){InputMethodManager imm=(InputMethodManager)getSystemService(INPUT_METHOD_SERVICE);Dialog owner=workDialog!=null?workDialog:unlockDialog!=null?unlockDialog:creationDialog;View v=owner!=null?owner.getCurrentFocus():getCurrentFocus();if(imm!=null&&v!=null)imm.hideSoftInputFromWindow(v.getWindowToken(),0);}
+    private void tap(){privateInteraction();getWindow().getDecorView().performHapticFeedback(HapticFeedbackConstants.KEYBOARD_TAP);}
     private void haptic(boolean success){getWindow().getDecorView().performHapticFeedback(Build.VERSION.SDK_INT>=30?(success?HapticFeedbackConstants.CONFIRM:HapticFeedbackConstants.REJECT):HapticFeedbackConstants.LONG_PRESS);}
 }

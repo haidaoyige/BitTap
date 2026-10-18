@@ -11,6 +11,6 @@ final class ApprovedCopy {
     private static byte[] read(java.io.InputStream in)throws java.io.IOException{java.io.ByteArrayOutputStream out=new java.io.ByteArrayOutputStream();byte[] buffer=new byte[4096];int count;while((count=in.read(buffer))!=-1)out.write(buffer,0,count);return out.toByteArray();}
     String ui(String key){return data.optJSONObject("D").optJSONObject(Texts.language(context)).optString(key,key);}
     JSONObject section(String key){return data.optJSONObject(key).optJSONObject(Texts.language(context));}
-    JSONObject security(){return data.optJSONObject("securityContent");}
+    JSONObject security(){return data.optJSONObject("securityContent").optJSONObject(Texts.language(context));}
     JSONArray terms(){return Texts.language(context).equals("zh")?data.optJSONArray("legalContent"):data.optJSONObject("legalTranslations").optJSONArray(Texts.language(context));}
 }

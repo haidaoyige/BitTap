@@ -263,9 +263,7 @@ public final class WalletCrypto {
     }
 
     public static void requireNewPassword(char[] password) {
-        if (password == null || password.length < 10 || password.length > 1024)
-            throw new IllegalArgumentException("请使用至少 10 个字符的独立长密码（最多 1024 字符）");
-        if (new String(password).trim().isEmpty()) throw new IllegalArgumentException("密码不能全部为空白");
+        NewPasswordPolicy.require(password);
     }
     private static byte[] passwordBytes(char[] password) {
         if (password == null || password.length == 0 || password.length > 1024)

@@ -15,12 +15,13 @@ import org.bouncycastle.crypto.generators.SCrypt;
 public class SecurityReviewTest {
     private static byte[] scalar(int value){byte[] raw=new byte[32];raw[31]=(byte)value;return raw;}
     private static char[] password(){return "test fixture password only".toCharArray();}
+    private static char[] newPassword(){return "Public-fixture-Only9!".toCharArray();}
     private static byte[] raw(String text){return Base64.getUrlDecoder().decode(text.substring(4));}
     private static String text(byte[] raw){return "CG2:"+Base64.getUrlEncoder().withoutPadding().encodeToString(raw);}
     @Test public void freshCreationsUseDifferentKeysSaltsAndNonces()throws Exception{
         WalletCrypto crypto=new WalletCrypto();Set<String> addresses=new HashSet<>(),salts=new HashSet<>(),nonces=new HashSet<>();
         for(int i=0;i<12;i++){
-            WalletCrypto.Card card=crypto.generate(password(),WalletCrypto.Network.MAINNET);WalletCrypto.Metadata meta=crypto.inspect(card.encrypted);
+            WalletCrypto.Card card=crypto.generate(newPassword(),WalletCrypto.Network.MAINNET);WalletCrypto.Metadata meta=crypto.inspect(card.encrypted);
             assertTrue(addresses.add(card.address));assertTrue(salts.add(WalletCrypto.hex(meta.salt)));assertTrue(nonces.add(WalletCrypto.hex(meta.nonce)));
         }
         // A non-duplication sanity check is not a statistical proof of RNG entropy.

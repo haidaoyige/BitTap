@@ -36,6 +36,17 @@ final class CreationFlowProbe {
                 for(EditText field:fields){yes(!field.isSaveEnabled()&&field.getImportantForAutofill()==View.IMPORTANT_FOR_AUTOFILL_NO_EXCLUDE_DESCENDANTS,"password is excluded from state saving and autofill");yes((field.getImeOptions()&android.view.inputmethod.EditorInfo.IME_FLAG_NO_PERSONALIZED_LEARNING)!=0,"password disables personalized keyboard learning");}
                 yes((owner.getWindow().getAttributes().flags&WindowManager.LayoutParams.FLAG_SECURE)!=0,"creation password dialog retains secure window protection");
                 yes(protectedScroll(dialog("creationDialog"))!=null,"creation password dialog rejects obscured touches");
+                Button generation=button(dialog("creationDialog"),copy.ui("creationConfirmGenerate"));yes(!generation.isEnabled(),"empty passwords disable generation");
+                for(String invalid:new String[]{"Ab1!abcde","abcdef123!","ABCDEF123!","Abcdefghi!","Abcdef1234","Abcdef123 "}){
+                    fill(fields,invalid,invalid);yes(!generation.isEnabled(),"missing format requirement disables button in every language");
+                }
+                fill(fields,PASSWORD,PASSWORD);yes(generation.isEnabled(),"matching compliant password enables generation");
+                for(int id:new int[]{R.string.new_password_length,R.string.new_password_upper,R.string.new_password_lower,R.string.new_password_digit,R.string.new_password_special}){
+                    String description=activity.getString(id)+activity.getString(R.string.new_password_met);boolean found=false;
+                    for(View v:views(dialog("creationDialog")))if(description.contentEquals(v.getContentDescription()==null?"":v.getContentDescription()))found=true;
+                    yes(found,"all five live requirements are marked met in current language");
+                }
+                fill(fields,PASSWORD,PASSWORD+"different");yes(!generation.isEnabled(),"mismatch immediately disables generation");
                 fill(fields,"123456789","123456789");confirm(copy);yes(get("weakPasswordConfirm")==null&&get("session")==null&&pending()==0&&((TextView)get("creationFeedback")).getVisibility()==View.VISIBLE,"nine-character password fails before generation");
                 fill(fields,PASSWORD,PASSWORD+"different");confirm(copy);yes(get("session")==null&&get("weakPasswordConfirm")==null,"mismatch fails before generation");
                 capture("creation-"+language+"-password",dialog("creationDialog"));

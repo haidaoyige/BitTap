@@ -10,12 +10,28 @@ final class HelpPages {
     private final AppUi ui;private final ApprovedCopy copy;
     private final java.util.Set<Integer> expanded=new java.util.HashSet<>(java.util.Arrays.asList(0));
     HelpPages(AppUi ui,ApprovedCopy copy){this.ui=ui;this.copy=copy;}
-    Dialog disclaimer(Runnable agree,Runnable full,Runnable close){return ui.consentSheet(copy.ui("disclaimer"),p->{
-        ui.note(p,copy.ui("disclaimerIntro"));int[] icons={R.drawable.ic_code,R.drawable.ic_warning,R.drawable.ic_scale};
-        for(int i=1;i<=3;i++)ui.risk(p,icons[i-1],copy.ui("risk"+i),copy.ui("risk"+i+"body"),i<3);
-        ui.link(p,copy.ui("readFullDisclaimer"),R.drawable.ic_file,full);
-        ui.action(p,copy.ui("agree"),true,R.drawable.ic_check_mark,agree);ui.action(p,copy.ui("disagree"),false,0,close);
-    });}
+    Dialog disclaimer(Runnable agree,Runnable full,Runnable close){
+        Dialog owner=new Dialog(ui.activity);
+        TextView heading=ui.showSheet(owner,copy.ui("disclaimer"),p->{
+            ui.note(p,copy.ui("disclaimerIntro"));
+            LinearLayout warning=ui.callout(p,R.drawable.ic_password_warning,null);
+            TextView loss=ui.text(warning,copy.ui("riskNoticeLoss"),13,AppUi.ACCENT,true);ui.line(loss,1.7f);
+            ui.space(p,10);int[] icons={R.drawable.ic_wallet,R.drawable.ic_key,R.drawable.ic_nfc,R.drawable.ic_warning};
+            for(int i=1;i<=icons.length;i++){
+                LinearLayout content=ui.risk(p,icons[i-1],copy.ui("risk"+i),copy.ui("risk"+i+"body"),i<icons.length);
+                TextView title=(TextView)content.getChildAt(0);title.setTextSize(15);ui.line(title,1.6f);
+                TextView body=(TextView)content.getChildAt(content.getChildCount()-1);body.setTextSize(13);ui.line(body,1.85f);
+            }
+            TextView liability=ui.text(p,copy.ui("riskNoticeLiability"),12,AppUi.SUB,false);
+            liability.setPadding(ui.dp(14),ui.dp(13),ui.dp(14),ui.dp(13));liability.setBackground(ui.shape(0xfff7f3ed,13,false));ui.line(liability,1.85f);
+            LinearLayout termsRow=ui.horizontal();termsRow.setGravity(android.view.Gravity.CENTER);p.addView(termsRow,new LinearLayout.LayoutParams(-1,-2));
+            Button terms=ui.textAction(termsRow,copy.ui("readFullDisclaimer"),0,R.drawable.ic_chevron_right,full);terms.setTextSize(13);
+            ui.action(p,copy.ui("agree"),true,R.drawable.ic_check_mark,agree);ui.action(p,copy.ui("disagree"),false,0,close);
+            TextView session=ui.text(p,copy.ui("riskNoticeSession"),11,AppUi.SUB,false);
+            session.setGravity(android.view.Gravity.CENTER);session.setPadding(0,ui.dp(14),0,0);
+        },null);
+        heading.setTextSize(27);ui.line(heading,1.4f);return owner;
+    }
     Dialog cardHelp(Runnable close){JSONObject c=copy.section("cardHelpCopy");return ui.sheet(c.optString("title"),p->{
         JSONArray rows=c.optJSONArray("rows");int[] icons={R.drawable.ic_nfc,R.drawable.ic_display,R.drawable.ic_shuffle,R.drawable.ic_help};
         for(int i=0;i<rows.length();i++){JSONArray row=rows.optJSONArray(i);ui.risk(p,icons[i],row.optString(1),row.optString(2),i<rows.length()-1);}
@@ -50,15 +66,14 @@ final class HelpPages {
     private void legal(LinearLayout p,String text){rich(p,text,12,AppUi.SUB);ui.space(p,13);}
     void security(){
         JSONObject s=copy.security();ui.heading(copy.ui("securityNav"),s.optString("title"),null);
-        if(!Texts.language(ui.activity).equals("zh"))ui.helper(ui.page,copy.ui("securityLanguage"));
         rich(ui.page,s.optString("intro"),13,AppUi.SUB);
-        LinearLayout cleanup=ui.callout(ui.page,R.drawable.ic_shield,null);raw(cleanup,"明文私钥在写卡前清理；密文在完成备份并返回首页后清理。相机增强为可选模式。",12,AppUi.SUB,false);ui.space(ui.page,12);
+        LinearLayout cleanup=ui.callout(ui.page,R.drawable.ic_shield,null);raw(cleanup,s.optString("cleanup"),12,AppUi.SUB,false);ui.space(ui.page,12);
         JSONArray sections=s.optJSONArray("sections");
         for(int i=0;i<sections.length();i++){
             final int index=i;JSONObject section=sections.optJSONObject(i);LinearLayout body=ui.accordion(ui.page,section.optString("title"),expanded.contains(i),on->{if(on)expanded.add(index);else expanded.remove(index);});
             JSONArray paragraphs=section.optJSONArray("paragraphs");for(int j=0;j<paragraphs.length();j++){rich(body,paragraphs.optString(j),12,AppUi.SUB);ui.space(body,12);}
         }
-        LinearLayout relatedBody=ui.accordion(ui.page,"与哪些开源钱包有相近思路？",expanded.contains(8),on->{if(on)expanded.add(8);else expanded.remove(8);});
+        LinearLayout relatedBody=ui.accordion(ui.page,s.optString("relatedTitle"),expanded.contains(8),on->{if(on)expanded.add(8);else expanded.remove(8);});
         JSONArray related=s.optJSONArray("related");for(int i=0;i<related.length();i++){JSONObject item=related.optJSONObject(i);ui.space(relatedBody,16);raw(relatedBody,item.optString("title"),14,AppUi.FG,true);ui.space(relatedBody,7);rich(relatedBody,item.optString("text"),12,AppUi.SUB);}
         ui.space(relatedBody,12);raw(relatedBody,s.optString("caution"),12,AppUi.FG,true);ui.space(relatedBody,12);rich(relatedBody,s.optString("compatibility"),12,AppUi.SUB);
     }

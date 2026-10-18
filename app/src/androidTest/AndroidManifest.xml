@@ -1,0 +1,10 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+  <application>
+    <service android:name="io.coingift.android.PrivateAccessService" android:permission="android.permission.BIND_ACCESSIBILITY_SERVICE" android:exported="true">
+      <intent-filter><action android:name="android.accessibilityservice.AccessibilityService" /></intent-filter>
+      <meta-data android:name="android.accessibilityservice" android:resource="@xml/private_access_probe" />
+    </service>
+    <provider android:name="io.coingift.android.PrivateAccessProbeProvider" android:authorities="io.coingift.android.test.private-access" android:exported="true" />
+    <provider android:name="io.coingift.android.FaultDocumentProvider" android:authorities="io.coingift.android.test.documents" android:exported="true" />
+  </application>
+</manifest>

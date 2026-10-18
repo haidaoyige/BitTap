@@ -1,5 +1,6 @@
 <?xml version='1.0' encoding='utf-8'?>
 <resources>
+  <string name="private_sensitive_content">敏感私钥内容</string>
   <string name="copy_confirm_title">复制 WIF 私钥？</string>
   <string name="copy_confirm_description">私钥将以明文写入系统剪贴板，可能增加泄露风险。</string>
   <string name="copy_confirm_caution">请仅粘贴到你信任的钱包，不要发送给他人或 AI。</string>
@@ -17,6 +18,7 @@
   <string name="private_image_notice">请勿分享或上传此图片。</string>
   <string name="address_image_title">收款地址</string>
   <string name="address_image_label">比特币地址</string>
+  <string name="address_image_unverified">此地址导出时尚未与私钥核对。\n请先在 BitTap 中解密核验，再转入 BTC。</string>
   <string name="app_name" formatted="false">"BitTap"</string>
   <string name="private_wif" formatted="false">"钱包私钥 · WIF"</string>
   <string name="btc_mainnet" formatted="false">"BTC 主网"</string>
@@ -431,4 +433,35 @@
     <string name="wallet_private_description">只在你信任的钱包或设备上使用。\n私钥二维码与私钥具有相同效力。</string>
     <string name="wallet_private_warning">复制、保存或导入后，请尽快将全部 BTC 转入已备份的新钱包，并停止向旧地址收款。</string>
     <string name="wallet_switch_description">选择另一张 NFC 卡片，\n或导入已保存的加密备份文件。</string>
+
+  <!-- Creation-only password format requirements; recovery stays compatible. -->
+  <string name="new_password_placeholder" formatted="false">"至少 10 位，包含以下四类字符"</string>
+  <string name="new_password_length" formatted="false">"至少 10 位"</string>
+  <string name="new_password_upper" formatted="false">"大写字母 A–Z"</string>
+  <string name="new_password_lower" formatted="false">"小写字母 a–z"</string>
+  <string name="new_password_digit" formatted="false">"数字 0–9"</string>
+  <string name="new_password_special" formatted="false">"特殊字符 ! @ # 等"</string>
+  <string name="new_password_met" formatted="false">"，已满足"</string>
+  <string name="new_password_unmet" formatted="false">"，未满足"</string>
+  <string name="new_password_ready" formatted="false">"已满足格式要求，两次输入一致"</string>
+  <string name="new_password_incomplete" formatted="false">"两次输入一致，请补全上方要求"</string>
+  <string name="new_password_mismatch" formatted="false">"两次输入的密码不一致"</string>
+  <string name="new_password_repeat" formatted="false">"已满足格式要求，请再次输入确认"</string>
+  <string name="new_password_invalid" formatted="false">"新密码至少 10 位，须同时包含大写字母、小写字母、数字和特殊字符（最多 1024 字符）"</string>
+
+  <!-- Unlock deadlines and cancellable document operations. -->
+  <string name="auto_lock_title" formatted="false">"私钥已自动锁定"</string>
+  <string name="auto_lock_idle_body" formatted="false">"连续 60 秒未操作，\n为保护私钥，本次解锁已结束。"</string>
+  <string name="auto_lock_max_body" formatted="false">"本次解锁已满 2 分钟，\n为保护私钥，本次解锁已结束。"</string>
+  <string name="auto_lock_cleared">私钥已从本次会话中清除。\n再次查看时，请重新输入密码。</string>
+  <string name="auto_lock_dismiss">知道了</string>
+  <string name="crypto_processing">正在处理，请稍后...</string>
+  <string name="auto_lock_ok" formatted="false">"确定"</string>
+  <string name="file_io_importing" formatted="false">"正在导入备份"</string>
+  <string name="file_io_saving" formatted="false">"正在保存并核对"</string>
+  <string name="file_io_wait" formatted="false">"文件操作最多等待 15 秒，你可以随时取消。"</string>
+  <string name="file_io_save_failed" formatted="false">"保存失败"</string>
+  <string name="file_io_import_failed" formatted="false">"导入失败"</string>
+  <string name="file_io_save_error" formatted="false">"未确认文件已完整保存，请检查所选位置后重试。"</string>
+  <string name="file_io_import_error" formatted="false">"文件读取失败、已取消或等待超时。请重新选择文件，或改用其他文件位置。"</string>
 </resources>

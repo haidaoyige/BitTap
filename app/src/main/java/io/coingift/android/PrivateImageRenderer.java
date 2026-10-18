@@ -42,9 +42,12 @@ final class PrivateImageRenderer {
         int height=(int)Math.ceil(footerY+56);
         Bitmap output=Bitmap.createBitmap(WIDTH*SCALE,height*SCALE,Bitmap.Config.ARGB_8888);
         try{
-            Canvas c=new Canvas(output);c.scale(SCALE,SCALE);c.drawColor(BG);
-            Paint p=new Paint(Paint.ANTI_ALIAS_FLAG);p.setStyle(Paint.Style.STROKE);p.setStrokeWidth(1);p.setColor(LINE);
-            c.drawRoundRect(new RectF(.5f,.5f,WIDTH-.5f,height-.5f),25,25,p);
+            output.eraseColor(Color.TRANSPARENT);
+            Canvas c=new Canvas(output);c.scale(SCALE,SCALE);
+            RectF bounds=new RectF(.5f,.5f,WIDTH-.5f,height-.5f);
+            Paint p=new Paint(Paint.ANTI_ALIAS_FLAG);p.setColor(BG);c.drawRoundRect(bounds,25,25,p);
+            p.setStyle(Paint.Style.STROKE);p.setStrokeWidth(1);p.setColor(LINE);
+            c.drawRoundRect(bounds,25,25,p);
             icon(context,c,R.drawable.ic_launcher,LEFT,28,39,null);
             c.drawText("BitTap",LEFT+49,56,font(23,INK,true));
             TextPaint network=font(11,0xff8e7560,false);network.setTextAlign(Paint.Align.RIGHT);

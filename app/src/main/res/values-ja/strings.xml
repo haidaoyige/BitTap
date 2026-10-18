@@ -1,5 +1,6 @@
 <?xml version='1.0' encoding='utf-8'?>
 <resources>
+  <string name="private_sensitive_content">機密の秘密鍵情報</string>
   <string name="copy_confirm_title">WIF 秘密鍵をコピーしますか？</string>
   <string name="copy_confirm_description">秘密鍵は平文でシステムのクリップボードにコピーされ、漏えいのリスクが高まります。</string>
   <string name="copy_confirm_caution">信頼できるウォレットにのみ貼り付けてください。他人や AI に送らないでください。</string>
@@ -17,6 +18,7 @@
   <string name="private_image_notice">この画像を共有・アップロードしないでください。</string>
   <string name="address_image_title">受取アドレス</string>
   <string name="address_image_label">ビットコインアドレス</string>
+  <string name="address_image_unverified">このアドレスは書き出し時点で秘密鍵と照合されていません。\nBTC を送る前に、BitTap で復号して照合してください。</string>
   <string name="app_name" formatted="false">"BitTap"</string>
   <string name="private_wif" formatted="false">"秘密鍵 · WIF"</string>
   <string name="btc_mainnet" formatted="false">"BTC メインネット"</string>
@@ -431,4 +433,35 @@
     <string name="wallet_private_description">信頼できるウォレットや端末でのみ使用してください。\n秘密鍵の QR コードは秘密鍵と同じ効力を持ちます。</string>
     <string name="wallet_private_warning">コピー・保存・インポート後は、バックアップ済みの新しいウォレットへ全 BTC を速やかに移し、旧アドレスでの受取を停止してください。</string>
     <string name="wallet_switch_description">別の NFC カードを読み取るか、\n保存済みの暗号化バックアップをインポートします。</string>
+
+  <!-- Creation-only password format requirements; recovery stays compatible. -->
+  <string name="new_password_placeholder" formatted="false">"10文字以上・下記の4種類を含める"</string>
+  <string name="new_password_length" formatted="false">"10文字以上"</string>
+  <string name="new_password_upper" formatted="false">"英大文字 A–Z"</string>
+  <string name="new_password_lower" formatted="false">"英小文字 a–z"</string>
+  <string name="new_password_digit" formatted="false">"数字 0–9"</string>
+  <string name="new_password_special" formatted="false">"記号 ! @ # など"</string>
+  <string name="new_password_met" formatted="false">"、入力済み"</string>
+  <string name="new_password_unmet" formatted="false">"、未入力"</string>
+  <string name="new_password_ready" formatted="false">"形式の条件を満たし、パスワードも一致しています。"</string>
+  <string name="new_password_incomplete" formatted="false">"パスワードは一致しています。上の条件を満たしてください。"</string>
+  <string name="new_password_mismatch" formatted="false">"パスワードが一致しません。"</string>
+  <string name="new_password_repeat" formatted="false">"形式の条件を満たしています。確認のため再入力してください。"</string>
+  <string name="new_password_invalid" formatted="false">"10文字以上で、英大文字・英小文字・数字・記号をすべて含めてください（最大1024文字）。"</string>
+
+  <!-- Unlock deadlines and cancellable document operations. -->
+  <string name="auto_lock_title" formatted="false">"秘密鍵を自動ロックしました"</string>
+  <string name="auto_lock_idle_body" formatted="false">"60秒間操作がありませんでした。\n秘密鍵を保護するため、今回のロック解除を終了しました。"</string>
+  <string name="auto_lock_max_body" formatted="false">"ロック解除から2分が経過しました。\n秘密鍵を保護するため、今回のロック解除を終了しました。"</string>
+  <string name="auto_lock_cleared">今回のセッションから秘密鍵を消去しました。\n再表示するにはパスワードを入力してください。</string>
+  <string name="auto_lock_dismiss">わかりました</string>
+  <string name="crypto_processing">処理中です。しばらくお待ちください...</string>
+  <string name="auto_lock_ok" formatted="false">"確認"</string>
+  <string name="file_io_importing" formatted="false">"バックアップを読み込み中"</string>
+  <string name="file_io_saving" formatted="false">"保存して照合しています"</string>
+  <string name="file_io_wait" formatted="false">"ファイル操作の待機時間は最長15秒です。いつでもキャンセルできます。"</string>
+  <string name="file_io_save_failed" formatted="false">"保存できませんでした"</string>
+  <string name="file_io_import_failed" formatted="false">"読み込みできませんでした"</string>
+  <string name="file_io_save_error" formatted="false">"ファイルの完全な保存を確認できませんでした。保存先を確認して再試行してください。"</string>
+  <string name="file_io_import_error" formatted="false">"読み込み失敗、キャンセル、または時間切れです。ファイルを選び直すか、別の保存先を使ってください。"</string>
 </resources>

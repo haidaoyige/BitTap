@@ -1,5 +1,6 @@
 <?xml version='1.0' encoding='utf-8'?>
 <resources>
+  <string name="private_sensitive_content">Sensitive private key content</string>
   <string name="copy_confirm_title">Copy WIF private key?</string>
   <string name="copy_confirm_description">The key will be copied as plaintext to the system clipboard, increasing exposure risk.</string>
   <string name="copy_confirm_caution">Paste only into a wallet you trust. Never send it to anyone or an AI.</string>
@@ -17,6 +18,7 @@
   <string name="private_image_notice">Do not share or upload this image.</string>
   <string name="address_image_title">Receiving address</string>
   <string name="address_image_label">Bitcoin address</string>
+  <string name="address_image_unverified">This address was not checked against the private key when exported.\nDecrypt and verify it in BitTap before sending BTC.</string>
   <string name="address_image_tagline" translatable="false">YOUR KEYS. YOUR BITCOIN.</string>
   <string name="app_name" formatted="false">"BitTap"</string>
   <string name="private_wif" formatted="false">"Private key · WIF"</string>
@@ -432,4 +434,35 @@
     <string name="wallet_private_description">Use only with a wallet or device you trust.\nThe private key QR code grants the same control as the private key.</string>
     <string name="wallet_private_warning">After copying, saving or importing, transfer all BTC to a backed-up new wallet promptly and stop receiving at the old addresses.</string>
     <string name="wallet_switch_description">Choose another NFC card,\nor import a saved encrypted backup file.</string>
+
+  <!-- Creation-only password format requirements; recovery stays compatible. -->
+  <string name="new_password_placeholder" formatted="false">"10+ characters with all four types below"</string>
+  <string name="new_password_length" formatted="false">"At least 10 characters"</string>
+  <string name="new_password_upper" formatted="false">"Uppercase A–Z"</string>
+  <string name="new_password_lower" formatted="false">"Lowercase a–z"</string>
+  <string name="new_password_digit" formatted="false">"Digits 0–9"</string>
+  <string name="new_password_special" formatted="false">"Symbols ! @ # etc."</string>
+  <string name="new_password_met" formatted="false">", met"</string>
+  <string name="new_password_unmet" formatted="false">", not met"</string>
+  <string name="new_password_ready" formatted="false">"Format requirements met. Passwords match."</string>
+  <string name="new_password_incomplete" formatted="false">"Passwords match. Complete the requirements above."</string>
+  <string name="new_password_mismatch" formatted="false">"Passwords do not match."</string>
+  <string name="new_password_repeat" formatted="false">"Format requirements met. Enter it again to confirm."</string>
+  <string name="new_password_invalid" formatted="false">"Use 10 or more characters including uppercase and lowercase letters, digits and symbols (maximum 1024 characters)."</string>
+
+  <!-- Unlock deadlines and cancellable document operations. -->
+  <string name="auto_lock_title" formatted="false">"Private key automatically locked"</string>
+  <string name="auto_lock_idle_body" formatted="false">"No activity for 60 seconds.\nThis unlock session has ended to protect your private key."</string>
+  <string name="auto_lock_max_body" formatted="false">"The 2-minute limit has been reached.\nThis unlock session has ended to protect your private key."</string>
+  <string name="auto_lock_cleared">The private key has been cleared from this session.\nEnter your password again to view it.</string>
+  <string name="auto_lock_dismiss">Got it</string>
+  <string name="crypto_processing">Processing, please wait...</string>
+  <string name="auto_lock_ok" formatted="false">"OK"</string>
+  <string name="file_io_importing" formatted="false">"Importing backup"</string>
+  <string name="file_io_saving" formatted="false">"Saving and verifying"</string>
+  <string name="file_io_wait" formatted="false">"File operations wait up to 15 seconds. You can cancel at any time."</string>
+  <string name="file_io_save_failed" formatted="false">"Save failed"</string>
+  <string name="file_io_import_failed" formatted="false">"Import failed"</string>
+  <string name="file_io_save_error" formatted="false">"The file was not confirmed as completely saved. Check the selected location and try again."</string>
+  <string name="file_io_import_error" formatted="false">"Reading failed, was cancelled or timed out. Select the file again or use another file location."</string>
 </resources>

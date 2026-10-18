@@ -33,6 +33,7 @@ final class AppUi {
     ScrollView scroll;
     Runnable language=()->{};
     Runnable obscuredTouch=()->{};
+    BooleanSupplier interaction=()->false;
 
     AppUi(Activity activity,BooleanSupplier blocked,Runnable tap){this.activity=activity;this.blocked=blocked;this.tap=tap;}
     int dp(int v){return Math.round(v*activity.getResources().getDisplayMetrics().density);}
@@ -40,7 +41,7 @@ final class AppUi {
     LinearLayout horizontal(){LinearLayout p=new LinearLayout(activity);p.setOrientation(LinearLayout.HORIZONTAL);p.setGravity(Gravity.CENTER_VERTICAL);return p;}
     void install(){
         clearInputs();passwords.clear();inputs.clear();buttons.clear();
-        scroll=new ProtectedScrollView(activity,()->obscuredTouch.run());scroll.setFillViewport(true);scroll.setBackgroundColor(BG);
+        scroll=new ProtectedScrollView(activity,()->obscuredTouch.run(),()->interaction.getAsBoolean());scroll.setFillViewport(true);scroll.setBackgroundColor(BG);
         page=vertical();page.setClipToPadding(false);page.setClipChildren(false);page.setPadding(dp(24),dp(12),dp(24),dp(24));scroll.addView(page);
         activity.setContentView(scroll);
         scroll.setOnApplyWindowInsetsListener((v,insets)->{
@@ -179,6 +180,27 @@ final class AppUi {
         button.setTextColor(foreground);
         if(icon!=0)centeredIcon(button,label,icon,foreground,18);
     }
+    void loadingAction(Button button,String label){
+        button.setEnabled(false);button.setBackground(shape(0xffe5dfd6,15,false));button.setTextColor(SUB);
+        android.text.SpannableString value=new android.text.SpannableString("\ufffc  "+label);
+        android.graphics.drawable.Drawable spinner=new LoadingDrawable(button,SUB);spinner.setBounds(0,0,dp(18),dp(18));
+        value.setSpan(new CenteredIconSpan(spinner),0,1,android.text.Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        button.setText(value);button.setContentDescription(label);button.setAccessibilityLiveRegion(View.ACCESSIBILITY_LIVE_REGION_POLITE);
+    }
+    /** Draw in the button's centered icon span; detached or restored buttons stop requesting frames. */
+    private static final class LoadingDrawable extends Drawable {
+        private final View owner;private final android.graphics.Paint paint=new android.graphics.Paint(android.graphics.Paint.ANTI_ALIAS_FLAG);
+        LoadingDrawable(View owner,int color){this.owner=owner;paint.setColor(color);paint.setStyle(android.graphics.Paint.Style.STROKE);paint.setStrokeCap(android.graphics.Paint.Cap.ROUND);}
+        @Override public void draw(android.graphics.Canvas canvas){
+            android.graphics.Rect b=getBounds();float stroke=Math.max(1.5f,b.width()/10f);paint.setStrokeWidth(stroke);
+            boolean animate=android.animation.ValueAnimator.areAnimatorsEnabled();float angle=animate?(android.os.SystemClock.uptimeMillis()%1000)*.36f:-90;
+            canvas.drawArc(b.left+stroke,b.top+stroke,b.right-stroke,b.bottom-stroke,angle,270,false,paint);
+            if(animate&&owner.isAttachedToWindow()&&owner.isShown())owner.postInvalidateOnAnimation();
+        }
+        @Override public void setAlpha(int alpha){paint.setAlpha(alpha);}
+        @Override public void setColorFilter(android.graphics.ColorFilter filter){paint.setColorFilter(filter);}
+        @Override public int getOpacity(){return android.graphics.PixelFormat.TRANSLUCENT;}
+    }
     Button link(LinearLayout parent,String label,int icon,Runnable run){
         Button b=new Button(activity);b.setText(Texts.tr(activity,label));b.setTextSize(12);b.setAllCaps(false);b.setTextColor(SUB);
         b.setMinHeight(dp(44));b.setPadding(dp(6),dp(8),dp(6),dp(8));b.setBackgroundColor(Color.TRANSPARENT);
@@ -242,6 +264,33 @@ final class AppUi {
         if(buttons.remove(view))view.setOnClickListener(null);
     }
     void passwordStrength(EditText input){passwordStrength(page,input);}
+    void passwordRequirements(LinearLayout parent,EditText input){
+        LinearLayout panel=vertical();panel.setPadding(dp(12),dp(10),dp(12),dp(10));panel.setBackground(shape(BG,13,false));
+        LinearLayout.LayoutParams params=new LinearLayout.LayoutParams(-1,-2);params.topMargin=dp(10);parent.addView(panel,params);
+        int[] labels={R.string.new_password_length,R.string.new_password_upper,R.string.new_password_lower,R.string.new_password_digit,R.string.new_password_special};
+        TextView[] items=new TextView[5];
+        items[0]=text(panel,activity.getString(labels[0]),12,SUB,false);
+        for(int row=0;row<2;row++){
+            LinearLayout pair=horizontal();panel.addView(pair,new LinearLayout.LayoutParams(-1,-2));
+            for(int col=0;col<2;col++){int index=1+row*2+col;items[index]=text(pair,activity.getString(labels[index]),12,SUB,false);items[index].setLayoutParams(new LinearLayout.LayoutParams(0,-2,1));}
+        }
+        for(TextView item:items){item.setGravity(Gravity.START|Gravity.CENTER_VERTICAL);item.setCompoundDrawablePadding(dp(6));item.setPadding(0,dp(4),0,dp(4));}
+        Runnable update=()->{
+            if(!input.isEnabled())return;
+            io.coingift.core.NewPasswordPolicy.Requirements r=io.coingift.core.NewPasswordPolicy.inspect(input.getText());
+            boolean[] met={r.length,r.upper,r.lower,r.digit,r.special};
+            for(int i=0;i<items.length;i++){
+                items[i].setTextColor(met[i]?ACCENT:SUB);
+                items[i].setCompoundDrawablesRelative(drawable(met[i]?R.drawable.ic_check:R.drawable.ic_circle,met[i]?ACCENT:SUB,14),null,null,null);
+                items[i].setContentDescription(activity.getString(labels[i])+activity.getString(met[i]?R.string.new_password_met:R.string.new_password_unmet));
+            }
+        };
+        input.addTextChangedListener(new android.text.TextWatcher(){
+            public void beforeTextChanged(CharSequence value,int start,int count,int after){}
+            public void onTextChanged(CharSequence value,int start,int before,int count){update.run();}
+            public void afterTextChanged(android.text.Editable value){}
+        });update.run();
+    }
     void passwordStrength(LinearLayout parent,EditText input){
         TextView label=text(parent,"",11,SUB,false);label.setPadding(0,dp(6),0,0);label.setAccessibilityLiveRegion(View.ACCESSIBILITY_LIVE_REGION_POLITE);
         Runnable update=()->{
@@ -301,25 +350,36 @@ final class AppUi {
         return showSheet(d,title,builder,close,leadingIcon,false);
     }
     TextView showSheet(Dialog d,String title,Consumer<LinearLayout> builder,Runnable close,int leadingIcon,boolean expanded){
+        return showSheet(d,title,builder,close,leadingIcon,expanded,false);
+    }
+    /** Status notices share the app sheet, with the approved full-size icon above the heading. */
+    TextView statusSheet(Dialog d,String title,int icon,Consumer<LinearLayout> builder){
+        return showSheet(d,title,builder,null,icon,false,true);
+    }
+    private TextView showSheet(Dialog d,String title,Consumer<LinearLayout> builder,Runnable close,int leadingIcon,boolean expanded,boolean status){
         d.requestWindowFeature(Window.FEATURE_NO_TITLE);
         LinearLayout panel=vertical();panel.setPadding(dp(24),dp(13),dp(24),dp(25));panel.setBackground(shape(Color.WHITE,25,false));
         View grab=new View(activity);grab.setBackground(shape(LINE,3,false));LinearLayout.LayoutParams gp=new LinearLayout.LayoutParams(dp(32),dp(4));gp.gravity=Gravity.CENTER_HORIZONTAL;gp.bottomMargin=dp(23);panel.addView(grab,gp);
         TextView heading;
-        if(leadingIcon!=0){
+        if(status){
+            android.widget.FrameLayout badge=new android.widget.FrameLayout(activity);badge.setBackground(shape(SOFT,20,false));panel.addView(badge,new LinearLayout.LayoutParams(dp(58),dp(58)));
+            ImageView symbol=new ImageView(activity);symbol.setImageDrawable(drawable(leadingIcon,ACCENT,27));badge.addView(symbol,new android.widget.FrameLayout.LayoutParams(dp(27),dp(27),Gravity.CENTER));
+            space(panel,21);heading=text(panel,title,27,FG,true);
+        }else if(leadingIcon!=0){
             LinearLayout row=horizontal();panel.addView(row);
             android.widget.FrameLayout badge=new android.widget.FrameLayout(activity);badge.setBackground(shape(SOFT,13,false));row.addView(badge,new LinearLayout.LayoutParams(dp(44),dp(44)));
             ImageView symbol=new ImageView(activity);symbol.setImageDrawable(drawable(leadingIcon,ACCENT,22));badge.addView(symbol,new android.widget.FrameLayout.LayoutParams(dp(22),dp(22),Gravity.CENTER));
             row.addView(new View(activity),new LinearLayout.LayoutParams(0,1,1));
-            if(close!=null)row.addView(icon(R.drawable.ic_close,"关闭",close),new LinearLayout.LayoutParams(dp(44),dp(44)));
+            if(close!=null){ImageButton dismiss=icon(R.drawable.ic_close,"关闭",close);dismiss.setTag("sheet-close");row.addView(dismiss,new LinearLayout.LayoutParams(dp(44),dp(44)));}
             space(panel,17);heading=text(panel,title,24,FG,true);
         }else if(close==null)heading=text(panel,title,22,FG,true);
         else{
             LinearLayout row=horizontal();panel.addView(row);
             heading=text(row,title,22,FG,true);heading.setLayoutParams(new LinearLayout.LayoutParams(0,-2,1));
-            row.addView(icon(R.drawable.ic_close,"关闭",close),new LinearLayout.LayoutParams(dp(44),dp(44)));
+            ImageButton dismiss=icon(R.drawable.ic_close,"关闭",close);dismiss.setTag("sheet-close");row.addView(dismiss,new LinearLayout.LayoutParams(dp(44),dp(44)));
         }
         line(heading,1.4f);space(panel,10);builder.accept(panel);
-        ScrollView scroll=new ProtectedScrollView(activity,()->obscuredTouch.run()){
+        ScrollView scroll=new ProtectedScrollView(activity,()->obscuredTouch.run(),()->interaction.getAsBoolean()){
             @Override protected void onMeasure(int width,int height){
                 int max=(int)(getResources().getDisplayMetrics().heightPixels*(expanded?.95:.85));
                 super.onMeasure(width,MeasureSpec.makeMeasureSpec(max,MeasureSpec.AT_MOST));

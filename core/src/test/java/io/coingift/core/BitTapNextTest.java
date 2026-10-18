@@ -10,6 +10,7 @@ import java.util.*;
 /** Public fixtures only: never fund the addresses produced by these tests. */
 public class BitTapNextTest {
     private static char[] password(){return "test fixture password only".toCharArray();}
+    private static char[] newPassword(){return "Public-fixture-Only9!".toCharArray();}
     private static byte[] one(){byte[] key=new byte[32];key[31]=1;return key;}
     private static String cg3(String note)throws Exception{return new WalletCrypto().encrypt(one(),password(),WalletCrypto.Network.MAINNET,note,true);}
     @Test public void publicNoteAuthenticatesAndRecoveryMatches()throws Exception{
@@ -47,8 +48,8 @@ public class BitTapNextTest {
         CameraEntropy c=fixture();assertTrue(c.ready());assertEquals("c22eeab355316875ad75c1cd39b63544dbd1ea3a362e447c852cf22aec695b41",WalletCrypto.hex(c.derive()));assertFalse(c.ready());assertEquals(0,c.count());assertThrows(GeneralSecurityException.class,c::derive);
     }
     @Test public void enhancedCreationRecoversNoteAndAllAddresses()throws Exception{
-        CameraEntropy c=fixture();WalletCrypto.Card card=new WalletCrypto().generate(password(),WalletCrypto.Network.MAINNET,"カメラ1",c);
-        assertTrue(card.encrypted.startsWith("CG3:"));assertFalse(c.ready());try(WalletCrypto.Unlocked key=new WalletCrypto().decrypt(card.encrypted,password())){assertTrue(key.addresses.sameAs(card.addresses));assertEquals("カメラ1",key.note);}
+        CameraEntropy c=fixture();WalletCrypto.Card card=new WalletCrypto().generate(newPassword(),WalletCrypto.Network.MAINNET,"カメラ1",c);
+        assertTrue(card.encrypted.startsWith("CG3:"));assertFalse(c.ready());try(WalletCrypto.Unlocked key=new WalletCrypto().decrypt(card.encrypted,newPassword())){assertTrue(key.addresses.sameAs(card.addresses));assertEquals("カメラ1",key.note);}
     }
     @Test public void repeatedFramesCannotCompleteCapture()throws Exception{
         try(CameraEntropy c=new CameraEntropy()){byte[] digest=MessageDigest.getInstance("SHA-256").digest(new byte[]{0});for(int i=0;i<100;i++)c.addFrame(digest);assertEquals(1,c.count());assertThrows(IllegalStateException.class,()->c.finish(digest));assertFalse(c.ready());}

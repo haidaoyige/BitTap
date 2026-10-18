@@ -19,6 +19,7 @@ public class WalletCryptoTest {
     // Publicly known scalar 1. Only for published standard tests; never use it for funds.
     private static byte[] one(){byte[] k=new byte[32];k[31]=1;return k;}
     private static char[] password(){return "test fixture password only".toCharArray();}
+    private static char[] newPassword(){return "Public-fixture-Only9!".toCharArray();}
     private static byte[] fromHex(String hex){byte[] b=new byte[hex.length()/2];for(int i=0;i<b.length;i++)b[i]=(byte)Integer.parseInt(hex.substring(i*2,i*2+2),16);return b;}
     private static String mutate(String text,int position){byte[] b=Base64.getUrlDecoder().decode(text.substring(4));b[position]^=1;return text.substring(0,4)+Base64.getUrlEncoder().withoutPadding().encodeToString(b);}
     private static int rawLength(String text){return Base64.getUrlDecoder().decode(text.substring(4)).length;}
@@ -94,16 +95,16 @@ public class WalletCryptoTest {
             }
         }
         Sequence rng=new Sequence();WalletCrypto crypto=new WalletCrypto(rng);
-        WalletCrypto.Card card=crypto.generate(password(),WalletCrypto.Network.MAINNET);
+        WalletCrypto.Card card=crypto.generate(newPassword(),WalletCrypto.Network.MAINNET);
         assertEquals(5,rng.calls);assertEquals("bc1qw508d6qejxtdg4y5r3zarvary0c5xw7kv8f3t4",card.address);
     }
     @Test public void failedRandomSourceDoesNotFallback(){
         SecureRandom broken=new SecureRandom(){@Override public void nextBytes(byte[] b){throw new ProviderException("test failure");}};
-        assertThrows(ProviderException.class,()->new WalletCrypto(broken).generate(password(),WalletCrypto.Network.MAINNET));
+        assertThrows(ProviderException.class,()->new WalletCrypto(broken).generate(newPassword(),WalletCrypto.Network.MAINNET));
     }
     @Test public void stuckRandomSourceStopsInsteadOfLoopingForever(){
         SecureRandom broken=new SecureRandom(){@Override public void nextBytes(byte[] b){Arrays.fill(b,(byte)0);}};
-        assertThrows(GeneralSecurityException.class,()->new WalletCrypto(broken).generate(password(),WalletCrypto.Network.MAINNET));
+        assertThrows(GeneralSecurityException.class,()->new WalletCrypto(broken).generate(newPassword(),WalletCrypto.Network.MAINNET));
     }
     @Test public void shortOrBlankNewPasswordsRejected(){
         assertThrows(IllegalArgumentException.class,()->WalletCrypto.requireNewPassword("12345".toCharArray()));
@@ -117,9 +118,9 @@ public class WalletCryptoTest {
             assertThrows(IllegalArgumentException.class,()->crypto.generate(shortPassword,WalletCrypto.Network.MAINNET));
             assertThrows(IllegalArgumentException.class,()->crypto.generate(shortPassword,WalletCrypto.Network.MAINNET,"",null));
         }
-        WalletCrypto.requireNewPassword("1234567890".toCharArray());
-        WalletCrypto.requireNewPassword("12345678901".toCharArray());
-        char[] maximum=new char[1024];Arrays.fill(maximum,'a');WalletCrypto.requireNewPassword(maximum);
+        WalletCrypto.requireNewPassword("Ab9!xy7@pq".toCharArray());
+        WalletCrypto.requireNewPassword("Ab9!xy7@pqr".toCharArray());
+        char[] maximum=new char[1024];Arrays.fill(maximum,'a');maximum[0]='A';maximum[1]='1';maximum[2]='!';WalletCrypto.requireNewPassword(maximum);
         assertThrows(IllegalArgumentException.class,()->WalletCrypto.requireNewPassword(new char[1025]));
     }
     @Test public void closePreventsFurtherWifAccess(){
@@ -149,12 +150,12 @@ public class WalletCryptoTest {
 
     @Test public void productionGeneratorCreatesRecoverableMainnetCard()throws Exception{
         WalletCrypto crypto=new WalletCrypto();
-        WalletCrypto.Card card=crypto.generate(password(),WalletCrypto.Network.MAINNET);
+        WalletCrypto.Card card=crypto.generate(newPassword(),WalletCrypto.Network.MAINNET);
         assertTrue(card.address.startsWith("bc1q"));
         assertEquals(42,card.address.length());
         assertTrue(card.encrypted.startsWith("CG2:"));
         assertTrue(card.encrypted.length()<=363);
-        try(WalletCrypto.Unlocked restored=crypto.decrypt(card.encrypted,password())){
+        try(WalletCrypto.Unlocked restored=crypto.decrypt(card.encrypted,newPassword())){
             assertEquals(card.address,restored.address);assertEquals(card.publicKey,restored.publicKey);
         }
     }
