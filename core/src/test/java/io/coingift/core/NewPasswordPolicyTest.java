@@ -15,7 +15,7 @@ public class NewPasswordPolicyTest {
     }
     @Test public void tenIsAMinimumAndAllFourClassesAreRequired(){
         assertFalse(NewPasswordPolicy.inspect("Ab1!abcde").satisfied());
-        for(String value:new String[]{"Ab1!abcdef","Ab1!abcdef-more","Ab1！abcdef","Ab1😀abcdef"}){
+        for(String value:new String[]{"Ab1!abcdef","Ab1!abcdef-more"}){
             assertTrue(value,NewPasswordPolicy.inspect(value).satisfied());
             WalletCrypto.requireNewPassword(value.toCharArray());
         }
@@ -28,9 +28,45 @@ public class NewPasswordPolicyTest {
     @Test public void bothCreationPathsRejectInvalidFormatBeforeRandomness()throws Exception{
         SecureRandom untouched=new SecureRandom(){@Override public void nextBytes(byte[] value){throw new AssertionError("invalid password reached random generation");}};
         WalletCrypto crypto=new WalletCrypto(untouched);
-        for(String value:new String[]{"1234567890","abcdef123!","ABCDEF123!","Abcdefghi!","Abcdef1234"}){
+        for(String value:new String[]{"1234567890","abcdef123!","ABCDEF123!","Abcdefghi!","Abcdef1234","Ab1!abcde\u0301","Ab1!abcdef中文","Ab1!abcdef😀"}){
             assertThrows(IllegalArgumentException.class,()->crypto.generate(value.toCharArray(),WalletCrypto.Network.MAINNET));
             assertThrows(IllegalArgumentException.class,()->crypto.generate(value.toCharArray(),WalletCrypto.Network.MAINNET,"",null));
+        }
+    }
+    @Test public void lengthAndClassesAreCheckedAfterCanonicalComposition(){
+        CharSequence alreadyCanonical=java.nio.CharBuffer.wrap("Ab1!abcd\u00e9f".toCharArray());
+        assertSame(alreadyCanonical,PasswordNormalization.nfc(alreadyCanonical));
+        // Ten raw code points compose to nine: both spellings must be rejected.
+        for(String value:new String[]{"Ab1!abcde\u0301","Ab1!abcd\u00e9"}){
+            assertFalse(NewPasswordPolicy.inspect(value).length);
+            assertThrows(IllegalArgumentException.class,()->WalletCrypto.requireNewPassword(value.toCharArray()));
+        }
+        for(String value:new String[]{"Ab1!abcde\u0301f","Ab1!abcd\u00e9f"}){
+            assertTrue(NewPasswordPolicy.inspect(value).length);
+            assertFalse(NewPasswordPolicy.inspect(value).characters);
+        }
+        // Composition removes the only ASCII uppercase A; KDF input contains Å.
+        assertFalse(NewPasswordPolicy.inspect("A\u030ab1!abcdef").upper);
+        // Reject non-ASCII input even when NFC would convert it to ASCII K.
+        assertFalse(NewPasswordPolicy.inspect("\u212ab1!abcdef").satisfied());
+    }
+    @Test public void everyVisibleAsciiCharacterIsAllowedAndEveryOtherCodePointIsRejected(){
+        String prefix="Ab1!abcdef";
+        // Exhaustive code-point coverage protects against emoji, CJK, controls,
+        // surrogate fragments, full-width lookalikes and future emoji assignments.
+        StringBuilder candidate=new StringBuilder(prefix);
+        for(int cp=0;cp<=Character.MAX_CODE_POINT;cp++){
+            candidate.setLength(prefix.length());candidate.appendCodePoint(cp);
+            boolean expected=cp>=0x21&&cp<=0x7e;
+            if(NewPasswordPolicy.inspect(candidate).satisfied()!=expected)
+                fail("Incorrect character policy at U+"+Integer.toHexString(cp));
+        }
+    }
+    @Test public void invalidInputHasExplicitErrorAndIsNotAltered(){
+        for(String value:new String[]{"Ab1!中文密码测试","Ab1!abcdef😀","Ab1!abcdef ","Ab1!abc\u200bdef","Ab1!abcdef\n","Ａb1!abcdef","Ab1！abcdef"}){
+            char[] input=value.toCharArray(),original=input.clone();
+            IllegalArgumentException error=assertThrows(IllegalArgumentException.class,()->WalletCrypto.requireNewPassword(input));
+            assertEquals(NewPasswordPolicy.CHARACTERS_MESSAGE,error.getMessage());assertArrayEquals(original,input);
         }
     }
     @Test public void existingNoncompliantPasswordsStillDecrypt()throws Exception{

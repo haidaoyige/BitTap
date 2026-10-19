@@ -212,17 +212,18 @@ public final class SmokeRunner extends Instrumentation {
                     yes("home".equals(get("screen"))&&notice.isShowing(),"entry waits for consent: "+language+" "+target);
                     yes(get("unlocked")==null&&get("session")==null,"opening notice does not generate or unlock a wallet");
                     yes(has(content,titles[l]),"risk title is localized without a Chinese fallback");
-                    for(int i=1;i<=4;i++)yes(has(content,copy.ui("risk"+i))&&has(content,copy.ui("risk"+i+"body")),"four approved risk paragraphs render: "+language+" "+i);
-                    for(String key:new String[]{"disclaimerIntro","riskNoticeLoss","riskNoticeLiability","riskNoticeSession"})yes(has(content,copy.ui(key)),"localized warning and consent information: "+key);
+                    for(int i:new int[]{1,2,4})yes(has(content,copy.ui("risk"+i))&&has(content,copy.ui("risk"+i+"body")),"three approved risk paragraphs render: "+language+" "+i);
+                    yes(!has(content,copy.ui("risk3"))&&!has(content,copy.ui("risk3body")),"removed card-copy paragraph is absent");
+                    for(String key:new String[]{"riskNoticeLoss","riskNoticeLiability","riskNoticeSession"})yes(has(content,copy.ui(key)),"localized warning and consent information: "+key);
                     yes(!has(content,"法律禁止免责的责任除外。")&&!has(content,"先审查源码，再决定使用"),"removed prototype notices are absent");
                     yes((notice.getWindow().getAttributes().flags&WindowManager.LayoutParams.FLAG_SECURE)!=0,"risk notice retains secure-window protection");
                     ScrollView scroll=null;for(View v:views(content))if(v instanceof ScrollView){scroll=(ScrollView)v;break;}
-                    yes(scroll instanceof ProtectedScrollView,"consent scrolling retains obscured-touch protection");
+                    yes(scroll instanceof ProtectedScrollView,"consent container retains obscured-touch protection");
                     ScrollView noticeScroll=scroll;
-                    main(()->noticeScroll.scrollTo(0,noticeScroll.getChildAt(0).getHeight()));waitForIdleSync();
+                    yes(!noticeScroll.canScrollVertically(1)&&!noticeScroll.canScrollVertically(-1),"risk notice fits without scrolling: "+language+" panel="+noticeScroll.getChildAt(0).getHeight()+" viewport="+noticeScroll.getHeight()+" padding="+noticeScroll.getPaddingBottom());
                     for(String label:new String[]{copy.ui("agree"),copy.ui("disagree")}){
                         Button action=dialogButton("sheet",label);android.graphics.Rect visible=new android.graphics.Rect();
-                        yes(action.getGlobalVisibleRect(visible)&&visible.height()==action.getHeight(),"both decisions remain fully reachable after scrolling");
+                        yes(action.getGlobalVisibleRect(visible)&&visible.height()==action.getHeight(),"both decisions are fully visible without scrolling");
                     }
                     if(target.equals("setup"))main(()->{
                         View panel=noticeScroll.getChildAt(0);Bitmap image=Bitmap.createBitmap(panel.getWidth(),panel.getHeight(),Bitmap.Config.ARGB_8888);

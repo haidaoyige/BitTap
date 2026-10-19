@@ -7,7 +7,6 @@ import java.nio.charset.StandardCharsets;
 import java.security.GeneralSecurityException;
 import java.security.MessageDigest;
 import java.security.SecureRandom;
-import java.text.Normalizer;
 import java.util.Arrays;
 import java.util.Base64;
 import javax.crypto.Cipher;
@@ -269,7 +268,7 @@ public final class WalletCrypto {
         if (password == null || password.length == 0 || password.length > 1024)
             throw new IllegalArgumentException("请输入解密密码（最多 1024 字符）");
         // Normalization never trims whitespace or changes case.
-        return Normalizer.normalize(new String(password), Normalizer.Form.NFC).getBytes(StandardCharsets.UTF_8);
+        return PasswordNormalization.nfc(java.nio.CharBuffer.wrap(password)).toString().getBytes(StandardCharsets.UTF_8);
     }
     static boolean isValidKey(byte[] key) {
         if (key == null || key.length != 32) return false;

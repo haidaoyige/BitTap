@@ -1,6 +1,6 @@
-# BitTap V0.6.1 发布与实机测试
+# BitTap V0.6.2 发布与实机测试
 
-当前发布候选：**0.6.1 / versionCode 29**。沿用原应用 ID `io.coingift.android` 和发行签名，最低 Android 9 / API 28。仓库保持私有：[haidaoyige/BitTap](https://github.com/haidaoyige/BitTap)。本次范围和保留风险见 [v0.6.1 发布说明](v0.6.1/RELEASE-NOTES.md)。最终提交、独立 CI 和安装包来源以 Release 的签名清单为准。
+当前发布候选：**0.6.2 / versionCode 31**。沿用原应用 ID `io.coingift.android` 和发行签名，最低 Android 9 / API 28。仓库保持私有：[haidaoyige/BitTap](https://github.com/haidaoyige/BitTap)。本次范围和保留风险见 [v0.6.2 发布说明](v0.6.2/RELEASE-NOTES.md)。最终提交、独立 CI 和安装包来源以 Release 的签名清单为准。
 
 ## 历史本地候选
 

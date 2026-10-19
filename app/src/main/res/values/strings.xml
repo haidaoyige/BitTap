@@ -465,4 +465,23 @@
   <string name="file_io_import_failed" formatted="false">"Import failed"</string>
   <string name="file_io_save_error" formatted="false">"The file was not confirmed as completely saved. Check the selected location and try again."</string>
   <string name="file_io_import_error" formatted="false">"Reading failed, was cancelled or timed out. Select the file again or use another file location."</string>
+  <string name="new_password_characters" formatted="false">"Use only uppercase/lowercase English letters, digits and ASCII punctuation. Chinese, emoji and spaces are not supported."</string>
+  <string name="random_password_generate" formatted="false">"Generate strong password"</string>
+  <string name="random_password_regenerate" formatted="false">"Regenerate"</string>
+  <string name="random_password_source" formatted="false">"System-generated · 32 characters"</string>
+  <string name="random_password_copy" formatted="false">"Copy password"</string>
+  <string name="random_password_warning_title" formatted="false">"Save this password first"</string>
+  <string name="random_password_warning_body" formatted="false">"This password is generated locally on your device. It is not saved for you. If lost, it cannot be recovered and the wallet cannot be decrypted. Store it safely, separately from your NFC card."</string>
+  <string name="random_password_saved" formatted="false">"I have saved this password securely"</string>
+  <string name="random_password_save_required" formatted="false">"Save the generated password and confirm before continuing."</string>
+  <string name="random_password_replace_title" formatted="false">"Generate a new password?"</string>
+  <string name="random_password_replace_body" formatted="false">"The current password will be replaced and the confirmation field cleared. Save the new password before creating the wallet."</string>
+  <string name="random_password_replace_action" formatted="false">"Generate new password"</string>
+  <string name="random_password_keep" formatted="false">"Keep current password"</string>
+  <string name="random_password_copied" formatted="false">"Password copied. Save it somewhere secure promptly."</string>
+  <string name="random_password_copy_legacy" formatted="false">"Secure password copying is unavailable on Android 9. Record it manually somewhere secure."</string>
+  <string name="random_password_failed" formatted="false">"Password generation failed. Your current password has not changed. Try again."</string>
+  <string name="random_password_copy_notice" formatted="false">"Other software may access the clipboard. Paste only into a trusted destination."</string>
+  <string name="random_password_description" formatted="false">"The password encrypts your private key. Set your own, or generate a strong password on this device."</string>
+  <string name="random_password_all_met" formatted="false">"All password requirements met"</string>
 </resources>

@@ -264,7 +264,7 @@ final class AppUi {
         if(buttons.remove(view))view.setOnClickListener(null);
     }
     void passwordStrength(EditText input){passwordStrength(page,input);}
-    void passwordRequirements(LinearLayout parent,EditText input){
+    LinearLayout passwordRequirements(LinearLayout parent,EditText input){
         LinearLayout panel=vertical();panel.setPadding(dp(12),dp(10),dp(12),dp(10));panel.setBackground(shape(BG,13,false));
         LinearLayout.LayoutParams params=new LinearLayout.LayoutParams(-1,-2);params.topMargin=dp(10);parent.addView(panel,params);
         int[] labels={R.string.new_password_length,R.string.new_password_upper,R.string.new_password_lower,R.string.new_password_digit,R.string.new_password_special};
@@ -289,7 +289,7 @@ final class AppUi {
             public void beforeTextChanged(CharSequence value,int start,int count,int after){}
             public void onTextChanged(CharSequence value,int start,int before,int count){update.run();}
             public void afterTextChanged(android.text.Editable value){}
-        });update.run();
+        });update.run();return panel;
     }
     void passwordStrength(LinearLayout parent,EditText input){
         TextView label=text(parent,"",11,SUB,false);label.setPadding(0,dp(6),0,0);label.setAccessibilityLiveRegion(View.ACCESSIBILITY_LIVE_REGION_POLITE);
@@ -356,12 +356,28 @@ final class AppUi {
     TextView statusSheet(Dialog d,String title,int icon,Consumer<LinearLayout> builder){
         return showSheet(d,title,builder,null,icon,false,true);
     }
+    /** Compact inline heading and more screen space for the non-scrolling entry notice. */
+    TextView riskSheet(Dialog d,String title,Consumer<LinearLayout> builder){
+        return showSheet(d,title,builder,null,0,true,false,true);
+    }
     private TextView showSheet(Dialog d,String title,Consumer<LinearLayout> builder,Runnable close,int leadingIcon,boolean expanded,boolean status){
+        return showSheet(d,title,builder,close,leadingIcon,expanded,status,false);
+    }
+    private TextView showSheet(Dialog d,String title,Consumer<LinearLayout> builder,Runnable close,int leadingIcon,boolean expanded,boolean status,boolean riskNotice){
         d.requestWindowFeature(Window.FEATURE_NO_TITLE);
         LinearLayout panel=vertical();panel.setPadding(dp(24),dp(13),dp(24),dp(25));panel.setBackground(shape(Color.WHITE,25,false));
         View grab=new View(activity);grab.setBackground(shape(LINE,3,false));LinearLayout.LayoutParams gp=new LinearLayout.LayoutParams(dp(32),dp(4));gp.gravity=Gravity.CENTER_HORIZONTAL;gp.bottomMargin=dp(23);panel.addView(grab,gp);
         TextView heading;
-        if(status){
+        if(riskNotice){
+            panel.setTag("risk-notice-panel");
+            panel.setPadding(dp(24),dp(13),dp(24),dp(19));
+            LinearLayout row=horizontal();panel.addView(row);
+            FrameLayout badge=new FrameLayout(activity);badge.setBackground(shape(SOFT,12,false));
+            LinearLayout.LayoutParams bp=new LinearLayout.LayoutParams(dp(38),dp(38));bp.rightMargin=dp(12);row.addView(badge,bp);
+            ImageView symbol=new ImageView(activity);symbol.setImageDrawable(drawable(R.drawable.ic_shield,ACCENT,21));
+            badge.addView(symbol,new FrameLayout.LayoutParams(dp(21),dp(21),Gravity.CENTER));
+            heading=text(row,title,26,FG,true);heading.setLayoutParams(new LinearLayout.LayoutParams(0,-2,1));
+        }else if(status){
             android.widget.FrameLayout badge=new android.widget.FrameLayout(activity);badge.setBackground(shape(SOFT,20,false));panel.addView(badge,new LinearLayout.LayoutParams(dp(58),dp(58)));
             ImageView symbol=new ImageView(activity);symbol.setImageDrawable(drawable(leadingIcon,ACCENT,27));badge.addView(symbol,new android.widget.FrameLayout.LayoutParams(dp(27),dp(27),Gravity.CENTER));
             space(panel,21);heading=text(panel,title,27,FG,true);
@@ -378,11 +394,23 @@ final class AppUi {
             heading=text(row,title,22,FG,true);heading.setLayoutParams(new LinearLayout.LayoutParams(0,-2,1));
             ImageButton dismiss=icon(R.drawable.ic_close,"关闭",close);dismiss.setTag("sheet-close");row.addView(dismiss,new LinearLayout.LayoutParams(dp(44),dp(44)));
         }
-        line(heading,1.4f);space(panel,10);builder.accept(panel);
+        line(heading,1.4f);space(panel,riskNotice?18:10);builder.accept(panel);
         ScrollView scroll=new ProtectedScrollView(activity,()->obscuredTouch.run(),()->interaction.getAsBoolean()){
             @Override protected void onMeasure(int width,int height){
                 int max=(int)(getResources().getDisplayMetrics().heightPixels*(expanded?.95:.85));
                 super.onMeasure(width,MeasureSpec.makeMeasureSpec(max,MeasureSpec.AT_MOST));
+                if(riskNotice){
+                    // Spend spare height on breathing room; compact only spacing on short screens.
+                    int available=getMeasuredHeight()-getPaddingTop()-getPaddingBottom();
+                    int natural=panel.getMeasuredHeight();
+                    int current=dp(17);
+                    for(int i=0;i<panel.getChildCount();i++)if("risk-notice-row".equals(panel.getChildAt(i).getTag())){current=panel.getChildAt(i).getPaddingTop();break;}
+                    int desired=Math.max(0,Math.min(dp(17),current+(available-natural-5)/6));
+                    if(desired!=current){
+                        for(int i=0;i<panel.getChildCount();i++)if("risk-notice-row".equals(panel.getChildAt(i).getTag()))panel.getChildAt(i).setPadding(0,desired,0,desired);
+                        super.onMeasure(width,MeasureSpec.makeMeasureSpec(max,MeasureSpec.AT_MOST));
+                    }
+                }
             }
         };
         scroll.addView(panel);d.setContentView(scroll);d.setCanceledOnTouchOutside(true);

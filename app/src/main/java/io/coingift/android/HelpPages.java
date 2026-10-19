@@ -12,25 +12,31 @@ final class HelpPages {
     HelpPages(AppUi ui,ApprovedCopy copy){this.ui=ui;this.copy=copy;}
     Dialog disclaimer(Runnable agree,Runnable full,Runnable close){
         Dialog owner=new Dialog(ui.activity);
-        TextView heading=ui.showSheet(owner,copy.ui("disclaimer"),p->{
-            ui.note(p,copy.ui("disclaimerIntro"));
-            LinearLayout warning=ui.callout(p,R.drawable.ic_password_warning,null);
-            TextView loss=ui.text(warning,copy.ui("riskNoticeLoss"),13,AppUi.ACCENT,true);ui.line(loss,1.7f);
-            ui.space(p,10);int[] icons={R.drawable.ic_wallet,R.drawable.ic_key,R.drawable.ic_nfc,R.drawable.ic_warning};
-            for(int i=1;i<=icons.length;i++){
-                LinearLayout content=ui.risk(p,icons[i-1],copy.ui("risk"+i),copy.ui("risk"+i+"body"),i<icons.length);
-                TextView title=(TextView)content.getChildAt(0);title.setTextSize(15);ui.line(title,1.6f);
-                TextView body=(TextView)content.getChildAt(content.getChildCount()-1);body.setTextSize(13);ui.line(body,1.85f);
+        ui.riskSheet(owner,copy.ui("disclaimer"),p->{
+            TextView loss=ui.text(p,copy.ui("riskNoticeLoss"),13,AppUi.ACCENT,true);
+            loss.setPadding(ui.dp(14),ui.dp(13),ui.dp(14),ui.dp(13));
+            loss.setBackground(ui.shape(AppUi.SOFT,12,false));ui.line(loss,1.5f);
+            int[] items={1,2,4},icons={R.drawable.ic_wallet,R.drawable.ic_key,R.drawable.ic_warning};
+            for(int i=0;i<items.length;i++){
+                LinearLayout content=ui.risk(p,icons[i],copy.ui("risk"+items[i]),copy.ui("risk"+items[i]+"body"),i<items.length-1);
+                ((View)content.getParent()).setTag("risk-notice-row");
+                ((View)content.getParent()).setPadding(0,ui.dp(17),0,ui.dp(17));
+                TextView title=(TextView)content.getChildAt(0);title.setTextSize(15);ui.line(title,1.5f);
+                content.getChildAt(1).getLayoutParams().height=ui.dp(6);
+                TextView body=(TextView)content.getChildAt(content.getChildCount()-1);body.setTextSize(14);ui.line(body,1.75f);
             }
             TextView liability=ui.text(p,copy.ui("riskNoticeLiability"),12,AppUi.SUB,false);
-            liability.setPadding(ui.dp(14),ui.dp(13),ui.dp(14),ui.dp(13));liability.setBackground(ui.shape(0xfff7f3ed,13,false));ui.line(liability,1.85f);
+            liability.setPadding(0,ui.dp(16),0,ui.dp(6));ui.line(liability,1.75f);
             LinearLayout termsRow=ui.horizontal();termsRow.setGravity(android.view.Gravity.CENTER);p.addView(termsRow,new LinearLayout.LayoutParams(-1,-2));
-            Button terms=ui.textAction(termsRow,copy.ui("readFullDisclaimer"),0,R.drawable.ic_chevron_right,full);terms.setTextSize(13);
-            ui.action(p,copy.ui("agree"),true,R.drawable.ic_check_mark,agree);ui.action(p,copy.ui("disagree"),false,0,close);
+            Button terms=ui.textAction(termsRow,copy.ui("readFullDisclaimer"),0,R.drawable.ic_chevron_right,full);terms.setTextSize(12);
+            for(Button action:new Button[]{ui.action(p,copy.ui("agree"),true,R.drawable.ic_check_mark,agree),ui.action(p,copy.ui("disagree"),false,0,close)}){
+                action.setTextSize(15);action.setMinHeight(ui.dp(50));action.setMinimumHeight(ui.dp(50));
+                action.setPadding(ui.dp(12),ui.dp(12),ui.dp(12),ui.dp(12));ui.line(action,1.4f);
+                ((LinearLayout.LayoutParams)action.getLayoutParams()).topMargin=ui.dp(8);
+            }
             TextView session=ui.text(p,copy.ui("riskNoticeSession"),11,AppUi.SUB,false);
-            session.setGravity(android.view.Gravity.CENTER);session.setPadding(0,ui.dp(14),0,0);
-        },null);
-        heading.setTextSize(27);ui.line(heading,1.4f);return owner;
+            session.setGravity(android.view.Gravity.CENTER);session.setPadding(0,ui.dp(12),0,0);ui.line(session,1.5f);
+        });return owner;
     }
     Dialog cardHelp(Runnable close){JSONObject c=copy.section("cardHelpCopy");return ui.sheet(c.optString("title"),p->{
         JSONArray rows=c.optJSONArray("rows");int[] icons={R.drawable.ic_nfc,R.drawable.ic_display,R.drawable.ic_shuffle,R.drawable.ic_help};

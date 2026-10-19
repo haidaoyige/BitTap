@@ -3,6 +3,7 @@ final class TextCatalog {
 static final java.util.Map<String,Integer> IDS=new java.util.HashMap<>();
 static {
 IDS.put(io.coingift.core.NewPasswordPolicy.INVALID_MESSAGE,R.string.new_password_invalid);
+IDS.put(io.coingift.core.NewPasswordPolicy.CHARACTERS_MESSAGE,R.string.new_password_characters);
 IDS.put("解锁冷钱包",R.string.wallet_unlock_action);
 IDS.put("查看私钥",R.string.wallet_view_private);
 IDS.put("如何转移 BTC",R.string.wallet_transfer_help);

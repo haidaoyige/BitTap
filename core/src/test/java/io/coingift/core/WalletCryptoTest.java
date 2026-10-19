@@ -86,6 +86,17 @@ public class WalletCryptoTest {
         assertFalse(WalletCrypto.isValidKey(n));n[31]--;assertTrue(WalletCrypto.isValidKey(n));
         assertFalse(WalletCrypto.isValidKey(new byte[31]));
     }
+    @Test public void canonicalKdfRepresentationIsUnchanged()throws Exception{
+        char[] composed="Ab1!abcd\u00e9f".toCharArray(),decomposed="Ab1!abcde\u0301f".toCharArray();
+        WalletCrypto crypto=new WalletCrypto();
+        try{
+            assertEquals(PasswordNormalization.nfc(java.nio.CharBuffer.wrap(composed)).toString(),PasswordNormalization.nfc(java.nio.CharBuffer.wrap(decomposed)).toString());
+            String encrypted=crypto.encrypt(one(),decomposed,WalletCrypto.Network.MAINNET);
+            try(WalletCrypto.Unlocked restored=crypto.decrypt(encrypted,composed)){
+                assertEquals("bc1qw508d6qejxtdg4y5r3zarvary0c5xw7kv8f3t4",restored.address);
+            }
+        }finally{WalletCrypto.wipe(composed);WalletCrypto.wipe(decomposed);}
+    }
     @Test public void rejectionSamplingRetriesZeroAndCurveOrder()throws Exception{
         class Sequence extends SecureRandom{
             int calls;

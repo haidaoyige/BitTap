@@ -440,7 +440,7 @@
   <string name="new_password_upper" formatted="false">"英大文字 A–Z"</string>
   <string name="new_password_lower" formatted="false">"英小文字 a–z"</string>
   <string name="new_password_digit" formatted="false">"数字 0–9"</string>
-  <string name="new_password_special" formatted="false">"記号 ! @ # など"</string>
+  <string name="new_password_special" formatted="false">"半角記号 ! @ # など"</string>
   <string name="new_password_met" formatted="false">"、入力済み"</string>
   <string name="new_password_unmet" formatted="false">"、未入力"</string>
   <string name="new_password_ready" formatted="false">"形式の条件を満たし、パスワードも一致しています。"</string>
@@ -464,4 +464,23 @@
   <string name="file_io_import_failed" formatted="false">"読み込みできませんでした"</string>
   <string name="file_io_save_error" formatted="false">"ファイルの完全な保存を確認できませんでした。保存先を確認して再試行してください。"</string>
   <string name="file_io_import_error" formatted="false">"読み込み失敗、キャンセル、または時間切れです。ファイルを選び直すか、別の保存先を使ってください。"</string>
+  <string name="new_password_characters" formatted="false">"英大文字・英小文字・数字・半角ASCII記号のみ使用できます。漢字・絵文字・空白は使用できません。"</string>
+  <string name="random_password_generate" formatted="false">"強力なパスワードを生成"</string>
+  <string name="random_password_regenerate" formatted="false">"再生成"</string>
+  <string name="random_password_source" formatted="false">"端末でランダム生成 · 32文字"</string>
+  <string name="random_password_copy" formatted="false">"パスワードをコピー"</string>
+  <string name="random_password_warning_title" formatted="false">"先にパスワードを保管してください"</string>
+  <string name="random_password_warning_body" formatted="false">"パスワードはこの端末内でランダム生成され、代わりに保存されません。紛失すると復元もウォレットの復号もできません。NFCカードとは別の安全な場所に保管してください。"</string>
+  <string name="random_password_saved" formatted="false">"このパスワードを安全な場所に保管しました"</string>
+  <string name="random_password_save_required" formatted="false">"生成されたパスワードを保管し、確認してください。"</string>
+  <string name="random_password_replace_title" formatted="false">"新しいパスワードを生成しますか？"</string>
+  <string name="random_password_replace_body" formatted="false">"現在のパスワードを置き換え、確認欄を空にします。ウォレットを作成する前に、新しいパスワードを保管してください。"</string>
+  <string name="random_password_replace_action" formatted="false">"新しく生成"</string>
+  <string name="random_password_keep" formatted="false">"現在のパスワードを使う"</string>
+  <string name="random_password_copied" formatted="false">"コピーしました。速やかに安全な場所へ保管してください。"</string>
+  <string name="random_password_copy_legacy" formatted="false">"Android 9ではパスワードを安全にコピーできません。安全な場所に手動で記録してください。"</string>
+  <string name="random_password_failed" formatted="false">"生成に失敗しました。現在のパスワードは変更されていません。再試行してください。"</string>
+  <string name="random_password_copy_notice" formatted="false">"クリップボードは他のソフトに読み取られる可能性があります。信頼できる場所にのみ貼り付けてください。"</string>
+  <string name="random_password_description" formatted="false">"パスワードは秘密鍵を暗号化します。自分で設定するか、端末で強力なパスワードを生成できます。"</string>
+  <string name="random_password_all_met" formatted="false">"すべてのパスワード条件を満たしています"</string>
 </resources>
