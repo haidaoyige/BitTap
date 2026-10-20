@@ -180,6 +180,6 @@ final class PrivateKeyProtectionProbe {
     private void invoke(String name){invoke(name,new Class<?>[0]);}
     private void invoke(String name,Class<?>[] types,Object...args){try{java.lang.reflect.Method method=MainActivity.class.getDeclaredMethod(name,types);method.setAccessible(true);method.invoke(activity,args);}catch(Exception ex){throw new RuntimeException(ex);}}
     private void main(Runnable action){Throwable[] error={null};host.runOnMainSync(()->{try{action.run();}catch(Throwable ex){error[0]=ex;}});if(error[0]!=null)throw new AssertionError("Private protection UI check",error[0]);}
-    private void until(BooleanSupplier condition,long timeout)throws Exception{long end=SystemClock.elapsedRealtime()+timeout;while(SystemClock.elapsedRealtime()<end){if(condition.getAsBoolean())return;Thread.sleep(50);}throw new AssertionError("Private protection condition timed out");}
+    private void until(BooleanSupplier condition,long timeout)throws Exception{long end=SystemClock.elapsedRealtime()+timeout;while(SystemClock.elapsedRealtime()<end){if(condition.getAsBoolean()){host.waitForIdleSync();return;}Thread.sleep(50);}throw new AssertionError("Private protection condition timed out");}
     private void yes(boolean value,String message){checks++;if(!value)throw new AssertionError(message);}
 }
