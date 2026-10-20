@@ -1,6 +1,6 @@
 # BitTap encrypted backups: CG3, CG2 and legacy CG1
 
-CG3 is the project-specific format written by BitTap 0.4.0 internal build 7. CG2 and CG1 remain readable. It is **not BIP38 or a wallet import standard**. Keep this specification and the offline recovery distribution with backups. NFC is readable/copyable NDEF storage, not a secure element.
+CG3 is the project-specific format written by BitTap. Starting with internal code39, only the scrypt `(N=32768,r=8,p=3)` cost profile is accepted. Earlier internal-test cards/files with p=1 are deliberately rejected; no compatibility or migration path is provided. CG2/CG1 wire layouts are parsed only with the same current profile. It is **not BIP38 or a wallet import standard**. Keep this specification and the offline recovery distribution with backups. NFC is readable/copyable NDEF storage, not a secure element.
 
 The text is `CG3:` (legacy `CG2:` / `CG1:`) followed by canonical, unpadded Base64URL. A prefix/version mismatch is rejected. No external URLs, keys or parameters are fetched.
 
@@ -15,7 +15,7 @@ The text is `CG3:` (legacy `CG2:` / `CG1:`) followed by canonical, unpadded Base
 | 6 | 1 | KDF/cipher profile `0x01`: scrypt + AES-256-GCM |
 | 7 | 1 | log2(N) = `15` (N = 32768) |
 | 8 | 1 | scrypt r = `8` |
-| 9 | 1 | scrypt p = `1` |
+| 9 | 1 | scrypt p = `3` |
 | 10 | 16 | Fresh random salt |
 | 26 | 12 | Fresh random GCM nonce |
 
@@ -42,15 +42,15 @@ CG2 text is at most 363 ASCII bytes, normally 360. CG3 adds a note-length byte a
 
 ## Legacy CG1
 
-CG1 uses the common header with version 1. Byte 38 is a length of 42, bytes 39–80 contain a native P2WPKH address, and bytes 81–128 are ciphertext/tag. AAD is bytes 0–80. The text is exactly 176 ASCII bytes. New creation never emits CG1; existing mainnet CG1 cards and files remain readable and decryptable.
+CG1 uses the common header with version 1. Byte 38 is a length of 42, bytes 39–80 contain a native P2WPKH address, and bytes 81–128 are ciphertext/tag. AAD is bytes 0–80. The text is exactly 176 ASCII bytes. New creation never emits CG1. The CG1 test fixture uses the current p=3 profile; it does not establish compatibility with earlier p=1 backups.
 
 CG1 provides only its original native SegWit claim before decryption. All four destinations can be derived after recovery. Independent BIP38 strings contain no public four-address metadata.
 
 ## Encryption, passwords and WIF
 
-Passwords are Unicode NFC-normalized and UTF-8 encoded, with whitespace and case preserved. New creation requires 10–1024 UTF-16 code units and rejects all-whitespace input; recovery still accepts 1–1024 so older short-password backups remain recoverable. A ten-character minimum does not establish password entropy; guessable passwords still receive an explicit warning.
+Passwords are Unicode NFC-normalized and UTF-8 encoded, with whitespace and case preserved. New creation requires 10–1024 visible ASCII characters, including uppercase, lowercase, a digit and punctuation. Chinese, emoji, whitespace and non-ASCII characters are rejected at creation. Import/decryption accepts 1–1024 characters, including standard BIP38 passphrases. This does not enable recovery of obsolete KDF profiles. A ten-character minimum does not establish password entropy; guessable passwords still receive an explicit warning.
 
-Derive 32 bytes with `scrypt(passwordUtf8, salt, N=32768, r=8, p=1, dkLen=32)`, nominally about 32 MiB plus implementation overhead. Encrypt the raw 32-byte scalar using AES-256-GCM with a 128-bit tag. Use fresh random salt and nonce for each encryption. The platform `SecureRandom` supplies generation randomness; rejection sampling accepts scalars in `[1,n-1]` without modulo bias and fails closed on RNG errors.
+Derive 32 bytes with `scrypt(passwordUtf8, salt, N=32768, r=8, p=3, dkLen=32)`, nominally about 32 MiB plus implementation overhead. Encrypt the raw 32-byte scalar using AES-256-GCM with a 128-bit tag. Use fresh random salt and nonce for each encryption. The platform `SecureRandom` supplies generation randomness; rejection sampling accepts scalars in `[1,n-1]` without modulo bias and fails closed on RNG errors.
 
 Private export is **Bitcoin mainnet compressed WIF**: Base58Check of `0x80 || originalScalar32 || 0x01`. WIF carries no address/script type. CG1/CG2/CG3 must first be decrypted by BitTap or the recovery CLI before import into another wallet.
 

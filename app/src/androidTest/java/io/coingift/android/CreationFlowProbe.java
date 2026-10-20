@@ -27,11 +27,32 @@ final class CreationFlowProbe {
                 yes("home".equals(get("screen"))&&get("sheet")!=null,"entry still requires consent");
                 main(()->button(dialog("sheet"),copy.ui("agree")).performClick());host.waitForIdleSync();
                 yes(inputs(root()).size()==1,"only the wallet note is inline");
-                EditText note=inputs(root()).get(0);main(()->note.setText("test-01"));capture("creation-"+language+"-setup",root());
+                EditText note=inputs(root()).get(0);main(()->note.setText("test-01"));
+                Button supported=button(root(),copy.section("cardHelpCopy").optString("view"));
+                View prep=(View)supported.getParent();TextView preparation=null;
+                for(View item:views(prep))if(item instanceof TextView&&copy.section("cardHelpCopy").optString("prep").contentEquals(((TextView)item).getText()))preparation=(TextView)item;
+                yes(preparation!=null,"localized NFC preparation remains visible");
+                until(()->supported.getWidth()>0&&prep.getWidth()>0,5000);
+                Rect prepBounds=new Rect(),entryBounds=new Rect(),descriptionBounds=new Rect();
+                prep.getGlobalVisibleRect(prepBounds);supported.getGlobalVisibleRect(entryBounds);preparation.getGlobalVisibleRect(descriptionBounds);
+                yes(entryBounds.height()==supported.getHeight()&&supported.getHeight()>=Math.round(44*activity.getResources().getDisplayMetrics().density),"supported-card entry retains a full visible touch target");
+                yes(prepBounds.contains(entryBounds)&&descriptionBounds.right<=entryBounds.left,"compact preparation and entry do not overlap or clip");
+                main(supported::performClick);host.waitForIdleSync();
+                yes(get("sheet")!=null&&views(dialog("sheet")).stream().anyMatch(v->v instanceof TextView&&((TextView)v).getText().toString().contains("NTAG216")),"supported-card sheet is reachable from the compact entry");
+                main(()->button(dialog("sheet"),copy.ui("understand")).performClick());host.waitForIdleSync();
+                yes("setup".equals(get("screen"))&&"test-01".contentEquals(note.getText()),"returning from card help preserves the wallet note and setup");
+                yes(note.getHint()==null||note.getHint().length()==0,"wallet note has no example placeholder");
+                capture("creation-"+language+"-setup",root());
                 main(()->button(root(),copy.ui("generate")).performClick());host.waitForIdleSync();
                 Dialog owner=(Dialog)get("creationDialog");yes(owner!=null&&owner.isShowing(),"generate opens a password dialog before generating");
                 yes(get("session")==null&&!(Boolean)get("busy")&&pending()==0,"opening dialog does not generate or enqueue a password");
                 List<EditText> fields=inputs(dialog("creationDialog"));yes(fields.size()==2,"two password inputs are inside the dialog");
+                for(View v:views(dialog("creationDialog"))){
+                    yes(!(v instanceof CheckBox),"manual password creation has no generated-password save gate");
+                    Object tag=v.getTag();yes(tag==null||!tag.toString().startsWith("random-password-"),"no random-password or copy-password controls remain");
+                }
+                yes(fields.get(0).getTransformationMethod()!=null&&fields.get(1).getTransformationMethod()!=null,"both manual password fields start masked");
+                yes(fields.get(0).getHint()==null||fields.get(0).getHint().length()==0,"password input has no explanatory placeholder");
                 AppUi ui=(AppUi)get("ui");
                 for(EditText field:fields){yes(!field.isSaveEnabled()&&field.getImportantForAutofill()==View.IMPORTANT_FOR_AUTOFILL_NO_EXCLUDE_DESCENDANTS,"password is excluded from state saving and autofill");yes((field.getImeOptions()&android.view.inputmethod.EditorInfo.IME_FLAG_NO_PERSONALIZED_LEARNING)!=0,"password disables personalized keyboard learning");}
                 yes((owner.getWindow().getAttributes().flags&WindowManager.LayoutParams.FLAG_SECURE)!=0,"creation password dialog retains secure window protection");
@@ -82,7 +103,6 @@ final class CreationFlowProbe {
                 try(WalletCrypto.Unlocked restored=new WalletCrypto().decrypt(wallet.encrypted,password)){yes(restored.addresses.sameAs(wallet.addresses)&&"test-01".equals(restored.note),"real creation encrypts matching addresses and note with confirmed password");}finally{WalletCrypto.wipe(password);}
                 yes(get("creationDialog")==null&&fields.stream().allMatch(f->f.length()==0),"successful creation wipes dialog fields before writing page");
                 main(()->invoke("clearWalletSession",new Class<?>[]{boolean.class},true));
-                randomPasswordFlow();
             }
             launch("zh");enhancedGate();rotationAndObscuring();
             return checks;
@@ -108,73 +128,6 @@ final class CreationFlowProbe {
         yes(button(root(),copy.ui("photoGenerate"))!=null,"resuming after cleanup asks for fresh capture");
         main(()->invoke("clearWalletSession",new Class<?>[]{boolean.class},true));
     }
-    private void randomPasswordFlow()throws Exception{
-        main(()->{set("screen","setup");invoke("render");});host.waitForIdleSync();
-        EditText note=inputs(root()).get(0);open(note);List<EditText> fields=inputs(dialog("creationDialog"));
-        Dialog owner=(Dialog)get("creationDialog");ApprovedCopy copy=new ApprovedCopy(activity);
-        Button random=button(dialog("creationDialog"),activity.getString(R.string.random_password_generate));
-        main(random::performClick);host.waitForIdleSync();
-        final EditText first=fields.get(0),second=fields.get(1);char[] password=new char[first.length()];
-        first.getText().getChars(0,first.length(),password,0);
-        try{
-            yes(password.length==32&&NewPasswordPolicy.inspect(java.nio.CharBuffer.wrap(password)).satisfied(),"generated password has 32 allowed characters and all four classes");
-            yes((Boolean)get("creationPasswordGenerated")&&first.getTransformationMethod()==null&&second.length()==0,"generated password is visible and confirmation starts empty");
-            yes(first.getMinLines()>=2&&first.getEllipsize()==null,"generated password wraps instead of ellipsizing");
-            for(float size:new float[]{16,24}){
-                main(()->first.setTextSize(size));host.waitForIdleSync();
-                yes(first.getLayout()!=null&&first.getLayout().getLineCount()>=2&&first.getLayout().getLineEnd(first.getLayout().getLineCount()-1)==32,"all generated characters remain in the wrapped layout at font size "+size);
-            }
-            main(()->first.setTextSize(16));host.waitForIdleSync();
-            CheckBox saved=(CheckBox)get("creationRandomSaved");
-            yes(saved!=null&&!saved.isChecked()&&saved.getVisibility()==View.VISIBLE,"save acknowledgement is shown and unchecked");
-            yes(hasText(dialog("creationDialog"),activity.getString(R.string.random_password_warning_body)),"generated password loss warning is localized");
-            Button copyButton=button(dialog("creationDialog"),activity.getString(R.string.random_password_copy));main(copyButton::performClick);
-            android.content.ClipboardManager clipboard=(android.content.ClipboardManager)activity.getSystemService(android.content.Context.CLIPBOARD_SERVICE);
-            if(Build.VERSION.SDK_INT>=29){
-                android.content.ClipData clip=clipboard.getPrimaryClip();
-                yes(clip!=null&&java.nio.CharBuffer.wrap(password).toString().contentEquals(clip.getItemAt(0).getText()),"copied password is read back exactly");
-                yes(clip.getDescription().getExtras()!=null&&clip.getDescription().getExtras().getBoolean("android.content.extra.IS_SENSITIVE"),"copied password is marked sensitive");
-                main(()->{second.requestFocus();second.onTextContextMenuItem(android.R.id.paste);});host.waitForIdleSync();
-                yes(android.text.TextUtils.equals(first.getText(),second.getText()),"actual paste into confirmation preserves all characters");
-            }else{
-                yes(clipboard.getPrimaryClip()==null,"Android 9 never copies generated passwords");
-                main(()->second.getText().replace(0,second.length(),java.nio.CharBuffer.wrap(password)));
-            }
-            Button generate=button(dialog("creationDialog"),copy.ui("creationConfirmGenerate"));
-            yes(!generate.isEnabled(),"matching confirmation cannot bypass unsaved random password");
-            confirm(copy);yes(get("session")==null&&pending()==0,"submission guard rejects missing save acknowledgement");
-            main(()->saved.setChecked(true));yes(generate.isEnabled(),"saved and matching generated password enables wallet creation");
-            main(random::performClick);host.waitForIdleSync();
-            yes(get("randomPasswordReplace")!=null&&matches(password,first),"regenerate asks before replacing the current password");
-            Dialog replace=(Dialog)get("randomPasswordReplace");
-            final Dialog keepReplace=replace;main(()->button(keepReplace.getWindow().getDecorView(),activity.getString(R.string.random_password_keep)).performClick());host.waitForIdleSync();
-            yes(get("randomPasswordReplace")==null&&matches(password,first)&&saved.isChecked(),"keeping password preserves input and save acknowledgement");
-            main(random::performClick);host.waitForIdleSync();replace=(Dialog)get("randomPasswordReplace");final Dialog nextReplace=replace;
-            main(()->button(nextReplace.getWindow().getDecorView(),activity.getString(R.string.random_password_replace_action)).performClick());host.waitForIdleSync();
-            yes(!matches(password,first)&&first.length()==32&&second.length()==0&&!saved.isChecked()&&!generate.isEnabled(),"regenerate clears old confirmation and save acknowledgement");
-            yes(clipboard.getPrimaryClip()==null,"regenerate clears its own copied old password");
-            main(()->first.getText().append("A"));host.waitForIdleSync();
-            yes(!(Boolean)get("creationPasswordGenerated")&&saved.getVisibility()==View.GONE,"manual editing leaves random mode and resets acknowledgement");
-            main(random::performClick);host.waitForIdleSync();replace=(Dialog)get("randomPasswordReplace");
-            Button stale=button(replace.getWindow().getDecorView(),activity.getString(R.string.random_password_replace_action));
-            main(owner::cancel);host.waitForIdleSync();main(stale::performClick);
-            yes(get("creationDialog")==null&&get("randomPasswordReplace")==null&&get("creationRandomInput")==null&&get("creationRandomSaved")==null,"dismiss wipes and releases generated password controls and nested dialog");
-            yes(first.length()==0&&second.length()==0&&pending()==0&&get("session")==null,"stale regeneration action cannot restore cancelled inputs or create a wallet");
-            open(note);fields=inputs(dialog("creationDialog"));final EditText newFirst=fields.get(0),newSecond=fields.get(1);
-            main(()->button(dialog("creationDialog"),activity.getString(R.string.random_password_generate)).performClick());host.waitForIdleSync();
-            char[] fresh=characters(newFirst);
-            try{
-                main(()->{newSecond.getText().replace(0,newSecond.length(),java.nio.CharBuffer.wrap(fresh));((CheckBox)get("creationRandomSaved")).setChecked(true);});confirm(copy);
-                until(()->"write".equals(get("screen"))&&get("session")!=null&&pending()==0,30000);
-                try(WalletCrypto.Unlocked restored=new WalletCrypto().decrypt(((CreationSession)get("session")).encrypted,fresh)){yes(restored.addresses.sameAs(((CreationSession)get("session")).addresses),"random password actually encrypts and recovers the created wallet");}
-                yes(newFirst.length()==0&&newSecond.length()==0&&get("creationRandomInput")==null,"successful wallet creation wipes and releases generated input");
-            }finally{WalletCrypto.wipe(fresh);}
-            main(()->invoke("clearWalletSession",new Class<?>[]{boolean.class},true));
-        }finally{WalletCrypto.wipe(password);}
-    }
-    private boolean hasText(View root,String text){for(View v:views(root))if(v instanceof TextView&&text.contentEquals(((TextView)v).getText()))return true;return false;}
-    private boolean matches(char[] value,EditText input){return android.text.TextUtils.equals(java.nio.CharBuffer.wrap(value),input.getText());}
-    private char[] characters(EditText input){char[] value=new char[input.length()];input.getText().getChars(0,input.length(),value,0);return value;}
     private void rotationAndObscuring()throws Exception{
         main(()->{set("screen","setup");invoke("render");});host.waitForIdleSync();EditText note=inputs(root()).get(0);open(note);List<EditText> fields=inputs(dialog("creationDialog"));fill(fields,PASSWORD,PASSWORD);
         Button old=button(dialog("creationDialog"),new ApprovedCopy(activity).ui("creationConfirmGenerate"));

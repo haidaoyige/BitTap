@@ -38,6 +38,7 @@ public final class SmokeRunner extends Instrumentation {
     private boolean unlockVisualOnly;
     private boolean recoveryUiOnly;
     private boolean homeLayoutOnly,creationUiOnly;
+    private boolean cryptoOnly;
     /** NFC scan art intentionally animates forever; never wait indefinitely for an idle queue. */
     @Override public void waitForIdleSync(){
         java.util.concurrent.CountDownLatch idle=new java.util.concurrent.CountDownLatch(1);
@@ -45,10 +46,11 @@ public final class SmokeRunner extends Instrumentation {
         try{if(!idle.await(1,java.util.concurrent.TimeUnit.SECONDS))runOnMainSync(()->{});}
         catch(InterruptedException ex){Thread.currentThread().interrupt();throw new AssertionError("Interrupted waiting for UI",ex);}
     }
-    @Override public void onCreate(Bundle args){super.onCreate(args);riskNoticeOnly=args!=null&&"true".equals(args.getString("riskNoticeOnly"));securityCopyOnly=args!=null&&"true".equals(args.getString("securityCopyOnly"));privateAccessOnly=args!=null&&"true".equals(args.getString("privateAccessOnly"));inlineLoadingOnly=args!=null&&"true".equals(args.getString("inlineLoadingOnly"));deadlineFileFilesOnly=args!=null&&"true".equals(args.getString("fileOnly"));deadlineFileOnly=args!=null&&"true".equals(args.getString("deadlineFileOnly"));creationUiOnly=args!=null&&"true".equals(args.getString("creationUiOnly"));homeLayoutOnly=args!=null&&"true".equals(args.getString("homeLayoutOnly"));recoveryUiOnly=args!=null&&"true".equals(args.getString("recoveryUiOnly"));unlockVisualOnly=args!=null&&"true".equals(args.getString("unlockVisualOnly"));cameraOnly=args!=null&&"true".equals(args.getString("cameraOnly"));homeOnly=args!=null&&"true".equals(args.getString("homeOnly"));imageOnly=args!=null&&"true".equals(args.getString("imageOnly"));copyVisualOnly=args!=null&&"true".equals(args.getString("copyVisualOnly"));copyOnly=copyVisualOnly||args!=null&&"true".equals(args.getString("copyOnly"));inputUiOnly=args!=null&&"true".equals(args.getString("inputUiOnly"));protectionOnly=args!=null&&"true".equals(args.getString("protectionOnly"));weakPasswordOnly=args!=null&&"true".equals(args.getString("weakPasswordOnly"));addressSaveOnly=args!=null&&"true".equals(args.getString("addressSaveOnly"));start();}
+    @Override public void onCreate(Bundle args){super.onCreate(args);cryptoOnly=args!=null&&"true".equals(args.getString("cryptoOnly"));riskNoticeOnly=args!=null&&"true".equals(args.getString("riskNoticeOnly"));securityCopyOnly=args!=null&&"true".equals(args.getString("securityCopyOnly"));privateAccessOnly=args!=null&&"true".equals(args.getString("privateAccessOnly"));inlineLoadingOnly=args!=null&&"true".equals(args.getString("inlineLoadingOnly"));deadlineFileFilesOnly=args!=null&&"true".equals(args.getString("fileOnly"));deadlineFileOnly=args!=null&&"true".equals(args.getString("deadlineFileOnly"));creationUiOnly=args!=null&&"true".equals(args.getString("creationUiOnly"));homeLayoutOnly=args!=null&&"true".equals(args.getString("homeLayoutOnly"));recoveryUiOnly=args!=null&&"true".equals(args.getString("recoveryUiOnly"));unlockVisualOnly=args!=null&&"true".equals(args.getString("unlockVisualOnly"));cameraOnly=args!=null&&"true".equals(args.getString("cameraOnly"));homeOnly=args!=null&&"true".equals(args.getString("homeOnly"));imageOnly=args!=null&&"true".equals(args.getString("imageOnly"));copyVisualOnly=args!=null&&"true".equals(args.getString("copyVisualOnly"));copyOnly=copyVisualOnly||args!=null&&"true".equals(args.getString("copyOnly"));inputUiOnly=args!=null&&"true".equals(args.getString("inputUiOnly"));protectionOnly=args!=null&&"true".equals(args.getString("protectionOnly"));weakPasswordOnly=args!=null&&"true".equals(args.getString("weakPasswordOnly"));addressSaveOnly=args!=null&&"true".equals(args.getString("addressSaveOnly"));start();}
     @Override public void onStart(){
         Bundle result=new Bundle();
         try{
+            if(cryptoOnly){String metrics=new CryptoCostProbe(this).run();result.putString("stream",metrics);finish(Activity.RESULT_OK,result);return;}
             if(riskNoticeOnly){riskNoticeProbe();result.putString("stream","PASS: "+checks+" four-language risk notice and entry-consent assertions.\n");finish(Activity.RESULT_OK,result);return;}
             if(securityCopyOnly){int n=new SecurityCopyProbe(this).run();result.putString("stream","PASS: "+n+" four-language security explanation assertions.\n");finish(Activity.RESULT_OK,result);return;}
             if(privateAccessOnly){int n=new PrivateKeyProtectionProbe(this).run();result.putString("stream","PASS: "+n+" private-key accessibility and pixel-equivalence assertions on API "+android.os.Build.VERSION.SDK_INT+".\n");finish(Activity.RESULT_OK,result);return;}
@@ -92,7 +94,7 @@ public final class SmokeRunner extends Instrumentation {
             yes("home".equals(get("screen")),"home opens");capture("01-home");uiAlignment();nextUi(asset("cg3-scalar-one.txt"));
             click("制作冷钱包");yes("home".equals(get("screen")),"creation requires entry consent");clickDialog("同意并继续");input("123456");
             yes(!dialogButton("creationDialog",new ApprovedCopy(activity).ui("creationConfirmGenerate")).isEnabled(),"incomplete format disables creation");
-            EditText oldPassword=firstInput();input("Mx7!pQ2@tL8#vR5$zN");yes(hasPrefix(dialogRoot("creationDialog"),"特殊字符"),"format checklist remains available while typing");
+            EditText oldPassword=firstInput();input("Mx7!pQ2@tL8#vR5$zN");yes(has(dialogRoot("creationDialog"),activity.getString(R.string.new_password_special)),"format checklist remains available while typing");
             input("123456");capture("06-password-strength");dismiss("creationDialog");main(()->activity.onBackPressed());yes(oldPassword.length()==0,"returning home clears old password input");
             Bundle initialState=new Bundle();main(()->activity.onSaveInstanceState(initialState));yes(initialState.isEmpty(),"home has no serialized wallet or UI state");
             click("读取冷钱包");clickDialog("同意并继续");yes(hasAction(root(),"导入加密备份文件")&&!hasAction(root(),"粘贴加密备份"),"reading offers NFC and files only");importBackup(cg2);
@@ -308,7 +310,7 @@ public final class SmokeRunner extends Instrumentation {
             if(attempt<3)clickDialog(new ApprovedCopy(activity).ui("retry"));
         }
         yes(captured!=null&&captured.ready()&&"setup".equals(get("screen")),"matched final capture returns to setup after bounded explicit retries");yes(get("cameraPhoto")==null&&get("creationDialog")==null,"final photo is immediately discarded and password dialog does not open automatically");capture("next-camera-ready");click(new ApprovedCopy(activity).ui("generateWithPassword"));yes(get("creationDialog")!=null,"explicit post-capture action opens passwords");
-        main(()->{for(View v:views(dialogRoot("creationDialog")))if(v instanceof EditText&&(((EditText)v).getInputType()&0x80)!=0)((EditText)v).setText("test fixture password only");});click("生成冷钱包");until(()->"write".equals(get("screen"))||!(Boolean)get("busy"),20000);
+        main(()->{for(View v:views(dialogRoot("creationDialog")))if(v instanceof EditText&&(((EditText)v).getInputType()&0x80)!=0)((EditText)v).setText("Mx7!pQ2@tL8#vR5$zN");});click("生成冷钱包");until(()->"write".equals(get("screen"))||!(Boolean)get("busy"),20000);
         yes("write".equals(get("screen")),"captured Camera2 input completes real encrypted creation");CreationSession made=(CreationSession)get("session");yes(new WalletCrypto().inspect(made.encrypted).version==3&&made.note.equals("相机测试1"),"camera-created wallet contains authenticated CG3 note");yes(!captured.ready(),"camera secret consumed and closed");
         main(()->{set("screen","home");invoke("render");});yes(get("session")==null&&get("cameraEntropy")==null,"camera test leaves no active wallet");
     }
@@ -351,6 +353,14 @@ public final class SmokeRunner extends Instrumentation {
         try{NfcCards.parse(new NdefMessage(NdefRecord.createUri("https://example.com")));throw new AssertionError("URL accepted as key");}catch(IllegalArgumentException expected){checks++;}
     }
     private void importBackup(String data)throws Exception{
+        // API 28 has no MediaStore.Downloads collection. Exercise the same file-import
+        // callback through our test-only document provider, without storage permissions.
+        if(android.os.Build.VERSION.SDK_INT<29){
+            android.net.Uri file=android.net.Uri.parse("content://io.coingift.android.test.documents/import-fixture");
+            try(OutputStream out=getTargetContext().getContentResolver().openOutputStream(file,"wt")){if(out==null)throw new IOException("Fixture document unavailable");out.write(data.getBytes(StandardCharsets.US_ASCII));}
+            main(()->activity.onActivityResult(21,Activity.RESULT_OK,new Intent().setData(file)));
+            until(()->"unlock".equals(get("screen")),10000);return;
+        }
         android.content.ContentValues values=new android.content.ContentValues();
         values.put(android.provider.MediaStore.MediaColumns.DISPLAY_NAME,"bitnfc-import-public-fixture-"+System.nanoTime()+".txt");
         values.put(android.provider.MediaStore.MediaColumns.MIME_TYPE,"text/plain");
@@ -745,7 +755,15 @@ public final class SmokeRunner extends Instrumentation {
                 yes(!hasAction(root(),copyLabel)&&!hasAction(root(),Texts.tr(activity,"复制 WIF 私钥")),"removed recovery copy button in "+languages[l]);
                 if(l==0)capture("recovery-without-copy");
                 main(()->clipboard.setPrimaryClip(ClipData.newPlainText("public sentinel","public sentinel")));
-                click(Texts.tr(activity,"查看私钥"));clickDialog("qrDialog",copyLabel);
+                click(Texts.tr(activity,"查看私钥"));
+                if(android.os.Build.VERSION.SDK_INT<29){
+                    yes(!dialogButton("qrDialog",activity.getString(R.string.private_copy_unavailable)).isEnabled(),"Android 9 private-copy action stays disabled in "+languages[l]);
+                    main(()->invoke("requestPrivateCopy"));
+                    yes(get("copyConfirm")==null&&get("clipboardMarker")==null,"Android 9 direct request cannot open or authorize copying");
+                    yes("public sentinel".contentEquals(clipboard.getPrimaryClip().getItemAt(0).getText()),"Android 9 protection preserves the unrelated clipboard");
+                    dismiss("qrDialog");click(Texts.tr(activity,"隐藏私钥，返回首页"));main(activity::finish);waitForIdleSync();continue;
+                }
+                clickDialog("qrDialog",copyLabel);
                 yes(has(dialogRoot("copyConfirm"),titles[l]),"localized confirmation title "+languages[l]);
                 yes("public sentinel".contentEquals(clipboard.getPrimaryClip().getItemAt(0).getText())&&get("clipboardMarker")==null,"opening confirmation exports nothing");
                 yes(!hasPrefix(dialogRoot("copyConfirm"),WIF),"confirmation does not display private key");

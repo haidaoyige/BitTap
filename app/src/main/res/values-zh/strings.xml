@@ -420,7 +420,7 @@
   <string name="address_save_unverified_body" formatted="false">"此地址来自卡片或备份中的公开信息，尚未与私钥核对。若地址被篡改或与私钥不匹配，转入 BTC 可能造成损失。建议先解密核验地址，再转入 BTC。"</string>
   <string name="address_save_unverified_note" formatted="false">"保存图片不会完成地址核验。"</string>
   <string name="address_save_unverified_continue" formatted="false">"我理解风险，继续保存"</string>
-    <string name="wallet_unlock_action">解锁冷钱包</string>
+    <string name="wallet_unlock_action">解锁冷钱包并核验地址</string>
     <string name="wallet_view_private">查看私钥</string>
     <string name="wallet_transfer_help">如何转移 BTC</string>
     <string name="wallet_read_description">先通过备注识别这个钱包。\n需要使用私钥时，再输入密码解锁。</string>
@@ -435,7 +435,6 @@
     <string name="wallet_switch_description">选择另一张 NFC 卡片，\n或导入已保存的加密备份文件。</string>
 
   <!-- Creation-only password format requirements; recovery stays compatible. -->
-  <string name="new_password_placeholder" formatted="false">"至少 10 位，包含以下四类字符"</string>
   <string name="new_password_length" formatted="false">"至少 10 位"</string>
   <string name="new_password_upper" formatted="false">"大写字母 A–Z"</string>
   <string name="new_password_lower" formatted="false">"小写字母 a–z"</string>
@@ -465,22 +464,4 @@
   <string name="file_io_save_error" formatted="false">"未确认文件已完整保存，请检查所选位置后重试。"</string>
   <string name="file_io_import_error" formatted="false">"文件读取失败、已取消或等待超时。请重新选择文件，或改用其他文件位置。"</string>
   <string name="new_password_characters" formatted="false">"仅支持英文大小写字母、数字和半角标点符号，不支持中文、表情或空格"</string>
-  <string name="random_password_generate" formatted="false">"随机生成强密码"</string>
-  <string name="random_password_regenerate" formatted="false">"重新生成"</string>
-  <string name="random_password_source" formatted="false">"系统随机 · 32 位"</string>
-  <string name="random_password_copy" formatted="false">"复制密码"</string>
-  <string name="random_password_warning_title" formatted="false">"请先妥善保存这个密码"</string>
-  <string name="random_password_warning_body" formatted="false">"密码由系统在本机随机生成，不会代为保存。丢失后无法找回，也无法解密钱包。请自行保存，并与 NFC 卡片分开保管。"</string>
-  <string name="random_password_saved" formatted="false">"我已将此密码保存到安全位置"</string>
-  <string name="random_password_save_required" formatted="false">"请先妥善保存随机密码，并勾选确认。"</string>
-  <string name="random_password_replace_title" formatted="false">"生成一个新密码？"</string>
-  <string name="random_password_replace_body" formatted="false">"当前密码将被替换，确认输入会被清空。请重新保存新密码，再继续生成钱包。"</string>
-  <string name="random_password_replace_action" formatted="false">"重新生成"</string>
-  <string name="random_password_keep" formatted="false">"保留当前密码"</string>
-  <string name="random_password_copied" formatted="false">"密码已复制，请尽快保存到安全位置。"</string>
-  <string name="random_password_copy_legacy" formatted="false">"Android 9 不支持安全复制密码。请手动记录到安全位置。"</string>
-  <string name="random_password_failed" formatted="false">"随机密码生成失败，未修改当前密码，请重试。"</string>
-  <string name="random_password_copy_notice" formatted="false">"剪贴板可能被其他软件读取，请仅粘贴到可信位置。"</string>
-  <string name="random_password_description" formatted="false">"密码用于加密私钥。你可以自行设置，也可以让系统随机生成强密码。"</string>
-  <string name="random_password_all_met" formatted="false">"已满足全部密码要求"</string>
 </resources>

@@ -26,7 +26,7 @@ public class FormatAndWorkflowTest {
         assertEquals("3JvL6Ymt8MVWiCNHC7oWU6nLeHNJKLZGLN",meta.addresses.nestedSegwit);
         assertTrue(meta.addresses.taproot.startsWith("bc1p"));
     }
-    @Test public void existingCg1FixtureStillDecrypts()throws Exception{
+    @Test public void cg1WireFormatAtCurrentKdfCostDecrypts()throws Exception{
         String text;
         try(InputStream in=getClass().getResourceAsStream("/cg1-scalar-one.txt")){
             assertNotNull(in);text=new String(BackupFiles.readBounded(in),StandardCharsets.US_ASCII).trim();
@@ -57,7 +57,7 @@ public class FormatAndWorkflowTest {
         int legacyStart=39+2+42+2;
         System.arraycopy(other.legacy.getBytes(StandardCharsets.US_ASCII),0,raw,legacyStart,other.legacy.length());
         int headerSize=raw.length-48;
-        byte[] derived=SCrypt.generate("test fixture password only".getBytes(StandardCharsets.UTF_8),Arrays.copyOfRange(raw,10,26),32768,8,1,32);
+        byte[] derived=SCrypt.generate("test fixture password only".getBytes(StandardCharsets.UTF_8),Arrays.copyOfRange(raw,10,26),32768,8,3,32);
         try{
             Cipher cipher=Cipher.getInstance("AES/GCM/NoPadding");
             cipher.init(Cipher.ENCRYPT_MODE,new SecretKeySpec(derived,"AES"),new GCMParameterSpec(128,Arrays.copyOfRange(raw,26,38)));

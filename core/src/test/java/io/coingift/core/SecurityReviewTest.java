@@ -55,7 +55,7 @@ public class SecurityReviewTest {
         byte[] n=Arrays.copyOfRange(order,order.length-32,order.length);
         for(byte[] bad:new byte[][]{new byte[32],n}){
             byte[] bytes=raw(backup);int header=bytes.length-48;
-            byte[] derived=SCrypt.generate("test fixture password only".getBytes(StandardCharsets.UTF_8),Arrays.copyOfRange(bytes,10,26),32768,8,1,32);
+            byte[] derived=SCrypt.generate("test fixture password only".getBytes(StandardCharsets.UTF_8),Arrays.copyOfRange(bytes,10,26),32768,8,3,32);
             try{
                 Cipher cipher=Cipher.getInstance("AES/GCM/NoPadding");cipher.init(Cipher.ENCRYPT_MODE,new SecretKeySpec(derived,"AES"),new GCMParameterSpec(128,Arrays.copyOfRange(bytes,26,38)));
                 cipher.updateAAD(Arrays.copyOf(bytes,header));System.arraycopy(cipher.doFinal(bad),0,bytes,header,48);

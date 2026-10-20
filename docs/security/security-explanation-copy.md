@@ -23,7 +23,7 @@
 
 ## 核对的本地实现
 
-- `WalletCrypto`：安全随机源、私钥范围拒绝采样、scrypt N=32768/r=8/p=1、32 字节派生密钥、16 字节盐、12 字节 GCM nonce、128 位认证标签、公开头部 AAD、解密后地址核对及缓冲清理。
+- `WalletCrypto`：安全随机源、私钥范围拒绝采样、scrypt N=32768/r=8/p=3、32 字节派生密钥、16 字节盐、12 字节 GCM nonce、128 位认证标签、公开头部 AAD、解密后地址核对及缓冲清理。
 - `CameraCapture` / `CameraEntropy`：有效图像数据摘要、32 个不同帧摘要、最终图像摘要、预先取得系统输入的 HMAC-SHA256 混合、失败不冒充增强成功。
 - `NewPasswordPolicy`、`MainActivity`、`UnlockDeadline`、`PrivateKeyView`：密码要求、制作／恢复生命周期、60/120 秒期限、专用绘制与退出清理。
 

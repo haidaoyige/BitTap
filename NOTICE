@@ -5,6 +5,10 @@ This distribution includes third-party software. The licenses/ directory (APK:
 assets/licenses/) contains applicable license texts, upstream notices, and the
 exact resolved runtime inventory. sbom.cdx.json identifies bundled components.
 
+Bip38Importer adapts the BIP38 decryption routines from bitcoinj 0.17.1:
+Copyright 2014 Andreas Schildbach, Apache License 2.0. BitTap changes retain raw
+scalar 1 support, verify the mainnet P2PKH address hash and clear owned buffers.
+
 Bitcoin glyph source: Bitcoin Design. Lucide/Feather icon notices are retained
 in the Android application assets and the source distribution. Names and marks
 do not imply endorsement. See docs/THIRD_PARTY.md for details.

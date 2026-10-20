@@ -2,6 +2,12 @@
 
 Application source: Apache License 2.0 (see LICENSE). No OneKey code or assets used.
 
+`core/.../Bip38Importer.java` adapts bitcoinj 0.17.1's `BIP38PrivateKey`
+decryption routines (Copyright 2014 Andreas Schildbach, Apache-2.0). It retains
+upstream parsing, AES/scrypt primitives and P2PKH verification, and replaces the
+private-key wrapper with validated raw-scalar import to support scalar 1.
+Modified source attribution is preserved in that file and the distributed NOTICE.
+
 ## Current runtime baseline (unreleased security hardening)
 
 - bitcoinj 0.17.1 — Apache-2.0, https://github.com/bitcoinj/bitcoinj

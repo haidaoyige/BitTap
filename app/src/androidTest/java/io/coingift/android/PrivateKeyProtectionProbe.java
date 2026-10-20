@@ -128,6 +128,8 @@ final class PrivateKeyProtectionProbe {
     }
     private void sameSheetAsPreviousTextView(String language,PrivateKeyView value)throws Exception{
         Dialog owner=(Dialog)get("qrDialog");View root=owner.getWindow().getDecorView();Bitmap[] before={null},after={null};
+        // Compare settled content, not the cancel button's transient ripple animation.
+        SystemClock.sleep(400);host.waitForIdleSync();main(root::jumpDrawablesToCurrentState);
         int[] originalBounds=new int[4];char[] old=owned(value);
         main(()->{
             before[0]=draw(root);originalBounds[0]=value.getLeft();originalBounds[1]=value.getTop();originalBounds[2]=value.getWidth();originalBounds[3]=value.getHeight();
@@ -137,10 +139,9 @@ final class PrivateKeyProtectionProbe {
         main(()->{
             after[0]=draw(root);
             yes(value.isCleared()&&Arrays.equals(old,new char[old.length]),"detachment immediately clears owned private characters");
-            yes(before[0].sameAs(after[0]),"entire private sheet is pixel-identical to previous UI in "+language);
         });
         File directory=activity.getExternalFilesDir("private-access-qa");if(directory==null||(!directory.isDirectory()&&!directory.mkdirs()))throw new IOException();
-        try{save(before[0],new File(directory,"private-sheet-"+language+"-protected.png"));save(after[0],new File(directory,"private-sheet-"+language+"-previous.png"));}
+        try{save(before[0],new File(directory,"private-sheet-"+language+"-protected.png"));save(after[0],new File(directory,"private-sheet-"+language+"-previous.png"));yes(before[0].sameAs(after[0]),"entire private sheet is pixel-identical to previous UI in "+language);}
         finally{before[0].eraseColor(Color.TRANSPARENT);after[0].eraseColor(Color.TRANSPARENT);before[0].recycle();after[0].recycle();}
     }
     private static Bitmap draw(View view){Bitmap image=Bitmap.createBitmap(view.getWidth(),view.getHeight(),Bitmap.Config.ARGB_8888);view.draw(new Canvas(image));return image;}

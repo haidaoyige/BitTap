@@ -27,7 +27,7 @@ public final class WalletCrypto {
     public static final String NOTE_PREFIX = "CG3:";
     public static final String LEGACY_PREFIX = "CG1:";
     public static final int MAX_TEXT_LENGTH = 1024;
-    private static final int N = 32768, R = 8, P = 1;
+    private static final int N = 32768, R = 8, P = 3;
     private static final byte[] MAGIC = {'C', 'G', 'F'};
     // Capture the platform RNG before bitcoinj initializes any legacy Android provider.
     private static final SecureRandom SYSTEM_RANDOM = new SecureRandom();
@@ -142,7 +142,7 @@ public final class WalletCrypto {
             derived = SCrypt.generate(pass, salt, N, R, P, 32);
             ByteArrayOutputStream header = new ByteArrayOutputStream();
             header.write(MAGIC, 0, MAGIC.length);
-            byte[] fixed = {(byte)(withNote?3:2), (byte) network.id, 1, 1, 15, 8, 1};
+            byte[] fixed = {(byte)(withNote?3:2), (byte) network.id, 1, 1, 15, R, P};
             header.write(fixed, 0, fixed.length);
             header.write(salt, 0, salt.length); header.write(nonce, 0, nonce.length);
             header.write(4);
@@ -187,7 +187,7 @@ public final class WalletCrypto {
         if (id != 0) throw new IllegalArgumentException("本版仅支持 BTC 主网卡片");
         Network network = Network.MAINNET;
         // Fixed allowlist prevents a malicious tag from requesting excessive KDF memory/work.
-        if (b.get() != 1 || b.get() != 1 || b.get() != 15 || b.get() != 8 || b.get() != 1)
+        if (b.get() != 1 || b.get() != 1 || b.get() != 15 || b.get() != R || b.get() != P)
             throw new IllegalArgumentException("不支持此地址或加密参数");
         byte[] salt = new byte[16], nonce = new byte[12]; b.get(salt); b.get(nonce);
         String address; BitcoinAddresses addresses=null;
@@ -254,9 +254,9 @@ public final class WalletCrypto {
         if (encrypted == null || encrypted.length() != 58 || !encrypted.startsWith("6P"))
             throw new IllegalArgumentException("BIP38 密文应为 58 字符且以 6P 开头");
         byte[] passCheck = passwordBytes(password); wipe(passCheck);
-        ECKey key = BIP38PrivateKey.fromBase58(MainNetParams.get(), encrypted).decrypt(new String(password));
-        if (!key.isCompressed()) throw new IllegalArgumentException("此 BIP38 使用未压缩公钥；本版仅支持压缩公钥卡片");
-        byte[] raw = key.getPrivKeyBytes();
+        BIP38PrivateKey encoded = BIP38PrivateKey.fromBase58(MainNetParams.get(), encrypted);
+        if (!encoded.compressed) throw new IllegalArgumentException("此 BIP38 使用未压缩公钥；本版仅支持压缩公钥卡片");
+        byte[] raw = Bip38Importer.decrypt(encoded, password);
         try { return new Unlocked(raw, Network.MAINNET); }
         finally { wipe(raw); }
     }

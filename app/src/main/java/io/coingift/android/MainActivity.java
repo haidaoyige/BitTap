@@ -24,7 +24,6 @@ import android.widget.*;
 import com.google.zxing.common.BitMatrix;
 import io.coingift.core.BackupFiles;
 import io.coingift.core.CameraEntropy;
-import io.coingift.core.RandomPassword;
 import io.coingift.core.WalletNote;
 import io.coingift.core.BitcoinAddresses;
 import io.coingift.core.CreationSession;
@@ -80,10 +79,6 @@ public final class MainActivity extends Activity implements NfcAdapter.ReaderCal
     private final java.util.Map<EditText,CharSequence> workHints=new java.util.IdentityHashMap<>();
     private Dialog qrDialog,qrSaveConfirm,copyConfirm,weakPasswordConfirm,unlockDialog,creationDialog;
     private TextView unlockFeedback,creationFeedback;
-    private boolean creationPasswordGenerated;
-    private EditText creationRandomInput;
-    private CheckBox creationRandomSaved;
-    private Dialog randomPasswordReplace;
     private TextView copyConfirmFeedback;
     private TextView qrFeedback;
     private byte[] pendingQrImage;
@@ -225,12 +220,15 @@ public final class MainActivity extends Activity implements NfcAdapter.ReaderCal
     private void homeFoot(String value,int top){TextView text=ui.text(ui.page,value,11,AppUi.SUB,false);text.setGravity(Gravity.CENTER);ui.line(text,1.6f);text.setPadding(0,ui.dp(top),0,0);}
     private void setup(){
         ui.progress(1);ui.heading(copy.ui("setupStep"),copy.ui("setupTitle"),copy.ui("setupDesc"));
-        LinearLayout prep=ui.vertical();prep.setPadding(ui.dp(15),ui.dp(12),ui.dp(15),ui.dp(10));prep.setBackground(ui.shape(AppUi.SOFT,13,false));ui.page.addView(prep,new LinearLayout.LayoutParams(-1,-2));
-        TextView prepText=ui.text(prep,copy.section("cardHelpCopy").optString("prep"),12,AppUi.SUB,false);prepText.setGravity(Gravity.START|Gravity.CENTER_VERTICAL);
-        prepText.setCompoundDrawablesRelative(ui.drawable(R.drawable.ic_nfc,AppUi.ACCENT,17),null,null,null);prepText.setCompoundDrawablePadding(ui.dp(9));
-        ui.textAction(prep,copy.section("cardHelpCopy").optString("view"),0,R.drawable.ic_chevron_right,this::cardHelp);
+        LinearLayout prep=ui.horizontal();prep.setTag("supported-card-prep");prep.setPadding(ui.dp(12),ui.dp(8),ui.dp(12),ui.dp(8));prep.setMinimumHeight(ui.dp(60));prep.setBackground(ui.shape(AppUi.SOFT,13,false));ui.page.addView(prep,new LinearLayout.LayoutParams(-1,-2));
+        ImageView prepIcon=new ImageView(this);prepIcon.setImageDrawable(ui.drawable(R.drawable.ic_nfc,AppUi.ACCENT,17));prepIcon.setImportantForAccessibility(View.IMPORTANT_FOR_ACCESSIBILITY_NO);
+        LinearLayout.LayoutParams prepIconParams=new LinearLayout.LayoutParams(ui.dp(17),ui.dp(17));prepIconParams.rightMargin=ui.dp(10);prep.addView(prepIcon,prepIconParams);
+        TextView prepText=ui.text(prep,copy.section("cardHelpCopy").optString("prep"),12,AppUi.SUB,false);prepText.setGravity(Gravity.START|Gravity.CENTER_VERTICAL);ui.line(prepText,1.6f);prepText.setLayoutParams(new LinearLayout.LayoutParams(0,-2,1));
+        Button supportedCards=ui.textAction(prep,copy.section("cardHelpCopy").optString("view"),0,R.drawable.ic_chevron_right,this::cardHelp);
+        supportedCards.setMaxWidth(ui.dp(140));supportedCards.setSingleLine(false);supportedCards.setEllipsize(null);
+        ((LinearLayout.LayoutParams)supportedCards.getLayoutParams()).leftMargin=ui.dp(8);
         TextView count=new TextView(this);count.setTextSize(11);count.setTextColor(AppUi.SUB);count.setText(getString(R.string.note_counter,copy.ui("optional"),setupNote.codePointCount(0,setupNote.length())));count.setTag("note-count");
-        EditText note=ui.input(copy.ui("remark"),false,count);note.setSingleLine(true);note.setMinLines(1);note.setMinHeight(ui.dp(52));note.setText(setupNote);note.setHint(copy.ui("remarkPh"));
+        EditText note=ui.input(copy.ui("remark"),false,count);note.setSingleLine(true);note.setMinLines(1);note.setMinHeight(ui.dp(52));note.setText(setupNote);
         note.addTextChangedListener(new android.text.TextWatcher(){public void beforeTextChanged(CharSequence x,int a,int c,int z){}public void onTextChanged(CharSequence x,int a,int c,int z){if(!rendering){setupNote=x.toString();count.setText(getString(R.string.note_counter,copy.ui("optional"),setupNote.codePointCount(0,setupNote.length())));}}public void afterTextChanged(android.text.Editable x){}});ui.helper(ui.page,copy.ui("remarkHint"));
         LinearLayout modeCard=ui.mode(ui.page);modeCard.setTag("camera-mode-card");ui.toggle(modeCard,copy.ui("cameraMode"),R.drawable.ic_camera,enhanced,on->{enhanced=on;clearCamera();render();});ui.helper(modeCard,copy.ui("cameraSub"));ui.helper(modeCard,copy.ui("cameraOptional"));
         if(enhanced&&cameraEntropy!=null)ui.text(modeCard,copy.ui("captureReady"),11,AppUi.ACCENT,false);
@@ -256,40 +254,19 @@ public final class MainActivity extends Activity implements NfcAdapter.ReaderCal
         note.addTextChangedListener(changed);
         owner.setOnDismissListener(d->{
             if(busy&&workDialog==owner)cancelWork();
-            closeRandomPasswordReplace();
-            if(resumed)clearGeneratedPasswordClipboard();
-            if(creationDialog==owner){creationDialog=null;creationFeedback=null;creationSubmit=null;creationPasswordGenerated=false;creationRandomInput=null;creationRandomSaved=null;}
             closeWeakPasswordConfirm();note.removeTextChangedListener(changed);
             if(owner.getWindow()!=null)ui.releaseInputs(owner.getWindow().getDecorView());
+            if(creationDialog==owner){creationDialog=null;creationFeedback=null;creationSubmit=null;}
         });
         ui.showSheet(owner,copy.ui("creationPasswordTitle"),p->{
-            creationPasswordGenerated=false;
-            ui.note(p,getString(R.string.random_password_description));
-            Runnable[] chooseRandom={()->{}};
-            Button random=ui.inline(getString(R.string.random_password_generate),R.drawable.ic_shuffle,()->chooseRandom[0].run());
-            random.setTextSize(11);random.setMaxWidth(ui.dp(145));random.setSingleLine(false);random.setEllipsize(null);random.setTag("random-password-generate");
-            EditText first=ui.input(p,copy.ui("pass"),true,random);first.setHint(getString(R.string.new_password_placeholder));
-            creationRandomInput=first;
-            // Soft wrapping only: never insert line breaks into the password itself.
-            first.setInputType(first.getInputType()|android.text.InputType.TYPE_TEXT_FLAG_MULTI_LINE|android.text.InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS);
-            first.setSingleLine(false);first.setHorizontallyScrolling(false);first.setMinLines(2);first.setMaxLines(8);
-            first.setTypeface(Typeface.MONOSPACE);first.setHyphenationFrequency(android.text.Layout.HYPHENATION_FREQUENCY_NONE);
-            first.setImeOptions(first.getImeOptions()|android.view.inputmethod.EditorInfo.IME_FLAG_NO_EXTRACT_UI);
-            LinearLayout copyRow=ui.horizontal();p.addView(copyRow,new LinearLayout.LayoutParams(-1,-2));copyRow.setTag("random-password-copy-row");
-            TextView source=ui.text(copyRow,getString(R.string.random_password_source),11,AppUi.ACCENT,false);source.setLayoutParams(new LinearLayout.LayoutParams(0,-2,1));
-            Button copyPassword=ui.inline(getString(R.string.random_password_copy),R.drawable.ic_copy,()->copyGeneratedPassword(owner,first));
-            copyPassword.setMaxWidth(ui.dp(130));copyPassword.setSingleLine(false);copyPassword.setEllipsize(null);copyPassword.setTag("random-password-copy");copyRow.addView(copyPassword);
-            ui.helper(p,copy.ui("passHint"));LinearLayout requirementsPanel=ui.passwordRequirements(p,first);
-            TextView allMet=ui.text(p,getString(R.string.random_password_all_met),11,AppUi.ACCENT,false);allMet.setTag("random-password-all-met");allMet.setPadding(0,ui.dp(6),0,ui.dp(12));
+            ui.note(p,copy.ui("creationPasswordDescription"));
+            EditText first=ui.input(p,copy.ui("pass"),true,null);
+            ui.helper(p,copy.ui("passHint"));ui.passwordRequirements(p,first);
             EditText second=ui.input(p,copy.ui("confirm"),true,null);
             first.addTextChangedListener(changed);second.addTextChangedListener(changed);
             creationFeedback=ui.text(p,"",12,AppUi.ERROR,false);creationFeedback.setVisibility(View.GONE);creationFeedback.setAccessibilityLiveRegion(View.ACCESSIBILITY_LIVE_REGION_POLITE);
             TextView feedback=creationFeedback;
-            LinearLayout warning=ui.callout(p,R.drawable.ic_key,null);
-            TextView warningTitle=ui.text(warning,getString(R.string.random_password_warning_title),13,AppUi.ACCENT,true);
-            TextView warningBody=ui.text(warning,getString(R.string.random_password_warning_body),12,AppUi.SUB,false);ui.line(warningBody,1.8f);
-            CheckBox saved=new CheckBox(this);saved.setText(getString(R.string.random_password_saved));saved.setTag("random-password-saved");saved.setTextSize(12);saved.setTextColor(AppUi.SUB);saved.setButtonTintList(android.content.res.ColorStateList.valueOf(AppUi.ACCENT));saved.setSingleLine(false);saved.setEllipsize(null);saved.setSaveEnabled(false);saved.setMinHeight(ui.dp(48));saved.setPadding(0,ui.dp(9),0,ui.dp(4));p.addView(saved,new LinearLayout.LayoutParams(-1,-2));ui.buttons.add(saved);creationRandomSaved=saved;
-            ui.space(p,8);
+            ui.callout(p,R.drawable.ic_key,copy.ui("passwordNote"));ui.space(p,14);
             Button generate=ui.action(p,copy.ui("creationConfirmGenerate"),true,R.drawable.ic_lock,()->requestWalletGeneration(first,second,note,revision));
             creationSubmit=generate;
             Runnable validate=()->{
@@ -298,52 +275,17 @@ public final class MainActivity extends Activity implements NfcAdapter.ReaderCal
                 boolean format=requirements.satisfied();
                 boolean characters=requirements.characters&&NewPasswordPolicy.inspect(second.getText()).characters;
                 boolean same=second.length()>0&&android.text.TextUtils.equals(first.getText(),second.getText());
-                boolean randomMode=creationPasswordGenerated;
-                copyRow.setVisibility(randomMode?View.VISIBLE:View.GONE);saved.setVisibility(randomMode?View.VISIBLE:View.GONE);
-                requirementsPanel.setVisibility(randomMode?View.GONE:View.VISIBLE);allMet.setVisibility(randomMode?View.VISIBLE:View.GONE);
-                warningTitle.setVisibility(randomMode?View.VISIBLE:View.GONE);warningBody.setText(randomMode?getString(R.string.random_password_warning_body):copy.ui("passwordNote"));
-                random.setText(getString(first.length()==0?R.string.random_password_generate:R.string.random_password_regenerate));
-                ui.primaryActionEnabled(generate,copy.ui("creationConfirmGenerate"),R.drawable.ic_lock,format&&same&&(!randomMode||saved.isChecked()));
+                ui.primaryActionEnabled(generate,copy.ui("creationConfirmGenerate"),R.drawable.ic_lock,format&&same);
                 feedback.setText(!characters?getString(R.string.new_password_characters):second.length()>0?getString(same?(format?R.string.new_password_ready:R.string.new_password_incomplete):R.string.new_password_mismatch):format?getString(R.string.new_password_repeat):"");
                 feedback.setTextColor(characters&&same?AppUi.ACCENT:AppUi.ERROR);
                 feedback.setVisibility(feedback.length()==0?View.GONE:View.VISIBLE);
             };
-            boolean[] settingRandom={false};
             android.text.TextWatcher validateChanged=new android.text.TextWatcher(){
                 public void beforeTextChanged(CharSequence x,int start,int count,int after){}
                 public void onTextChanged(CharSequence x,int start,int before,int count){validate.run();}
                 public void afterTextChanged(android.text.Editable x){}
             };
-            first.addTextChangedListener(new android.text.TextWatcher(){
-                public void beforeTextChanged(CharSequence x,int start,int count,int after){}
-                public void onTextChanged(CharSequence x,int start,int before,int count){if(!settingRandom[0]){creationPasswordGenerated=false;saved.setChecked(false);}validate.run();}
-                public void afterTextChanged(android.text.Editable x){}
-            });second.addTextChangedListener(validateChanged);saved.setOnCheckedChangeListener((button,checked)->validate.run());
-            Runnable applyRandom=()->{
-                if(!currentSetup(first,second,note)||creationDialog!=owner)return;
-                char[] value=null;
-                try{
-                    value=RandomPassword.generate();clearGeneratedPasswordClipboard();hideKeyboard();settingRandom[0]=true;
-                    second.getText().clear();saved.setChecked(false);first.getText().replace(0,first.length(),java.nio.CharBuffer.wrap(value));
-                    creationPasswordGenerated=true;first.setTransformationMethod(null);first.setSelection(0);first.clearFocus();
-                    LinearLayout row=(LinearLayout)first.getParent();for(int i=0;i<row.getChildCount();i++)if(row.getChildAt(i) instanceof ImageButton){ImageButton eye=(ImageButton)row.getChildAt(i);eye.setImageDrawable(ui.drawable(R.drawable.ic_eye_open,AppUi.SUB,20));eye.setContentDescription(tr("隐藏")+copy.ui("pass"));}
-                }catch(RuntimeException ex){error(getString(R.string.random_password_failed));}
-                finally{WalletCrypto.wipe(value);settingRandom[0]=false;validate.run();}
-            };
-            chooseRandom[0]=()->{
-                if(!currentSetup(first,second,note)||creationDialog!=owner||randomPasswordReplace!=null)return;
-                if(first.length()==0){applyRandom.run();return;}
-                hideKeyboard();Dialog replace=new Dialog(this);randomPasswordReplace=replace;int token=epoch,atRevision=revision[0];
-                replace.setOnDismissListener(d->{if(randomPasswordReplace==replace)randomPasswordReplace=null;});
-                ui.showSheet(replace,getString(R.string.random_password_replace_title),box->{
-                    ui.note(box,getString(R.string.random_password_replace_body));
-                    ui.action(box,getString(R.string.random_password_replace_action),true,R.drawable.ic_shuffle,()->{
-                        if(randomPasswordReplace!=replace||!replace.isShowing()||creationDialog!=owner||epoch!=token||revision[0]!=atRevision||!currentSetup(first,second,note))return;
-                        closeRandomPasswordReplace();applyRandom.run();
-                    });ui.link(box,getString(R.string.random_password_keep),0,this::closeRandomPasswordReplace);
-                },this::closeRandomPasswordReplace,R.drawable.ic_shuffle);secure(replace);
-            };
-            validate.run();
+            first.addTextChangedListener(validateChanged);second.addTextChangedListener(validateChanged);validate.run();
             ui.link(p,copy.ui("cancel"),0,this::closeCreationDialog).setTag("password-cancel");
             first.setImeOptions(first.getImeOptions()|android.view.inputmethod.EditorInfo.IME_ACTION_NEXT);
             first.setOnEditorActionListener((v,action,event)->{if(action==android.view.inputmethod.EditorInfo.IME_ACTION_NEXT){second.requestFocus();return true;}return false;});
@@ -352,15 +294,8 @@ public final class MainActivity extends Activity implements NfcAdapter.ReaderCal
         },this::closeCreationDialog);bindPasswordDismiss(owner);secure(owner);
     }
     private void closeCreationDialog(){
-        closeRandomPasswordReplace();
         closeWeakPasswordConfirm();Dialog owner=creationDialog;creationDialog=null;creationFeedback=null;creationSubmit=null;
-        creationPasswordGenerated=false;creationRandomInput=null;creationRandomSaved=null;
-        if(resumed)clearGeneratedPasswordClipboard();
         if(owner!=null){hideKeyboard();owner.dismiss();}
-    }
-    private void closeRandomPasswordReplace(){Dialog owner=randomPasswordReplace;randomPasswordReplace=null;if(owner!=null)owner.dismiss();}
-    private void clearGeneratedPasswordClipboard(){
-        if(clipboardMarker!=null&&clipboardMarker.startsWith("BitTap-private-password-")){clipboardExpiry=0;expirePrivateClipboard();}
     }
     private boolean currentSetup(EditText first,EditText second,EditText note){
         return resumed&&!busy&&!fileBusy&&screen.equals("setup")&&creationDialog!=null&&creationDialog.isShowing()&&first.isAttachedToWindow()&&second.isAttachedToWindow()&&note.isAttachedToWindow();
@@ -368,7 +303,6 @@ public final class MainActivity extends Activity implements NfcAdapter.ReaderCal
     private String validateWalletInputs(char[] first,char[] second,EditText note){
         String normalized=WalletNote.normalize(note.getText().toString());WalletCrypto.requireNewPassword(first);
         if(!Arrays.equals(first,second))throw new IllegalArgumentException("两次密码不一致");
-        if(creationPasswordGenerated&&(creationRandomSaved==null||!creationRandomSaved.isChecked()))throw new IllegalArgumentException(getString(R.string.random_password_save_required));
         if(enhanced&&(cameraEntropy==null||!cameraEntropy.ready()))throw new IllegalArgumentException("相机增强采集尚未完成");
         return normalized;
     }
@@ -903,24 +837,6 @@ public final class MainActivity extends Activity implements NfcAdapter.ReaderCal
             });
             ui.link(p,"取消",0,this::closeCopyConfirm);
         },this::closeCopyConfirm,R.drawable.ic_copy);secure(owner);
-    }
-    private boolean copyGeneratedPassword(Dialog owner,EditText input){
-        if(owner!=creationDialog||!owner.isShowing()||!resumed||busy||fileBusy||!creationPasswordGenerated||creationRandomInput!=input)return false;
-        if(!PrivateClipboardPolicy.allowsCopy(Build.VERSION.SDK_INT)){error(getString(R.string.random_password_copy_legacy));return false;}
-        ClipboardManager clipboard=(ClipboardManager)getSystemService(CLIPBOARD_SERVICE);
-        if(clipboard==null){error("无法访问剪贴板，请重试");return false;}
-        char[] value=chars(input);
-        try{
-            WalletCrypto.requireNewPassword(value);
-            publicClipboardMarker=null;clipboardMarker="BitTap-private-password-"+java.util.UUID.randomUUID();
-            ClipData clip=ClipData.newPlainText(clipboardMarker,new String(value));
-            PersistableBundle extras=new PersistableBundle();extras.putBoolean("android.content.extra.IS_SENSITIVE",true);clip.getDescription().setExtras(extras);
-            ownedClipboardMarkers.add(clipboardMarker);clipboardExpiry=android.os.SystemClock.elapsedRealtime()+120000;
-            handler.removeCallbacks(clearPrivateClipboard);handler.postDelayed(clearPrivateClipboard,120000);
-            if(!VerifiedClipboard.writeAndVerify(clip,clipboard::setPrimaryClip,clipboard::getPrimaryClip)){copyUnconfirmed();return false;}
-            if(creationFeedback!=null){creationFeedback.setText(getString(R.string.random_password_copy_notice));creationFeedback.setTextColor(AppUi.SUB);creationFeedback.setVisibility(View.VISIBLE);}
-            toast(getString(R.string.random_password_copied));return true;
-        }finally{WalletCrypto.wipe(value);}
     }
     private void closeCopyConfirm(){
         Dialog owner=copyConfirm;copyConfirm=null;copyConfirmFeedback=null;if(owner!=null)owner.dismiss();

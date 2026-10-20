@@ -420,7 +420,7 @@
   <string name="address_save_unverified_body" formatted="false">"이 주소는 카드나 백업의 공개 정보이며 아직 개인 키와 대조하지 않았습니다. 주소가 변조되었거나 개인 키와 일치하지 않으면 BTC를 보내 손실이 발생할 수 있습니다. BTC를 보내기 전에 복호화하여 주소를 검증하세요."</string>
   <string name="address_save_unverified_note" formatted="false">"이미지를 저장해도 주소가 검증되지는 않습니다."</string>
   <string name="address_save_unverified_continue" formatted="false">"위험을 이해하며 계속 저장"</string>
-    <string name="wallet_unlock_action">콜드월렛 잠금 해제</string>
+    <string name="wallet_unlock_action">콜드월렛 잠금 해제 및 주소 검증</string>
     <string name="wallet_view_private">개인 키 보기</string>
     <string name="wallet_transfer_help">BTC 전송 방법</string>
     <string name="wallet_read_description">메모로 이 지갑을 식별하세요.\n개인 키가 필요할 때 비밀번호로 잠금을 해제하세요.</string>
@@ -435,7 +435,6 @@
     <string name="wallet_switch_description">다른 NFC 카드를 읽거나\n저장한 암호화 백업 파일을 가져오세요.</string>
 
   <!-- Creation-only password format requirements; recovery stays compatible. -->
-  <string name="new_password_placeholder" formatted="false">"최소 10자, 아래 네 종류 모두 포함"</string>
   <string name="new_password_length" formatted="false">"최소 10자"</string>
   <string name="new_password_upper" formatted="false">"영문 대문자 A–Z"</string>
   <string name="new_password_lower" formatted="false">"영문 소문자 a–z"</string>
@@ -465,22 +464,4 @@
   <string name="file_io_save_error" formatted="false">"파일이 완전히 저장되었는지 확인하지 못했습니다. 선택한 위치를 확인하고 다시 시도하세요."</string>
   <string name="file_io_import_error" formatted="false">"파일 읽기에 실패했거나 취소 또는 시간 초과되었습니다. 파일을 다시 선택하거나 다른 파일 위치를 사용하세요."</string>
   <string name="new_password_characters" formatted="false">"영문 대문자·소문자, 숫자, ASCII 특수문자만 사용할 수 있습니다. 한자, 이모지, 공백은 지원하지 않습니다."</string>
-  <string name="random_password_generate" formatted="false">"강력한 비밀번호 생성"</string>
-  <string name="random_password_regenerate" formatted="false">"다시 생성"</string>
-  <string name="random_password_source" formatted="false">"기기에서 무작위 생성 · 32자"</string>
-  <string name="random_password_copy" formatted="false">"비밀번호 복사"</string>
-  <string name="random_password_warning_title" formatted="false">"비밀번호를 먼저 안전하게 보관하세요"</string>
-  <string name="random_password_warning_body" formatted="false">"이 비밀번호는 기기에서 무작위로 생성되며 대신 저장되지 않습니다. 분실하면 복구하거나 지갑을 복호화할 수 없습니다. NFC 카드와 분리하여 안전하게 보관하세요."</string>
-  <string name="random_password_saved" formatted="false">"이 비밀번호를 안전한 곳에 보관했습니다"</string>
-  <string name="random_password_save_required" formatted="false">"생성된 비밀번호를 보관한 후 확인해 주세요."</string>
-  <string name="random_password_replace_title" formatted="false">"새 비밀번호를 생성할까요?"</string>
-  <string name="random_password_replace_body" formatted="false">"현재 비밀번호가 대체되고 확인 입력란이 비워집니다. 지갑을 만들기 전에 새 비밀번호를 보관하세요."</string>
-  <string name="random_password_replace_action" formatted="false">"새로 생성"</string>
-  <string name="random_password_keep" formatted="false">"현재 비밀번호 유지"</string>
-  <string name="random_password_copied" formatted="false">"복사되었습니다. 신속히 안전한 곳에 보관하세요."</string>
-  <string name="random_password_copy_legacy" formatted="false">"Android 9에서는 비밀번호를 안전하게 복사할 수 없습니다. 안전한 곳에 직접 기록하세요."</string>
-  <string name="random_password_failed" formatted="false">"생성에 실패했습니다. 현재 비밀번호는 변경되지 않았습니다. 다시 시도하세요."</string>
-  <string name="random_password_copy_notice" formatted="false">"다른 소프트웨어가 클립보드를 읽을 수 있습니다. 신뢰할 수 있는 곳에만 붙여넣으세요."</string>
-  <string name="random_password_description" formatted="false">"비밀번호로 개인 키를 암호화합니다. 직접 설정하거나 기기에서 강력한 비밀번호를 생성할 수 있습니다."</string>
-  <string name="random_password_all_met" formatted="false">"모든 비밀번호 요건을 충족했습니다"</string>
 </resources>

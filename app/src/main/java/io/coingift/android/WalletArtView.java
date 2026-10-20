@@ -15,12 +15,13 @@ final class WalletArtView extends View {
     private final Paint paint=new Paint(Paint.ANTI_ALIAS_FLAG);
     private final Paint iconPaint=new Paint(Paint.ANTI_ALIAS_FLAG|Paint.FILTER_BITMAP_FLAG);
     private final RectF bounds=new RectF();
-    private final Drawable logo,lock;
-    private Bitmap logoImage,lockImage;
+    private final Drawable logo;
+    private final Path lockPath=new Path();
+    private Bitmap logoImage;
     private final Typeface font=Typeface.create("sans-serif",Typeface.NORMAL);
     public WalletArtView(Context context){this(context,false);}
     WalletArtView(Context context,boolean scanning){this(context,scanning,false);}
-    WalletArtView(Context context,boolean scanning,boolean animated){super(context);this.scanning=scanning;this.animated=animated;this.logo=context.getDrawable(R.drawable.ic_brand_white).mutate();this.lock=context.getDrawable(R.drawable.ic_lock).mutate();this.lock.setTint(AppUi.ACCENT);setImportantForAccessibility(IMPORTANT_FOR_ACCESSIBILITY_NO);setLayerType(LAYER_TYPE_SOFTWARE,null);}
+    WalletArtView(Context context,boolean scanning,boolean animated){super(context);this.scanning=scanning;this.animated=animated;this.logo=context.getDrawable(R.drawable.ic_brand_white).mutate();setImportantForAccessibility(IMPORTANT_FOR_ACCESSIBILITY_NO);setLayerType(LAYER_TYPE_SOFTWARE,null);}
     @Override protected void onAttachedToWindow(){
         super.onAttachedToWindow();
         if(scanning&&animated&&ValueAnimator.areAnimatorsEnabled()){
@@ -31,7 +32,7 @@ final class WalletArtView extends View {
     }
     @Override protected void onDetachedFromWindow(){
         if(animator!=null){animator.cancel();animator.removeAllUpdateListeners();animator=null;}
-        release(logoImage);logoImage=null;release(lockImage);lockImage=null;
+        release(logoImage);logoImage=null;
         super.onDetachedFromWindow();
     }
     /** Rasterize the unchanged vector without rotation, above its final on-screen resolution. */
@@ -58,8 +59,14 @@ final class WalletArtView extends View {
             if(animated){paint.setAlpha((int)(160*(1-pulse)));canvas.drawCircle(0,0,71+25*pulse,paint);paint.setAlpha(255);}
         }
         canvas.rotate(-9);float w=233,h=145;
-        // Scale to the available illustration surface, preserving the approved card proportions.
-        canvas.scale(fit,fit);
+        // Enlarge only the home card; keep its proportions and the NFC scanning artwork.
+        float cardFit=fit*(scanning?1f:1.08f);
+        if(!scanning){
+            float radians=(float)Math.toRadians(9);
+            float tiltedHeight=h*(float)Math.cos(radians)+w*(float)Math.sin(radians);
+            cardFit=Math.min(cardFit,Math.max(0,(getHeight()/scale-8)/tiltedHeight));
+        }
+        canvas.scale(cardFit,cardFit);
         paint.setStyle(Paint.Style.FILL);paint.setColor(AppUi.ORANGE);bounds.set(-w/2,-h/2,w/2,h/2);paint.setShadowLayer(18,0,18,0x14cc7313);canvas.drawRoundRect(bounds,17,17,paint);paint.clearShadowLayer();
         paint.setStyle(Paint.Style.STROKE);paint.setStrokeWidth(.8f);paint.setColor(0x45c57216);bounds.set(-w/2+7,-h/2+4.4f,w/2-7,h/2-4.4f);canvas.drawRoundRect(bounds,9,9,paint);
         paint.setStyle(Paint.Style.FILL);paint.setColor(0xff33210d);paint.setTypeface(font);paint.setTextSize(15);
@@ -67,7 +74,7 @@ final class WalletArtView extends View {
         paint.setStyle(Paint.Style.STROKE);paint.setStrokeWidth(1);paint.setStrokeCap(Paint.Cap.ROUND);float cx=w/2-w*.08f-7,cy=-h/2+h*.12f+7;
         for(int r=3;r<=7;r+=2){bounds.set(cx-r,cy-r,cx+r,cy+r);canvas.drawArc(bounds,-45,90,false,paint);}
         float left=-w/2+w*.08f,bottom=h/2-h*.15f;int size=45;
-        logoImage=iconImage(logo,logoImage,size,scale*fit);
+        logoImage=iconImage(logo,logoImage,size,scale*cardFit);
         // Retain the previous integer bounds, card rotation, symbol size and spacing.
         bounds.set((int)left,(int)(bottom-size),(int)left+size,(int)bottom);canvas.drawBitmap(logoImage,null,bounds,iconPaint);
         float textX=left+55,mid=bottom-size/2f;paint.setStyle(Paint.Style.FILL);paint.setTextSize(9);paint.setColor(0xff33210d);
@@ -75,16 +82,31 @@ final class WalletArtView extends View {
         canvas.restore();
         if(!scanning){
             float screenScale=scale*fit,centerX=getWidth()/2f,centerY=getHeight()/2f;
-            int stroke=Math.max(1,Math.round(screenScale));
-            // Keep the existing tile fill and shadow in their original coordinate system.
-            canvas.save();canvas.translate(centerX,centerY);canvas.scale(screenScale,screenScale);
-            bounds.set(112,30,170,88);paint.setStyle(Paint.Style.FILL);paint.setColor(Color.WHITE);paint.setShadowLayer(14,0,8,0x08594024);canvas.drawRoundRect(bounds,18,18,paint);paint.clearShadowLayer();canvas.restore();
-            bounds.set(strokeCoordinate(centerX+112*screenScale,stroke),strokeCoordinate(centerY+30*screenScale,stroke),strokeCoordinate(centerX+170*screenScale,stroke),strokeCoordinate(centerY+88*screenScale,stroke));
-            paint.setStyle(Paint.Style.STROKE);paint.setStrokeWidth(stroke);paint.setColor(AppUi.LINE);canvas.drawRoundRect(bounds,18*screenScale,18*screenScale,paint);
-            int iconPixels=Math.max(1,Math.round(24*screenScale));
-            float iconLeft=Math.round(bounds.centerX()-iconPixels/2f),iconTop=Math.round(bounds.centerY()-iconPixels/2f);
-            lockImage=iconImage(lock,lockImage,24,iconPixels/24f);
-            bounds.set(iconLeft,iconTop,iconLeft+iconPixels,iconTop+iconPixels);canvas.drawBitmap(lockImage,null,bounds,iconPaint);
+            // Move the unchanged-size lock tile inward (18 left, 8 up) as approved.
+            // Keep the border inside its bounds so narrow screens cannot clip its width.
+            int border=Math.max(1,Math.round(1.5f*screenScale));
+            bounds.set(Math.round(centerX+94*screenScale),Math.round(centerY+22*screenScale),Math.round(centerX+152*screenScale),Math.round(centerY+80*screenScale));
+            float tileCenterX=bounds.centerX(),tileCenterY=bounds.centerY(),radius=18*screenScale;
+            paint.setStyle(Paint.Style.FILL);paint.setColor(AppUi.LINE);canvas.drawRoundRect(bounds,radius,radius,paint);
+            bounds.inset(border,border);paint.setColor(Color.WHITE);float innerRadius=Math.max(0,radius-border);canvas.drawRoundRect(bounds,innerRadius,innerRadius,paint);
+            drawLock(canvas,tileCenterX,tileCenterY,24*screenScale);
         }
+    }
+
+    /** Preserve the 24-unit lock shape, with all straight strokes aligned to physical pixels. */
+    private void drawLock(Canvas canvas,float centerX,float centerY,float size){
+        float unit=size/24f;int stroke=Math.max(1,Math.round(1.7f*unit));
+        float originX=centerX-size/2,originY=centerY-size/2;
+        float left=strokeCoordinate(originX+5*unit,stroke),right=strokeCoordinate(originX+19*unit,stroke);
+        float top=strokeCoordinate(originY+10*unit,stroke),bottom=strokeCoordinate(originY+22*unit,stroke);
+        float shackleLeft=strokeCoordinate(originX+7*unit,stroke),shackleRight=strokeCoordinate(originX+17*unit,stroke);
+        float shoulder=strokeCoordinate(originY+6*unit,stroke),radius=(shackleRight-shackleLeft)/2;
+        lockPath.rewind();lockPath.moveTo(shackleLeft,top);lockPath.lineTo(shackleLeft,shoulder);
+        bounds.set(shackleLeft,shoulder-radius,shackleRight,shoulder+radius);lockPath.arcTo(bounds,180,180);lockPath.lineTo(shackleRight,top);
+        lockPath.addRect(left,top,right,bottom,Path.Direction.CW);
+        float middle=strokeCoordinate(originX+12*unit,stroke);
+        lockPath.moveTo(middle,strokeCoordinate(originY+15*unit,stroke));lockPath.lineTo(middle,strokeCoordinate(originY+17*unit,stroke));
+        paint.setStyle(Paint.Style.STROKE);paint.setStrokeWidth(stroke);paint.setStrokeCap(Paint.Cap.ROUND);paint.setStrokeJoin(Paint.Join.ROUND);paint.setColor(AppUi.ACCENT);
+        canvas.drawPath(lockPath,paint);
     }
 }

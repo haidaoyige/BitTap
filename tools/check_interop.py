@@ -12,7 +12,7 @@ for path,version in [(build/'interop-fixture.txt',2),(root/'core/src/test/resour
  text=path.read_text().strip()
  assert text.startswith(f'CG{version}:')
  data=base64.urlsafe_b64decode(text[4:]+'='*((-len(text[4:]))%4))
- assert data[:10]==b'CGF'+bytes([version,0,1,1,15,8,1])
+ assert data[:10]==b'CGF'+bytes([version,0,1,1,15,8,3])
  salt=data[10:26];nonce=data[26:38]
  if version==1:
   assert data[38]==42
@@ -27,7 +27,7 @@ for path,version in [(build/'interop-fixture.txt',2),(root/'core/src/test/resour
  if version==3:
   length=data[end];note=data[end+1:end+1+length].decode('utf-8');assert note=='03 - 長期储蓄';end+=1+length
  aad=data[:end];cipher=data[end:];assert len(cipher)==48
- key=hashlib.scrypt(b'test fixture password only',salt=salt,n=32768,r=8,p=1,dklen=32,maxmem=128*1024*1024)
+ key=hashlib.scrypt(b'test fixture password only',salt=salt,n=32768,r=8,p=3,dklen=32,maxmem=128*1024*1024)
  private=AESGCM(key).decrypt(nonce,cipher,aad)
  assert private==bytes(31)+b'\x01'
  pub=ec.derive_private_key(int.from_bytes(private,'big'),ec.SECP256K1()).public_key().public_bytes(Encoding.X962,PublicFormat.CompressedPoint)
