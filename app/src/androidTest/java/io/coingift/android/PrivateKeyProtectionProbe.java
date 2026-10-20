@@ -60,11 +60,26 @@ final class PrivateKeyProtectionProbe {
                 yes(Arrays.equals(sealed,new byte[sealed.length])&&sealed(holder)==null,"enabling service closes sealed session");
                 main(stale::performClick);yes(get("copyConfirm")==null&&get("pendingQrImage")==null,"stale button cannot export after service is enabled");
                 assertNoLeak("service-enabled lock");services(false);main(()->invoke("closeAccessNotice"));yes(get("unlocked")==null,"service shutdown leaves session locked");
-                if("zh".equals(language))checks+=new PrivateSessionProbe(host).run();
+                if("zh".equals(language)){checks+=new PrivateSessionProbe(host).run();passwordAndFileRace();}
                 main(activity::finish);host.waitForIdleSync();activity=null;
             }
         }finally{services(false);Texts.select(host.getTargetContext(),"zh");if(activity!=null)main(activity::finish);}
         return checks;
+    }
+    private void passwordAndFileRace()throws Exception{
+        final EditText[] password={null};final Button[] stale={null};
+        main(()->{invoke("showUnlockDialog");Dialog dialog=(Dialog)get("unlockDialog");for(View v:views(dialog.getWindow().getDecorView()))if(v instanceof EditText){password[0]=(EditText)v;password[0].setText("Public-fixture-Only9!");break;}stale[0]=button(dialog,activity.getString(R.string.wallet_unlock_action));});
+        services(true);until(()->get("unlockDialog")==null,10000);yes(password[0].length()==0&&get("unlocked")==null,"service activation clears already-entered password and closes input");
+        main(stale[0]::performClick);yes(get("unlocked")==null&&!(Boolean)get("busy"),"old password submit cannot start decrypt after service activation");
+        services(false);main(()->invoke("closeAccessNotice"));
+        Uri provider=Uri.parse("content://io.coingift.android.test.documents");host.getTargetContext().getContentResolver().call(provider,"reset",null,null);
+        byte[] png="public fixture private-export bytes".getBytes(StandardCharsets.US_ASCII);
+        try{
+            main(()->invoke("startDocumentOperation",new Class<?>[]{Uri.class,DocumentIo.Kind.class,String.class,byte[].class,io.coingift.core.CreationSession.class,String.class,boolean.class},Uri.withAppendedPath(provider,"slow-open"),DocumentIo.Kind.PNG,null,png,null,null,true));
+            DocumentIo.Job abandoned=(DocumentIo.Job)get("fileJob");services(true);
+            until(()->get("fileJob")==null,10000);yes(Arrays.equals(png,new byte[png.length])&&!(Boolean)get("fileBusy"),"service activation cancels pending provider and wipes private image bytes");
+            main(()->activity.documentFinished(abandoned,true,null));yes(get("fileJob")==null&&get("unlocked")==null,"late provider completion cannot revive private export or unlock");
+        }finally{host.getTargetContext().getContentResolver().call(provider,"release",null,null);services(false);main(()->invoke("closeAccessNotice"));}
     }
     private byte[] sealed(PrivateSession value){try{Field f=PrivateSession.class.getDeclaredField("ciphertext");f.setAccessible(true);return (byte[])f.get(value);}catch(Exception ex){throw new RuntimeException(ex);}}
     private void services(boolean enabled)throws Exception{
