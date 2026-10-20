@@ -39,12 +39,21 @@ public final class SmokeRunner extends Instrumentation {
     private boolean recoveryUiOnly;
     private boolean homeLayoutOnly,creationUiOnly;
     private boolean cryptoOnly;
+    @Override public Activity startActivitySync(Intent intent){Activity result=super.startActivitySync(intent);if(result instanceof MainActivity)activity=(MainActivity)result;return result;}
     /** NFC scan art intentionally animates forever; never wait indefinitely for an idle queue. */
     @Override public void waitForIdleSync(){
         java.util.concurrent.CountDownLatch idle=new java.util.concurrent.CountDownLatch(1);
         waitForIdle(idle::countDown);
         try{if(!idle.await(1,java.util.concurrent.TimeUnit.SECONDS))runOnMainSync(()->{});}
         catch(InterruptedException ex){Thread.currentThread().interrupt();throw new AssertionError("Interrupted waiting for UI",ex);}
+        if(activity!=null&&android.os.Looper.myLooper()!=android.os.Looper.getMainLooper()){
+            long end=android.os.SystemClock.elapsedRealtime()+10000;
+            while(Boolean.TRUE.equals(get("privateOpening"))&&android.os.SystemClock.elapsedRealtime()<end){
+                try{Thread.sleep(20);}catch(InterruptedException ex){Thread.currentThread().interrupt();break;}
+                runOnMainSync(()->{});
+            }
+            runOnMainSync(()->{});
+        }
     }
     @Override public void onCreate(Bundle args){super.onCreate(args);cryptoOnly=args!=null&&"true".equals(args.getString("cryptoOnly"));riskNoticeOnly=args!=null&&"true".equals(args.getString("riskNoticeOnly"));securityCopyOnly=args!=null&&"true".equals(args.getString("securityCopyOnly"));privateAccessOnly=args!=null&&"true".equals(args.getString("privateAccessOnly"));inlineLoadingOnly=args!=null&&"true".equals(args.getString("inlineLoadingOnly"));deadlineFileFilesOnly=args!=null&&"true".equals(args.getString("fileOnly"));deadlineFileOnly=args!=null&&"true".equals(args.getString("deadlineFileOnly"));creationUiOnly=args!=null&&"true".equals(args.getString("creationUiOnly"));homeLayoutOnly=args!=null&&"true".equals(args.getString("homeLayoutOnly"));recoveryUiOnly=args!=null&&"true".equals(args.getString("recoveryUiOnly"));unlockVisualOnly=args!=null&&"true".equals(args.getString("unlockVisualOnly"));cameraOnly=args!=null&&"true".equals(args.getString("cameraOnly"));homeOnly=args!=null&&"true".equals(args.getString("homeOnly"));imageOnly=args!=null&&"true".equals(args.getString("imageOnly"));copyVisualOnly=args!=null&&"true".equals(args.getString("copyVisualOnly"));copyOnly=copyVisualOnly||args!=null&&"true".equals(args.getString("copyOnly"));inputUiOnly=args!=null&&"true".equals(args.getString("inputUiOnly"));protectionOnly=args!=null&&"true".equals(args.getString("protectionOnly"));weakPasswordOnly=args!=null&&"true".equals(args.getString("weakPasswordOnly"));addressSaveOnly=args!=null&&"true".equals(args.getString("addressSaveOnly"));start();}
     @Override public void onStart(){
@@ -132,7 +141,7 @@ public final class SmokeRunner extends Instrumentation {
             click("查看私钥");yes(get("qrBitmap")!=null,"private QR generated on explicit request");yes(((Bitmap)get("qrBitmap")).isMutable(),"QR pixel storage can be erased safely");dismiss("qrDialog");yes(get("qrBitmap")==null,"QR bitmap erased on dismissal");
             click("查看私钥");privateImageExport();
             input("test fixture password only");click("解密冷钱包");until(()->"revealed".equals(get("screen")),20000);
-            WalletCrypto.Unlocked previous=(WalletCrypto.Unlocked)get("unlocked");
+            PrivateSession previous=(PrivateSession)get("unlocked");
             yes(!hasAction(root(),"复制 WIF 私钥"),"recovery page no longer has a private-copy button");
             click("查看私钥");clickDialog("qrDialog",new ApprovedCopy(activity).ui("copyWif"));clickDialog("copyConfirm",activity.getString(R.string.copy_confirm_action));
             ClipboardManager clipboard=(ClipboardManager)getTargetContext().getSystemService(Context.CLIPBOARD_SERVICE);
@@ -147,10 +156,10 @@ public final class SmokeRunner extends Instrumentation {
             click("展示地址");addressQr(publicAddresses.nativeSegwit,false);dismiss("qrDialog");
             input("test fixture password only");click("解密冷钱包");until(()->"revealed".equals(get("screen")),20000);
             yes(has(root(),"其他收款地址"),"CG1 shows four derived addresses after unlock");
-            click("查看私钥");PrivateKeyView oldSecret=(PrivateKeyView)get("secretView");dismiss("qrDialog");WalletCrypto.Unlocked homeKey=(WalletCrypto.Unlocked)get("unlocked");
-            Field privateField=WalletCrypto.Unlocked.class.getDeclaredField("privateKey");privateField.setAccessible(true);byte[] homeBytes=(byte[])privateField.get(homeKey);
+            click("查看私钥");PrivateKeyView oldSecret=(PrivateKeyView)get("secretView");dismiss("qrDialog");PrivateSession homeKey=(PrivateSession)get("unlocked");
+            Field privateField=PrivateSession.class.getDeclaredField("ciphertext");privateField.setAccessible(true);byte[] homeBytes=(byte[])privateField.get(homeKey);
             click("隐藏私钥，返回首页");yes(clipboard.getPrimaryClip()==null,"home removes owned private clipboard");
-            yes(java.util.Arrays.equals(homeBytes,new byte[32])&&privateField.get(homeKey)==null,"home wipes live private-key storage");
+            yes(java.util.Arrays.equals(homeBytes,new byte[homeBytes.length])&&privateField.get(homeKey)==null,"home wipes live private-key storage");
             yes(oldSecret.isCleared(),"home clears the detached private drawing");
             yes(get("incoming")==null&&get("unlocked")==null&&get("exportData")==null,"home removes read and export state");
             nfcSheets(cg2);
@@ -333,7 +342,7 @@ public final class SmokeRunner extends Instrumentation {
         main(()->{set("cameraEntropy",entropy);set("enhanced",true);callActivityOnPause(activity);callActivityOnStop(activity);});yes(!entropy.ready()&&get("cameraEntropy")==null,"background clears capture secret and digests");main(()->callActivityOnResume(activity));
         main(()->{set("enhanced",false);set("screen","home");invoke("render");});
         main(()->invoke("acceptIncoming",new Class<?>[]{String.class},new Object[]{cg3}));yes(has(root(),"03 - 長期储蓄"),"CG3 note readable before password");yes(get("unlocked")==null,"public note never unlocks key");
-        input("test fixture password only");click("解密冷钱包");until(()->"revealed".equals(get("screen")),20000);yes(((WalletCrypto.Unlocked)get("unlocked")).note.equals("03 - 長期储蓄"),"decryption authenticates note");
+        input("test fixture password only");click("解密冷钱包");until(()->"revealed".equals(get("screen")),20000);yes(((PrivateSession)get("unlocked")).note.equals("03 - 長期储蓄"),"decryption authenticates note");
         click(activity.getString(R.string.wallet_view_private));clickDialog("qrDialog",activity.getString(R.string.wallet_transfer_help));yes(has(dialogRoot("sheet"),"OKX Web3 Wallet · web3.okx.com"),"current WIF help includes reported OKX compatibility");dismiss("sheet");
         click("展示地址");yes(hasAction(dialogRoot("qrDialog"),"查看链上余额"),"explorer entry belongs to address QR");dismiss("qrDialog");click("查看私钥");yes(!hasAction(dialogRoot("qrDialog"),"查看链上余额"),"private QR has no explorer entry");dismiss("qrDialog");click("隐藏私钥，返回首页");
         CreationSession owner=new CreationSession(cg3);main(()->{set("session",owner);set("screen","write");invoke("render");});yes(!(Boolean)get("lockAfterWrite"),"permanent locking defaults off");
@@ -700,7 +709,7 @@ public final class SmokeRunner extends Instrumentation {
                 PrivateKeyView dismissed=(PrivateKeyView)get("secretView");Bitmap dismissedPixels=(Bitmap)get("qrBitmap");dismiss("qrDialog");
                 yes(get("secretView")==null&&dismissed.isCleared()&&dismissedPixels.isRecycled(),"closing private sheet erases text and QR");
                 click(activity.getString(R.string.wallet_view_private));PrivateKeyView background=(PrivateKeyView)get("secretView");
-                WalletCrypto.Unlocked holder=(WalletCrypto.Unlocked)get("unlocked");
+                PrivateSession holder=(PrivateSession)get("unlocked");
                 main(()->{callActivityOnPause(activity);callActivityOnStop(activity);});
                 yes(get("unlocked")==null&&get("qrDialog")==null&&background.isCleared(),"background clears private sheet and decrypted session");
                 try{holder.wif();throw new AssertionError("closed key still available");}catch(IllegalStateException expected){checks++;}
@@ -793,7 +802,7 @@ public final class SmokeRunner extends Instrumentation {
                     if(l==0)capture("copy-confirm-denied");
                 }finally{clipboardWriteMode("allow");}
                 Button beforePause=dialogButton("copyConfirm",activity.getString(R.string.copy_confirm_action));
-                WalletCrypto.Unlocked oldKey=(WalletCrypto.Unlocked)get("unlocked");
+                PrivateSession oldKey=(PrivateSession)get("unlocked");
                 main(()->{callActivityOnPause(activity);callActivityOnStop(activity);});
                 yes(get("copyConfirm")==null&&get("qrDialog")==null&&get("unlocked")==null,"background clears confirmation, QR and decrypted key");
                 main(beforePause::performClick);

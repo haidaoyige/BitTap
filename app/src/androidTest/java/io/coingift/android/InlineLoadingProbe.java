@@ -54,7 +54,7 @@ final class InlineLoadingProbe {
         main(()->{inputs.get(0).setText("test fixture password only");submit.performClick();});
         until(()->"revealed".equals(get("screen"))&&get("unlocked")!=null,20000);
         yes(get("unlockDialog")==null&&get("workDialog")==null&&!owner.isShowing(),"real successful decryption closes the password dialog automatically");
-        yes(((WalletCrypto.Unlocked)get("unlocked")).addresses.sameAs(new WalletCrypto().inspect(backup).addresses),"loading flow preserves decrypted address derivation");
+        yes(((PrivateSession)get("unlocked")).addresses.sameAs(new WalletCrypto().inspect(backup).addresses),"loading flow preserves decrypted address derivation");
         yes(((Map<?,?>)get("workHints")).isEmpty()&&get("workSubmit")==null,"completion releases spinner and input references");
     }
     private void unlockCancel()throws Exception{

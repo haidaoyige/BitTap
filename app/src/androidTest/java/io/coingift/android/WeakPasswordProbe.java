@@ -122,7 +122,7 @@ final class WeakPasswordProbe {
         yes("unlock".equals(get("screen"))&&!has(activity.getWindow().getDecorView(),new ApprovedCopy(activity).ui("passHint")),"recovery does not show new-wallet minimum length hint");
         main(()->{invoke("showUnlockDialog");Dialog d=(Dialog)get("unlockDialog");for(View view:views(d.getWindow().getDecorView()))if(view instanceof EditText){((EditText)view).setText("123456");break;}button(d.getWindow().getDecorView(),activity.getString(R.string.wallet_unlock_action)).performClick();});
         until(()->"revealed".equals(get("screen"))&&get("unlocked")!=null&&pendingCount()==0,30000);
-        yes("bc1qw508d6qejxtdg4y5r3zarvary0c5xw7kv8f3t4".equals(((WalletCrypto.Unlocked)get("unlocked")).address),"six-character legacy password still decrypts through actual recovery UI");
+        yes("bc1qw508d6qejxtdg4y5r3zarvary0c5xw7kv8f3t4".equals(((PrivateSession)get("unlocked")).address),"six-character legacy password still decrypts through actual recovery UI");
     }
     private void obscuredConsent(){
         setup(null);fill("aB4!aB4!aB4!","aB4!aB4!aB4!");generate();Dialog d=consent();Button action=button(d.getWindow().getDecorView(),activity.getString(R.string.weak_password_continue));ProtectedScrollView root=findProtected(d.getWindow().getDecorView());

@@ -81,10 +81,12 @@ public final class WalletCrypto {
         }
         public String wif() {
             if (privateKey == null) throw new IllegalStateException("私钥已清除，请重新解密");
-            byte[] payload = Arrays.copyOf(privateKey, 33);
-            payload[32] = 1;
-            try { return Base58.encodeChecked(network.params().getDumpedPrivateKeyHeader(), payload); }
-            finally { wipe(payload); }
+            return compressedMainnetWif(privateKey);
+        }
+        /** Encrypt directly into a caller-owned session cipher without exporting a raw key getter. */
+        public byte[] sealForSession(Cipher cipher) throws GeneralSecurityException {
+            if(privateKey==null)throw new IllegalStateException("私钥已清除，请重新解密");
+            return cipher.doFinal(privateKey);
         }
         @Override public void close() { wipe(privateKey); privateKey = null; }
     }
@@ -276,6 +278,12 @@ public final class WalletCrypto {
         return value.signum() > 0 && value.compareTo(CurveParameters.SECP256K1.getN()) < 0;
     }
     static void requireValidKey(byte[] key) { if (!isValidKey(key)) throw new IllegalArgumentException("无效的 BTC 私钥"); }
+    /** On-demand mainnet export; caller must clear its owned scalar after use. */
+    public static String compressedMainnetWif(byte[] privateKey) {
+        requireValidKey(privateKey);byte[] payload=Arrays.copyOf(privateKey,33);payload[32]=1;
+        try{return Base58.encodeChecked(MainNetParams.get().getDumpedPrivateKeyHeader(),payload);}
+        finally{wipe(payload);}
+    }
     static ECKey publicKeyOf(byte[] privateKey) {
         requireValidKey(privateKey);
         // Public-only wrapper also supports legal scalar 1, rejected by bitcoinj's private-key wrapper.

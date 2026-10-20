@@ -26,53 +26,70 @@ final class PrivateKeyProtectionProbe {
     private String backup;
     PrivateKeyProtectionProbe(SmokeRunner host){this.host=host;}
     int run()throws Exception{
-        try(InputStream in=host.getContext().getAssets().open("cg3-scalar-one.txt")){
-            backup=new String(BackupFiles.readBounded(in),StandardCharsets.US_ASCII).trim();
-        }
+        try(InputStream in=host.getContext().getAssets().open("cg3-scalar-one.txt")){backup=new String(BackupFiles.readBounded(in),StandardCharsets.US_ASCII).trim();}
+        host.getUiAutomation(UiAutomation.FLAG_DONT_SUPPRESS_ACCESSIBILITY_SERVICES);
         until(()->snapshot().getBoolean("connected"),10000);
-        if(Build.VERSION.SDK_INT>=31)yes(snapshot().getBoolean("tool"),"probe uses a declared accessibility tool, including sensitive nodes");
         try{
             for(String language:new String[]{"zh","en","ja","ko"}){
-                Texts.select(host.getTargetContext(),language);
+                services(true);Texts.select(host.getTargetContext(),language);
                 activity=(MainActivity)host.startActivitySync(new Intent(host.getTargetContext(),MainActivity.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_CLEAR_TASK));host.waitForIdleSync();
-                unlock();pixelMetrics(language);resetProbe();
-                main(()->invoke("showPrivateQr"));host.waitForIdleSync();
-                PrivateKeyView value=(PrivateKeyView)get("secretView");
-                yes(value!=null&&!value.isCleared(),"private key remains visibly drawn on explicit request");
-                main(()->{
-                    AccessibilityNodeInfo node=value.createAccessibilityNodeInfo();
-                    try{yes(node.getText()==null&&!node.getContentDescription().toString().contains(WIF),"private node contains only the fixed localized description");}
-                    finally{node.recycle();}
-                    yes(value.getImportantForAutofill()==View.IMPORTANT_FOR_AUTOFILL_NO_EXCLUDE_DESCENDANTS&&!value.isSaveEnabled(),"private view excludes autofill and saved state");
-                    if(Build.VERSION.SDK_INT>=30)yes(value.getImportantForContentCapture()==View.IMPORTANT_FOR_CONTENT_CAPTURE_NO_EXCLUDE_DESCENDANTS,"private view excludes content capture");
-                    if(Build.VERSION.SDK_INT>=34)yes(value.isAccessibilityDataSensitive()&&((ImageView)get("qrImage")).isAccessibilityDataSensitive(),"text drawing and private QR have sensitive accessibility flags");
-                });
-                assertNoLeak("private sheet");
-                yes((((Dialog)get("qrDialog")).getWindow().getAttributes().flags&WindowManager.LayoutParams.FLAG_SECURE)!=0,"private sheet retains screenshot protection");
-                if(Build.VERSION.SDK_INT>=29){
-                    click("qrDialog",new ApprovedCopy(activity).ui("copyWif"));assertNoLeak("copy confirmation");
-                    click("copyConfirm",activity.getString(R.string.copy_confirm_action));
-                    main(()->{
-                        ClipboardManager clipboard=(ClipboardManager)activity.getSystemService(Context.CLIPBOARD_SERVICE);
-                        yes(WIF.contentEquals(clipboard.getPrimaryClip().getItemAt(0).getText()),"existing explicit copy still exports the exact WIF");
-                    });
-                }else yes(!button((Dialog)get("qrDialog"),activity.getString(R.string.private_copy_unavailable)).isEnabled(),"Android 9 copy remains unavailable");
-                click("qrDialog",Texts.tr(activity,"保存图片"));assertNoLeak("private image confirmation");
-                click("qrSaveConfirm",Texts.tr(activity,"取消"));
-                sameSheetAsPreviousTextView(language,value);
-                // Positive control: the same enabled service must read the old TextView under FLAG_SECURE.
-                until(()->snapshot().getBoolean("nodeLeak"),5000);
-                yes(snapshot().getBoolean("nodeLeak"),"service detects the legacy plaintext TextView under FLAG_SECURE");
-                main(()->invoke("dismissQr"));host.waitForIdleSync();resetProbe();
-                main(()->invoke("showPrivateQr"));host.waitForIdleSync();assertNoLeak("reopened private sheet");
-                PrivateKeyView detached=(PrivateKeyView)get("secretView");char[] owned=owned(detached);Bitmap qr=(Bitmap)get("qrBitmap");
-                main(()->{host.callActivityOnPause(activity);host.callActivityOnStop(activity);});
-                yes(detached.isCleared()&&Arrays.equals(owned,new char[owned.length])&&qr.isRecycled()&&get("unlocked")==null,"background wipes private characters, QR, and session");
-                main(()->host.callActivityOnResume(activity));host.waitForIdleSync();main(activity::finish);
+                pixelMetrics(language);
+                yes(AccessibilityGate.blocked(activity),"actual enabled service blocks sensitive operations");
+                main(()->{invoke("acceptIncoming",new Class<?>[]{String.class},backup);invoke("showUnlockDialog");});
+                yes(get("unlockDialog")==null&&get("unlocked")==null&&get("accessNotice")!=null,"password entry blocked with localized app notice");
+                Dialog notice=(Dialog)get("accessNotice");yes(!(notice instanceof AlertDialog)&&notice.getWindow().getAttributes().gravity==Gravity.BOTTOM,"notice follows app bottom sheet style");
+                yes((notice.getWindow().getAttributes().flags&WindowManager.LayoutParams.FLAG_SECURE)!=0,"access notice retains secure flag");
+                main(()->{invoke("closeAccessNotice");invoke("showAddressQr",new Class<?>[]{String.class,String.class,boolean.class},"SegWit","bc1qw508d6qejxtdg4y5r3zarvary0c5xw7kv8f3t4",false);});
+                yes(get("qrBitmap")!=null,"public address viewing remains available");main(()->invoke("dismissQr"));
+                main(()->{set("screen","setup");invoke("render");EditText note=null;for(View v:views(activity.getWindow().getDecorView()))if(v instanceof EditText){note=(EditText)v;break;}invoke("showCreationDialog",new Class<?>[]{EditText.class},note);});
+                yes(get("creationDialog")==null&&get("accessNotice")!=null,"new password entry blocked as well");
+                main(()->{invoke("closeAccessNotice");invoke("acceptIncoming",new Class<?>[]{String.class},backup);});
+                // Positive control proves the separate-process service can actually read plaintext widgets.
+                final Dialog[] control={null};main(()->{control[0]=new Dialog(activity);control[0].setContentView(legacy(activity));control[0].getWindow().addFlags(WindowManager.LayoutParams.FLAG_SECURE);control[0].show();});
+                until(()->snapshot().getBoolean("nodeLeak"),5000);yes(snapshot().getBoolean("nodeLeak"),"enabled service reads positive-control WIF under FLAG_SECURE");
+                main(()->control[0].dismiss());resetProbe();services(false);
+                main(()->invoke("closeAccessNotice"));yes(get("unlocked")==null,"disabling service never automatically unlocks");
+                unlock();PrivateSession holder=(PrivateSession)get("unlocked");byte[] sealed=sealed(holder);
+                yes(sealed.length==48,"recovered activity retains authenticated ciphertext instead of scalar");
+                main(()->invoke("showPrivateQr"));until(()->get("qrBitmap")!=null,10000);
+                PrivateKeyView secret=(PrivateKeyView)get("secretView");char[] raw=owned(secret);Bitmap qr=(Bitmap)get("qrBitmap");
+                yes(secret!=null&&!secret.isCleared(),"explicit view still works without service");
+                Button stale=button((Dialog)get("qrDialog"),Build.VERSION.SDK_INT<=28?activity.getString(R.string.private_copy_unavailable):new ApprovedCopy(activity).ui("copyWif"));
+                services(true);until(()->get("unlocked")==null&&get("accessNotice")!=null,10000);
+                yes(secret.isCleared()&&Arrays.equals(raw,new char[raw.length])&&qr.isRecycled(),"enabling service clears WIF and QR immediately");
+                yes(Arrays.equals(sealed,new byte[sealed.length])&&sealed(holder)==null,"enabling service closes sealed session");
+                main(stale::performClick);yes(get("copyConfirm")==null&&get("pendingQrImage")==null,"stale button cannot export after service is enabled");
+                assertNoLeak("service-enabled lock");services(false);main(()->invoke("closeAccessNotice"));yes(get("unlocked")==null,"service shutdown leaves session locked");
+                if("zh".equals(language)){checks+=new PrivateSessionProbe(host).run();passwordAndFileRace();}
+                main(activity::finish);host.waitForIdleSync();activity=null;
             }
-        }finally{Texts.select(host.getTargetContext(),"zh");if(activity!=null)main(activity::finish);}
+        }finally{services(false);Texts.select(host.getTargetContext(),"zh");if(activity!=null)main(activity::finish);}
         return checks;
     }
+    private void passwordAndFileRace()throws Exception{
+        final EditText[] password={null};final Button[] stale={null};
+        main(()->{invoke("showUnlockDialog");Dialog dialog=(Dialog)get("unlockDialog");for(View v:views(dialog.getWindow().getDecorView()))if(v instanceof EditText){password[0]=(EditText)v;password[0].setText("Public-fixture-Only9!");break;}stale[0]=button(dialog,activity.getString(R.string.wallet_unlock_action));});
+        services(true);until(()->get("unlockDialog")==null,10000);yes(password[0].length()==0&&get("unlocked")==null,"service activation clears already-entered password and closes input");
+        main(stale[0]::performClick);yes(get("unlocked")==null&&!(Boolean)get("busy"),"old password submit cannot start decrypt after service activation");
+        services(false);main(()->invoke("closeAccessNotice"));
+        Uri provider=Uri.parse("content://io.coingift.android.test.documents");host.getTargetContext().getContentResolver().call(provider,"reset",null,null);
+        byte[] png="public fixture private-export bytes".getBytes(StandardCharsets.US_ASCII);
+        try{
+            main(()->invoke("startDocumentOperation",new Class<?>[]{Uri.class,DocumentIo.Kind.class,String.class,byte[].class,io.coingift.core.CreationSession.class,String.class,boolean.class},Uri.withAppendedPath(provider,"slow-open"),DocumentIo.Kind.PNG,null,png,null,null,true));
+            DocumentIo.Job abandoned=(DocumentIo.Job)get("fileJob");services(true);
+            until(()->get("fileJob")==null,10000);yes(Arrays.equals(png,new byte[png.length])&&!(Boolean)get("fileBusy"),"service activation cancels pending provider and wipes private image bytes");
+            main(()->activity.documentFinished(abandoned,true,null));yes(get("fileJob")==null&&get("unlocked")==null,"late provider completion cannot revive private export or unlock");
+        }finally{host.getTargetContext().getContentResolver().call(provider,"release",null,null);services(false);main(()->invoke("closeAccessNotice"));}
+    }
+    private byte[] sealed(PrivateSession value){try{Field f=PrivateSession.class.getDeclaredField("ciphertext");f.setAccessible(true);return (byte[])f.get(value);}catch(Exception ex){throw new RuntimeException(ex);}}
+    private void services(boolean enabled)throws Exception{
+        String services=enabled?"io.coingift.android.test/io.coingift.android.PrivateAccessService":"null";
+        shell(enabled?"settings put secure enabled_accessibility_services "+services:"settings delete secure enabled_accessibility_services");shell("settings put secure accessibility_enabled "+(enabled?1:0));
+        until(()->AccessibilityGate.blocked(host.getTargetContext())==enabled,10000);
+        if(enabled)until(()->snapshot().getBoolean("connected"),10000);
+    }
+    private void shell(String command)throws Exception{try(ParcelFileDescriptor fd=host.getUiAutomation(UiAutomation.FLAG_DONT_SUPPRESS_ACCESSIBILITY_SERVICES).executeShellCommand(command);InputStream in=new ParcelFileDescriptor.AutoCloseInputStream(fd)){while(in.read()!=-1){}}}
+    private void set(String name,Object value){try{Field f=MainActivity.class.getDeclaredField(name);f.setAccessible(true);f.set(activity,value);}catch(Exception ex){throw new RuntimeException(ex);}}
     private void unlock()throws Exception{
         main(()->{
             invoke("acceptIncoming",new Class<?>[]{String.class},backup);invoke("showUnlockDialog");
@@ -88,7 +105,7 @@ final class PrivateKeyProtectionProbe {
                 Context context=activity.createConfigurationContext(configuration);
                 for(int dp:new int[]{180,260,320}){
                     int width=Math.round(dp*context.getResources().getDisplayMetrics().density);
-                    PrivateKeyView actual=new PrivateKeyView(context,WIF);TextView expected=legacy(context);
+                    PrivateKeyView actual=new PrivateKeyView(context,WIF.toCharArray());TextView expected=legacy(context);
                     Bitmap a=drawMeasured(actual,width),b=drawMeasured(expected,width);
                     try{
                         if(!a.sameAs(b)){
@@ -163,6 +180,6 @@ final class PrivateKeyProtectionProbe {
     private void invoke(String name){invoke(name,new Class<?>[0]);}
     private void invoke(String name,Class<?>[] types,Object...args){try{java.lang.reflect.Method method=MainActivity.class.getDeclaredMethod(name,types);method.setAccessible(true);method.invoke(activity,args);}catch(Exception ex){throw new RuntimeException(ex);}}
     private void main(Runnable action){Throwable[] error={null};host.runOnMainSync(()->{try{action.run();}catch(Throwable ex){error[0]=ex;}});if(error[0]!=null)throw new AssertionError("Private protection UI check",error[0]);}
-    private void until(BooleanSupplier condition,long timeout)throws Exception{long end=SystemClock.elapsedRealtime()+timeout;while(SystemClock.elapsedRealtime()<end){if(condition.getAsBoolean())return;Thread.sleep(50);}throw new AssertionError("Private protection condition timed out");}
+    private void until(BooleanSupplier condition,long timeout)throws Exception{long end=SystemClock.elapsedRealtime()+timeout;while(SystemClock.elapsedRealtime()<end){if(condition.getAsBoolean()){host.waitForIdleSync();return;}Thread.sleep(50);}throw new AssertionError("Private protection condition timed out");}
     private void yes(boolean value,String message){checks++;if(!value)throw new AssertionError(message);}
 }
