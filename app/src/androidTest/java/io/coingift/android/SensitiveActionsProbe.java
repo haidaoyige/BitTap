@@ -106,7 +106,7 @@ final class SensitiveActionsProbe {
         yes("unlock".equals(get("screen"))&&get("unlocked")==null,"return to password page without restoring private key");
         for(View v:views(activity.getWindow().getDecorView()))if(v instanceof EditText)yes(((EditText)v).length()==0,"return password field empty");
         if(Build.VERSION.SDK_INT>=29){
-            unlock();main(()->button(activity.getWindow().getDecorView(),activity.getString(R.string.wallet_view_private)).performClick());host.waitForIdleSync();
+            unlock();main(()->button(activity.getWindow().getDecorView(),activity.getString(R.string.wallet_view_private)).performClick());host.waitForIdleSync();until(()->get("qrDialog")!=null,10000);
             main(()->button(((Dialog)get("qrDialog")).getWindow().getDecorView(),new ApprovedCopy(activity).ui("copyWif")).performClick());host.waitForIdleSync();
             Dialog confirm=(Dialog)get("copyConfirm");
             gesture(findProtected(confirm.getWindow().getDecorView()),button(confirm.getWindow().getDecorView(),activity.getString(R.string.copy_confirm_action)),new int[]{0,0},new int[]{0,1});
@@ -115,7 +115,7 @@ final class SensitiveActionsProbe {
         }
     }
     private void imageConsentRegression()throws Exception{
-        unlock();main(()->button(activity.getWindow().getDecorView(),activity.getString(R.string.wallet_view_private)).performClick());host.waitForIdleSync();
+        unlock();main(()->button(activity.getWindow().getDecorView(),activity.getString(R.string.wallet_view_private)).performClick());host.waitForIdleSync();until(()->get("qrDialog")!=null,10000);
         main(()->button(((Dialog)get("qrDialog")).getWindow().getDecorView(),Texts.tr(activity,"保存图片")).performClick());host.waitForIdleSync();
         Dialog confirm=(Dialog)get("qrSaveConfirm");windowProtected(confirm);
         Instrumentation.ActivityMonitor monitor=host.addMonitor(new IntentFilter(Intent.ACTION_CREATE_DOCUMENT),new Instrumentation.ActivityResult(Activity.RESULT_CANCELED,null),true);
