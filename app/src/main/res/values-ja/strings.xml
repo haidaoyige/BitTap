@@ -464,4 +464,8 @@
   <string name="file_io_save_error" formatted="false">"ファイルの完全な保存を確認できませんでした。保存先を確認して再試行してください。"</string>
   <string name="file_io_import_error" formatted="false">"読み込み失敗、キャンセル、または時間切れです。ファイルを選び直すか、別の保存先を使ってください。"</string>
   <string name="new_password_characters" formatted="false">"英大文字・英小文字・数字・半角ASCII記号のみ使用できます。漢字・絵文字・空白は使用できません。"</string>
+    <string name="access_guard_title">機密操作を一時停止しました</string>
+    <string name="access_guard_body">ユーザー補助サービスが有効です。パスワードや秘密鍵を保護するため、サービスを無効にしてから再度操作してください。</string>
+    <string name="access_guard_detail">TalkBack も対象です。公開アドレスは引き続き表示できます。無効にしても秘密鍵は自動解除されません。</string>
+    <string name="access_guard_ok">確認しました</string>
 </resources>

@@ -64,8 +64,8 @@ final class SensitiveActionsProbe {
         until(()->"revealed".equals(get("screen")),20000);
     }
     private void privateExportRegression(String locale)throws Exception{
-        unlock();WalletCrypto.Unlocked holder=(WalletCrypto.Unlocked)get("unlocked");Field field=WalletCrypto.Unlocked.class.getDeclaredField("privateKey");field.setAccessible(true);byte[] owned=(byte[])field.get(holder);
-        main(()->button(activity.getWindow().getDecorView(),activity.getString(R.string.wallet_view_private)).performClick());host.waitForIdleSync();
+        unlock();PrivateSession holder=(PrivateSession)get("unlocked");Field field=PrivateSession.class.getDeclaredField("ciphertext");field.setAccessible(true);byte[] owned=(byte[])field.get(holder);
+        main(()->button(activity.getWindow().getDecorView(),activity.getString(R.string.wallet_view_private)).performClick());host.waitForIdleSync();until(()->get("qrDialog")!=null,10000);
         Dialog qr=(Dialog)get("qrDialog");yes(findProtected(qr.getWindow().getDecorView())!=null,"private QR uses protected touch root");windowProtected(qr);
         yes(WIF.equals(decode((Bitmap)get("qrBitmap"))),"private QR remains exact WIF");
         final ClipboardManager clipboard=(ClipboardManager)activity.getSystemService(Context.CLIPBOARD_SERVICE);
@@ -91,7 +91,7 @@ final class SensitiveActionsProbe {
         yes("protection".equals(get("screen")),"obscured export opens protection screen");
         yes(sentinel(clipboard),"obscured export never copies private key");
         yes(get("pendingQrImage")==null,"obscured export creates no PNG export request");
-        yes(get("unlocked")==null&&Arrays.equals(owned,new byte[32])&&field.get(holder)==null,"protection clears owned private key buffer");
+        yes(get("unlocked")==null&&Arrays.equals(owned,new byte[owned.length])&&field.get(holder)==null,"protection clears owned private key buffer");
         yes(get("copyConfirm")==null&&get("qrSaveConfirm")==null&&get("qrDialog")==null&&oldQr.isRecycled(),"secret dialogs and QR cleared");
         yes(has(activity.getWindow().getDecorView(),activity.getString(R.string.obscured_title)),"protection title localized");
         capture(locale+"-protection",activity.getWindow().getDecorView());

@@ -464,4 +464,8 @@
   <string name="file_io_save_error" formatted="false">"未确认文件已完整保存，请检查所选位置后重试。"</string>
   <string name="file_io_import_error" formatted="false">"文件读取失败、已取消或等待超时。请重新选择文件，或改用其他文件位置。"</string>
   <string name="new_password_characters" formatted="false">"仅支持英文大小写字母、数字和半角标点符号，不支持中文、表情或空格"</string>
+    <string name="access_guard_title">敏感操作已暂停</string>
+    <string name="access_guard_body">检测到设备启用了辅助功能服务。为保护密码和私钥，请先关闭这些服务，再重新操作。</string>
+    <string name="access_guard_detail">包括 TalkBack 等辅助功能。公开收款地址仍可查看；关闭服务后不会自动解锁私钥。</string>
+    <string name="access_guard_ok">知道了</string>
 </resources>

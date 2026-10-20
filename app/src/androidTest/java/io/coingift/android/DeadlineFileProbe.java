@@ -35,13 +35,13 @@ final class DeadlineFileProbe {
         yes(((UnlockDeadline)get("unlockDeadline")).active(),"real decryption starts a deadline");
     }
     private void realIdleLock()throws Exception{
-        unlock();WalletCrypto.Unlocked holder=(WalletCrypto.Unlocked)get("unlocked");byte[] bytes=owned(holder);
-        main(()->invoke("showPrivateQr"));Bitmap bitmap=(Bitmap)get("qrBitmap");PrivateKeyView secret=(PrivateKeyView)get("secretView");
+        unlock();PrivateSession holder=(PrivateSession)get("unlocked");byte[] bytes=owned(holder);
+        main(()->invoke("showPrivateQr"));until(()->get("qrBitmap")!=null,10000);Bitmap bitmap=(Bitmap)get("qrBitmap");PrivateKeyView secret=(PrivateKeyView)get("secretView");
         if(Build.VERSION.SDK_INT>=29){boolean[] copied={false};main(()->copied[0]=(Boolean)invoke("copyPrivateKey"));yes(copied[0],"public fixture private copy succeeds before idle test");}long start=SystemClock.elapsedRealtime();
         until(()->get("unlocked")==null&&get("autoLockDialog")!=null,65_000);
         long waited=SystemClock.elapsedRealtime()-start;yes(waited>=59_000&&waited<65_000,"actual 60-second idle session expires without any tap or accelerated clock");
         yes("unlock".equals(get("screen"))&&get("qrDialog")==null&&get("qrBitmap")==null&&bitmap.isRecycled(),"timeout dismisses private sheet and destroys QR pixels");
-        yes(Arrays.equals(bytes,new byte[32])&&owned(holder)==null,"timeout wipes the owned scalar buffer and releases it");
+        yes(Arrays.equals(bytes,new byte[bytes.length])&&owned(holder)==null,"timeout wipes the owned scalar buffer and releases it");
         try{holder.wif();throw new AssertionError("expired key accessible");}catch(IllegalStateException expected){checks++;}
         yes(secret.isCleared(),"detached private drawing is cleared");
         if(Build.VERSION.SDK_INT>=29){ClipboardManager clipboard=(ClipboardManager)activity.getSystemService(Context.CLIPBOARD_SERVICE);yes(clipboard.getPrimaryClip()==null,"idle expiry clears owned private clipboard while foreground");}
@@ -60,7 +60,7 @@ final class DeadlineFileProbe {
         yes(has(((Dialog)get("autoLockDialog")).getWindow().getDecorView(),activity.getString(R.string.auto_lock_max_body)),"maximum deadline is localized and not extended by opening private sheet");
         Dialog maxNotice=(Dialog)get("autoLockDialog");sheetStyle(maxNotice);capture("maximum-locked-"+Texts.language(activity),maxNotice.getWindow().getDecorView());
         main(()->button(maxNotice.getWindow().getDecorView(),activity.getString(R.string.auto_lock_dismiss)).performClick());
-        unlock();main(()->{invoke("showPrivateQr");invoke("requestPrivateCopy");});
+        unlock();main(()->invoke("showPrivateQr"));until(()->get("qrBitmap")!=null,10000);main(()->invoke("requestPrivateCopy"));
         Dialog copy=(Dialog)get("copyConfirm");Button stale=copy==null?null:button(copy.getWindow().getDecorView(),activity.getString(R.string.copy_confirm_action));
         main(()->{
             UnlockDeadline d=(UnlockDeadline)get("unlockDeadline");long now=SystemClock.elapsedRealtime();field(d,"started",now-121_000);field(d,"last",now);
@@ -101,7 +101,7 @@ final class DeadlineFileProbe {
     private void startFile(String path,DocumentIo.Kind kind,String encrypted,byte[] png,CreationSession owner){main(()->invoke("startDocumentOperation",new Class<?>[]{Uri.class,DocumentIo.Kind.class,String.class,byte[].class,CreationSession.class,String.class,boolean.class},Uri.parse("content://io.coingift.android.test.documents/"+path),kind,encrypted,png,owner,null,kind==DocumentIo.Kind.PNG));}
     private void dismissError(){main(()->{AlertDialog d=(AlertDialog)get("fileErrorDialog");if(d!=null)d.getButton(AlertDialog.BUTTON_POSITIVE).performClick();});host.waitForIdleSync();}
     private void control(String method){host.getTargetContext().getContentResolver().call(Uri.parse("content://io.coingift.android.test.documents"),method,null,null);}
-    private byte[] owned(WalletCrypto.Unlocked holder){try{Field f=WalletCrypto.Unlocked.class.getDeclaredField("privateKey");f.setAccessible(true);return (byte[])f.get(holder);}catch(Exception ex){throw new RuntimeException(ex);}}
+    private byte[] owned(PrivateSession holder){try{Field f=PrivateSession.class.getDeclaredField("ciphertext");f.setAccessible(true);return (byte[])f.get(holder);}catch(Exception ex){throw new RuntimeException(ex);}}
     private void field(Object object,String name,long value){try{Field f=object.getClass().getDeclaredField(name);f.setAccessible(true);f.setLong(object,value);}catch(Exception ex){throw new RuntimeException(ex);}}
     private Object get(String name){try{Field f=MainActivity.class.getDeclaredField(name);f.setAccessible(true);return f.get(activity);}catch(Exception ex){throw new RuntimeException(ex);}}
     private void set(String name,Object value){try{Field f=MainActivity.class.getDeclaredField(name);f.setAccessible(true);f.set(activity,value);}catch(Exception ex){throw new RuntimeException(ex);}}

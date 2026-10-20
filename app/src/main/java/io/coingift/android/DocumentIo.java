@@ -28,19 +28,23 @@ final class DocumentIo {
     private static final ThreadPoolExecutor IO=pool("bittap-document",0),CLOSE=pool("bittap-document-close",2);
     private DocumentIo(){}
     static Job start(Context context,Uri uri,Kind kind,String encrypted,byte[] png,Listener listener,long maximumDeadline){
-        Job job=new Job(context.getApplicationContext().getContentResolver(),uri,kind,encrypted,png,listener,maximumDeadline);
+        return start(context,uri,kind,encrypted,png,listener,maximumDeadline,()->true);
+    }
+    static Job start(Context context,Uri uri,Kind kind,String encrypted,byte[] png,Listener listener,long maximumDeadline,java.util.function.BooleanSupplier allowed){
+        Job job=new Job(context.getApplicationContext().getContentResolver(),uri,kind,encrypted,png,listener,maximumDeadline,allowed);
         try{job.future=IO.submit(job);}catch(RejectedExecutionException ex){job.erase();job.deliver(false,null);}
         return job;
     }
     static final class Job implements Runnable {
         final Kind kind;final long deadline;
+        private final java.util.function.BooleanSupplier allowed;
         private final ContentResolver resolver;private final Uri uri;private final String encrypted;
         private final byte[] png;private final WeakReference<Listener> listener;
         private final CancellationSignal signal=new CancellationSignal();
         private final AtomicBoolean cancelled=new AtomicBoolean();
         private final Set<Closeable> resources=Collections.newSetFromMap(new IdentityHashMap<>());
         private volatile Future<?> future;
-        Job(ContentResolver resolver,Uri uri,Kind kind,String encrypted,byte[] png,Listener listener,long maximumDeadline){this.resolver=resolver;this.uri=uri;this.kind=kind;this.encrypted=encrypted;this.png=png;this.listener=new WeakReference<>(listener);deadline=Math.min(maximumDeadline,SystemClock.elapsedRealtime()+TIMEOUT_MS);}
+        Job(ContentResolver resolver,Uri uri,Kind kind,String encrypted,byte[] png,Listener listener,long maximumDeadline,java.util.function.BooleanSupplier allowed){this.allowed=allowed;this.resolver=resolver;this.uri=uri;this.kind=kind;this.encrypted=encrypted;this.png=png;this.listener=new WeakReference<>(listener);deadline=Math.min(maximumDeadline,SystemClock.elapsedRealtime()+TIMEOUT_MS);}
         boolean expired(){return SystemClock.elapsedRealtime()>=deadline;}
         void cancel(){
             if(!cancelled.compareAndSet(false,true))return;
@@ -48,7 +52,7 @@ final class DocumentIo {
             // Provider cancellation and close can themselves block. Never run them on the UI thread.
             try{CLOSE.execute(()->{try{signal.cancel();}catch(RuntimeException ignored){}closeResources();});}catch(RejectedExecutionException ignored){/* Bounded cleanup pool; worker finally still closes its resources. */}
         }
-        private void check()throws IOException{if(cancelled.get()||expired()||Thread.currentThread().isInterrupted())throw new IOException("Document operation cancelled or expired");}
+        private void check()throws IOException{if(cancelled.get()||expired()||Thread.currentThread().isInterrupted()||!allowed.getAsBoolean())throw new IOException("Document operation cancelled or expired");}
         private <T extends Closeable>T own(T resource)throws IOException{
             boolean stop;synchronized(resources){stop=cancelled.get();if(!stop)resources.add(resource);}
             if(stop){resource.close();throw new IOException("Document cancelled");}return resource;

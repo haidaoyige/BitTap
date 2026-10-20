@@ -31,6 +31,16 @@ public class WalletCryptoTest {
             assertEquals("KwDiBf89QgGbjEhKnhXJuH7LrciVrZi3qYjgd9M7rFU73sVHnoWn",u.wif());
         }
     }
+    @Test public void sessionSealDoesNotRequireRawGetterAndClosesCleanly()throws Exception{
+        byte[] raw=one();WalletCrypto.Unlocked holder=new WalletCrypto.Unlocked(raw,WalletCrypto.Network.MAINNET);
+        Cipher cipher=Cipher.getInstance("AES/GCM/NoPadding");SecretKeySpec key=new SecretKeySpec(new byte[32],"AES");
+        cipher.init(Cipher.ENCRYPT_MODE,key);byte[] sealed=holder.sealForSession(cipher);
+        holder.close();Cipher restore=Cipher.getInstance("AES/GCM/NoPadding");restore.init(Cipher.DECRYPT_MODE,key,new GCMParameterSpec(128,cipher.getIV()));
+        assertArrayEquals(raw,restore.doFinal(sealed));assertEquals(48,sealed.length);
+        try{holder.sealForSession(cipher);fail("Closed holder sealed again");}catch(IllegalStateException expected){}
+        assertEquals("KwDiBf89QgGbjEhKnhXJuH7LrciVrZi3qYjgd9M7rFU73sVHnoWn",WalletCrypto.compressedMainnetWif(raw));
+        for(byte[] invalid:new byte[][]{new byte[32],new byte[31],null})try{WalletCrypto.compressedMainnetWif(invalid);fail("Invalid scalar exported");}catch(IllegalArgumentException expected){}
+    }
     @Test public void scryptRfc7914Vector(){
         byte[] result=SCrypt.generate("password".getBytes(StandardCharsets.US_ASCII),"NaCl".getBytes(StandardCharsets.US_ASCII),1024,8,16,64);
         assertEquals("fdbabe1c9d3472007856e7190d01e9fe7c6ad7cbc8237830e77376634b3731622eaf30d92e22a3886ff109279d9830dac727afb94a83ee6d8360cbdfa2cc0640",WalletCrypto.hex(result));

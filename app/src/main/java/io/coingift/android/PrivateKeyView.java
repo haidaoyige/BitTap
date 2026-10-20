@@ -25,7 +25,7 @@ final class PrivateKeyView extends View {
     private StaticLayout layout;
     private int layoutWidth=-1;
 
-    PrivateKeyView(Context context,String wif){
+    PrivateKeyView(Context context,char[] wif){
         super(context);
         // Match the previous TextView's metrics, including line height set before MONOSPACE.
         // This unattached, empty widget is used only for theme metrics; it never receives a key.
@@ -40,7 +40,7 @@ final class PrivateKeyView extends View {
         breakStrategy=metrics.getBreakStrategy();
         int padding=Math.round(12*getResources().getDisplayMetrics().density);
         setPadding(padding,padding,padding,padding);
-        characters=wif.toCharArray();
+        characters=wif.clone();
         setSaveEnabled(false);setSaveFromParentEnabled(false);
         setImportantForAutofill(IMPORTANT_FOR_AUTOFILL_NO_EXCLUDE_DESCENDANTS);
         if(Build.VERSION.SDK_INT>=30)setImportantForContentCapture(IMPORTANT_FOR_CONTENT_CAPTURE_NO_EXCLUDE_DESCENDANTS);
@@ -78,5 +78,6 @@ final class PrivateKeyView extends View {
         layout=null;layoutWidth=-1;requestLayout();invalidate();
     }
     boolean isCleared(){return characters==null;}
+    char[] copyCharacters(){if(characters==null)throw new IllegalStateException("Private display is closed");return characters.clone();}
     @Override protected void onDetachedFromWindow(){clear();super.onDetachedFromWindow();}
 }

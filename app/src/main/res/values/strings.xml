@@ -465,4 +465,8 @@
   <string name="file_io_save_error" formatted="false">"The file was not confirmed as completely saved. Check the selected location and try again."</string>
   <string name="file_io_import_error" formatted="false">"Reading failed, was cancelled or timed out. Select the file again or use another file location."</string>
   <string name="new_password_characters" formatted="false">"Use only uppercase/lowercase English letters, digits and ASCII punctuation. Chinese, emoji and spaces are not supported."</string>
+    <string name="access_guard_title">Sensitive actions paused</string>
+    <string name="access_guard_body">An accessibility service is enabled. Turn off these services before entering passwords or accessing private keys, then try again.</string>
+    <string name="access_guard_detail">This includes TalkBack. Public addresses remain available. Disabling a service does not automatically unlock your key.</string>
+    <string name="access_guard_ok">Got it</string>
 </resources>
