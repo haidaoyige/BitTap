@@ -1,6 +1,7 @@
 """Independent decryption of PUBLIC compressed BIP38 fixtures, including EC-multiply."""
 import hashlib
 import pathlib
+import subprocess
 import unicodedata
 from cryptography.hazmat.primitives.ciphers import Cipher, algorithms, modes
 from cryptography.hazmat.primitives.asymmetric import ec
@@ -9,6 +10,15 @@ from cryptography.hazmat.primitives.serialization import Encoding, PublicFormat
 ROOT=pathlib.Path(__file__).resolve().parents[1]
 ALPHABET='123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz'
 ORDER=0xfffffffffffffffffffffffffffffffebaaedce6af48a03bbfd25e8cd0364141
+OPENSSL_VERSION=subprocess.check_output(['openssl','version'],text=True).strip()
+
+def ripemd160(data):
+    # Hosted Python may omit RIPEMD-160. Match check_addresses.py's independently
+    # installed system OpenSSL path, without changing application crypto policy.
+    providers=['-provider','legacy'] if OPENSSL_VERSION.startswith('OpenSSL 3.') else []
+    digest=subprocess.check_output(['openssl','dgst',*providers,'-ripemd160','-binary'],input=data)
+    assert len(digest)==20
+    return digest
 
 def sha(data):return hashlib.sha256(hashlib.sha256(data).digest()).digest()
 def decode(text):
@@ -43,12 +53,13 @@ def decrypt(text,password):
         first=xor(aes(derived[32:],content[8:16]+second[:8]),derived[:16])
         raw=((p*int.from_bytes(sha(first+second[8:]),'big'))%ORDER).to_bytes(32,'big')
     scalar=int.from_bytes(raw,'big');assert 0<scalar<ORDER
-    address=encode(b'\0'+hashlib.new('ripemd160',hashlib.sha256(pub(scalar)).digest()).digest())
+    address=encode(b'\0'+ripemd160(hashlib.sha256(pub(scalar)).digest()))
     assert sha(address.encode())[:4]==address_hash
     return raw,encode(b'\x80'+raw+b'\x01')
 
 if __name__=='__main__':
     if not __debug__:raise RuntimeError('Assertions must remain enabled')
+    assert ripemd160(b'').hex()=='9c1185a5c5e9fc54612808977ee8f548b2258d31'
     count=0
     for line in (ROOT/'core/src/test/resources/bip38-public-vectors.tsv').read_text().splitlines():
         if line.startswith('#') or not line:continue

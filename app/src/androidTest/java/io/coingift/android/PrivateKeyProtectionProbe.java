@@ -130,6 +130,9 @@ final class PrivateKeyProtectionProbe {
         Dialog owner=(Dialog)get("qrDialog");View root=owner.getWindow().getDecorView();Bitmap[] before={null},after={null};
         // Compare settled content, not the cancel button's transient ripple animation.
         SystemClock.sleep(400);host.waitForIdleSync();main(root::jumpDrawablesToCurrentState);
+        // Widget replacement reawakens a fading scrollbar. Its transient 4dp edge
+        // is not part of the WIF/layout equivalence check; suppress it in BOTH captures.
+        main(()->{for(View view:views(root))if(view instanceof ScrollView)view.setVerticalScrollBarEnabled(false);});
         int[] originalBounds=new int[4];char[] old=owned(value);
         main(()->{
             before[0]=draw(root);originalBounds[0]=value.getLeft();originalBounds[1]=value.getTop();originalBounds[2]=value.getWidth();originalBounds[3]=value.getHeight();
