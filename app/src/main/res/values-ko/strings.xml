@@ -396,8 +396,6 @@
   <string name="note_counter">%1$s · %2$d/16</string>
 
   <!-- Android clipboard and obscured-touch protection. -->
-  <string name="private_copy_unavailable" formatted="false">"복사할 수 없음"</string>
-  <string name="private_copy_legacy_notice" formatted="false">"이 기기에서는 WIF 개인 키 복사가 비활성화되어 있습니다. Android 9에서는 다른 백그라운드 앱이 클립보드를 읽을 수 있습니다."</string>
   <string name="private_qr_retry" formatted="false">"개인 키 QR 코드를 생성하지 못했습니다. 닫은 후 다시 시도하세요."</string>
   <string name="obscured_kicker" formatted="false">"민감한 작업 보호"</string>
   <string name="obscured_title" formatted="false">"다른 창을 닫은 후\n계속하세요."</string>
@@ -468,4 +466,70 @@
     <string name="access_guard_body">접근성 서비스가 활성화되어 있습니다. 비밀번호와 개인 키를 보호하려면 해당 서비스를 끈 후 다시 시도하세요.</string>
     <string name="access_guard_detail">TalkBack도 포함됩니다. 공개 주소는 계속 볼 수 있습니다. 서비스를 꺼도 개인 키가 자동으로 잠금 해제되지는 않습니다.</string>
     <string name="access_guard_ok">확인</string>
+
+    <!-- Device-local public address verification -->
+    <string name="verification_entry">비밀번호 없이 주소 확인하기</string>
+    <string name="verification_intro">이 휴대폰에서 확인한 지갑과 동일한 데이터를 다시 읽으면 비밀번호 없이 수신 주소를 확인할 수 있습니다.</string>
+    <string name="verification_when_title">언제 사용할 수 있나요?</string>
+    <string name="verification_when_body">지갑 생성, 카드 쓰기 검증 및 필수 백업을 완료하거나 비밀번호로 잠금 해제하고 주소를 확인하면 이 휴대폰에 확인 기록을 자동 저장합니다.</string>
+    <string name="verification_private_title">개인 키도 잠금 해제되나요?</string>
+    <string name="verification_private_body">아니요. 기기의 기록과 데이터가 일치하는지만 확인합니다. 개인 키를 보려면 잠금을 해제해야 합니다.</string>
+    <string name="verification_storage_title">휴대폰에 무엇을 저장하나요?</string>
+    <string name="verification_storage_body">보호된 확인 기록과 공개 주소만 저장합니다. 지갑 비밀번호, 평문 개인 키 또는 지갑 복호화 키는 저장하지 않으며, 기록으로 개인 키를 복호화할 수 없습니다.</string>
+    <string name="verification_reset_title">휴대폰을 바꾸거나 기록을 지우면?</string>
+    <string name="verification_reset_body">전체 비밀번호를 입력해 다시 잠금 해제하고 확인해야 합니다. 데이터가 달라진 경우에도 재확인이 필요합니다. 기록은 이 기기에만 있으며 클라우드 백업이나 기기 이전에 포함되지 않습니다.</string>
+    <string name="verification_manage">기기 확인 기록 관리</string>
+    <string name="verification_records_title">기기 확인 기록</string>
+    <string name="verification_records_body">기록을 지워도 카드나 암호화 백업은 삭제되지 않습니다. 다음에 읽을 때 비밀번호로 다시 확인해야 합니다.</string>
+    <string name="verification_empty">이 기기에 확인 기록이 없습니다.</string>
+    <string name="verification_clear_all">기기 기록 모두 지우기</string>
+    <string name="verification_clear_one">이 기록 지우기</string>
+    <string name="verification_clear_title">확인 기록을 지울까요?</string>
+    <string name="verification_clear_action">기록 지우기</string>
+    <string name="verification_keep">기록 유지</string>
+    <string name="verification_back_info">기능 설명으로 돌아가기</string>
+    <string name="verification_view_public">공개 주소 보기</string>
+    <string name="verification_local">기기 기록과 일치</string>
+    <string name="verification_fresh">이번에 개인 키로 확인됨</string>
+    <string name="verification_changed">기록 불일치</string>
+    <string name="verification_changed_title">카드 데이터가 변경되었습니다</string>
+    <string name="verification_changed_body">현재 데이터가 이 카드의 이전 기기 기록과 다릅니다. 카드 출처를 확인하세요. 이전 기록은 자동으로 덮어쓰지 않습니다.</string>
+    <string name="verification_pending_body">이 기기에 일치하는 기록이 없습니다. 비밀번호를 한 번 입력해 잠금 해제하고 네 가지 수신 주소를 확인하세요.</string>
+    <string name="verification_local_body">수신 주소가 이 기기의 이전 확인 결과와 일치합니다. 비밀번호가 필요 없으며 개인 키는 잠긴 상태로 유지됩니다.</string>
+    <string name="verification_locked_body">개인 키가 잠겼습니다. 확인한 공개 주소는 계속 볼 수 있으며 개인 키를 다시 보려면 비밀번호가 필요합니다.</string>
+    <string name="verification_session_body">네 가지 수신 주소를 확인했습니다. 현재 세션에서는 비밀번호를 다시 입력하지 않고 개인 키를 볼 수 있습니다.</string>
+    <string name="verification_session_limit">60초 동안 사용하지 않거나 잠금 해제 후 2분이 지나면 개인 키가 잠깁니다. 홈으로 돌아가도 세션이 종료됩니다.</string>
+    <string name="verification_unlock_private">잠금 해제 후 개인 키 보기</string>
+    <string name="verification_unlock_body">전체 지갑 비밀번호로 개인 키를 복호화하고 수신 주소를 확인합니다. 유효한 세션에서는 다시 입력할 필요가 없습니다.</string>
+    <string name="verification_password_risk">신뢰할 수 있는 기기를 사용하세요. 비밀번호가 유출되면 복사된 카드나 백업의 개인 키도 복호화될 수 있습니다.</string>
+    <string name="verification_after_check">확인 후 표시</string>
+    <string name="verification_save_ok">기기에 주소 확인 기록을 저장했습니다. 이 휴대폰에서 동일한 데이터를 다시 읽을 때 비밀번호가 필요 없습니다.</string>
+    <string name="verification_save_failed">주소는 확인했지만 기기 기록을 저장하지 못했습니다. 다음에는 비밀번호로 확인해야 합니다.</string>
+    <string name="verification_load_failed">기기 기록을 사용할 수 없습니다. 전체 비밀번호로 잠금 해제하고 확인하세요. 기록 관리에서 손상된 기록을 지울 수 있습니다.</string>
+    <string name="verification_failed">확인 실패: 비밀번호가 틀렸거나 지갑 데이터에 이상이 있습니다. 표시된 주소로 BTC를 보내지 마세요.</string>
+    <string name="verification_review_title">이번 지갑 데이터 확인</string>
+    <string name="verification_review_body">비밀번호와 주소 확인은 통과했지만 이전 기록과 데이터가 다릅니다. 저장 전에 출처를 확인하세요. 확인 성공이 소유권을 증명하지는 않습니다.</string>
+    <string name="verification_previous">이전 기록</string>
+    <string name="verification_current">이번 데이터</string>
+    <string name="verification_accept">확인 후 이번 기록 저장</string>
+    <string name="verification_loading">기기 기록 확인 중…</string>
+    <string name="verification_records_failed">기록 작업에 실패했습니다. 다시 시도하세요.</string>
+    <string name="verification_cleared">기기 기록을 지웠습니다. 카드와 백업은 변경되지 않았습니다.</string>
+    <string name="verification_finish_first">카드 쓰기와 필수 암호화 백업 저장을 완료한 후 수신 주소를 표시하세요.</string>
+    <string name="verification_matched_intro">이 지갑은 이 기기의 검증 기록과 일치합니다.</string>
+    <string name="verification_changed_warning">이번 주소는 아직 검증되지 않았습니다. BTC를 보내지 마세요. 이전 기록은 자동으로 덮어쓰지 않습니다.</string>
+  <string name="nfc_operation_timeout">NFC 작업 시간이 초과되었습니다. 카드를 떼었다가 다시 시도하세요.</string>
+  <string name="nfc_operation_busy">이전 NFC 작업이 아직 끝나지 않았습니다. 카드를 떼고 잠시 후 다시 시도하세요. 계속되면 BitTap을 다시 시작하세요.</string>
+  <string name="nfc_write_unconfirmed">쓰기 완료를 확인하지 못했습니다. 카드를 다시 읽어 내용을 확인하세요. 다시 쓸 때 먼저 카드를 재확인합니다.</string>
+  <string name="nfc_operation_problem">NFC 작업이 완료되지 않았습니다</string>
+    <string name="nfc_card_read_only">이 카드는 읽기 전용이므로 덮어쓸 수 없습니다. 쓰기 가능한 카드를 사용해 주세요.</string>
+    <string name="nfc_startup_timeout">NFC 시작이 완료되지 않았습니다(%1$s). 이번 시도에서는 지갑 읽기나 쓰기를 시작하지 않았습니다. 카드를 떼고 BitTap을 종료하세요. 시스템 설정에서도 NFC가 응답하지 않으면 휴대전화를 다시 시작하세요.</string>
+    <string name="nfc_written_not_locked">지갑 기록 완료, 카드 잠금 미완료</string>
+    <string name="nfc_lock_diagnostic">진단 코드: %1$s\n%2$s</string>
+    <string name="nfc_lock_reason_timeout">NFC 작업이 제한 시간 내에 응답하지 않아 읽기 전용 보호를 확인하지 못했습니다.</string>
+    <string name="nfc_lock_reason_busy">NFC 작업을 실행할 수 없어 잠금 완료를 확인하지 못했습니다.</string>
+    <string name="nfc_lock_reason_lost">카드 연결이 끊어졌습니다. 카드가 이미 잠겼는지, 아직 쓰기 가능한지는 확인되지 않았습니다.</string>
+    <string name="nfc_lock_reason_cancel">작업이 취소되어 읽기 전용 보호를 확인하지 못했습니다.</string>
+    <string name="nfc_lock_reason_io">카드 통신에 실패하여 읽기 전용 보호를 확인하지 못했습니다.</string>
+    <string name="nfc_lock_reason_check">잠금 작업 또는 검증을 통과하지 못했습니다. 덮어쓰기로부터 보호된 카드로 간주하지 마세요.</string>
 </resources>

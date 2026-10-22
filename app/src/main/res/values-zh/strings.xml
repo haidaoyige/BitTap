@@ -396,8 +396,6 @@
   <string name="note_counter">%1$s · %2$d/16</string>
 
   <!-- Android clipboard and obscured-touch protection. -->
-  <string name="private_copy_unavailable" formatted="false">"不支持复制"</string>
-  <string name="private_copy_legacy_notice" formatted="false">"此设备不支持安全复制私钥。Android 9 上，其他后台应用可能读取剪贴板。本机已停用 WIF 复制。"</string>
   <string name="private_qr_retry" formatted="false">"私钥二维码生成失败，请关闭后重试。"</string>
   <string name="obscured_kicker" formatted="false">"敏感操作保护"</string>
   <string name="obscured_title" formatted="false">"移开悬浮窗，\n再继续操作。"</string>
@@ -468,4 +466,70 @@
     <string name="access_guard_body">检测到设备启用了辅助功能服务。为保护密码和私钥，请先关闭这些服务，再重新操作。</string>
     <string name="access_guard_detail">包括 TalkBack 等辅助功能。公开收款地址仍可查看；关闭服务后不会自动解锁私钥。</string>
     <string name="access_guard_ok">知道了</string>
+
+    <!-- Device-local public address verification -->
+    <string name="verification_entry">如何免密核验地址</string>
+    <string name="verification_intro">在这台手机核验过的钱包，再次读取相同数据时，可以不用输入密码查看收款地址。</string>
+    <string name="verification_when_title">什么时候可以免密？</string>
+    <string name="verification_when_body">制作钱包、写卡读回和必需备份完成，或输入密码成功解锁并核验后，本机会自动保存核验记录。</string>
+    <string name="verification_private_title">私钥会被解锁吗？</string>
+    <string name="verification_private_body">不会。免密核验只确认数据与本机记录一致；查看私钥仍需要解锁。</string>
+    <string name="verification_storage_title">手机会保存什么？</string>
+    <string name="verification_storage_body">只保存受保护的核验记录和收款地址等信息，不保存钱包密码、明文私钥或钱包解密密钥，也不能用记录解密私钥。</string>
+    <string name="verification_reset_title">换手机或清除记录后呢？</string>
+    <string name="verification_reset_body">需要重新输入完整密码解锁并核验。数据与记录不一致时，也需要重新核验。记录仅保存在本机，不随云备份或设备迁移转移。</string>
+    <string name="verification_manage">管理本机核验记录</string>
+    <string name="verification_records_title">本机核验记录</string>
+    <string name="verification_records_body">清除记录不会删除卡片或加密备份。下次读取需要输入密码重新核验。</string>
+    <string name="verification_empty">本机暂无核验记录。</string>
+    <string name="verification_clear_all">清除全部本机记录</string>
+    <string name="verification_clear_one">清除此条记录</string>
+    <string name="verification_clear_title">清除本机核验记录？</string>
+    <string name="verification_clear_action">清除记录</string>
+    <string name="verification_keep">保留记录</string>
+    <string name="verification_back_info">返回功能说明</string>
+    <string name="verification_view_public">查看公开地址</string>
+    <string name="verification_local">本机记录一致</string>
+    <string name="verification_fresh">本次私钥推导核验</string>
+    <string name="verification_changed">记录不一致</string>
+    <string name="verification_changed_title">卡片数据有变化</string>
+    <string name="verification_changed_body">当前数据与这张卡在本机的历史记录不同。请先确认卡片来源，原记录不会自动覆盖。</string>
+    <string name="verification_pending_body">本机暂无对应核验记录。输入一次密码，解锁并核验四种收款地址。</string>
+    <string name="verification_local_body">收款地址与本机之前核验的结果一致。无需输入密码，私钥仍保持锁定。</string>
+    <string name="verification_matched_intro">当前钱包数据与本机已核验记录一致。</string>
+    <string name="verification_locked_body">私钥已锁定，已核验的公开地址仍可查看。再次查看私钥需要重新输入密码。</string>
+    <string name="verification_session_body">四种收款地址已核对。当前会话内查看私钥，无需再次输入密码。</string>
+    <string name="verification_session_limit">空闲 60 秒或解锁满 2 分钟后，私钥自动锁定。返回首页也会结束解锁会话。</string>
+    <string name="verification_unlock_private">解锁并查看私钥</string>
+    <string name="verification_unlock_body">输入完整钱包密码，解密私钥并核对收款地址。有效会话内查看私钥，无需再次输入密码。</string>
+    <string name="verification_password_risk">请在可信设备上操作。密码若被窃取，卡片或备份中的私钥也可能被解密。</string>
+    <string name="verification_after_check">核验后展示</string>
+    <string name="verification_save_ok">本机已保存地址核验记录。以后在这台手机读取相同数据，可免密核对地址。</string>
+    <string name="verification_save_failed">地址已核验，但本机记录未保存。下次读取仍需输入密码核验。</string>
+    <string name="verification_load_failed">本机记录暂不可用。请用完整密码解锁并核验；可在记录管理中清除异常记录。</string>
+    <string name="verification_failed">核验失败：密码错误或钱包数据异常。请勿向当前显示的地址转入 BTC。</string>
+    <string name="verification_review_title">确认本次钱包数据</string>
+    <string name="verification_review_body">密码及地址核验通过，但数据与历史记录不同。保存前请确认来源，核验通过不代表这一定是你原先的钱包。</string>
+    <string name="verification_previous">原记录</string>
+    <string name="verification_current">本次读取</string>
+    <string name="verification_accept">确认并保存本次记录</string>
+    <string name="verification_loading">正在核对本机记录…</string>
+    <string name="verification_records_failed">记录操作失败，请重试。</string>
+    <string name="verification_cleared">本机记录已清除，卡片与备份未受影响。</string>
+    <string name="verification_finish_first">请先完成写卡并保存必需的加密备份，再展示收款地址。</string>
+    <string name="verification_changed_warning">本次地址未经核验，请勿转入 BTC。原记录不会自动覆盖。</string>
+  <string name="nfc_operation_timeout">NFC 操作超时，请移开卡片后重试。</string>
+  <string name="nfc_operation_busy">上一项 NFC 操作仍未结束。请移开卡片，稍后重试；若持续出现，请重启 BitTap。</string>
+  <string name="nfc_write_unconfirmed">写入未确认完成。请重新读卡检查内容；重试写入前会再次检查卡片。</string>
+  <string name="nfc_operation_problem">NFC 操作未完成</string>
+    <string name="nfc_card_read_only">这张卡片已设为只读，不能重新写入。请换一张可写卡片。</string>
+    <string name="nfc_startup_timeout">NFC 启动未完成（%1$s），本次尚未读取或写入钱包。请移开卡片并退出 BitTap；如果系统 NFC 也无响应，请重启手机。</string>
+    <string name="nfc_written_not_locked">钱包已写入，卡片尚未锁定</string>
+    <string name="nfc_lock_diagnostic">诊断代码：%1$s\n%2$s</string>
+    <string name="nfc_lock_reason_timeout">NFC 操作未在时限内返回，暂未确认只读保护。</string>
+    <string name="nfc_lock_reason_busy">NFC 工作任务暂不可用，未确认完成锁定。</string>
+    <string name="nfc_lock_reason_lost">卡片连接已中断，卡片可能已锁定，也可能仍可写。</string>
+    <string name="nfc_lock_reason_cancel">操作已取消，暂未确认只读保护。</string>
+    <string name="nfc_lock_reason_io">与卡片通信异常，暂未确认只读保护。</string>
+    <string name="nfc_lock_reason_check">锁定操作或核验未通过，暂不能将这张卡片视为已防改写。</string>
 </resources>

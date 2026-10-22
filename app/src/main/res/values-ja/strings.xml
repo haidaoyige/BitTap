@@ -396,8 +396,6 @@
   <string name="note_counter">%1$s · %2$d/16</string>
 
   <!-- Android clipboard and obscured-touch protection. -->
-  <string name="private_copy_unavailable" formatted="false">"コピーできません"</string>
-  <string name="private_copy_legacy_notice" formatted="false">"この端末では WIF 秘密鍵のコピーを無効にしています。Android 9 では、バックグラウンドの他のアプリにクリップボードを読み取られる可能性があります。"</string>
   <string name="private_qr_retry" formatted="false">"秘密鍵の QR コードを生成できませんでした。閉じてからもう一度お試しください。"</string>
   <string name="obscured_kicker" formatted="false">"重要な操作の保護"</string>
   <string name="obscured_title" formatted="false">"重なっているウィンドウを\n閉じてください。"</string>
@@ -468,4 +466,70 @@
     <string name="access_guard_body">ユーザー補助サービスが有効です。パスワードや秘密鍵を保護するため、サービスを無効にしてから再度操作してください。</string>
     <string name="access_guard_detail">TalkBack も対象です。公開アドレスは引き続き表示できます。無効にしても秘密鍵は自動解除されません。</string>
     <string name="access_guard_ok">確認しました</string>
+
+    <!-- Device-local public address verification -->
+    <string name="verification_entry">パスワードなしのアドレス確認</string>
+    <string name="verification_intro">この端末で確認済みのウォレットと同じデータなら、再読み取り時にパスワードなしで受取アドレスを確認できます。</string>
+    <string name="verification_when_title">いつ利用できますか？</string>
+    <string name="verification_when_body">作成・カード書込確認・必要なバックアップの完了後、またはパスワードで解除しアドレスを確認した後、この端末に記録を自動保存します。</string>
+    <string name="verification_private_title">秘密鍵も解除されますか？</string>
+    <string name="verification_private_body">いいえ。端末の記録と同じデータかだけを確認します。秘密鍵の表示には別途ロック解除が必要です。</string>
+    <string name="verification_storage_title">端末に何を保存しますか？</string>
+    <string name="verification_storage_body">保護された確認記録と公開アドレスだけです。ウォレットのパスワード、平文の秘密鍵、復号鍵は保存せず、記録から秘密鍵を復号することもできません。</string>
+    <string name="verification_reset_title">機種変更や記録の削除後は？</string>
+    <string name="verification_reset_body">完全なパスワードを入力して再確認します。データが変わった場合も同様です。記録はこの端末専用で、クラウドバックアップや端末移行には含まれません。</string>
+    <string name="verification_manage">端末の確認記録を管理</string>
+    <string name="verification_records_title">端末の確認記録</string>
+    <string name="verification_records_body">記録を削除してもカードや暗号化バックアップは消えません。次回の読み取り時にパスワードでの再確認が必要です。</string>
+    <string name="verification_empty">この端末には確認記録がありません。</string>
+    <string name="verification_clear_all">端末の記録をすべて削除</string>
+    <string name="verification_clear_one">この記録を削除</string>
+    <string name="verification_clear_title">確認記録を削除しますか？</string>
+    <string name="verification_clear_action">記録を削除</string>
+    <string name="verification_keep">記録を残す</string>
+    <string name="verification_back_info">説明に戻る</string>
+    <string name="verification_view_public">公開アドレスを見る</string>
+    <string name="verification_local">端末の記録と一致</string>
+    <string name="verification_fresh">今回の秘密鍵から確認済み</string>
+    <string name="verification_changed">記録と不一致</string>
+    <string name="verification_changed_title">カードのデータが変わっています</string>
+    <string name="verification_changed_body">このカードのデータが端末の過去の記録と異なります。入手元を確認してください。元の記録は自動で上書きしません。</string>
+    <string name="verification_pending_body">この端末に一致する記録がありません。パスワードを一度入力して解除し、4種類の受取アドレスを確認します。</string>
+    <string name="verification_local_body">受取アドレスはこの端末の過去の確認結果と一致しています。パスワードは不要で、秘密鍵はロックされたままです。</string>
+    <string name="verification_locked_body">秘密鍵をロックしました。確認済みの公開アドレスは引き続き表示でき、秘密鍵の再表示にはパスワードが必要です。</string>
+    <string name="verification_session_body">4種類の受取アドレスを確認しました。このセッション中はパスワードを再入力せずに秘密鍵を表示できます。</string>
+    <string name="verification_session_limit">操作なしで60秒、または解除から2分で秘密鍵をロックします。ホームに戻ってもセッションは終了します。</string>
+    <string name="verification_unlock_private">解除して秘密鍵を表示</string>
+    <string name="verification_unlock_body">完全なパスワードで秘密鍵を復号し、受取アドレスを確認します。有効なセッション中は再入力不要です。</string>
+    <string name="verification_password_risk">信頼できる端末で操作してください。パスワードが盗まれると、コピーされたカードやバックアップの秘密鍵も復号されるおそれがあります。</string>
+    <string name="verification_after_check">確認後に表示</string>
+    <string name="verification_save_ok">端末にアドレス確認記録を保存しました。同じデータの再読み取りではパスワードは不要です。</string>
+    <string name="verification_save_failed">アドレスは確認済みですが、端末の記録を保存できませんでした。次回はパスワードが必要です。</string>
+    <string name="verification_load_failed">端末の記録を利用できません。完全なパスワードで解除して確認してください。異常な記録は管理画面で削除できます。</string>
+    <string name="verification_failed">確認失敗：パスワードが違うか、データに異常があります。表示されたアドレスにBTCを送らないでください。</string>
+    <string name="verification_review_title">今回のウォレットデータを確認</string>
+    <string name="verification_review_body">パスワードとアドレスの確認は通りましたが過去の記録と異なります。保存前に入手元を確認してください。確認成功は所有者の証明ではありません。</string>
+    <string name="verification_previous">以前の記録</string>
+    <string name="verification_current">今回のデータ</string>
+    <string name="verification_accept">確認して今回の記録を保存</string>
+    <string name="verification_loading">端末の記録を確認中…</string>
+    <string name="verification_records_failed">記録の操作に失敗しました。再試行してください。</string>
+    <string name="verification_cleared">端末の記録を削除しました。カードとバックアップは変更していません。</string>
+    <string name="verification_finish_first">カードへの書き込みと必要なバックアップの保存を完了してから、受取アドレスを表示してください。</string>
+    <string name="verification_matched_intro">本端末の検証済み記録と一致しています。</string>
+    <string name="verification_changed_warning">今回のアドレスは未検証です。BTC を送金しないでください。以前の記録は自動で上書きされません。</string>
+  <string name="nfc_operation_timeout">NFC操作がタイムアウトしました。カードを離してから再試行してください。</string>
+  <string name="nfc_operation_busy">前のNFC操作がまだ終了していません。カードを離してしばらく待ってください。解消しない場合はBitTapを再起動してください。</string>
+  <string name="nfc_write_unconfirmed">書き込みの完了を確認できませんでした。カードを再度読み取って内容を確認してください。再試行時は書き込み前にカードを再確認します。</string>
+  <string name="nfc_operation_problem">NFC操作が完了していません</string>
+    <string name="nfc_card_read_only">このカードは読み取り専用のため、上書きできません。書き込み可能なカードを使用してください。</string>
+    <string name="nfc_startup_timeout">NFC の起動が完了しませんでした（%1$s）。今回はウォレットの読み書きを開始していません。カードを離して BitTap を終了してください。システム設定でも NFC が応答しない場合は、端末を再起動してください。</string>
+    <string name="nfc_written_not_locked">ウォレット書き込み済み・カード未ロック</string>
+    <string name="nfc_lock_diagnostic">診断コード：%1$s\n%2$s</string>
+    <string name="nfc_lock_reason_timeout">NFC 操作が時間内に応答せず、読み取り専用の保護を確認できませんでした。</string>
+    <string name="nfc_lock_reason_busy">NFC 処理を実行できず、ロックの完了を確認できませんでした。</string>
+    <string name="nfc_lock_reason_lost">カードとの接続が切れました。ロック済みか、まだ書き込み可能かは未確認です。</string>
+    <string name="nfc_lock_reason_cancel">操作がキャンセルされ、読み取り専用の保護は未確認です。</string>
+    <string name="nfc_lock_reason_io">カードとの通信に失敗し、読み取り専用の保護は未確認です。</string>
+    <string name="nfc_lock_reason_check">ロック操作または検証に失敗しました。上書きから保護済みとは見なさないでください。</string>
 </resources>

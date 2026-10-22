@@ -21,8 +21,6 @@ final class AddressImageRenderer {
         if(address.startsWith("bc1p"))return "Taproot";
         return address.startsWith("3")?"P2SH":"Legacy";
     }
-    // SIMPLE is inlined as 0, the same strategy supported by Layout since API 23.
-    @android.annotation.SuppressLint("InlinedApi")
     static Bitmap render(Context context,String address,boolean verified)throws Exception{
         String type=addressType(address);
         TextPaint addressPaint=font(15,INK,false);addressPaint.setTypeface(Typeface.MONOSPACE);

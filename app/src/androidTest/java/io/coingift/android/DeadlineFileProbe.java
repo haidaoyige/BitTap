@@ -30,22 +30,24 @@ final class DeadlineFileProbe {
     }
     private void launch(String language){if(activity!=null){main(activity::finish);host.waitForIdleSync();}Texts.select(host.getTargetContext(),language);activity=(MainActivity)host.startActivitySync(new Intent(host.getTargetContext(),MainActivity.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_CLEAR_TASK));host.waitForIdleSync();}
     private void unlock()throws Exception{
-        main(()->{invoke("acceptIncoming",new Class<?>[]{String.class},backup);invoke("showUnlockDialog");Dialog d=(Dialog)get("unlockDialog");for(View v:views(d.getWindow().getDecorView()))if(v instanceof EditText)((EditText)v).setText("test fixture password only");button(d.getWindow().getDecorView(),activity.getString(R.string.wallet_unlock_action)).performClick();});
+        main(()->invoke("acceptIncoming",new Class<?>[]{String.class},backup));until(()->!(Boolean)get("recordLoading"),5000);main(()->{invoke("showUnlockDialog");Dialog d=(Dialog)get("unlockDialog");for(View v:views(d.getWindow().getDecorView()))if(v instanceof EditText)((EditText)v).setText("test fixture password only");button(d.getWindow().getDecorView(),activity.getString(R.string.wallet_unlock_action)).performClick();});
         until(()->get("unlocked")!=null&&"revealed".equals(get("screen")),20000);
         yes(((UnlockDeadline)get("unlockDeadline")).active(),"real decryption starts a deadline");
     }
     private void realIdleLock()throws Exception{
         unlock();PrivateSession holder=(PrivateSession)get("unlocked");byte[] bytes=owned(holder);
         main(()->invoke("showPrivateQr"));until(()->get("qrBitmap")!=null,10000);Bitmap bitmap=(Bitmap)get("qrBitmap");PrivateKeyView secret=(PrivateKeyView)get("secretView");
-        if(Build.VERSION.SDK_INT>=29){boolean[] copied={false};main(()->copied[0]=(Boolean)invoke("copyPrivateKey"));yes(copied[0],"public fixture private copy succeeds before idle test");}long start=SystemClock.elapsedRealtime();
+        boolean[] copied={false};main(()->copied[0]=(Boolean)invoke("copyPrivateKey"));yes(copied[0],"public fixture private copy succeeds before idle test");
+        long start=SystemClock.elapsedRealtime(),remaining=((UnlockDeadline)get("unlockDeadline")).remaining(start);
+        yes(remaining>=50_000&&remaining<=60_000,"idle test retains the real 60-second deadline after QR/copy preparation");
         until(()->get("unlocked")==null&&get("autoLockDialog")!=null,65_000);
-        long waited=SystemClock.elapsedRealtime()-start;yes(waited>=59_000&&waited<65_000,"actual 60-second idle session expires without any tap or accelerated clock");
+        long waited=SystemClock.elapsedRealtime()-start;yes(waited>=remaining-1_000&&waited<remaining+5_000,"actual idle expiry matches the remaining monotonic deadline: remaining="+remaining+", waited="+waited);
         yes("unlock".equals(get("screen"))&&get("qrDialog")==null&&get("qrBitmap")==null&&bitmap.isRecycled(),"timeout dismisses private sheet and destroys QR pixels");
         yes(Arrays.equals(bytes,new byte[bytes.length])&&owned(holder)==null,"timeout wipes the owned scalar buffer and releases it");
         try{holder.wif();throw new AssertionError("expired key accessible");}catch(IllegalStateException expected){checks++;}
         yes(secret.isCleared(),"detached private drawing is cleared");
-        if(Build.VERSION.SDK_INT>=29){ClipboardManager clipboard=(ClipboardManager)activity.getSystemService(Context.CLIPBOARD_SERVICE);yes(clipboard.getPrimaryClip()==null,"idle expiry clears owned private clipboard while foreground");}
-        Dialog notice=(Dialog)get("autoLockDialog");yes(has(notice.getWindow().getDecorView(),activity.getString(R.string.auto_lock_idle_body)),"idle cause is explained");sheetStyle(notice);yes(has(notice.getWindow().getDecorView(),activity.getString(R.string.auto_lock_cleared)),"lock notice explains session cleanup separately");capture("idle-locked",notice.getWindow().getDecorView());
+        ClipboardManager clipboard=(ClipboardManager)activity.getSystemService(Context.CLIPBOARD_SERVICE);yes(clipboard.getPrimaryClip()==null,"idle expiry clears owned private clipboard while foreground");
+        Dialog notice=(Dialog)get("autoLockDialog");yes(has(notice.getWindow().getDecorView(),activity.getString(R.string.auto_lock_idle_body)),"idle cause is explained");sheetStyle(notice);yes(has(notice.getWindow().getDecorView(),activity.getString(R.string.verification_locked_body)),"lock notice explains session cleanup separately");capture("idle-locked",notice.getWindow().getDecorView());
         Thread.sleep(5200);yes(notice.isShowing(),"lock notice does not auto-dismiss after five seconds");
         main(()->button(notice.getWindow().getDecorView(),activity.getString(R.string.auto_lock_dismiss)).performClick());host.waitForIdleSync();yes(get("autoLockDialog")==null&&get("unlocked")==null,"confirm dismisses notice without unlocking");
     }

@@ -397,8 +397,6 @@
   <string name="note_counter">%1$s · %2$d/16</string>
 
   <!-- Android clipboard and obscured-touch protection. -->
-  <string name="private_copy_unavailable" formatted="false">"Copy unavailable"</string>
-  <string name="private_copy_legacy_notice" formatted="false">"Private key copying is disabled on this device. On Android 9, background apps may read the clipboard."</string>
   <string name="private_qr_retry" formatted="false">"Could not create the private key QR code. Close it and try again."</string>
   <string name="obscured_kicker" formatted="false">"Sensitive action protection"</string>
   <string name="obscured_title" formatted="false">"Remove the overlay\nbefore continuing."</string>
@@ -469,4 +467,70 @@
     <string name="access_guard_body">An accessibility service is enabled. Turn off these services before entering passwords or accessing private keys, then try again.</string>
     <string name="access_guard_detail">This includes TalkBack. Public addresses remain available. Disabling a service does not automatically unlock your key.</string>
     <string name="access_guard_ok">Got it</string>
+
+    <!-- Device-local public address verification -->
+    <string name="verification_entry">How password-free address checks work</string>
+    <string name="verification_intro">Read the same wallet data again on this phone to check receiving addresses without entering your wallet password.</string>
+    <string name="verification_when_title">When is this available?</string>
+    <string name="verification_when_body">After wallet creation, card read-back and required backup, or a successful password unlock and address check, this phone automatically saves a local verification record.</string>
+    <string name="verification_private_title">Does this unlock the private key?</string>
+    <string name="verification_private_body">No. A matching local record only confirms that the wallet data is unchanged. Viewing the private key requires an unlocked private-key session.</string>
+    <string name="verification_storage_title">What is saved on the phone?</string>
+    <string name="verification_storage_body">Protected verification records and public addresses only. Records contain no wallet password, plaintext private key or wallet decryption key. They cannot decrypt your wallet.</string>
+    <string name="verification_reset_title">What if I change phones or clear records?</string>
+    <string name="verification_reset_body">Enter the full wallet password to unlock and check again. Changed wallet data also requires another check. Records stay on this phone and are excluded from cloud backup and device transfer.</string>
+    <string name="verification_manage">Manage local verification records</string>
+    <string name="verification_records_title">Local verification records</string>
+    <string name="verification_records_body">Clearing records does not delete cards or encrypted backups. The next read requires a password check.</string>
+    <string name="verification_empty">No local verification records yet.</string>
+    <string name="verification_clear_all">Clear all local records</string>
+    <string name="verification_clear_one">Clear this record</string>
+    <string name="verification_clear_title">Clear verification records?</string>
+    <string name="verification_clear_action">Clear records</string>
+    <string name="verification_keep">Keep records</string>
+    <string name="verification_back_info">Back to explanation</string>
+    <string name="verification_view_public">View public addresses</string>
+    <string name="verification_local">Matches local record</string>
+    <string name="verification_fresh">Checked against private key</string>
+    <string name="verification_changed">Record mismatch</string>
+    <string name="verification_changed_title">Card data has changed</string>
+    <string name="verification_changed_body">This card’s data differs from its previous local record. Check where the card came from. The old record will not be replaced automatically.</string>
+    <string name="verification_pending_body">No matching record on this phone. Enter your password once to unlock and check the four receiving addresses.</string>
+    <string name="verification_local_body">Receiving addresses match the previous check on this phone. No password is needed; the private key stays locked.</string>
+    <string name="verification_locked_body">The private key is locked. Checked public addresses are still available. Viewing the private key requires your password again.</string>
+    <string name="verification_session_body">All four addresses were checked. View the private key without re-entering your password during this session.</string>
+    <string name="verification_session_limit">The private key locks after 60 seconds idle or 2 minutes from unlock. Returning home also ends the session.</string>
+    <string name="verification_unlock_private">Unlock and view private key</string>
+    <string name="verification_unlock_body">Enter the full wallet password to decrypt the private key and check the receiving addresses. No repeat password is needed within the active session.</string>
+    <string name="verification_password_risk">Use a trusted device. A stolen password can decrypt the private key from a copied card or backup.</string>
+    <string name="verification_after_check">Check before displaying</string>
+    <string name="verification_save_ok">Local address record saved. Future matching reads on this phone need no wallet password.</string>
+    <string name="verification_save_failed">Addresses checked, but the local record could not be saved. Your password will be needed next time.</string>
+    <string name="verification_load_failed">Local records are unavailable. Unlock with your full password to check addresses; you can clear damaged records in record management.</string>
+    <string name="verification_failed">Check failed: wrong password or abnormal wallet data. Do not send BTC to the displayed addresses.</string>
+    <string name="verification_review_title">Confirm the wallet data</string>
+    <string name="verification_review_body">The password and addresses check out, but this data differs from the previous record. Confirm the source before saving it. A successful check does not establish ownership.</string>
+    <string name="verification_previous">Previous record</string>
+    <string name="verification_current">Current data</string>
+    <string name="verification_accept">Confirm and save this record</string>
+    <string name="verification_loading">Checking local records…</string>
+    <string name="verification_records_failed">Record operation failed. Please try again.</string>
+    <string name="verification_cleared">Local records cleared. Cards and backups were not changed.</string>
+    <string name="verification_finish_first">Finish writing and saving the required backup before displaying receiving addresses.</string>
+    <string name="verification_matched_intro">Wallet data matches the verified record on this device.</string>
+    <string name="verification_changed_warning">These addresses are unverified. Do not send BTC to them. The previous record will not be overwritten automatically.</string>
+  <string name="nfc_operation_timeout">The NFC operation timed out. Remove the card and try again.</string>
+  <string name="nfc_operation_busy">NFC is still finishing a previous operation. Remove the card and try again later; if this persists, restart BitTap.</string>
+  <string name="nfc_write_unconfirmed">Writing was not confirmed. Read the card again to check its contents; any retry will check the card before writing.</string>
+  <string name="nfc_operation_problem">NFC operation incomplete</string>
+    <string name="nfc_card_read_only">This card is read-only and cannot be overwritten. Please use a writable card.</string>
+    <string name="nfc_startup_timeout">NFC startup did not finish (%1$s). The wallet has not been read or written in this attempt. Remove the card and exit BitTap. If NFC is also unresponsive in system settings, restart your phone.</string>
+    <string name="nfc_written_not_locked">Wallet written, card not yet locked</string>
+    <string name="nfc_lock_diagnostic">Diagnostic: %1$s\n%2$s</string>
+    <string name="nfc_lock_reason_timeout">The NFC operation did not return in time. Read-only protection is unconfirmed.</string>
+    <string name="nfc_lock_reason_busy">The NFC worker is unavailable. No completed lock has been confirmed.</string>
+    <string name="nfc_lock_reason_lost">The card connection was lost. The card may or may not already be locked.</string>
+    <string name="nfc_lock_reason_cancel">The operation was cancelled. Read-only protection is unconfirmed.</string>
+    <string name="nfc_lock_reason_io">Communication with the card failed. Read-only protection is unconfirmed.</string>
+    <string name="nfc_lock_reason_check">The lock operation or its verification did not pass. Do not treat this card as protected against overwriting.</string>
 </resources>

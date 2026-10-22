@@ -30,6 +30,11 @@ public final class BitcoinAddresses {
         return new BitcoinAddresses(legacy,nested,nativeAddress,taproot);
     }
 
+    /** Validated public addresses, e.g. restored from an authenticated local record. No private key. */
+    public static BitcoinAddresses fromPublicAddresses(String legacy,String nested,String nativeAddress,String taproot) {
+        return parse(legacy,nested,nativeAddress,taproot);
+    }
+
     static void requireWitness(String address,int version,int bytes) {
         SegwitAddress parsed=SegwitAddress.fromBech32(MainNetParams.get(),address);
         if(parsed.getWitnessVersion()!=version || parsed.getWitnessProgram().length!=bytes || !parsed.toString().equals(address))

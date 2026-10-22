@@ -43,7 +43,7 @@ final class PrivateKeyView extends View {
         characters=wif.clone();
         setSaveEnabled(false);setSaveFromParentEnabled(false);
         setImportantForAutofill(IMPORTANT_FOR_AUTOFILL_NO_EXCLUDE_DESCENDANTS);
-        if(Build.VERSION.SDK_INT>=30)setImportantForContentCapture(IMPORTANT_FOR_CONTENT_CAPTURE_NO_EXCLUDE_DESCENDANTS);
+        setImportantForContentCapture(IMPORTANT_FOR_CONTENT_CAPTURE_NO_EXCLUDE_DESCENDANTS);
         setContentDescription(context.getString(R.string.private_sensitive_content));
         setImportantForAccessibility(IMPORTANT_FOR_ACCESSIBILITY_YES);
         if(Build.VERSION.SDK_INT>=34)setAccessibilityDataSensitive(ACCESSIBILITY_DATA_SENSITIVE_YES);

@@ -1,6 +1,10 @@
-# BitTap V0.6.2 发布与实机测试
+# BitTap v0.7.0 发布与验证
 
-当前发布候选：**0.6.2 / versionCode 31**。沿用原应用 ID `io.coingift.android` 和发行签名，最低 Android 9 / API 28。仓库保持私有：[haidaoyige/BitTap](https://github.com/haidaoyige/BitTap)。本次范围和保留风险见 [v0.6.2 发布说明](v0.6.2/RELEASE-NOTES.md)。最终提交、独立 CI 和安装包来源以 Release 的签名清单为准。
+当前版本 **0.7.0 / versionCode 50**，最低 **Android12 / API31**。应用ID与原发行证书保持一致。仓库公开，许可为Apache-2.0。版本范围及硬件待验收项见 [0.7.0说明](v0.7.0/RELEASE-NOTES.md)。
+
+最终干净源提交必须先通过独立GitHub Actions CI，再用 `tools/build_release.py --ci-run-id <成功运行编号> --output <新输出目录>` 在本机完成重建比对和原证书签名。正式发布包含主APK、Java17离线恢复ZIP、SBOM、运行时库存、环境和依赖审计记录、签名来源清单及SHA-256；不上传测试APK、发行密钥或本机凭据。最终提交、CI和附件摘要以Release的签名清单为准。
+
+下文保留0.6.x及更早版本的历史记录；其中系统版本、私有仓库状态、密码和加密兼容范围不用于说明0.7.0当前行为。完整发布步骤仍见下文“后台修订的发布候选流程”。
 
 ## 历史本地候选
 
@@ -54,7 +58,7 @@ code17 在 code16 本地测试候选基础上修复收款地址栏“其他收�
 
    签名验证通过后还须逐项核对 manifest 中的文件 SHA-256；`SHA256SUMS.txt` 本身不能替代来源签名。工具只准备本机候选，不自动建 tag、上传 Release 或覆盖历史附件。
 
-此流程增加来源可复核性；不能证明代码没有漏洞。当前个人私有仓库套餐不能强制主分支审批/状态检查，CODEOWNERS 只路由审查请求，不能阻止有写权限的协作者绕过流程。保持私有需要仓库所有者升级到支持该能力的套餐并配置保护后，才能关闭这一部分风险。详见 [修订记录](../security/BACKEND-HARDENING.md)。
+此流程增加来源可复核性，不能证明代码没有漏洞。0.6.x私有仓库阶段曾受到主分支保护套餐限制；0.7.0改为公开后按实际GitHub保护设置执行。CODEOWNERS本身仅路由审查请求，保护是否生效以远端配置为准。历史范围见[修订记录](../security/BACKEND-HARDENING.md)。
 
 ## 0.4.0 历史候选包
 

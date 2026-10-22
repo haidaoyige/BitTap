@@ -1,3 +1,7 @@
+# 当前发布：0.7.0
+
+仓库 `haidaoyige/BitTap` 改为公开，Apache-2.0不变。主APK与恢复ZIP经同提交独立CI和本机原证书签发后上传Release；发行密钥仅本机保存。当前流程以 [发布与验证](release/README.md) 为准，下文为早期历史记录。
+
 # GitHub 上传内容
 
 源码包括 Android App、密码学核心、离线恢复工具、Gradle Wrapper 和依赖校验文件；资料包括使用说明、CG1/NFC 格式规范、更新记录、测试报告、第三方许可及独立验证脚本。

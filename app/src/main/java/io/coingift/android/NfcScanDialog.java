@@ -29,6 +29,8 @@ final class NfcScanDialog extends Dialog {
 
     void processing(String title,String message){
         heading.setText(Texts.tr(getContext(),title));status.setText(getContext().getString(R.string.nfc_scan_status,Texts.tr(getContext(),message)));
-        setCancelable(false);cancel.setEnabled(false);if(heading.getParent() instanceof android.view.ViewGroup){android.view.ViewGroup row=(android.view.ViewGroup)heading.getParent();if(row.getChildCount()>1)row.getChildAt(1).setEnabled(false);}
+        // Cancellation abandons this attempt; it never implies a write or lock was rolled back.
+        // Keep an escape route even while a device's NFC service is not responding.
+        setCancelable(true);cancel.setEnabled(true);
     }
 }

@@ -13,10 +13,10 @@ android {
     buildToolsVersion '35.0.0'
     defaultConfig {
         applicationId 'io.coingift.android'
-        minSdk 28
+        minSdk 31
         targetSdk 35
-        versionCode 40
-        versionName '0.6.2'
+        versionCode 50
+        versionName '0.7.0'
         testInstrumentationRunner (project.hasProperty('bitnfcAudit') ? 'io.coingift.android.SecurityReviewRunner' : 'io.coingift.android.SmokeRunner')
     }
     compileOptions {

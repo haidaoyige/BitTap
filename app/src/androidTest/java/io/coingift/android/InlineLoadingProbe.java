@@ -42,8 +42,8 @@ final class InlineLoadingProbe {
         yes(Arrays.equals(pending,new char[pending.length])&&(Integer)get("epoch")==token+1,"cancel wipes queued password and invalidates result token");
         release();drain();yes(get("session")==null,"late cancelled generation never creates a session");
     }
-    private Dialog openUnlock(String password){
-        main(()->{invoke("acceptIncoming",new Class<?>[]{String.class},backup);invoke("showUnlockDialog");});host.waitForIdleSync();Dialog owner=(Dialog)get("unlockDialog");main(()->fields(owner.getWindow().getDecorView()).get(0).setText(password));return owner;
+    private Dialog openUnlock(String password)throws Exception{
+        main(()->invoke("acceptIncoming",new Class<?>[]{String.class},backup));until(()->!(Boolean)get("recordLoading"),5000);main(()->invoke("showUnlockDialog"));host.waitForIdleSync();Dialog owner=(Dialog)get("unlockDialog");main(()->fields(owner.getWindow().getDecorView()).get(0).setText(password));return owner;
     }
     private void unlockFailureAndSuccess()throws Exception{
         Dialog owner=openUnlock("public wrong password");List<EditText> inputs=fields(owner.getWindow().getDecorView());Button submit=button(owner,activity.getString(R.string.wallet_unlock_action));

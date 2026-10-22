@@ -1,7 +1,6 @@
 package io.coingift.android;
 
 import android.accessibilityservice.AccessibilityService;
-import android.os.Build;
 import android.os.Bundle;
 import android.view.accessibility.AccessibilityEvent;
 import android.view.accessibility.AccessibilityNodeInfo;
@@ -28,7 +27,7 @@ public final class PrivateAccessService extends AccessibilityService {
         Bundle result=new Bundle();PrivateAccessService service=active;
         result.putBoolean("connected",service!=null);
         if(service!=null){
-            if(Build.VERSION.SDK_INT>=31)result.putBoolean("tool",service.getServiceInfo().isAccessibilityTool());
+            result.putBoolean("tool",service.getServiceInfo().isAccessibilityTool());
             int[] nodes={0};boolean found=false;
             for(AccessibilityWindowInfo window:service.getWindows()){
                 AccessibilityNodeInfo root=window.getRoot();
@@ -43,7 +42,7 @@ public final class PrivateAccessService extends AccessibilityService {
             count[0]++;
             if(leaks(node.getText())||leaks(node.getContentDescription())||leaks(node.getHintText())||leaks(node.getTooltipText())
                     ||leaks(node.getPaneTitle())||leaks(node.getExtras().toString())
-                    ||(Build.VERSION.SDK_INT>=30&&leaks(node.getStateDescription())))return true;
+                    ||leaks(node.getStateDescription()))return true;
         }
         boolean found=false;
         for(int i=0;i<node.getChildCount();i++){

@@ -5,7 +5,7 @@
       "make": "制作冷钱包",
       "read": "读取冷钱包",
       "makeSub": "设置密码，写入 NFC 卡片",
-      "readSub": "贴卡或导入备份，恢复私钥",
+      "readSub": "贴卡或导入备份，查看钱包",
       "hero": "用一张 NFC 卡，\n保管自己的 BTC。",
       "sub": "离线生成私钥，加密存入卡片。",
       "offline": "离线制作 · 密码保护",
@@ -201,7 +201,7 @@
       "make": "Create cold wallet",
       "read": "Read cold wallet",
       "makeSub": "Set a password. Write to NFC.",
-      "readSub": "Tap a card or import a backup.",
+      "readSub": "Read NFC or import a backup.",
       "hero": "One NFC card.\nYour BTC, in your hands.",
       "sub": "Generate offline. Encrypt onto your card.",
       "offline": "Offline creation · Password protected",
@@ -1154,13 +1154,13 @@
       ],
       "caution": "相近的是设计思路，不代表代码相同、安全性相同、格式兼容，或得到这些项目的认证与背书。",
       "compatibility": "BitTap 当前生成 CG3 加密备份，并支持恢复旧 CG2 / CG1。这是项目自定义格式，不是 BIP38，也不能直接作为 Bitcoin Core 或 Electrum 的钱包文件使用。需要先用 BitTap 或离线恢复工具解密，再将 BTC 主网压缩 WIF 私钥导入支持该格式及对应地址类型的钱包。",
-      "cleanup": "明文私钥在写卡前清理；密文在完成备份并返回首页后清理。相机增强为可选模式。",
+      "cleanup": "明文私钥在写卡前清理；密文在完成备份并返回首页后清理。本机会单独保留公开地址核验记录，可在“如何免密核验地址”中管理。相机增强为可选模式。",
       "relatedTitle": "与哪些开源钱包有相近思路？"
     },
     "en": {
       "title": "How does BitTap protect your private key?",
       "intro": "BTC is recorded on the Bitcoin blockchain. The NFC card stores an encrypted backup of the private key. The private key controls the corresponding BTC; your password protects that backup.",
-      "cleanup": "Plaintext keys are cleared before card writing. The encrypted session is cleared after you save the backup and return home. Camera enhancement is optional.",
+      "cleanup": "Plaintext keys are cleared before card writing. The encrypted session is cleared after backup and returning home. Public address verification records remain on this device and can be managed under Password-free address verification. Camera enhancement is optional.",
       "relatedTitle": "Which open-source wallets use similar ideas?",
       "sections": [
         {
@@ -1249,7 +1249,7 @@
     "ja": {
       "title": "BitTap は秘密鍵をどのように保護する？",
       "intro": "BTC はビットコインのブロックチェーンに記録されています。NFC カードに保存されるのは、暗号化された秘密鍵のバックアップです。対応する BTC を動かす権限を持つのが秘密鍵で、そのバックアップを守るのがパスワードです。",
-      "cleanup": "平文の秘密鍵はカード書き込み前に消去します。暗号化データはバックアップ保存後、ホームに戻るとセッションから消去します。カメラによる強化は任意です。",
+      "cleanup": "平文の秘密鍵はカード書き込み前に消去します。暗号化セッションはバックアップ保存後、ホームに戻ると消去します。公開アドレスの検証記録は端末に残り、「パスワードなしのアドレス検証」から管理できます。カメラによる強化は任意です。",
       "relatedTitle": "似た考え方を採用するオープンソースウォレットは？",
       "sections": [
         {
@@ -1338,7 +1338,7 @@
     "ko": {
       "title": "BitTap은 개인 키를 어떻게 보호하나요?",
       "intro": "BTC는 비트코인 블록체인에 기록됩니다. NFC 카드에는 암호화된 개인 키 백업이 저장됩니다. 해당 BTC를 제어하는 것은 개인 키이며, 비밀번호는 이 백업을 보호합니다.",
-      "cleanup": "평문 개인 키는 카드에 쓰기 전에 정리합니다. 암호화된 세션 데이터는 백업을 저장하고 홈으로 돌아가면 정리합니다. 카메라 강화는 선택 사항입니다.",
+      "cleanup": "평문 개인 키는 카드에 쓰기 전에 정리합니다. 암호화 세션은 백업 저장 후 홈으로 돌아가면 정리합니다. 공개 주소 검증 기록은 기기에 남으며 비밀번호 없는 주소 검증 설명에서 관리할 수 있습니다. 카메라 강화는 선택 사항입니다.",
       "relatedTitle": "비슷한 설계 원리를 사용하는 오픈소스 지갑은?",
       "sections": [
         {

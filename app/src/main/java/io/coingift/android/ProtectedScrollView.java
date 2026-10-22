@@ -1,7 +1,6 @@
 package io.coingift.android;
 
 import android.content.Context;
-import android.os.Build;
 import android.view.MotionEvent;
 import android.widget.ScrollView;
 
@@ -24,9 +23,7 @@ class ProtectedScrollView extends ScrollView {
     @Override public boolean dispatchTouchEvent(MotionEvent event) {
         int action = event.getActionMasked();
         if (action == MotionEvent.ACTION_DOWN) rejectedGesture = false;
-        int obscured = MotionEvent.FLAG_WINDOW_IS_OBSCURED;
-        // Android 9 does not report partial occlusion; do not imply it can detect it.
-        if (Build.VERSION.SDK_INT >= 29) obscured |= MotionEvent.FLAG_WINDOW_IS_PARTIALLY_OBSCURED;
+        int obscured = MotionEvent.FLAG_WINDOW_IS_OBSCURED | MotionEvent.FLAG_WINDOW_IS_PARTIALLY_OBSCURED;
         if ((event.getFlags() & obscured) != 0 && !rejectedGesture) {
             rejectedGesture = true;
             MotionEvent cancel = MotionEvent.obtain(event);

@@ -35,7 +35,7 @@ final class HelpPages {
                 ((LinearLayout.LayoutParams)action.getLayoutParams()).topMargin=ui.dp(8);
             }
             TextView session=ui.text(p,copy.ui("riskNoticeSession"),11,AppUi.SUB,false);
-            session.setGravity(android.view.Gravity.CENTER);session.setPadding(0,ui.dp(12),0,0);ui.line(session,1.5f);
+            session.setGravity(android.view.Gravity.CENTER);session.setPadding(0,ui.dp(8),0,0);ui.line(session,1.5f);
         });return owner;
     }
     Dialog cardHelp(Runnable close){JSONObject c=copy.section("cardHelpCopy");return ui.sheet(c.optString("title"),p->{
@@ -52,15 +52,23 @@ final class HelpPages {
         ui.helper(p,c.optString("source"));ui.action(p,copy.ui("understand"),true,0,close);
     });}
     private void wallet(LinearLayout p,String title,String body){ui.space(p,8);ui.text(p,title,12,AppUi.SUB,true);ui.text(p,body,12,AppUi.SUB,false);}
-    Dialog about(Runnable close,Runnable security,Runnable language){return ui.sheet(copy.ui("about"),p->{
+    Dialog about(Runnable close,Runnable security,Runnable language,Runnable verification){return ui.sheet(copy.ui("about"),p->{
         ui.text(p,copy.ui("aboutBody"),13,AppUi.SUB,false);ui.space(p,2);ui.callout(p,R.drawable.ic_shield,copy.ui("publicInfo"));ui.space(p,8);
         ui.action(p,copy.ui("securityEntry"),false,R.drawable.ic_shield,security);
+        ui.action(p,ui.activity.getString(R.string.verification_entry),false,R.drawable.ic_record_check,verification);
         if(language!=null)ui.link(p,copy.ui("language"),R.drawable.ic_globe,language);
         ui.action(p,copy.ui("understand"),true,0,close);
     });}
+    void verification(){
+        ui.heading(null,ui.activity.getString(R.string.verification_entry),ui.activity.getString(R.string.verification_intro));
+        int[] titles={R.string.verification_when_title,R.string.verification_private_title,R.string.verification_storage_title,R.string.verification_reset_title};
+        int[] bodies={R.string.verification_when_body,R.string.verification_private_body,R.string.verification_storage_body,R.string.verification_reset_body};
+        int[] icons={R.drawable.ic_record_check,R.drawable.ic_lock,R.drawable.ic_shield,R.drawable.ic_shuffle};
+        for(int i=0;i<titles.length;i++)ui.risk(ui.page,icons[i],ui.activity.getString(titles[i]),ui.activity.getString(bodies[i]),i<titles.length-1);
+    }
     Dialog principle(Runnable close){return ui.sheet(copy.ui("principleTitle"),p->{
         int[] icons={R.drawable.ic_shield,R.drawable.ic_camera,R.drawable.ic_shuffle};
-        for(int i=1;i<=3;i++){LinearLayout row=ui.horizontal();row.setPadding(0,ui.dp(6),0,ui.dp(6));p.addView(row);ImageView image=new ImageView(ui.activity);image.setImageDrawable(ui.drawable(icons[i-1],AppUi.ACCENT,17));LinearLayout.LayoutParams ip=new LinearLayout.LayoutParams(ui.dp(17),ui.dp(20));ip.rightMargin=ui.dp(8);row.addView(image,ip);ui.text(row,copy.ui("principle"+i),12,AppUi.SUB,false).setLayoutParams(new LinearLayout.LayoutParams(0,-2,1));}
+        for(int i=1;i<=3;i++){LinearLayout row=ui.horizontal();row.setPadding(0,ui.dp(6),0,ui.dp(6));p.addView(row);ImageView image=new ImageView(ui.activity);image.setImageDrawable(ui.drawable(icons[i-1],AppUi.ACCENT,17));LinearLayout.LayoutParams ip=new LinearLayout.LayoutParams(ui.dp(17),ui.dp(20));ip.rightMargin=ui.dp(8);row.addView(image,ip);TextView text=ui.text(row,copy.ui("principle"+i),12,AppUi.SUB,false);text.setLayoutParams(new LinearLayout.LayoutParams(0,-2,1));row.setGravity(android.view.Gravity.TOP);text.addOnLayoutChangeListener((v,l,t,r,b,ol,ot,or,ob)->ui.alignFirstLine(image,text));}
         ui.callout(p,R.drawable.ic_info,copy.ui("principleNote"));ui.action(p,copy.ui("understand"),true,0,close);
     });}
     void terms(){

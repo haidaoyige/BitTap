@@ -54,13 +54,13 @@ final class WalletArtView extends View {
         if(!scanning)fit=Math.min(Math.min(fit,(getWidth()/scale)/340f),Math.max(0,(getHeight()/scale-8)/185f));
         canvas.translate(getWidth()/2f,getHeight()/2f);canvas.scale(scale,scale);
         if(scanning){
-            paint.setStyle(Paint.Style.STROKE);paint.setStrokeWidth(1);paint.setColor(AppUi.LINE);
+            paint.setStyle(Paint.Style.STROKE);paint.setStrokeWidth(AppUi.borderPixels(scale)/scale);paint.setColor(AppUi.LINE);
             canvas.drawCircle(0,0,117.5f,paint);canvas.drawCircle(0,0,99,paint);
             if(animated){paint.setAlpha((int)(160*(1-pulse)));canvas.drawCircle(0,0,71+25*pulse,paint);paint.setAlpha(255);}
         }
         canvas.rotate(-9);float w=233,h=145;
         // Enlarge only the home card; keep its proportions and the NFC scanning artwork.
-        float cardFit=fit*(scanning?1f:1.08f);
+        float cardFit=fit*(scanning?1f:1.17f);
         if(!scanning){
             float radians=(float)Math.toRadians(9);
             float tiltedHeight=h*(float)Math.cos(radians)+w*(float)Math.sin(radians);
@@ -68,7 +68,7 @@ final class WalletArtView extends View {
         }
         canvas.scale(cardFit,cardFit);
         paint.setStyle(Paint.Style.FILL);paint.setColor(AppUi.ORANGE);bounds.set(-w/2,-h/2,w/2,h/2);paint.setShadowLayer(18,0,18,0x14cc7313);canvas.drawRoundRect(bounds,17,17,paint);paint.clearShadowLayer();
-        paint.setStyle(Paint.Style.STROKE);paint.setStrokeWidth(.8f);paint.setColor(0x45c57216);bounds.set(-w/2+7,-h/2+4.4f,w/2-7,h/2-4.4f);canvas.drawRoundRect(bounds,9,9,paint);
+        paint.setStyle(Paint.Style.STROKE);paint.setStrokeWidth(AppUi.borderPixels(scale)/(scale*Math.max(cardFit,.001f)));paint.setColor(0x45c57216);bounds.set(-w/2+7,-h/2+4.4f,w/2-7,h/2-4.4f);canvas.drawRoundRect(bounds,9,9,paint);
         paint.setStyle(Paint.Style.FILL);paint.setColor(0xff33210d);paint.setTypeface(font);paint.setTextSize(15);
         canvas.drawText("BitTap",-w/2+w*.08f,-h/2+h*.12f+14,paint);
         paint.setStyle(Paint.Style.STROKE);paint.setStrokeWidth(1);paint.setStrokeCap(Paint.Cap.ROUND);float cx=w/2-w*.08f-7,cy=-h/2+h*.12f+7;
@@ -82,14 +82,17 @@ final class WalletArtView extends View {
         canvas.restore();
         if(!scanning){
             float screenScale=scale*fit,centerX=getWidth()/2f,centerY=getHeight()/2f;
-            // Move the unchanged-size lock tile inward (18 left, 8 up) as approved.
-            // Keep the border inside its bounds so narrow screens cannot clip its width.
-            int border=Math.max(1,Math.round(1.5f*screenScale));
-            bounds.set(Math.round(centerX+94*screenScale),Math.round(centerY+22*screenScale),Math.round(centerX+152*screenScale),Math.round(centerY+80*screenScale));
-            float tileCenterX=bounds.centerX(),tileCenterY=bounds.centerY(),radius=18*screenScale;
+            // Approved edge-floating position: keep most of the tile outside the orange card.
+            // Quantize the outer and inner fills to the same pixel grid, using the UI-wide border.
+            float lockScale=screenScale*1.1f;
+            int border=AppUi.borderPixels(scale);
+            float tileLeft=Math.round(centerX+103*screenScale),tileTop=Math.round(centerY+30*screenScale);
+            int tileSize=Math.round(58*lockScale);
+            bounds.set(tileLeft,tileTop,tileLeft+tileSize,tileTop+tileSize);
+            float tileCenterX=bounds.centerX(),tileCenterY=bounds.centerY(),radius=18*lockScale;
             paint.setStyle(Paint.Style.FILL);paint.setColor(AppUi.LINE);canvas.drawRoundRect(bounds,radius,radius,paint);
             bounds.inset(border,border);paint.setColor(Color.WHITE);float innerRadius=Math.max(0,radius-border);canvas.drawRoundRect(bounds,innerRadius,innerRadius,paint);
-            drawLock(canvas,tileCenterX,tileCenterY,24*screenScale);
+            drawLock(canvas,tileCenterX,tileCenterY,24*lockScale);
         }
     }
 

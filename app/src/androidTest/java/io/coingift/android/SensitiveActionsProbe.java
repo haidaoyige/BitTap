@@ -41,7 +41,7 @@ final class SensitiveActionsProbe {
         Texts.select(host.getTargetContext(),language);
         activity=(MainActivity)host.startActivitySync(new Intent(host.getTargetContext(),MainActivity.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_CLEAR_TASK));host.waitForIdleSync();
         yes((activity.getWindow().getAttributes().flags&WindowManager.LayoutParams.FLAG_SECURE)!=0,"FLAG_SECURE retained");
-        if(Build.VERSION.SDK_INT>=31){
+        {
             yes(activity.checkSelfPermission("android.permission.HIDE_OVERLAY_WINDOWS")==android.content.pm.PackageManager.PERMISSION_GRANTED,"hide-overlay permission granted");
             yes(activity.getWindow().getAttributes().toString().contains("HIDE_NON_SYSTEM_OVERLAY_WINDOWS"),"activity requests hiding overlays");
         }
@@ -51,7 +51,7 @@ final class SensitiveActionsProbe {
         main(()->{testUi[0]=new AppUi(activity,()->false,()->{});testUi[0].obscuredTouch=()->rejects[0]++;testUi[0].install();button[0]=testUi[0].action(testUi[0].page,"probe",true,0,()->clicks[0]++);});host.waitForIdleSync();
         ProtectedScrollView root=(ProtectedScrollView)testUi[0].scroll;
         int full=MotionEvent.FLAG_WINDOW_IS_OBSCURED;
-        int partial=Build.VERSION.SDK_INT>=29?MotionEvent.FLAG_WINDOW_IS_PARTIALLY_OBSCURED:full;
+        int partial=MotionEvent.FLAG_WINDOW_IS_PARTIALLY_OBSCURED;
         gesture(root,button[0],new int[]{0,0},new int[]{0,1});yes(clicks[0]==1&&rejects[0]==0,"clean gesture works");
         int[][] flags={{full,0},{partial,0},{0,full},{0,partial},{0,full,0},{0,partial,0}};
         for(int[] f:flags){int before=rejects[0];gesture(root,button[0],f,f.length==2?new int[]{0,1}:new int[]{0,2,1});yes(clicks[0]==1,"obscured gesture never clicks");yes(rejects[0]==before+1,"single rejection notification per gesture");}
@@ -59,7 +59,8 @@ final class SensitiveActionsProbe {
         main(()->invoke("render"));host.waitForIdleSync();
     }
     private void unlock()throws Exception{
-        main(()->{set("incoming",backup);set("screen","unlock");invoke("render");invoke("showUnlockDialog");for(View v:views(((Dialog)get("unlockDialog")).getWindow().getDecorView()))if(v instanceof EditText)((EditText)v).setText("test fixture password only");});
+        main(()->invoke("acceptIncoming",new Class<?>[]{String.class},backup));until(()->!(Boolean)get("recordLoading"),5000);
+        main(()->{invoke("showUnlockDialog");for(View v:views(((Dialog)get("unlockDialog")).getWindow().getDecorView()))if(v instanceof EditText)((EditText)v).setText("test fixture password only");});
         main(()->button(((Dialog)get("unlockDialog")).getWindow().getDecorView(),activity.getString(R.string.wallet_unlock_action)).performClick());
         until(()->"revealed".equals(get("screen")),20000);
     }
@@ -70,24 +71,12 @@ final class SensitiveActionsProbe {
         yes(WIF.equals(decode((Bitmap)get("qrBitmap"))),"private QR remains exact WIF");
         final ClipboardManager clipboard=(ClipboardManager)activity.getSystemService(Context.CLIPBOARD_SERVICE);
         main(()->clipboard.setPrimaryClip(ClipData.newPlainText("security-probe","public sentinel")));
-        Button export;
-        if(Build.VERSION.SDK_INT<=28){
-            Button disabled=button(qr.getWindow().getDecorView(),activity.getString(R.string.private_copy_unavailable));yes(!disabled.isEnabled(),"Android 9 copy visibly disabled");
-            yes(has(qr.getWindow().getDecorView(),activity.getString(R.string.private_copy_legacy_notice)),"Android 9 warning localized");
-            main(()->{invoke("requestPrivateCopy");disabled.performClick();});yes(get("copyConfirm")==null,"disabled and direct request cannot open copy consent");
-            final boolean[] allowed={true};main(()->allowed[0]=(Boolean)invoke("copyPrivateKey"));yes(!allowed[0]&&sentinel(clipboard),"direct copy gate leaves clipboard unchanged");
-            capture(locale+"-android9-private-qr",qr.getWindow().getDecorView());
-            main(()->button(qr.getWindow().getDecorView(),Texts.tr(activity,"保存图片")).performClick());host.waitForIdleSync();
-            export=button(((Dialog)get("qrSaveConfirm")).getWindow().getDecorView(),Texts.tr(activity,"确认保存"));
-        }else{
-            main(()->button(qr.getWindow().getDecorView(),new ApprovedCopy(activity).ui("copyWif")).performClick());host.waitForIdleSync();
-            Dialog confirm=(Dialog)get("copyConfirm");windowProtected(confirm);
-            yes(has(confirm.getWindow().getDecorView(),activity.getString(R.string.copy_confirm_description)),"existing copy wording preserved");
-            export=button(confirm.getWindow().getDecorView(),activity.getString(R.string.copy_confirm_action));
-        }
-        Dialog owner=(Dialog)get(Build.VERSION.SDK_INT<=28?"qrSaveConfirm":"copyConfirm");
+        main(()->button(qr.getWindow().getDecorView(),new ApprovedCopy(activity).ui("copyWif")).performClick());host.waitForIdleSync();
+        Dialog owner=(Dialog)get("copyConfirm");windowProtected(owner);
+        yes(has(owner.getWindow().getDecorView(),activity.getString(R.string.copy_confirm_description)),"existing copy wording preserved");
+        Button export=button(owner.getWindow().getDecorView(),activity.getString(R.string.copy_confirm_action));
         Bitmap oldQr=(Bitmap)get("qrBitmap");
-        gesture(findProtected(owner.getWindow().getDecorView()),export,new int[]{0,Build.VERSION.SDK_INT>=29?MotionEvent.FLAG_WINDOW_IS_PARTIALLY_OBSCURED:MotionEvent.FLAG_WINDOW_IS_OBSCURED},new int[]{0,1});
+        gesture(findProtected(owner.getWindow().getDecorView()),export,new int[]{0,MotionEvent.FLAG_WINDOW_IS_PARTIALLY_OBSCURED},new int[]{0,1});
         yes("protection".equals(get("screen")),"obscured export opens protection screen");
         yes(sentinel(clipboard),"obscured export never copies private key");
         yes(get("pendingQrImage")==null,"obscured export creates no PNG export request");
@@ -105,7 +94,7 @@ final class SensitiveActionsProbe {
         main(()->button(activity.getWindow().getDecorView(),activity.getString(R.string.obscured_return)).performClick());host.waitForIdleSync();
         yes("unlock".equals(get("screen"))&&get("unlocked")==null,"return to password page without restoring private key");
         for(View v:views(activity.getWindow().getDecorView()))if(v instanceof EditText)yes(((EditText)v).length()==0,"return password field empty");
-        if(Build.VERSION.SDK_INT>=29){
+        {
             unlock();main(()->button(activity.getWindow().getDecorView(),activity.getString(R.string.wallet_view_private)).performClick());host.waitForIdleSync();until(()->get("qrDialog")!=null,10000);
             main(()->button(((Dialog)get("qrDialog")).getWindow().getDecorView(),new ApprovedCopy(activity).ui("copyWif")).performClick());host.waitForIdleSync();
             Dialog confirm=(Dialog)get("copyConfirm");
@@ -144,7 +133,7 @@ final class SensitiveActionsProbe {
         yes("write".equals(get("screen"))&&get("session")==session,"return preserves encrypted creation flow");
         main(()->invoke("confirmReadOnly"));host.waitForIdleSync();
         Dialog lock=(Dialog)get("sheet");String label=new ApprovedCopy(activity).section("lockCopy").optString("confirm");
-        gesture(findProtected(lock.getWindow().getDecorView()),button(lock.getWindow().getDecorView(),label),new int[]{0,Build.VERSION.SDK_INT>=29?MotionEvent.FLAG_WINDOW_IS_PARTIALLY_OBSCURED:MotionEvent.FLAG_WINDOW_IS_OBSCURED,0},new int[]{0,2,1});
+        gesture(findProtected(lock.getWindow().getDecorView()),button(lock.getWindow().getDecorView(),label),new int[]{0,MotionEvent.FLAG_WINDOW_IS_PARTIALLY_OBSCURED,0},new int[]{0,2,1});
         yes("protection".equals(get("screen"))&&"NONE".equals(get("mode").toString()),"obscured permanent-lock consent never arms NFC");
     }
     private void cameraReviewRegression()throws Exception{
@@ -176,9 +165,14 @@ final class SensitiveActionsProbe {
             }
         });host.waitForIdleSync();
     }
-    private void windowProtected(Dialog d){yes((d.getWindow().getAttributes().flags&WindowManager.LayoutParams.FLAG_SECURE)!=0,"dialog secure");if(Build.VERSION.SDK_INT>=31)yes(d.getWindow().getAttributes().toString().contains("HIDE_NON_SYSTEM_OVERLAY_WINDOWS"),"dialog hides non-system overlays");}
+    private void windowProtected(Dialog d){yes((d.getWindow().getAttributes().flags&WindowManager.LayoutParams.FLAG_SECURE)!=0,"dialog secure");yes(d.getWindow().getAttributes().toString().contains("HIDE_NON_SYSTEM_OVERLAY_WINDOWS"),"dialog hides non-system overlays");}
     private ProtectedScrollView findProtected(View root){for(View v:views(root))if(v instanceof ProtectedScrollView)return (ProtectedScrollView)v;return null;}
-    private boolean sentinel(ClipboardManager clipboard){ClipData c=clipboard.getPrimaryClip();return c!=null&&"public sentinel".contentEquals(c.getItemAt(0).getText());}
+    private boolean sentinel(ClipboardManager clipboard)throws Exception{
+        // A dialog-to-page transition can finish before WindowManager grants focus.
+        // Read only once the app is permitted to read its clipboard; null is not proof of safety.
+        until(activity::hasWindowFocus,5000);
+        ClipData c=clipboard.getPrimaryClip();return c!=null&&"public sentinel".contentEquals(c.getItemAt(0).getText());
+    }
     private String decode(Bitmap bitmap)throws Exception{int[] pixels=new int[bitmap.getWidth()*bitmap.getHeight()];bitmap.getPixels(pixels,0,bitmap.getWidth(),0,0,bitmap.getWidth(),bitmap.getHeight());try{return new QRCodeReader().decode(new BinaryBitmap(new HybridBinarizer(new RGBLuminanceSource(bitmap.getWidth(),bitmap.getHeight(),pixels)))).getText();}finally{Arrays.fill(pixels,0);}}
     private void capture(String name,View root){main(()->{Bitmap image=Bitmap.createBitmap(root.getWidth(),root.getHeight(),Bitmap.Config.ARGB_8888);try{root.draw(new Canvas(image));File dir=activity.getExternalFilesDir("sensitive-actions-qa");if(dir==null||(!dir.isDirectory()&&!dir.mkdirs()))throw new IOException();try(OutputStream out=new FileOutputStream(new File(dir,name+".png"))){image.compress(Bitmap.CompressFormat.PNG,100,out);}}catch(IOException ex){throw new RuntimeException(ex);}finally{image.eraseColor(Color.WHITE);image.recycle();}});}
     private Button button(View root,String label){for(View v:views(root))if(v instanceof Button&&(label.contentEquals(((Button)v).getText())||label.equals(v.getContentDescription())))return (Button)v;throw new AssertionError("button missing: "+label);}

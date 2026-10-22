@@ -38,7 +38,7 @@ public final class SmokeRunner extends Instrumentation {
     private boolean unlockVisualOnly;
     private boolean recoveryUiOnly;
     private boolean homeLayoutOnly,creationUiOnly;
-    private boolean cryptoOnly;
+    private boolean cryptoOnly,verificationOnly,recoveryViewportOnly;
     @Override public Activity startActivitySync(Intent intent){Activity result=super.startActivitySync(intent);if(result instanceof MainActivity)activity=(MainActivity)result;return result;}
     /** NFC scan art intentionally animates forever; never wait indefinitely for an idle queue. */
     @Override public void waitForIdleSync(){
@@ -55,10 +55,16 @@ public final class SmokeRunner extends Instrumentation {
             runOnMainSync(()->{});
         }
     }
-    @Override public void onCreate(Bundle args){super.onCreate(args);cryptoOnly=args!=null&&"true".equals(args.getString("cryptoOnly"));riskNoticeOnly=args!=null&&"true".equals(args.getString("riskNoticeOnly"));securityCopyOnly=args!=null&&"true".equals(args.getString("securityCopyOnly"));privateAccessOnly=args!=null&&"true".equals(args.getString("privateAccessOnly"));inlineLoadingOnly=args!=null&&"true".equals(args.getString("inlineLoadingOnly"));deadlineFileFilesOnly=args!=null&&"true".equals(args.getString("fileOnly"));deadlineFileOnly=args!=null&&"true".equals(args.getString("deadlineFileOnly"));creationUiOnly=args!=null&&"true".equals(args.getString("creationUiOnly"));homeLayoutOnly=args!=null&&"true".equals(args.getString("homeLayoutOnly"));recoveryUiOnly=args!=null&&"true".equals(args.getString("recoveryUiOnly"));unlockVisualOnly=args!=null&&"true".equals(args.getString("unlockVisualOnly"));cameraOnly=args!=null&&"true".equals(args.getString("cameraOnly"));homeOnly=args!=null&&"true".equals(args.getString("homeOnly"));imageOnly=args!=null&&"true".equals(args.getString("imageOnly"));copyVisualOnly=args!=null&&"true".equals(args.getString("copyVisualOnly"));copyOnly=copyVisualOnly||args!=null&&"true".equals(args.getString("copyOnly"));inputUiOnly=args!=null&&"true".equals(args.getString("inputUiOnly"));protectionOnly=args!=null&&"true".equals(args.getString("protectionOnly"));weakPasswordOnly=args!=null&&"true".equals(args.getString("weakPasswordOnly"));addressSaveOnly=args!=null&&"true".equals(args.getString("addressSaveOnly"));start();}
+    private boolean nfcSafetyOnly,readOnlyAnrOnly,lockDiagnosticOnly;
+    @Override public void onCreate(Bundle args){super.onCreate(args);lockDiagnosticOnly=args!=null&&"true".equals(args.getString("lockDiagnosticOnly"));readOnlyAnrOnly=args!=null&&"true".equals(args.getString("readOnlyAnrOnly"));nfcSafetyOnly=args!=null&&"true".equals(args.getString("nfcSafetyOnly"));recoveryViewportOnly=args!=null&&"true".equals(args.getString("recoveryViewportOnly"));verificationOnly=args!=null&&"true".equals(args.getString("verificationOnly"));cryptoOnly=args!=null&&"true".equals(args.getString("cryptoOnly"));riskNoticeOnly=args!=null&&"true".equals(args.getString("riskNoticeOnly"));securityCopyOnly=args!=null&&"true".equals(args.getString("securityCopyOnly"));privateAccessOnly=args!=null&&"true".equals(args.getString("privateAccessOnly"));inlineLoadingOnly=args!=null&&"true".equals(args.getString("inlineLoadingOnly"));deadlineFileFilesOnly=args!=null&&"true".equals(args.getString("fileOnly"));deadlineFileOnly=args!=null&&"true".equals(args.getString("deadlineFileOnly"));creationUiOnly=args!=null&&"true".equals(args.getString("creationUiOnly"));homeLayoutOnly=args!=null&&"true".equals(args.getString("homeLayoutOnly"));recoveryUiOnly=args!=null&&"true".equals(args.getString("recoveryUiOnly"));unlockVisualOnly=args!=null&&"true".equals(args.getString("unlockVisualOnly"));cameraOnly=args!=null&&"true".equals(args.getString("cameraOnly"));homeOnly=args!=null&&"true".equals(args.getString("homeOnly"));imageOnly=args!=null&&"true".equals(args.getString("imageOnly"));copyVisualOnly=args!=null&&"true".equals(args.getString("copyVisualOnly"));copyOnly=copyVisualOnly||args!=null&&"true".equals(args.getString("copyOnly"));inputUiOnly=args!=null&&"true".equals(args.getString("inputUiOnly"));protectionOnly=args!=null&&"true".equals(args.getString("protectionOnly"));weakPasswordOnly=args!=null&&"true".equals(args.getString("weakPasswordOnly"));addressSaveOnly=args!=null&&"true".equals(args.getString("addressSaveOnly"));start();}
     @Override public void onStart(){
         Bundle result=new Bundle();
         try{
+            if(lockDiagnosticOnly){int n=new LockDiagnosticProbe(this).run();result.putString("stream","PASS: "+n+" lock failure-stage, localization, privacy and unknown-outcome assertions.\n");finish(Activity.RESULT_OK,result);return;}
+            if(readOnlyAnrOnly){int n=new ReadOnlyAnrProbe(this).run();result.putString("stream","PASS: "+n+" read-only rejection, blocked NFC control and responsive cancellation assertions on API "+android.os.Build.VERSION.SDK_INT+".\n");finish(Activity.RESULT_OK,result);return;}
+            if(nfcSafetyOnly){int n=new NfcSafetyProbe(this).run();result.putString("stream","PASS: "+n+" NFC isolation, timeout and stale-result assertions.\n");finish(Activity.RESULT_OK,result);return;}
+            if(recoveryViewportOnly){int n=new RecoveryViewportProbe(this).run();result.putString("stream","PASS: "+n+" four-language recovery viewport assertions.\n");finish(Activity.RESULT_OK,result);return;}
+            if(verificationOnly){int n=new VerificationProbe(this).run();result.putString("stream","PASS: "+n+" local verification, storage integrity and four-language icon alignment assertions.\n");finish(Activity.RESULT_OK,result);return;}
             if(cryptoOnly){String metrics=new CryptoCostProbe(this).run();result.putString("stream",metrics);finish(Activity.RESULT_OK,result);return;}
             if(riskNoticeOnly){riskNoticeProbe();result.putString("stream","PASS: "+checks+" four-language risk notice and entry-consent assertions.\n");finish(Activity.RESULT_OK,result);return;}
             if(securityCopyOnly){int n=new SecurityCopyProbe(this).run();result.putString("stream","PASS: "+n+" four-language security explanation assertions.\n");finish(Activity.RESULT_OK,result);return;}
@@ -72,7 +78,7 @@ public final class SmokeRunner extends Instrumentation {
             if(weakPasswordOnly){int n=new WeakPasswordProbe(this).run();result.putString("stream","PASS: "+n+" weak-password consent assertions on API "+android.os.Build.VERSION.SDK_INT+".\n");finish(Activity.RESULT_OK,result);return;}
             if(protectionOnly){int n=new SensitiveActionsProbe(this).run();result.putString("stream","PASS: "+n+" sensitive action protection assertions on API "+android.os.Build.VERSION.SDK_INT+".\n");finish(Activity.RESULT_OK,result);return;}
             if(cameraOnly){cameraProbe();result.putString("stream","PASS: "+checks+" Camera2 emulator assertions; no physical-camera entropy claim.\n");finish(Activity.RESULT_OK,result);return;}
-            if(inputUiOnly){if(android.os.Build.VERSION.SDK_INT<30)throw new IllegalStateException("IME probe requires API 30+");inputUiProbe();result.putString("stream","PASS: "+checks+" input visibility and recovery UI assertions.\n");finish(Activity.RESULT_OK,result);return;}
+            if(inputUiOnly){inputUiProbe();result.putString("stream","PASS: "+checks+" input visibility and recovery UI assertions.\n");finish(Activity.RESULT_OK,result);return;}
             if(copyOnly){copyConfirmationProbe();result.putString("stream","PASS: "+checks+" private-copy confirmation assertions.\n");finish(Activity.RESULT_OK,result);return;}
             if(imageOnly){privateImageArtworkProbe();addressImageProbe();result.putString("stream","PASS: "+checks+" receiving/private image export assertions.\n");finish(Activity.RESULT_OK,result);return;}
             Texts.select(getTargetContext(),"zh");
@@ -95,6 +101,7 @@ public final class SmokeRunner extends Instrumentation {
                 yes("home".equals(get("screen")),"home opens");capture("01-home");
                 result.putString("stream","PASS: home visual capture.\n");finish(Activity.RESULT_OK,result);return;
             }
+            if(!homeOnly&&!unlockVisualOnly){int n=new CurrentFlowProbe(this).run();result.putString("stream","PASS: "+n+" current creation, backup, local verification and restore integration assertions.\n");finish(Activity.RESULT_OK,result);return;}
             String cg2=asset("cg2-scalar-one.txt"),cg1=asset("cg1-scalar-one.txt");
             ndef(cg2,cg1);
             clipboardDenials();
@@ -210,6 +217,7 @@ public final class SmokeRunner extends Instrumentation {
             result.putString("stream","PASS: "+checks+" device assertions; public-fixture UI/NDEF/lifecycle/backup/multi-card flows.\n");finish(Activity.RESULT_OK,result);
         }catch(Throwable ex){result.putString("stream","FAIL after "+checks+" assertions: "+ex+"\n"+android.util.Log.getStackTraceString(ex));finish(Activity.RESULT_CANCELED,result);}
     }
+    private String riskSpacing(View root){StringBuilder out=new StringBuilder();for(View v:views(root))if(v.getTag()!=null||v instanceof Button)out.append(v.getTag()).append(":").append(v.getHeight()).append("/p").append(v.getPaddingTop()).append(";");return out.toString();}
     private void riskNoticeProbe()throws Exception{
         try{
             String[] languages={"zh","en","ja","ko"},titles={"风险提示","Risk notice","リスクのご案内","위험 안내"};
@@ -231,7 +239,7 @@ public final class SmokeRunner extends Instrumentation {
                     ScrollView scroll=null;for(View v:views(content))if(v instanceof ScrollView){scroll=(ScrollView)v;break;}
                     yes(scroll instanceof ProtectedScrollView,"consent container retains obscured-touch protection");
                     ScrollView noticeScroll=scroll;
-                    yes(!noticeScroll.canScrollVertically(1)&&!noticeScroll.canScrollVertically(-1),"risk notice fits without scrolling: "+language+" panel="+noticeScroll.getChildAt(0).getHeight()+" viewport="+noticeScroll.getHeight()+" padding="+noticeScroll.getPaddingBottom());
+                    yes(!noticeScroll.canScrollVertically(1)&&!noticeScroll.canScrollVertically(-1),"risk notice fits without scrolling: "+language+" panel="+noticeScroll.getChildAt(0).getHeight()+" viewport="+noticeScroll.getHeight()+" padding="+noticeScroll.getPaddingBottom()+" rows="+riskSpacing(noticeScroll.getChildAt(0)));
                     for(String label:new String[]{copy.ui("agree"),copy.ui("disagree")}){
                         Button action=dialogButton("sheet",label);android.graphics.Rect visible=new android.graphics.Rect();
                         yes(action.getGlobalVisibleRect(visible)&&visible.height()==action.getHeight(),"both decisions are fully visible without scrolling");
@@ -269,8 +277,10 @@ public final class SmokeRunner extends Instrumentation {
                     yes(action.getGlobalVisibleRect(visible)&&visible.height()==action.getHeight(),"home action fully visible: "+label);
                     yes(action.getHeight()>=appUi.dp(48),"home action keeps a usable touch target");
                 }
-                TextView footer=null;for(View v:views(root()))if(v instanceof TextView&&new ApprovedCopy(activity).ui("local").contentEquals(((TextView)v).getText()))footer=(TextView)v;
-                android.graphics.Rect visible=new android.graphics.Rect();yes(footer!=null&&footer.getGlobalVisibleRect(visible)&&visible.height()==footer.getHeight(),"home footer fully visible in "+language);
+                ApprovedCopy copy=new ApprovedCopy(activity);
+                yes(!has(root(),copy.ui("local"))&&!has(root(),copy.ui("sub")),"home omits both redundant descriptions in "+language);
+                TextView last=(TextView)appUi.page.getChildAt(appUi.page.getChildCount()-1);
+                android.graphics.Rect visible=new android.graphics.Rect();yes(last.getGlobalVisibleRect(visible)&&visible.height()==last.getHeight(),"last home caption fully visible in "+language);
                 int artHeight=0;for(View v:views(root()))if(v instanceof WalletArtView)artHeight=v.getHeight();
                 org.json.JSONObject row=new org.json.JSONObject();row.put("language",language);row.put("screenWidthPx",getTargetContext().getResources().getDisplayMetrics().widthPixels);row.put("screenHeightPx",getTargetContext().getResources().getDisplayMetrics().heightPixels);row.put("density",getTargetContext().getResources().getDisplayMetrics().density);row.put("viewportPx",appUi.scroll.getHeight()-appUi.scroll.getPaddingTop()-appUi.scroll.getPaddingBottom());row.put("pageHeightPx",appUi.page.getHeight());row.put("artHeightPx",artHeight);measurements.put(row);
                 capture("home-fit-"+language);
@@ -362,14 +372,6 @@ public final class SmokeRunner extends Instrumentation {
         try{NfcCards.parse(new NdefMessage(NdefRecord.createUri("https://example.com")));throw new AssertionError("URL accepted as key");}catch(IllegalArgumentException expected){checks++;}
     }
     private void importBackup(String data)throws Exception{
-        // API 28 has no MediaStore.Downloads collection. Exercise the same file-import
-        // callback through our test-only document provider, without storage permissions.
-        if(android.os.Build.VERSION.SDK_INT<29){
-            android.net.Uri file=android.net.Uri.parse("content://io.coingift.android.test.documents/import-fixture");
-            try(OutputStream out=getTargetContext().getContentResolver().openOutputStream(file,"wt")){if(out==null)throw new IOException("Fixture document unavailable");out.write(data.getBytes(StandardCharsets.US_ASCII));}
-            main(()->activity.onActivityResult(21,Activity.RESULT_OK,new Intent().setData(file)));
-            until(()->"unlock".equals(get("screen")),10000);return;
-        }
         android.content.ContentValues values=new android.content.ContentValues();
         values.put(android.provider.MediaStore.MediaColumns.DISPLAY_NAME,"bitnfc-import-public-fixture-"+System.nanoTime()+".txt");
         values.put(android.provider.MediaStore.MediaColumns.MIME_TYPE,"text/plain");
@@ -378,7 +380,7 @@ public final class SmokeRunner extends Instrumentation {
         try{
             try(OutputStream out=getTargetContext().getContentResolver().openOutputStream(file,"wt")){if(out==null)throw new IOException();out.write(data.getBytes(StandardCharsets.US_ASCII));}
             main(()->activity.onActivityResult(21,Activity.RESULT_OK,new Intent().setData(file)));
-            until(()->"unlock".equals(get("screen")),10000);
+            until(()->"unlock".equals(get("screen"))&&!(Boolean)get("recordLoading"),10000);
         }finally{getTargetContext().getContentResolver().delete(file,null,null);}
     }
     private void addressWrap(String address){
@@ -431,51 +433,35 @@ public final class SmokeRunner extends Instrumentation {
         String[] types={"SegWit","Legacy","P2SH","Taproot"},addresses={a.nativeSegwit,a.legacy,a.nestedSegwit,a.taproot};
         try{
             for(String language:new String[]{"zh","en","ja","ko"}){
-                if(activity!=null){main(activity::finish);waitForIdleSync();}Texts.select(getTargetContext(),language);
+                if(activity!=null){main(activity::finish);waitForIdleSync();}
+                new VerificationStore(getTargetContext()).clear();Texts.select(getTargetContext(),language);
                 activity=(MainActivity)startActivitySync(new Intent(getTargetContext(),MainActivity.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_CLEAR_TASK));waitForIdleSync();
-                main(()->invoke("acceptIncoming",new Class<?>[]{String.class},new Object[]{fixture}));
+                main(()->invoke("acceptIncoming",new Class<?>[]{String.class},new Object[]{fixture}));until(()->!(Boolean)get("recordLoading"),5000);
                 IntentFilter filter=new IntentFilter(Intent.ACTION_CREATE_DOCUMENT);filter.addCategory(Intent.CATEGORY_OPENABLE);filter.addDataType("image/png");
                 ActivityMonitor picker=addMonitor(filter,null,true);
                 try{
                     for(int i=0;i<types.length;i++){
-                        showAddressForConsent(types[i],addresses[i],false);int before=picker.getHits();
-                        clickDialog("qrDialog",Texts.tr(activity,"保存图片"));Dialog warning=(Dialog)get("qrSaveConfirm");
-                        yes(warning!=null&&warning.isShowing()&&pendingImageAbsent()&&picker.getHits()==before,"unverified address requires consent before encoding or export: "+language+" "+types[i]);
-                        yes(has(dialogRoot("qrSaveConfirm"),activity.getString(R.string.address_save_unverified_body))&&has(dialogRoot("qrSaveConfirm"),activity.getString(R.string.address_save_unverified_note)),"localized risk and no-verification disclaimer");
-                        yes((warning.getWindow().getAttributes().flags&WindowManager.LayoutParams.FLAG_SECURE)!=0,"address-save consent remains secure");
-                        Button old=dialogButton("qrSaveConfirm",activity.getString(R.string.address_save_unverified_continue));
-                        if(i==0)captureAddressSaveConsent(language,warning);
-                        clickDialog("qrSaveConfirm",Texts.tr(activity,"取消"));main(old::performClick);
-                        yes(get("qrSaveConfirm")==null&&pendingImageAbsent()&&picker.getHits()==before&&((Dialog)get("qrDialog")).isShowing(),"cancel preserves QR, old consent cannot export");
-                        clickDialog("qrDialog",Texts.tr(activity,"保存图片"));clickDialog("qrSaveConfirm",activity.getString(R.string.address_save_unverified_continue));
-                        yes(picker.getHits()==before+1&&get("pendingQrImage")!=null&&!(Boolean)get("pendingQrPrivate")&&get("unlocked")==null,"explicit agreement permits exactly one public export without unlocking private key");
-                        byte[] png=(byte[])get("pendingQrImage");assertAddressArtwork(png,addresses[i],false);
-                        if(i==0)saveImageAndDecode(png,addresses[i]);
-                        else main(()->activity.onActivityResult(23,Activity.RESULT_CANCELED,null));
-                        yes(allZero(png)&&pendingImageAbsent(),"saved or cancelled bytes cleared");
+                        int before=picker.getHits();showAddressForConsent(types[i],addresses[i],false);
+                        yes(get("qrDialog")==null&&get("unlockDialog")!=null&&pendingImageAbsent()&&picker.getHits()==before,"unverified address cannot reach a QR or save, even with risk consent: "+language+" "+types[i]);
+                        dismiss("unlockDialog");showAddressForConsent(types[i],addresses[i],true);
+                        yes(get("qrDialog")==null&&pendingImageAbsent()&&picker.getHits()==before,"caller verification flag alone cannot grant receiving trust");dismiss("unlockDialog");
                     }
-                    // A public address generated by this app or matched after decryption keeps direct save.
-                    int before=picker.getHits();showAddressForConsent(types[0],addresses[0],true);clickDialog("qrDialog",Texts.tr(activity,"保存图片"));
-                    yes(get("qrSaveConfirm")==null&&picker.getHits()==before+1&&get("pendingQrImage")!=null,"verified address keeps direct export");
-                    byte[] verified=(byte[])get("pendingQrImage");assertAddressArtwork(verified,addresses[0],true);main(()->activity.onActivityResult(23,Activity.RESULT_CANCELED,null));
-
-                    before=picker.getHits();showAddressForConsent(types[0],addresses[0],false);clickDialog("qrDialog",Texts.tr(activity,"保存图片"));
-                    Button oldAddress=dialogButton("qrSaveConfirm",activity.getString(R.string.address_save_unverified_continue));
-                    showAddressForConsent(types[1],addresses[1],false);main(oldAddress::performClick);
-                    yes(pendingImageAbsent()&&picker.getHits()==before&&get("qrSaveConfirm")==null,"old consent cannot export a replacement QR");
-                    clickDialog("qrDialog",Texts.tr(activity,"保存图片"));Button beforePause=dialogButton("qrSaveConfirm",activity.getString(R.string.address_save_unverified_continue));
-                    main(()->{callActivityOnPause(activity);callActivityOnStop(activity);callActivityOnResume(activity);});showAddressForConsent(types[0],addresses[0],false);main(beforePause::performClick);
-                    yes(pendingImageAbsent()&&picker.getHits()==before&&get("qrSaveConfirm")==null,"background invalidates consent even after a new QR opens");
-                    clickDialog("qrDialog",Texts.tr(activity,"保存图片"));Button beforeTouch=dialogButton("qrSaveConfirm",activity.getString(R.string.address_save_unverified_continue));
-                    ProtectedScrollView guard=null;for(View v:views(dialogRoot("qrSaveConfirm")))if(v instanceof ProtectedScrollView){guard=(ProtectedScrollView)v;break;}
-                    yes(guard!=null,"address-save consent uses obscured-touch guard");ProtectedScrollView protectedRoot=guard;
-                    main(()->{
-                        long now=android.os.SystemClock.uptimeMillis();MotionEvent.PointerProperties pointer=new MotionEvent.PointerProperties();pointer.id=0;pointer.toolType=MotionEvent.TOOL_TYPE_FINGER;
-                        MotionEvent.PointerCoords coords=new MotionEvent.PointerCoords();coords.x=30;coords.y=30;coords.pressure=1;coords.size=1;
-                        MotionEvent event=MotionEvent.obtain(now,now,MotionEvent.ACTION_DOWN,1,new MotionEvent.PointerProperties[]{pointer},new MotionEvent.PointerCoords[]{coords},0,0,1,1,0,0,InputDevice.SOURCE_TOUCHSCREEN,MotionEvent.FLAG_WINDOW_IS_OBSCURED);
-                        try{protectedRoot.dispatchTouchEvent(event);}finally{event.recycle();}
-                    });waitForIdleSync();main(beforeTouch::performClick);
-                    yes("protection".equals(get("screen"))&&pendingImageAbsent()&&picker.getHits()==before&&get("qrSaveConfirm")==null,"obscured consent is rejected and stale approval cannot export");
+                    input("test fixture password only");clickDialog("unlockDialog",activity.getString(R.string.wallet_unlock_action));until(()->"revealed".equals(get("screen")),20000);
+                    main(()->{invoke("closeUnlocked");set("screen","unlock");invoke("render");});
+                    for(int i=0;i<types.length;i++){
+                        showAddressForConsent(types[i],addresses[i],true);int before=picker.getHits();
+                        clickDialog("qrDialog",Texts.tr(activity,"保存图片"));
+                        yes(get("qrSaveConfirm")==null&&picker.getHits()==before+1&&get("pendingQrImage")!=null&&get("unlocked")==null,"verified public record permits one export without materializing a private key");
+                        byte[] png=(byte[])get("pendingQrImage");assertAddressArtwork(png,addresses[i],true);
+                        if(i==0)saveImageAndDecode(png,addresses[i]);else main(()->activity.onActivityResult(23,Activity.RESULT_CANCELED,null));
+                        yes(allZero(png)&&pendingImageAbsent(),"saved or cancelled public PNG bytes are cleared");
+                    }
+                    showAddressForConsent(types[0],addresses[0],true);Button old=dialogButton("qrDialog",Texts.tr(activity,"保存图片"));int before=picker.getHits();
+                    showAddressForConsent(types[1],addresses[1],true);main(old::performClick);
+                    yes(pendingImageAbsent()&&picker.getHits()==before,"old receiving-QR button cannot export a replacement address");
+                    Button paused=dialogButton("qrDialog",Texts.tr(activity,"保存图片"));
+                    main(()->{callActivityOnPause(activity);callActivityOnStop(activity);callActivityOnResume(activity);});main(paused::performClick);
+                    yes(pendingImageAbsent()&&picker.getHits()==before&&get("qrDialog")==null,"background invalidates the old export button");
                 }finally{removeMonitor(picker);main(()->invoke("clearWalletSession",new Class<?>[]{boolean.class},new Object[]{true}));}
             }
         }finally{Texts.select(getTargetContext(),"zh");if(activity!=null)main(activity::finish);}
@@ -534,9 +520,9 @@ public final class SmokeRunner extends Instrumentation {
             yes(Texts.wrap(getTargetContext()).getResources().getConfiguration().getLocales().get(0).getLanguage().equals(Texts.language(getTargetContext())),"system selection uses the resolved app language");
             Texts.select(getTargetContext(),"zh");
             activity=(MainActivity)startActivitySync(new Intent(getTargetContext(),MainActivity.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_CLEAR_TASK));waitForIdleSync();
-            click("读取冷钱包");clickDialog("同意并继续");importBackup(asset("cg3-scalar-one.txt"));click("展示地址");
+            click("读取冷钱包");clickDialog("同意并继续");importBackup(asset("cg3-scalar-one.txt"));input("test fixture password only");clickDialog("unlockDialog",activity.getString(R.string.wallet_unlock_action));until(()->"revealed".equals(get("screen")),20000);main(()->{invoke("closeUnlocked");set("screen","unlock");invoke("render");});click("展示地址");
             publicImageExports(addresses.nativeSegwit);
-            click(activity.getString(R.string.wallet_unlock_action));input("test fixture password only");clickDialog("unlockDialog",activity.getString(R.string.wallet_unlock_action));until(()->"revealed".equals(get("screen")),20000);
+            main(()->invoke("showUnlockDialog"));input("test fixture password only");clickDialog("unlockDialog",activity.getString(R.string.wallet_unlock_action));until(()->"revealed".equals(get("screen")),20000);
             click("查看私钥");privateImageExport();
             main(()->invoke("navigate",new Class<?>[]{String.class},new Object[]{"home"}));
         }finally{Texts.select(getTargetContext(),"zh");}
@@ -628,7 +614,7 @@ public final class SmokeRunner extends Instrumentation {
         String[] languages={"zh","en","ja","ko"};
         try{
             for(String language:languages){
-                Texts.select(getTargetContext(),language);
+                new VerificationStore(getTargetContext()).clear();Texts.select(getTargetContext(),language);
                 activity=(MainActivity)startActivitySync(new Intent(getTargetContext(),MainActivity.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_CLEAR_TASK));waitForIdleSync();
                 click(new ApprovedCopy(activity).ui("make"));clickDialog(new ApprovedCopy(activity).ui("agree"));
                 List<EditText> fields=new ArrayList<>();for(View v:views(root()))if(v instanceof EditText)fields.add((EditText)v);
@@ -656,9 +642,9 @@ public final class SmokeRunner extends Instrumentation {
     private void recoveryUiProbe()throws Exception{
         try{
             for(String language:new String[]{"zh","en","ja","ko"}){
-                Texts.select(getTargetContext(),language);
+                new VerificationStore(getTargetContext()).clear();Texts.select(getTargetContext(),language);
                 activity=(MainActivity)startActivitySync(new Intent(getTargetContext(),MainActivity.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_CLEAR_TASK));waitForIdleSync();
-                if(android.os.Build.VERSION.SDK_INT<29){String fixture=asset("cg3-scalar-one.txt");main(()->invoke("acceptIncoming",new Class<?>[]{String.class},new Object[]{fixture}));}else importBackup(asset("cg3-scalar-one.txt"));
+                importBackup(asset("cg3-scalar-one.txt"));
                 yes(get("unlocked")==null&&get("unlockDialog")==null,"read page stays locked without a password dialog");
                 for(View v:views(root()))yes(!(v instanceof EditText),"read page has no inline password field");
                 yes(hasAction(root(),activity.getString(R.string.wallet_unlock_action)),"localized unlock button");
@@ -683,17 +669,16 @@ public final class SmokeRunner extends Instrumentation {
                 yes(cancelled.length()==0&&get("unlockDialog")==null&&!appUi.passwords.contains(cancelled)&&!appUi.inputs.contains(cancelled),"cancel wipes and releases detached password input");
                 main(staleUnlock::performClick);yes(get("unlocked")==null&&!(Boolean)get("busy"),"dismissed password button cannot start decryption");
                 click(activity.getString(R.string.wallet_unlock_action));EditText retry=firstInput();yes(retry.length()==0,"reopening starts empty");
-                if(android.os.Build.VERSION.SDK_INT>=30)keyboardInput(retry,"test fixture password only","recovery-password-keyboard-"+language);
-                else input("test fixture password only");
+                keyboardInput(retry,"test fixture password only","recovery-password-keyboard-"+language);
                 capture("recovery-password-dialog-"+language);
                 clickDialog("unlockDialog",activity.getString(R.string.wallet_unlock_action));until(()->"revealed".equals(get("screen")),20000);
                 yes(retry.length()==0&&get("unlockDialog")==null,"successful unlock wipes detached password");
                 yes(get("secretView")==null&&!has(root(),WIF),"no WIF text or masked private card on recovered page");
                 yes(hasAction(root(),activity.getString(R.string.wallet_view_private))&&!hasAction(root(),activity.getString(R.string.wallet_transfer_help)),"single private entry and help removed from main page");
-                yes(has(root(),activity.getString(R.string.wallet_address_verified))&&has(root(),activity.getString(R.string.wallet_note_public)),"verification badge on address; note stays public");
+                yes(has(root(),activity.getString(R.string.verification_fresh))&&has(root(),activity.getString(R.string.wallet_note_public)),"verification badge on address; note stays public");
                 until(()->((AppUi)get("ui")).page.getHeight()>0,5000);
                 yes(Math.abs(beforeHeight-((AppUi)get("ui")).page.getHeight())<=appUi.dp(50),"paired pages have comparable content height: "+beforeHeight+" / "+((AppUi)get("ui")).page.getHeight());
-                click(new ApprovedCopy(activity).ui("other"));int verified=0;for(View item:views(dialogRoot("sheet")))if(item instanceof TextView&&activity.getString(R.string.wallet_address_verified).contentEquals(((TextView)item).getText()))verified++;yes(verified==4,"all four derived addresses are individually verified");dismiss("sheet");
+                click(new ApprovedCopy(activity).ui("other"));int verified=0;for(View item:views(dialogRoot("sheet")))if(item instanceof TextView&&activity.getString(R.string.verification_fresh).contentEquals(((TextView)item).getText()))verified++;yes(verified==4,"all four derived addresses are individually verified");dismiss("sheet");
                 capture("recovery-after-"+language);
                 click(activity.getString(R.string.wallet_view_private));
                 PrivateKeyView privateText=(PrivateKeyView)get("secretView");Bitmap pixels=(Bitmap)get("qrBitmap");
@@ -714,7 +699,7 @@ public final class SmokeRunner extends Instrumentation {
                 yes(get("unlocked")==null&&get("qrDialog")==null&&background.isCleared(),"background clears private sheet and decrypted session");
                 try{holder.wif();throw new AssertionError("closed key still available");}catch(IllegalStateException expected){checks++;}
                 main(()->callActivityOnResume(activity));
-                click(activity.getString(R.string.wallet_unlock_action));EditText paused=firstInput();main(()->paused.setText("pause public fixture password"));
+                click(activity.getString(R.string.wallet_view_private));EditText paused=firstInput();main(()->paused.setText("pause public fixture password"));
                 main(()->{callActivityOnPause(activity);callActivityOnStop(activity);});
                 yes(paused.length()==0&&get("unlockDialog")==null,"background dismisses and wipes password dialog");
                 main(()->callActivityOnResume(activity));
@@ -765,13 +750,6 @@ public final class SmokeRunner extends Instrumentation {
                 if(l==0)capture("recovery-without-copy");
                 main(()->clipboard.setPrimaryClip(ClipData.newPlainText("public sentinel","public sentinel")));
                 click(Texts.tr(activity,"查看私钥"));
-                if(android.os.Build.VERSION.SDK_INT<29){
-                    yes(!dialogButton("qrDialog",activity.getString(R.string.private_copy_unavailable)).isEnabled(),"Android 9 private-copy action stays disabled in "+languages[l]);
-                    main(()->invoke("requestPrivateCopy"));
-                    yes(get("copyConfirm")==null&&get("clipboardMarker")==null,"Android 9 direct request cannot open or authorize copying");
-                    yes("public sentinel".contentEquals(clipboard.getPrimaryClip().getItemAt(0).getText()),"Android 9 protection preserves the unrelated clipboard");
-                    dismiss("qrDialog");click(Texts.tr(activity,"隐藏私钥，返回首页"));main(activity::finish);waitForIdleSync();continue;
-                }
                 clickDialog("qrDialog",copyLabel);
                 yes(has(dialogRoot("copyConfirm"),titles[l]),"localized confirmation title "+languages[l]);
                 yes("public sentinel".contentEquals(clipboard.getPrimaryClip().getItemAt(0).getText())&&get("clipboardMarker")==null,"opening confirmation exports nothing");
@@ -847,6 +825,7 @@ public final class SmokeRunner extends Instrumentation {
     }
     private void nfcSheets(String backup)throws Exception{
         // Exercise production presentation/lifecycle without claiming emulator NFC hardware I/O.
+        main(()->{((NfcReaderControl)get("nfcReader")).close();set("nfcReader",new NfcReaderControl(new NfcReaderControl.Service(){public NfcReaderControl.State enable(){return NfcReaderControl.State.READY;}public void disable(){}},activity,command->new android.os.Handler(android.os.Looper.getMainLooper()).post(command)));});
         Thread.sleep(3500); // Let the prior sensitive clipboard preview disappear before public UI captures.
         CreationSession owner=new CreationSession(backup);
         main(()->{set("session",owner);set("screen","write");invoke("render");});
@@ -866,9 +845,9 @@ public final class SmokeRunner extends Instrumentation {
         main(()->{set("screen","write");invoke("render");});openNfcPrompt("WRITE");
         yes(has(dialogRoot("nfcDialog"),new ApprovedCopy(activity).ui("writeArmed"))&&has(dialogRoot("nfcDialog"),"●  等待贴回同一张卡片…"),"write prompt keeps same-card guidance");
         main(()->((NfcScanDialog)get("nfcDialog")).processing("正在写入并核对","写入 → 读回 → 核对内容，请保持贴合…"));
-        yes(has(dialogRoot("nfcDialog"),"正在写入并核对")&&!dialogButton("nfcDialog","取消").isEnabled(),"writing state disables cancellation");capture("11-writing-card-sheet");
+        yes(has(dialogRoot("nfcDialog"),"正在写入并核对")&&dialogButton("nfcDialog","取消").isEnabled(),"writing state permits abandonment");capture("11-writing-card-sheet");
         until(()->((Dialog)get("nfcDialog")).getWindow().getDecorView().hasWindowFocus(),5000);sendKeyDownUpSync(KeyEvent.KEYCODE_BACK);waitForIdleSync();
-        yes(get("nfcDialog")!=null&&((Dialog)get("nfcDialog")).isShowing(),"system back cannot dismiss active processing");
+        yes(get("nfcDialog")==null&&"NONE".equals(get("mode").toString()),"system back abandons active processing");
         main(()->{callActivityOnPause(activity);callActivityOnStop(activity);});
         yes(get("nfcDialog")==null&&"NONE".equals(get("mode").toString()),"background dismisses the NFC sheet and stops reader mode");
         yes(get("session")==owner&&owner.encrypted.equals(backup),"NFC prompt lifecycle does not alter encrypted wallet data");
@@ -908,7 +887,7 @@ public final class SmokeRunner extends Instrumentation {
         yes(save.getTop()>=0&&copy.getTop()>=0&&save.getBottom()<=actions.getHeight()&&copy.getBottom()<=actions.getHeight(),"QR action buttons fit fully inside their row without clipped corners");
         yes((((Dialog)get("qrDialog")).getWindow().getAttributes().flags&WindowManager.LayoutParams.FLAG_SECURE)!=0,"QR dialog retains secure-window protection");
     }
-    private void input(String value){main(()->{if("setup".equals(get("screen"))&&get("creationDialog")==null){EditText note=null;for(View view:views(root()))if(view instanceof EditText){note=(EditText)view;break;}invoke("showCreationDialog",new Class<?>[]{EditText.class},new Object[]{note});}if("unlock".equals(get("screen"))&&get("unlockDialog")==null)invoke("showUnlockDialog");firstInput().setText(value);});}
+    private void input(String value)throws Exception{until(()->!(Boolean)get("recordLoading"),5000);main(()->{if("setup".equals(get("screen"))&&get("creationDialog")==null){EditText note=null;for(View view:views(root()))if(view instanceof EditText){note=(EditText)view;break;}invoke("showCreationDialog",new Class<?>[]{EditText.class},new Object[]{note});}if("unlock".equals(get("screen"))&&get("unlockDialog")==null)invoke("showUnlockDialog");firstInput().setText(value);});}
     private void dismiss(String name){main(()->((Dialog)get(name)).dismiss());waitForIdleSync();}
     private interface Condition{boolean ok();}
     private void until(Condition c,long timeout)throws Exception{long end=android.os.SystemClock.elapsedRealtime()+timeout;while(android.os.SystemClock.elapsedRealtime()<end){final boolean[] ok={false};main(()->ok[0]=c.ok());if(ok[0]){waitForIdleSync();return;}Thread.sleep(50);}throw new AssertionError("UI timeout");}
@@ -918,18 +897,35 @@ public final class SmokeRunner extends Instrumentation {
     }
     private void yes(boolean result,String why){if(!result)throw new AssertionError(why);checks++;}
     private void capture(String name)throws Exception{
-        // API 28 headless UiAutomation screenshots can return null; functional assertions
-        // still run, and SensitiveActionsProbe separately captures native public-fixture views.
-        if(android.os.Build.VERSION.SDK_INT<29)return;
         // Test-only: capture public fixture pages. Production always retains FLAG_SECURE.
         main(()->{
             activity.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_SECURE);
             for(String field:new String[]{"sheet","qrDialog","nfcDialog","copyConfirm","unlockDialog","creationDialog"}){Dialog visible=(Dialog)get(field);if(visible!=null&&visible.isShowing())visible.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_SECURE);}
         });waitForIdleSync();Thread.sleep(600);
         try{
-            Bitmap image=getUiAutomation().takeScreenshot();if(image==null)throw new AssertionError("Screenshot unavailable");
+            Bitmap image=getUiAutomation().takeScreenshot();boolean viewFallback=false;
+            if(image==null){
+                // API31 can refuse full-display capture while the password IME is visible.
+                // Preserve an explicit app-view artifact; keyboard visibility assertions
+                // above still use actual WindowInsets and on-screen coordinates.
+                final Bitmap[] rendered={null};
+                main(()->{
+                    android.util.DisplayMetrics size=new android.util.DisplayMetrics();activity.getDisplay().getRealMetrics(size);
+                    rendered[0]=Bitmap.createBitmap(size.widthPixels,size.heightPixels,Bitmap.Config.ARGB_8888);
+                    android.graphics.Canvas canvas=new android.graphics.Canvas(rendered[0]);canvas.drawColor(android.graphics.Color.LTGRAY);
+                    View decor=activity.getWindow().getDecorView();int[] position=new int[2];decor.getLocationOnScreen(position);
+                    canvas.save();canvas.translate(position[0],position[1]);decor.draw(canvas);canvas.restore();
+                    for(String field:new String[]{"sheet","qrDialog","nfcDialog","copyConfirm","unlockDialog","creationDialog"}){
+                        Dialog dialog=(Dialog)get(field);if(dialog==null||!dialog.isShowing())continue;
+                        View window=dialog.getWindow().getDecorView();window.getLocationOnScreen(position);
+                        canvas.save();canvas.translate(position[0],position[1]);window.draw(canvas);canvas.restore();
+                    }
+                });image=rendered[0];viewFallback=true;
+            }
+            if(image==null||image.getWidth()==0||image.getHeight()==0)throw new AssertionError("Screenshot unavailable");
             File dir=getTargetContext().getExternalFilesDir("qa");if(dir==null)throw new IOException();dir.mkdirs();
             try(OutputStream out=new FileOutputStream(new File(dir,name+".png"))){image.compress(Bitmap.CompressFormat.PNG,100,out);}finally{image.recycle();}
+            try(OutputStream mode=new FileOutputStream(new File(dir,name+".capture.txt"))){mode.write((viewFallback?"app-view rendering; excludes system IME; visibility checked using live geometry\n":"full-display UiAutomation screenshot\n").getBytes(StandardCharsets.UTF_8));}
         }finally{main(()->{
             activity.getWindow().addFlags(WindowManager.LayoutParams.FLAG_SECURE);
             for(String field:new String[]{"sheet","qrDialog","nfcDialog","copyConfirm","unlockDialog","creationDialog"}){Dialog visible=(Dialog)get(field);if(visible!=null&&visible.isShowing())visible.getWindow().addFlags(WindowManager.LayoutParams.FLAG_SECURE);}

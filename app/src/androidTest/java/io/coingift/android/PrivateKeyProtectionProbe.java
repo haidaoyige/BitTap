@@ -28,7 +28,7 @@ final class PrivateKeyProtectionProbe {
     int run()throws Exception{
         try(InputStream in=host.getContext().getAssets().open("cg3-scalar-one.txt")){backup=new String(BackupFiles.readBounded(in),StandardCharsets.US_ASCII).trim();}
         host.getUiAutomation(UiAutomation.FLAG_DONT_SUPPRESS_ACCESSIBILITY_SERVICES);
-        until(()->snapshot().getBoolean("connected"),10000);
+        services(true);
         try{
             for(String language:new String[]{"zh","en","ja","ko"}){
                 services(true);Texts.select(host.getTargetContext(),language);
@@ -40,7 +40,7 @@ final class PrivateKeyProtectionProbe {
                 Dialog notice=(Dialog)get("accessNotice");yes(!(notice instanceof AlertDialog)&&notice.getWindow().getAttributes().gravity==Gravity.BOTTOM,"notice follows app bottom sheet style");
                 yes((notice.getWindow().getAttributes().flags&WindowManager.LayoutParams.FLAG_SECURE)!=0,"access notice retains secure flag");
                 main(()->{invoke("closeAccessNotice");invoke("showAddressQr",new Class<?>[]{String.class,String.class,boolean.class},"SegWit","bc1qw508d6qejxtdg4y5r3zarvary0c5xw7kv8f3t4",false);});
-                yes(get("qrBitmap")!=null,"public address viewing remains available");main(()->invoke("dismissQr"));
+                yes(get("qrBitmap")==null&&get("unlocked")==null,"unverified public QR stays gated while password entry is blocked");main(()->invoke("dismissQr"));
                 main(()->{set("screen","setup");invoke("render");EditText note=null;for(View v:views(activity.getWindow().getDecorView()))if(v instanceof EditText){note=(EditText)v;break;}invoke("showCreationDialog",new Class<?>[]{EditText.class},note);});
                 yes(get("creationDialog")==null&&get("accessNotice")!=null,"new password entry blocked as well");
                 main(()->{invoke("closeAccessNotice");invoke("acceptIncoming",new Class<?>[]{String.class},backup);});
@@ -54,7 +54,7 @@ final class PrivateKeyProtectionProbe {
                 main(()->invoke("showPrivateQr"));until(()->get("qrBitmap")!=null,10000);
                 PrivateKeyView secret=(PrivateKeyView)get("secretView");char[] raw=owned(secret);Bitmap qr=(Bitmap)get("qrBitmap");
                 yes(secret!=null&&!secret.isCleared(),"explicit view still works without service");
-                Button stale=button((Dialog)get("qrDialog"),Build.VERSION.SDK_INT<=28?activity.getString(R.string.private_copy_unavailable):new ApprovedCopy(activity).ui("copyWif"));
+                Button stale=button((Dialog)get("qrDialog"),new ApprovedCopy(activity).ui("copyWif"));
                 services(true);until(()->get("unlocked")==null&&get("accessNotice")!=null,10000);
                 yes(secret.isCleared()&&Arrays.equals(raw,new char[raw.length])&&qr.isRecycled(),"enabling service clears WIF and QR immediately");
                 yes(Arrays.equals(sealed,new byte[sealed.length])&&sealed(holder)==null,"enabling service closes sealed session");
@@ -91,8 +91,9 @@ final class PrivateKeyProtectionProbe {
     private void shell(String command)throws Exception{try(ParcelFileDescriptor fd=host.getUiAutomation(UiAutomation.FLAG_DONT_SUPPRESS_ACCESSIBILITY_SERVICES).executeShellCommand(command);InputStream in=new ParcelFileDescriptor.AutoCloseInputStream(fd)){while(in.read()!=-1){}}}
     private void set(String name,Object value){try{Field f=MainActivity.class.getDeclaredField(name);f.setAccessible(true);f.set(activity,value);}catch(Exception ex){throw new RuntimeException(ex);}}
     private void unlock()throws Exception{
+        main(()->invoke("acceptIncoming",new Class<?>[]{String.class},backup));until(()->!(Boolean)get("recordLoading"),5000);
         main(()->{
-            invoke("acceptIncoming",new Class<?>[]{String.class},backup);invoke("showUnlockDialog");
+            invoke("showUnlockDialog");
             Dialog dialog=(Dialog)get("unlockDialog");
             for(View view:views(dialog.getWindow().getDecorView()))if(view instanceof EditText){((EditText)view).setText("test fixture password only");break;}
             button(dialog,activity.getString(R.string.wallet_unlock_action)).performClick();

@@ -103,8 +103,6 @@ final class PrivateImageRenderer {
     private static Block block(String text,int size,int color,boolean bold,int width,boolean center){return new Block(text,font(size,color,bold),width,center,size>=20?4:5);}
     private static final class Block {
         private final StaticLayout layout;
-        // SIMPLE inlines the API 23-compatible value 0; no API 29 class is accessed at runtime.
-        @android.annotation.SuppressLint("InlinedApi")
         Block(String text,TextPaint paint,int width,boolean center,int gap){
             layout=StaticLayout.Builder.obtain(text,0,text.length(),paint,width).setIncludePad(false)
                     .setAlignment(center?Layout.Alignment.ALIGN_CENTER:Layout.Alignment.ALIGN_NORMAL)

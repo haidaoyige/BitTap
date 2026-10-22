@@ -36,8 +36,8 @@ import java.util.Arrays;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-/** Offline guided workflow. Wallet state is memory-only and is cleared when returning home. */
-public final class MainActivity extends Activity implements NfcAdapter.ReaderCallback,DocumentIo.Listener {
+/** Offline guided workflow. Only authenticated PUBLIC verification history is persisted. */
+public final class MainActivity extends Activity implements NfcAdapter.ReaderCallback,DocumentIo.Listener,NfcIo.Listener,NfcReaderControl.Listener {
     private final ExecutorService worker=Executors.newSingleThreadExecutor();
     private final Handler handler=new Handler(Looper.getMainLooper());
     private final WalletCrypto crypto=new WalletCrypto();
@@ -53,6 +53,14 @@ public final class MainActivity extends Activity implements NfcAdapter.ReaderCal
 
     private CreationSession session;
     private PrivateSession unlocked;
+    private VerificationStore verificationStore;
+    private VerificationStore.Record publicVerification,previousVerification,pendingVerification;
+    private String verificationSource="",incomingCardId;
+    private boolean recordLoading,recordReadFailed,recordSaveFailed,requestedPrivate;
+    private CreationSession recordedCreation;
+    private int recordedCreationCards;
+    private String pendingAddressType;
+    private java.util.List<VerificationStore.Record> recordRows=java.util.Collections.emptyList();
     private AccessibilityGate accessGate;
     private Dialog accessNotice;
     private volatile boolean privateOpening;
@@ -60,7 +68,9 @@ public final class MainActivity extends Activity implements NfcAdapter.ReaderCal
     private final UnlockDeadline unlockDeadline=new UnlockDeadline();
     private Dialog autoLockDialog;
     private final Runnable checkUnlockDeadline=this::tickUnlockedSession;
-    private NfcAdapter nfc;
+    private NfcReaderControl nfcReader;
+    private boolean readerPending;
+    private final Runnable expireReaderStart=this::expireReader;
     private NfcCards.Candidate candidate;
     private String screen="home",incoming,exportData,exportAction;
     private boolean copyWriting,busy,fileBusy;
@@ -73,6 +83,12 @@ public final class MainActivity extends Activity implements NfcAdapter.ReaderCal
     private final Runnable expireFileTask=()->{if(fileJob!=null)cancelDocumentOperation(false);};
     private volatile int epoch;
     private volatile boolean nfcBusy;
+    private NfcIo.Job nfcJob;
+    private Mode nfcOperation=Mode.NONE;
+    private int nfcToken;
+    private CreationSession nfcOwner;
+    private boolean nfcProtect;
+    private final Runnable expireNfcTask=this::expireNfc;
     private volatile Mode mode=Mode.NONE;
     private enum Mode { NONE,CHECK,WRITE,READ,LOCK,VERIFY_LOCK }
     private static final int IMPORT=21,EXPORT=22,EXPORT_QR=23;
@@ -109,26 +125,28 @@ public final class MainActivity extends Activity implements NfcAdapter.ReaderCal
     /** Deliberately not Parcelable/Serializable: survives configuration changes in memory only. */
     private static final class RetainedFlow {
         CreationSession session;String screen,incoming,exportData,exportAction,clipboardMarker,publicClipboardMarker;
-        boolean copyWriting,lockAfterWrite,enhanced,reopenLanguage;String lockStatus,setupNote,entryTarget,articleReturn,protectionReturn;long clipboardExpiry;
+        boolean copyWriting,lockAfterWrite,enhanced,reopenLanguage;String lockStatus,setupNote,entryTarget,articleReturn,protectionReturn,incomingCardId;long clipboardExpiry;
         final java.util.Set<String> ownedClipboardMarkers;
         RetainedFlow(MainActivity owner){
+            incomingCardId=owner.incomingCardId;
             protectionReturn=owner.protectionReturn;reopenLanguage=owner.reopenLanguage;enhanced=owner.enhanced;entryTarget=owner.entryTarget;articleReturn=owner.articleReturn;lockAfterWrite=owner.lockAfterWrite;lockStatus=owner.lockStatus;setupNote=owner.setupNote;session=owner.session;screen=owner.screen;incoming=owner.incoming;exportData=owner.exportData;exportAction=owner.exportAction;
             copyWriting=owner.copyWriting;clipboardMarker=owner.clipboardMarker;publicClipboardMarker=owner.publicClipboardMarker;clipboardExpiry=owner.clipboardExpiry;
             ownedClipboardMarkers=new java.util.HashSet<>(owner.ownedClipboardMarkers);
         }
         void restore(MainActivity owner){
+            owner.incomingCardId=incomingCardId;
             owner.protectionReturn=protectionReturn;owner.reopenLanguage=reopenLanguage;owner.enhanced=enhanced;owner.entryTarget=entryTarget;owner.articleReturn=articleReturn;owner.lockAfterWrite=lockAfterWrite;owner.lockStatus=lockStatus;owner.setupNote=setupNote;owner.session=session;owner.screen=screen;owner.incoming=incoming;owner.exportData=exportData;owner.exportAction=exportAction;owner.copyWriting=copyWriting;
             owner.clipboardMarker=clipboardMarker;owner.publicClipboardMarker=publicClipboardMarker;owner.clipboardExpiry=clipboardExpiry;
             owner.ownedClipboardMarkers.addAll(ownedClipboardMarkers);
             clear();
         }
-        void clear(){session=null;screen=null;incoming=null;exportData=null;exportAction=null;clipboardMarker=null;publicClipboardMarker=null;copyWriting=false;clipboardExpiry=0;enhanced=false;lockAfterWrite=false;lockStatus=null;setupNote=null;entryTarget=null;articleReturn=null;protectionReturn=null;ownedClipboardMarkers.clear();}
+        void clear(){session=null;screen=null;incoming=null;incomingCardId=null;exportData=null;exportAction=null;clipboardMarker=null;publicClipboardMarker=null;copyWriting=false;clipboardExpiry=0;enhanced=false;lockAfterWrite=false;lockStatus=null;setupNote=null;entryTarget=null;articleReturn=null;protectionReturn=null;ownedClipboardMarkers.clear();}
     }
     @Override public void onCreate(Bundle state){
         if(state!=null)state.clear(); // Ignore legacy wallet state saved by earlier versions.
         super.onCreate(state);WindowProtection.secure(getWindow());
-        if(Build.VERSION.SDK_INT>=30)getWindow().setDecorFitsSystemWindows(false);
-        ui=new AppUi(this,()->busy||fileBusy||privateOpening||expireUnlockedIfNeeded(),this::tap);ui.language=this::language;ui.obscuredTouch=this::onObscuredTouch;ui.interaction=this::privateInteraction;copy=new ApprovedCopy(this);helpPages=new HelpPages(ui,copy);nfc=NfcAdapter.getDefaultAdapter(this);
+        getWindow().setDecorFitsSystemWindows(false);
+        ui=new AppUi(this,()->busy||fileBusy||recordLoading||privateOpening||expireUnlockedIfNeeded(),this::tap);ui.language=this::language;ui.obscuredTouch=this::onObscuredTouch;ui.interaction=this::privateInteraction;copy=new ApprovedCopy(this);helpPages=new HelpPages(ui,copy);nfcReader=new NfcReaderControl(new NfcReaderService(this),this,handler::post);verificationStore=new VerificationStore(this);
         accessGate=new AccessibilityGate(this,handler,this::accessibilityChanged);
         worker.execute(()->{try{PrivateSession.cleanupStaleKeys();}catch(Exception ignored){/* Secret restoration fails closed if the keystore remains unavailable. */}});
         if(Build.VERSION.SDK_INT>=33)getOnBackInvokedDispatcher().registerOnBackInvokedCallback(android.window.OnBackInvokedDispatcher.PRIORITY_DEFAULT,this::back);
@@ -145,23 +163,27 @@ public final class MainActivity extends Activity implements NfcAdapter.ReaderCal
         super.onResume();resumed=true;accessibilityChanged();expirePrivateClipboard();updateReader();
         if(clipboardMarker!=null){handler.removeCallbacks(clearPrivateClipboard);handler.postDelayed(clearPrivateClipboard,Math.max(0,clipboardExpiry-android.os.SystemClock.elapsedRealtime()));}
         if(afterResume!=null){Runnable next=afterResume;afterResume=null;next.run();}
+        if(incoming!=null&&screen.equals("unlock")&&publicVerification==null&&!recordLoading)checkIncomingRecord();
+        if(screen.equals("records"))loadRecords();
     }
     @Override protected void onPause(){
         closeAccessNotice();dismissAutoLockDialog();dismissFileError();cancelDocumentOperation(true);
-        resumed=false;epoch++;busy=false;if(mode==Mode.LOCK||mode==Mode.VERIFY_LOCK)lockStatus="unknown";mode=Mode.NONE;clearCamera();if(screen.equals("camera")||screen.equals("review"))screen="setup";
-        if(nfc!=null)nfc.disableReaderMode(this);
+        resumed=false;epoch++;busy=false;recordLoading=false;if(mode==Mode.LOCK||mode==Mode.VERIFY_LOCK)lockStatus="unknown";if(mode==Mode.WRITE||mode==Mode.CHECK)clearCandidate();stopNfcJob();mode=Mode.NONE;clearCamera();if(screen.equals("camera")||screen.equals("review"))screen="setup";
+        if(nfcReader!=null)nfcReader.request(false,epoch);readerPending=false;handler.removeCallbacks(expireReaderStart);
         closeSheet();dismissNfc();dismissWork();dismissQr();ui.clearPasswords();wipePendingPasswords();closeUnlocked();hideSecret.run();
         if(screen.equals("revealed"))screen="unlock";
         super.onPause();
     }
     @Override protected void onStop(){super.onStop();if(!isFinishing())render();}
-    @Override protected void onDestroy(){if(accessGate!=null)accessGate.close();clearWalletSession(false);worker.shutdownNow();super.onDestroy();}
+    @Override protected void onDestroy(){if(accessGate!=null)accessGate.close();clearWalletSession(false);if(nfcReader!=null)nfcReader.close();worker.shutdownNow();super.onDestroy();}
     private void whenResumed(Runnable action){if(isDestroyed()||isFinishing())return;if(resumed)action.run();else afterResume=action;}
     private void navigate(String next){
         if(busy||fileBusy)return;
         if(next.equals("home")&&session!=null&&!session.backupSaved()){backupSheet("home");return;}
-        epoch++;mode=Mode.NONE;closeSheet();dismissNfc();dismissQr();updateReader();ui.clearPasswords();closeUnlocked();clearCandidate();
+        epoch++;stopNfcJob();mode=Mode.NONE;closeSheet();dismissNfc();dismissQr();updateReader();ui.clearPasswords();closeUnlocked();clearCandidate();
         hideKeyboard();screen=next;render();
+        if(next.equals("read")){clearIncomingVerification();incoming=null;incomingCardId=null;}
+        if(next.equals("unlock")&&incoming!=null&&publicVerification==null&&!recordLoading)checkIncomingRecord();
     }
     @Override public void onBackPressed(){back();}
     private void back(){
@@ -173,6 +195,8 @@ public final class MainActivity extends Activity implements NfcAdapter.ReaderCal
             case "camera":case "review":clearCamera();navigate("setup");break;
             case "legal":{String target=entryTarget;screen="home";render();entryDisclaimer(target);break;}
             case "security":returnFromSecurity();break;
+            case "verification":returnFromSecurity();break;
+            case "records":navigate("verification");break;
             case "protection":returnFromProtection();break;
             case "write":if(copyWriting&&session!=null&&session.cardCount()>0){copyWriting=false;navigate("done");}else leaveCreation();break;
             case "done":leaveCreation();break;
@@ -190,14 +214,17 @@ public final class MainActivity extends Activity implements NfcAdapter.ReaderCal
         if(screen.equals("home"))clearWalletSession(true);
         rendering=true;ui.install();secretView=null;secretToggle=null;
         boolean home=screen.equals("home");
-        boolean article=screen.equals("security"),legal=screen.equals("legal");
+        boolean article=screen.equals("security")||screen.equals("verification")||screen.equals("records"),legal=screen.equals("legal");
         String toolbarTitle=legal?copy.ui("legalFull"):article?copy.ui("securityNav"):screen.equals("setup")||screen.equals("camera")||screen.equals("review")||screen.equals("write")||screen.equals("done")?copy.ui("make"):screen.equals("revealed")?copy.ui("revealedTitle"):copy.ui("read");
+        if(screen.equals("verification"))toolbarTitle=getString(R.string.verification_entry);else if(screen.equals("records"))toolbarTitle=getString(R.string.verification_records_title);
         ui.toolbar(home,screen.equals("camera")?copy.ui("cameraNav"):toolbarTitle,this::back,article||legal||screen.equals("camera")?null:this::help);
         if(home||screen.equals("unlock")||screen.equals("revealed")||screen.equals("camera")){
             boolean compact=home&&ui.compactHome();
-            View toolbar=ui.page.getChildAt(0);toolbar.getLayoutParams().height=ui.dp(compact?44:52);
-            ui.page.getChildAt(1).getLayoutParams().height=ui.dp(compact?4:8);
-            ui.page.setPadding(ui.dp(24),ui.dp(home?(compact?4:8):12),ui.dp(24),ui.dp(home?(compact?8:12):18));
+            boolean recovery=screen.equals("unlock")||screen.equals("revealed");
+            View toolbar=ui.page.getChildAt(0);toolbar.getLayoutParams().height=ui.dp(compact||recovery&&compactRecovery()?44:52);
+            ui.page.getChildAt(1).getLayoutParams().height=ui.dp(compact||recovery?4:8);
+            ui.page.setPadding(ui.dp(24),ui.dp(home?(compact?4:8):recovery?8:12),ui.dp(24),ui.dp(home?(compact?12:20):recovery?12:18));
+            if(recovery&&compactRecovery())ui.page.setPadding(ui.dp(24),ui.dp(4),ui.dp(24),ui.dp(8));
         }
         feedback=ui.text(ui.page,"",12,AppUi.ERROR,false);feedback.setVisibility(View.GONE);
         switch(screen){
@@ -206,6 +233,8 @@ public final class MainActivity extends Activity implements NfcAdapter.ReaderCal
             case "review":if(cameraPhoto!=null&&cameraEntropy!=null)cameraReviewPage();else{screen="setup";setup();}break;
             case "legal":helpPages.terms();ui.action(ui.page,copy.ui("backDisclaimer"),true,R.drawable.ic_back,this::back);break;
             case "security":helpPages.security();ui.stretch();ui.action(ui.page,copy.ui("backSecurity"),true,R.drawable.ic_back,this::returnFromSecurity);break;
+            case "verification":helpPages.verification();ui.action(ui.page,getString(R.string.verification_manage),false,R.drawable.ic_record_check,this::showRecords);ui.action(ui.page,copy.ui("backSecurity"),true,R.drawable.ic_back,this::returnFromSecurity);break;
+            case "records":recordsPage();break;
             case "protection":protectionPage();break;
             case "write":if(session!=null)writing();else home();break;
             case "done":if(session!=null&&session.cardCount()>0)completed();else home();break;
@@ -218,13 +247,13 @@ public final class MainActivity extends Activity implements NfcAdapter.ReaderCal
     }
     private void home(){
         screen="home";boolean compact=ui.compactHome();ui.space(ui.page,compact?0:10);LinearLayout eyebrow=ui.horizontal();ui.page.addView(eyebrow);ImageView wifi=new ImageView(this);wifi.setImageDrawable(ui.drawable(R.drawable.ic_wifi_off,AppUi.SUB,17));eyebrow.addView(wifi,new LinearLayout.LayoutParams(ui.dp(17),ui.dp(17)));TextView label=ui.text(eyebrow,copy.ui("offline"),12,AppUi.SUB,false);label.setPadding(ui.dp(7),0,0,0);label.setLayoutParams(new LinearLayout.LayoutParams(0,-2,1));
-        ui.space(ui.page,compact?6:16);TextView title=ui.text(ui.page,copy.ui("hero"),compact?28:34,AppUi.FG,true);ui.line(title,compact?1.25f:1.35f);title.setLetterSpacing(-.032f);ui.space(ui.page,compact?4:8);TextView desc=ui.text(ui.page,copy.ui("sub"),13,AppUi.SUB,false);ui.line(desc,1.75f);ui.space(ui.page,compact?0:8);
-        WalletArtView artwork=new WalletArtView(this,false);ui.page.addView(artwork,new LinearLayout.LayoutParams(-1,ui.dp(220)));
-        Button make=ui.action(ui.page,copy.ui("make"),true,R.drawable.ic_plus,()->entryDisclaimer("setup"));if(compact)((LinearLayout.LayoutParams)make.getLayoutParams()).topMargin=ui.dp(4);homeFoot(copy.ui("makeSub"),compact?4:8);
-        Button read=ui.action(ui.page,copy.ui("read"),false,R.drawable.ic_nfc,()->entryDisclaimer("read"));((LinearLayout.LayoutParams)read.getLayoutParams()).topMargin=ui.dp(compact?6:16);homeFoot(copy.ui("readSub"),compact?4:8);homeFoot(copy.ui("local"),compact?8:20);
+        ui.space(ui.page,compact?10:17);TextView title=ui.text(ui.page,copy.ui("hero"),compact?28:32,AppUi.FG,true);ui.line(title,compact?1.35f:1.45f);title.setLetterSpacing(-.032f);ui.space(ui.page,8);
+        WalletArtView artwork=new WalletArtView(this,false);artwork.setTag("home-artwork");ui.page.addView(artwork,new LinearLayout.LayoutParams(-1,ui.dp(220)));
+        Button make=ui.action(ui.page,copy.ui("make"),true,R.drawable.ic_plus,()->entryDisclaimer("setup"));((LinearLayout.LayoutParams)make.getLayoutParams()).topMargin=ui.dp(compact?12:20);homeFoot(copy.ui("makeSub"),8);
+        Button read=ui.action(ui.page,copy.ui("read"),false,R.drawable.ic_nfc,()->entryDisclaimer("read"));((LinearLayout.LayoutParams)read.getLayoutParams()).topMargin=ui.dp(compact?14:20);homeFoot(copy.ui("readSub"),8);
         ui.fitHomeArtwork(artwork);
     }
-    private void homeFoot(String value,int top){TextView text=ui.text(ui.page,value,11,AppUi.SUB,false);text.setGravity(Gravity.CENTER);ui.line(text,1.6f);text.setPadding(0,ui.dp(top),0,0);}
+    private void homeFoot(String value,int top){TextView text=ui.text(ui.page,value,12,AppUi.SUB,false);text.setGravity(Gravity.CENTER);ui.line(text,1.6f);text.setPadding(0,ui.dp(top),0,0);}
     private void setup(){
         ui.progress(1);ui.heading(copy.ui("setupStep"),copy.ui("setupTitle"),copy.ui("setupDesc"));
         LinearLayout prep=ui.horizontal();prep.setTag("supported-card-prep");prep.setPadding(ui.dp(12),ui.dp(8),ui.dp(12),ui.dp(8));prep.setMinimumHeight(ui.dp(60));prep.setBackground(ui.shape(AppUi.SOFT,13,false));ui.page.addView(prep,new LinearLayout.LayoutParams(-1,-2));
@@ -371,12 +400,12 @@ public final class MainActivity extends Activity implements NfcAdapter.ReaderCal
         ui.heading(copy.ui("cameraMode"),copy.ui("cameraTitle"),copy.ui("cameraDesc"));
         FrameLayout frame=new FrameLayout(this);frame.setTag("camera-preview");frame.setBackground(ui.shape(0xff363d37,20,false));frame.setClipToOutline(true);ui.page.addView(frame,new LinearLayout.LayoutParams(-1,ui.dp(300)));
         android.view.TextureView preview=new android.view.TextureView(this);frame.addView(preview,new FrameLayout.LayoutParams(-1,-1));
-        View guide=new View(this);android.graphics.drawable.GradientDrawable outline=ui.shape(Color.TRANSPARENT,10,false);outline.setStroke(ui.dp(1),0x70ffffff);guide.setBackground(outline);FrameLayout.LayoutParams gp=new FrameLayout.LayoutParams(-1,-1);gp.setMargins(ui.dp(27),ui.dp(36),ui.dp(27),ui.dp(36));frame.addView(guide,gp);
+        View guide=new View(this);android.graphics.drawable.GradientDrawable outline=ui.shape(Color.TRANSPARENT,10,false);outline.setStroke(ui.borderWidth(),0x70ffffff);guide.setBackground(outline);FrameLayout.LayoutParams gp=new FrameLayout.LayoutParams(-1,-1);gp.setMargins(ui.dp(27),ui.dp(36),ui.dp(27),ui.dp(36));frame.addView(guide,gp);
         TextView live=cameraBadge(copy.ui("livePreview"));FrameLayout.LayoutParams lp=new FrameLayout.LayoutParams(-2,-2,Gravity.TOP|Gravity.START);lp.topMargin=ui.dp(13);lp.leftMargin=ui.dp(13);frame.addView(live,lp);
         TextView progress=cameraBadge(getString(R.string.camera_progress,"",0).trim());progress.setTag("camera-frame-count");FrameLayout.LayoutParams pp=new FrameLayout.LayoutParams(-2,-2,Gravity.TOP|Gravity.END);pp.topMargin=ui.dp(13);pp.rightMargin=ui.dp(13);frame.addView(progress,pp);
         TextView hint=new TextView(this);hint.setText(copy.ui("sampling"));hint.setTextSize(11);hint.setTextColor(Color.WHITE);hint.setGravity(Gravity.CENTER);hint.setShadowLayer(ui.dp(3),0,0,0xaa000000);FrameLayout.LayoutParams hp=new FrameLayout.LayoutParams(-1,-2,Gravity.BOTTOM);hp.bottomMargin=ui.dp(15);frame.addView(hint,hp);
         LinearLayout privacy=ui.horizontal();privacy.setGravity(Gravity.TOP);privacy.setPadding(0,ui.dp(17),0,ui.dp(10));ui.page.addView(privacy);
-        ImageView shield=new ImageView(this);shield.setImageDrawable(ui.drawable(R.drawable.ic_shield,AppUi.ACCENT,17));LinearLayout.LayoutParams sp=new LinearLayout.LayoutParams(ui.dp(17),ui.dp(21));sp.rightMargin=ui.dp(9);privacy.addView(shield,sp);TextView privacyText=ui.text(privacy,copy.ui("captureHint"),11,AppUi.SUB,false);privacyText.setLayoutParams(new LinearLayout.LayoutParams(0,-2,1));ui.line(privacyText,1.85f);
+        ImageView shield=new ImageView(this);shield.setImageDrawable(ui.drawable(R.drawable.ic_shield,AppUi.ACCENT,17));LinearLayout.LayoutParams sp=new LinearLayout.LayoutParams(ui.dp(17),ui.dp(21));sp.rightMargin=ui.dp(9);privacy.addView(shield,sp);TextView privacyText=ui.text(privacy,copy.ui("captureHint"),11,AppUi.SUB,false);privacyText.setLayoutParams(new LinearLayout.LayoutParams(0,-2,1));ui.line(privacyText,1.85f);privacyText.addOnLayoutChangeListener((v,l,t,r,b,ol,ot,or,ob)->ui.alignFirstLine(shield,privacyText));
         Button capture=ui.action(ui.page,copy.ui("capture"),true,R.drawable.ic_camera,()->{if(camera!=null)camera.capture();});ui.primaryActionEnabled(capture,copy.ui("capture"),R.drawable.ic_camera,false);
         ui.link(ui.page,copy.ui("cancelCapture"),0,()->{clearCamera();navigate("setup");});ui.fitArtwork(frame,200);int token=epoch;
         try{camera=new CameraCapture(this,preview,new CameraCapture.Listener(){
@@ -417,11 +446,13 @@ public final class MainActivity extends Activity implements NfcAdapter.ReaderCal
     }
     private void completed(){
         ui.progress(3);ui.successIcon(false);boolean saved=session.backupSaved();
-        ui.heading(null,saved?"冷钱包制作完成":copy.ui("completeTitle"),copy.ui("completeDesc"));
+        rememberCreatedWallet(session);
+        ui.heading(null,lockAfterWrite&&!"locked".equals(lockStatus)?getString(R.string.nfc_written_not_locked):saved?"冷钱包制作完成":copy.ui("completeTitle"),copy.ui("completeDesc"));
         if(!lockStatus.isEmpty())ui.callout(ui.page,lockStatus.equals("locked")?R.drawable.ic_shield:R.drawable.ic_warning,copy.section("lockCopy").optString(lockStatus));if(candidate!=null&&lockStatus.equals("unknown"))ui.link(ui.page,copy.section("lockCopy").optString("retryVerify"),R.drawable.ic_lock,()->arm(Mode.VERIFY_LOCK));else if(candidate!=null&&lockStatus.equals("unprotected")&&lockAfterWrite)ui.link(ui.page,copy.section("lockCopy").optString("retryLock"),R.drawable.ic_lock,this::confirmReadOnly);noteCard(session.note,true,false);
         addressCard(ui.page,session.addresses,session.addresses.nativeSegwit,true);ui.space(ui.page,18);
         ui.check("生成时恢复校验通过",true);ui.check("NFC 写入后读回一致",true);
         ui.check(saved?"加密备份已保存并核对":"请另外保存一份加密备份",saved);
+        if(saved&&session.canFinish())ui.callout(ui.page,R.drawable.ic_record_check,getString(creationRecordSaving?R.string.verification_loading:recordSaveFailed?R.string.verification_save_failed:R.string.verification_save_ok));
         if(session.cardCount()>1)ui.note(ui.page,"此钱包已写入 "+session.cardCount()+" 张 NFC 卡片。");
         ui.stretch();
         ui.action(ui.page,saved?"完成，返回首页":"保存加密备份",true,saved?R.drawable.ic_check:R.drawable.ic_download,saved?this::leaveCreation:()->backupSheet(null));
@@ -439,13 +470,24 @@ public final class MainActivity extends Activity implements NfcAdapter.ReaderCal
     }
     private void unlocking(){
         boolean bip38=incoming.startsWith("6P");WalletCrypto.Metadata meta=bip38?null:crypto.inspect(incoming);
-        recoveryHeading(false);
-        if(meta!=null){
+        boolean verified=currentVerification()!=null;
+        if(previousVerification!=null&&!verified){
+            ui.statusIcon(R.drawable.ic_shield);
+            ui.heading(getString(R.string.verification_changed),getString(R.string.verification_changed_title),getString(R.string.verification_changed_body));
+        }else recoveryHeading(false,verified?R.string.verification_matched_intro:R.string.verification_pending_body);
+        if(verified){
+            recoveryNote(publicVerification.note,false);addressCard(ui.page,publicVerification.addresses,publicVerification.addresses.nativeSegwit,true);
+        }else if(meta!=null){
             recoveryNote(meta.note,meta.version<3);addressCard(ui.page,meta.addresses,meta.address,false);
             if(meta.addresses==null)ui.note(ui.page,"这是旧版 CG1 备份，其他地址将在解密后显示。");
         }else{recoveryNote("",true);ui.note(ui.page,"BIP38 密文不包含公开收款地址，解密后请核对实际存币地址。");}
-        ui.space(ui.page,8);ui.action(ui.page,getString(R.string.wallet_unlock_action),true,R.drawable.ic_unlock,this::showUnlockDialog);
-        ui.action(ui.page,"换一张卡片 / 备份",false,R.drawable.ic_shuffle,this::switchWallet);ui.foot("仅在本机处理，无需联网");
+        if(recordReadFailed)recoveryNotice(R.drawable.ic_warning,getString(R.string.verification_load_failed));
+        if(recordSaveFailed)recoveryNotice(R.drawable.ic_warning,getString(R.string.verification_save_failed));
+        if(previousVerification!=null&&!verified)recoveryNotice(R.drawable.ic_warning,getString(R.string.verification_changed_warning));
+        if(verified)recoveryNotice(R.drawable.ic_shield,getString(verificationSource.equals("local")?R.string.verification_local_body:R.string.verification_locked_body));
+        recoveryActionsGap();Button unlock=recoveryAction(getString(verified?R.string.wallet_view_private:R.string.wallet_unlock_action),true,verified?R.drawable.ic_display:R.drawable.ic_unlock,()->showUnlockDialog(verified));
+        if(recordLoading)ui.loadingAction(unlock,getString(R.string.verification_loading));
+        recoveryAction("换一张卡片 / 备份",false,R.drawable.ic_shuffle,this::switchWallet);recoveryFooter("仅在本机处理，无需联网");
     }
     private void switchWallet(){
         closeSheet();sheet=ui.sheet("换一张卡片 / 备份",p->{
@@ -455,34 +497,54 @@ public final class MainActivity extends Activity implements NfcAdapter.ReaderCal
         });
     }
     private void recoveryHeading(boolean recovered){
+        recoveryHeading(recovered,recovered?R.string.verification_session_body:R.string.wallet_read_description);
+    }
+    private boolean compactRecovery(){return getResources().getConfiguration().screenHeightDp<720;}
+    private void recoveryHeading(boolean recovered,int descriptionId){
         ui.statusIcon(recovered?R.drawable.ic_unlock:R.drawable.ic_lock);
+        View badge=ui.page.getChildAt(ui.page.getChildCount()-1);
+        LinearLayout.LayoutParams badgeParams=(LinearLayout.LayoutParams)badge.getLayoutParams();badgeParams.topMargin=ui.dp(compactRecovery()?0:4);badgeParams.bottomMargin=ui.dp(compactRecovery()?6:12);
         ui.heading(copy.ui(recovered?"decrypted":"recognized"),copy.ui(recovered?"revealedTitle":"unlockTitle"),null);
-        TextView description=ui.text(ui.page,getString(recovered?R.string.wallet_recovered_description:R.string.wallet_read_description),12,AppUi.SUB,false);
-        ui.line(description,1.85f);description.setMinHeight(ui.dp(44));ui.space(ui.page,8);
+        TextView description=ui.text(ui.page,getString(descriptionId),12,AppUi.SUB,false);
+        ui.line(description,1.75f);ui.space(ui.page,compactRecovery()?4:6);
     }
     private void recoveryNote(String note,boolean legacy){
-        LinearLayout card=ui.card(ui.page),head=ui.horizontal();card.setMinimumHeight(ui.dp(86));card.addView(head);
+        LinearLayout card=ui.card(ui.page),head=ui.horizontal();card.setMinimumHeight(ui.dp(compactRecovery()?64:72));card.addView(head);
         compactRecoveryCard(card);
         TextView label=ui.text(head,copy.ui("publicRemark"),11,AppUi.SUB,false);label.setLayoutParams(new LinearLayout.LayoutParams(0,-2,1));
         ui.text(head,getString(R.string.wallet_note_public),11,AppUi.SUB,false).setLayoutParams(new LinearLayout.LayoutParams(-2,-2));
-        ui.space(card,9);TextView value=ui.text(card,"",18,AppUi.FG,true);value.setText(note.isEmpty()?copy.ui(legacy?"oldCard":"noRemark"):note);
+        ui.space(card,6);TextView value=ui.text(card,"",18,AppUi.FG,true);value.setText(note.isEmpty()?copy.ui(legacy?"oldCard":"noRemark"):note);
     }
     private void compactRecoveryCard(LinearLayout card){
-        LinearLayout.LayoutParams params=(LinearLayout.LayoutParams)card.getLayoutParams();params.topMargin=0;params.bottomMargin=ui.dp(12);card.setLayoutParams(params);
+        card.setPadding(ui.dp(12),ui.dp(compactRecovery()?8:12),ui.dp(12),ui.dp(compactRecovery()?6:8));
+        LinearLayout.LayoutParams params=(LinearLayout.LayoutParams)card.getLayoutParams();params.topMargin=0;params.bottomMargin=ui.dp(compactRecovery()?6:8);card.setLayoutParams(params);
     }
+    private void recoveryNotice(int icon,String message){
+        LinearLayout body=ui.callout(ui.page,icon,message),panel=(LinearLayout)body.getParent();int padding=ui.dp(compactRecovery()?8:10);panel.setPadding(ui.dp(12),padding,ui.dp(12),padding);
+        ((LinearLayout.LayoutParams)panel.getLayoutParams()).topMargin=ui.dp(compactRecovery()?6:8);
+    }
+    private void recoveryActionsGap(){ui.page.addView(new View(this),new LinearLayout.LayoutParams(1,ui.dp(compactRecovery()?4:8),1));}
+    private Button recoveryAction(String label,boolean primary,int icon,Runnable action){
+        Button button=ui.action(ui.page,label,primary,icon,action);((LinearLayout.LayoutParams)button.getLayoutParams()).topMargin=ui.dp(compactRecovery()?6:8);return button;
+    }
+    private void recoveryFooter(String message){ui.foot(message);ui.page.getChildAt(ui.page.getChildCount()-1).setPadding(0,ui.dp(compactRecovery()?4:6),0,0);}
     private void showUnlockDialog(){
+        showUnlockDialog(false);
+    }
+    private void showUnlockDialog(boolean viewPrivate){
         if(!allowSecretOperation())return;
         if(!resumed||busy||fileBusy||incoming==null||!screen.equals("unlock")||unlockDialog!=null)return;
-        closeSheet();Dialog owner=new Dialog(this);unlockDialog=owner;
+        closeSheet();requestedPrivate=viewPrivate;Dialog owner=new Dialog(this);unlockDialog=owner;
         owner.setOnDismissListener(d->{
             if(busy&&workDialog==owner)cancelWork();
             if(owner.getWindow()!=null)ui.releaseInputs(owner.getWindow().getDecorView());
             if(unlockDialog==owner){unlockDialog=null;unlockFeedback=null;unlockSubmit=null;}
         });
-        ui.showSheet(owner,getString(R.string.wallet_unlock_action),p->{
-            ui.note(p,getString(R.string.wallet_unlock_description));
+        ui.showSheet(owner,getString(viewPrivate?R.string.verification_unlock_private:R.string.wallet_unlock_action),p->{
+            ui.note(p,getString(R.string.verification_unlock_body));
             EditText pass=ui.input(p,"钱包解密密码",true,null);
             ui.helper(p,getString(R.string.wallet_unlock_local));
+            ui.callout(p,R.drawable.ic_shield,getString(R.string.verification_password_risk));
             unlockFeedback=ui.text(p,"",12,AppUi.ERROR,false);unlockFeedback.setVisibility(View.GONE);unlockFeedback.setAccessibilityLiveRegion(View.ACCESSIBILITY_LIVE_REGION_POLITE);
             ui.space(p,13);unlockSubmit=ui.action(p,getString(R.string.wallet_unlock_action),true,R.drawable.ic_unlock,()->unlockFromDialog(owner,pass));
             ui.link(p,"取消",0,this::closeUnlockDialog).setTag("password-cancel");
@@ -496,39 +558,48 @@ public final class MainActivity extends Activity implements NfcAdapter.ReaderCal
         char[] password=chars(pass);
         if(password.length==0){WalletCrypto.wipe(password);unlockFeedback.setText(tr("请输入解密密码"));unlockFeedback.setVisibility(View.VISIBLE);return;}
         // Old backups can have shorter passwords; the ten-character minimum applies only to creation.
-        trackPassword(password);hideKeyboard();int token=begin(owner,unlockSubmit,getString(R.string.wallet_unlock_action),R.drawable.ic_unlock);ui.clearPasswords();String encrypted=incoming;boolean bip38=encrypted.startsWith("6P");
+        trackPassword(password);hideKeyboard();int token=begin(owner,unlockSubmit,getString(R.string.wallet_unlock_action),R.drawable.ic_unlock);ui.clearPasswords();String encrypted=incoming;boolean bip38=encrypted.startsWith("6P");boolean showPrivate=requestedPrivate;String showAddress=pendingAddressType,cardHint=incomingCardId;
         worker.execute(()->{
             try{
                 PrivateSession result=PrivateSession.seal(bip38?crypto.importBip38(encrypted,password):crypto.decrypt(encrypted,password));
-                runOnUiThread(()->{if(epoch!=token||!resumed||!allowSecretOperation()){result.close();return;}endWork();closeUnlockDialog();closeUnlocked();unlocked=result;unlockDeadline.start(android.os.SystemClock.elapsedRealtime());screen="revealed";render();tickUnlockedSession();haptic(true);});
+                VerificationStore.Record record;
+                try{record=VerificationStore.Record.verified(encrypted,result.addresses,result.note,cardHint==null?java.util.Collections.emptyList():java.util.Collections.singleton(cardHint));}catch(Exception ex){result.close();throw ex;}
+                runOnUiThread(()->{
+                    if(epoch!=token||!resumed||!encrypted.equals(incoming)||!allowSecretOperation()){result.close();return;}
+                    endWork();closeUnlockDialog();closeUnlocked();unlocked=result;unlockDeadline.start(android.os.SystemClock.elapsedRealtime());tickUnlockedSession();haptic(true);
+                    if(previousVerification!=null&&publicVerification==null){pendingVerification=record;confirmChangedRecord(result,record,showPrivate,showAddress);}
+                    else finishVerifiedUnlock(record,showPrivate,showAddress);
+                });
             }catch(Exception ex){runOnUiThread(()->{
                 if(epoch!=token||!resumed)return;endWork();showUnlockDialog();
-                if(unlockFeedback!=null){unlockFeedback.setText(tr("解密失败：密码错误或卡片数据损坏"));unlockFeedback.setVisibility(View.VISIBLE);}haptic(false);
+                if(unlockFeedback!=null){unlockFeedback.setText(getString(R.string.verification_failed));unlockFeedback.setVisibility(View.VISIBLE);}haptic(false);
             });}finally{forgetPassword(password);}
         });
     }
     private void closeUnlockDialog(){
-        Dialog owner=unlockDialog;unlockDialog=null;unlockFeedback=null;unlockSubmit=null;if(owner!=null)owner.dismiss();
+        Dialog owner=unlockDialog;unlockDialog=null;unlockFeedback=null;unlockSubmit=null;pendingAddressType=null;requestedPrivate=false;if(owner!=null)owner.dismiss();
     }
     private void revealed(){
         recoveryHeading(true);
         recoveryNote(unlocked.note,!incoming.startsWith(WalletCrypto.NOTE_PREFIX));addressCard(ui.page,unlocked.addresses,unlocked.address,true);
-        ui.space(ui.page,8);ui.action(ui.page,getString(R.string.wallet_view_private),true,R.drawable.ic_display,this::showPrivateQr);
-        ui.action(ui.page,"隐藏私钥，返回首页",false,R.drawable.ic_lock,()->{incoming=null;navigate("home");});
-        ui.foot("私钥和二维码可控制全部 BTC，请勿分享。");
+        recoveryNotice(R.drawable.ic_lock,getString(R.string.verification_session_limit));if(recordSaveFailed)recoveryNotice(R.drawable.ic_warning,getString(R.string.verification_save_failed));
+        recoveryActionsGap();recoveryAction(getString(R.string.wallet_view_private),true,R.drawable.ic_display,this::showPrivateQr);
+        recoveryAction("隐藏私钥，返回首页",false,R.drawable.ic_lock,()->{incoming=null;navigate("home");});
+        recoveryFooter("私钥和二维码可控制全部 BTC，请勿分享。");
     }
     private void art(boolean scanning,int height){ui.page.addView(new WalletArtView(this,scanning),new LinearLayout.LayoutParams(-1,ui.dp(height)));}
     private void addressCard(LinearLayout parent,BitcoinAddresses addresses,String nativeAddress,boolean verified){
+        boolean trusted=receivingAllowed(nativeAddress,verified);
         LinearLayout card=ui.card(parent),top=ui.horizontal();card.addView(top);
         boolean recovery=screen.equals("unlock")||screen.equals("revealed");
         if(recovery)compactRecoveryCard(card);
-        TextView label=new TextView(this);label.setText(copy.ui("receive")+(recovery?" · SegWit":""));label.setTextSize(11);label.setTextColor(AppUi.SUB);top.addView(label,new LinearLayout.LayoutParams(0,-2,1));
-        TextView badge=new TextView(this);badge.setText(recovery?getString(verified?R.string.wallet_address_verified:R.string.wallet_address_pending):verified?"SegWit":copy.ui("unverified"));badge.setTextSize(11);badge.setTextColor(AppUi.ACCENT);top.addView(badge);
-        TextView value=ui.text(card,nativeAddress,13,AppUi.FG,false);value.setTypeface(Typeface.MONOSPACE);value.setSingleLine(false);value.setHorizontallyScrolling(false);value.setHyphenationFrequency(android.text.Layout.HYPHENATION_FREQUENCY_NONE);value.setPadding(0,ui.dp(16),0,ui.dp(8));
+        TextView label=new TextView(this);label.setIncludeFontPadding(false);label.setText(copy.ui("receive")+(recovery?" · SegWit":""));label.setTextSize(11);label.setTextColor(AppUi.SUB);top.addView(label,new LinearLayout.LayoutParams(0,-2,1));
+        TextView badge=new TextView(this);badge.setIncludeFontPadding(false);badge.setText(recovery?addressVerificationLabel(trusted):trusted?"SegWit":getString(R.string.wallet_address_pending));badge.setTextSize(11);badge.setTextColor(AppUi.ACCENT);top.addView(badge);
+        TextView value=ui.text(card,trusted?nativeAddress:shortAddress(nativeAddress),13,AppUi.FG,false);value.setTypeface(Typeface.MONOSPACE);value.setSingleLine(false);value.setHorizontallyScrolling(false);value.setHyphenationFrequency(android.text.Layout.HYPHENATION_FREQUENCY_NONE);value.setPadding(0,ui.dp(recovery?10:16),0,ui.dp(recovery?6:8));
         LinearLayout links=ui.horizontal();card.addView(links);
-        if(addresses!=null){LinearLayout otherSlot=ui.horizontal();links.addView(otherSlot,new LinearLayout.LayoutParams(0,-2,1));ui.textAction(otherSlot,copy.ui("other"),0,R.drawable.ic_chevron_down,()->otherAddresses(addresses,verified));}
+        if(addresses!=null){LinearLayout otherSlot=ui.horizontal();links.addView(otherSlot,new LinearLayout.LayoutParams(0,-2,1));ui.textAction(otherSlot,copy.ui("other"),0,R.drawable.ic_chevron_down,()->otherAddresses(addresses,trusted));}
         else{TextView network=new TextView(this);network.setText(R.string.btc_mainnet);network.setTextSize(11);network.setTextColor(AppUi.SUB);links.addView(network,new LinearLayout.LayoutParams(0,-2,1));}
-        links.addView(ui.inline("展示地址",R.drawable.ic_display,()->showAddressQr("SegWit",nativeAddress,verified)));
+        links.addView(ui.inline(trusted?tr("展示地址"):getString(R.string.verification_after_check),trusted?R.drawable.ic_display:R.drawable.ic_lock,()->showAddressQr("SegWit",nativeAddress,trusted)));
     }
     private void otherAddresses(BitcoinAddresses a,boolean verified){
         closeSheet();sheet=ui.sheet("其他收款地址",p->{
@@ -537,17 +608,19 @@ public final class MainActivity extends Activity implements NfcAdapter.ReaderCal
         });
     }
     private void addressRow(LinearLayout p,String title,String address,boolean verified,boolean border){
+        boolean trusted=receivingAllowed(address,verified);
         ui.space(p,12);LinearLayout heading=ui.horizontal();p.addView(heading);
         TextView name=ui.text(heading,title,13,AppUi.FG,true);name.setLayoutParams(new LinearLayout.LayoutParams(0,-2,1));
-        TextView status=ui.text(heading,getString(verified?R.string.wallet_address_verified:R.string.wallet_address_pending),11,AppUi.ACCENT,false);status.setLayoutParams(new LinearLayout.LayoutParams(-2,-2));
-        TextView value=ui.text(p,address,12,AppUi.SUB,false);value.setTypeface(Typeface.MONOSPACE);value.setPadding(0,ui.dp(8),0,0);
+        TextView status=ui.text(heading,addressVerificationLabel(trusted),11,AppUi.ACCENT,false);status.setLayoutParams(new LinearLayout.LayoutParams(-2,-2));
+        TextView value=ui.text(p,trusted?address:shortAddress(address),12,AppUi.SUB,false);value.setTypeface(Typeface.MONOSPACE);value.setPadding(0,ui.dp(8),0,0);
         LinearLayout links=ui.horizontal();p.addView(links);
-        Button show=ui.inline("展示地址",R.drawable.ic_display,()->showAddressQr(title,address,verified));show.setContentDescription("展示 "+title+" 地址");
+        Button show=ui.inline(trusted?tr("展示地址"):getString(R.string.verification_after_check),trusted?R.drawable.ic_display:R.drawable.ic_lock,()->showAddressQr(title,address,trusted));show.setContentDescription((trusted?tr("展示地址"):getString(R.string.verification_after_check))+" "+title);
         links.addView(show);
         if(border)ui.divider(p);
     }
     private void transferHelp(){dismissQr();closeSheet();sheet=helpPages.transfer(()->{closeSheet();if(resumed&&unlocked!=null)showPrivateQr();});}
-    private void help(){closeSheet();sheet=helpPages.about(this::closeSheet,()->{articleReturn=screen;articleScroll=ui.scroll.getScrollY();closeSheet();if(screen.equals("revealed")){closeUnlocked();articleReturn="unlock";}screen="security";render();},screen.equals("home")?this::language:null);}
+    private void help(){closeSheet();sheet=helpPages.about(this::closeSheet,()->openArticle("security"),screen.equals("home")?this::language:null,()->openArticle("verification"));}
+    private void openArticle(String article){articleReturn=screen;articleScroll=ui.scroll.getScrollY();closeSheet();if(screen.equals("revealed")){dismissQr();closeUnlocked();articleReturn="unlock";}screen=article;render();}
     private void returnFromSecurity(){String target=articleReturn.equals("revealed")?"unlock":articleReturn;navigate(target);ui.scroll.post(()->ui.scroll.scrollTo(0,articleScroll));help();}
     private boolean allowSecretOperation(){
         if(accessGate!=null&&!accessGate.blocked())return true;
@@ -606,7 +679,7 @@ public final class MainActivity extends Activity implements NfcAdapter.ReaderCal
         LinearLayout row=ui.horizontal();row.setGravity(Gravity.TOP);row.setPadding(0,ui.dp(13),0,ui.dp(13));parent.addView(row);
         ImageView image=new ImageView(this);image.setImageDrawable(ui.drawable(symbol,AppUi.ACCENT,17));
         LinearLayout.LayoutParams ip=new LinearLayout.LayoutParams(ui.dp(18),ui.dp(23));ip.rightMargin=ui.dp(10);row.addView(image,ip);
-        TextView text=ui.text(row,message,12,AppUi.SUB,false);text.setLayoutParams(new LinearLayout.LayoutParams(0,-2,1));
+        TextView text=ui.text(row,message,12,AppUi.SUB,false);text.setLayoutParams(new LinearLayout.LayoutParams(0,-2,1));text.addOnLayoutChangeListener((v,l,t,r,b,ol,ot,or,ob)->ui.alignFirstLine(image,text));
     }
     private void returnFromProtection(){String next=protectionReturn;protectionReturn="home";navigate(next);}
     private void cardHelp(){closeSheet();sheet=helpPages.cardHelp(this::closeSheet);}
@@ -623,6 +696,7 @@ public final class MainActivity extends Activity implements NfcAdapter.ReaderCal
         if(!verified&&!legacy)ui.helper(ui.page,copy.ui("remarkWarning"));
     }
     private void explorers(String type,String address,boolean verified){
+        if(!receivingAllowed(address,verified))return;
         try{BitcoinAddresses.requireMainnetAddress(address);}catch(Exception ex){error("收款地址不正确，无法查询");return;}
         dismissQr();closeSheet();sheet=ui.sheet(copy.ui("explorerTitle"),p->{
             ui.note(p,copy.ui("explorerDesc"));LinearLayout card=ui.card(p),head=ui.horizontal();card.addView(head);TextView label=ui.text(head,type,11,AppUi.SUB,false);label.setLayoutParams(new LinearLayout.LayoutParams(0,-2,1));ui.text(head,copy.ui("mainnet"),11,AppUi.ACCENT,false).setLayoutParams(new LinearLayout.LayoutParams(-2,-2));TextView text=ui.text(card,address,12,AppUi.FG,false);text.setTypeface(Typeface.MONOSPACE);
@@ -632,6 +706,7 @@ public final class MainActivity extends Activity implements NfcAdapter.ReaderCal
         });
     }
     private void openExplorer(String address,int site){
+        if(!receivingAllowed(address,true))return;
         try{
             BitcoinAddresses.requireMainnetAddress(address);if(site<0||site>2)throw new IllegalArgumentException();
             String[] hosts={"mempool.space","blockstream.info","blockchair.com"};
@@ -649,13 +724,128 @@ public final class MainActivity extends Activity implements NfcAdapter.ReaderCal
     private void confirmReadOnly(){
         closeSheet();org.json.JSONObject c=copy.section("lockCopy");sheet=ui.sheet(c.optString("title"),p->{ui.note(p,c.optString("desc"));ui.callout(p,R.drawable.ic_lock,c.optString("risk"));ui.action(p,c.optString("confirm"),true,R.drawable.ic_lock,()->{closeSheet();lockStatus="unknown";arm(Mode.LOCK);});ui.link(p,c.optString("skip"),0,()->{lockStatus="unprotected";closeSheet();backupSheet(null);});});
     }
-    private void acceptIncoming(String text){
+    private void acceptIncoming(String text){acceptIncoming(text,null);}
+    private void acceptIncoming(String text,String cardId){
         try{
             if(text.length()>WalletCrypto.MAX_TEXT_LENGTH)throw new IllegalArgumentException();
             if(WalletCrypto.isBackup(text))crypto.inspect(text);
             else if(!(text.length()==58&&text.startsWith("6P")&&text.matches("[1-9A-HJ-NP-Za-km-z]+")))throw new IllegalArgumentException();
-            incoming=text;navigate("unlock");
+            clearIncomingVerification();incoming=text;incomingCardId=cardId!=null&&cardId.matches("(?:[0-9a-f]{2}){1,32}")?cardId:null;navigate("unlock");
         }catch(IllegalArgumentException ex){error("无法读取：备份格式不正确或不受支持");}
+    }
+    private void clearIncomingVerification(){
+        publicVerification=null;previousVerification=null;pendingVerification=null;verificationSource="";
+        recordLoading=false;recordReadFailed=false;recordSaveFailed=false;pendingAddressType=null;requestedPrivate=false;
+    }
+    private VerificationStore.Record currentVerification(){
+        return incoming!=null&&publicVerification!=null&&publicVerification.matches(incoming)?publicVerification:null;
+    }
+    private String shortAddress(String address){return address==null?"":address.length()>20?address.substring(0,8)+" ··· "+address.substring(address.length()-6):address;}
+    private boolean hasAddress(BitcoinAddresses a,String value){return a!=null&&value!=null&&(a.nativeSegwit.equals(value)||a.legacy.equals(value)||a.nestedSegwit.equals(value)||a.taproot.equals(value));}
+    private boolean receivingAllowed(String address,boolean claimedVerified){
+        if(!claimedVerified)return false;
+        if((screen.equals("write")||screen.equals("done"))&&session!=null)return session.canFinish()&&hasAddress(session.addresses,address);
+        VerificationStore.Record record=currentVerification();
+        if(record!=null)return record.containsAddress(address);
+        return screen.equals("revealed")&&unlocked!=null&&pendingVerification==null&&hasAddress(unlocked.addresses,address)&&unlockDeadline.cause(android.os.SystemClock.elapsedRealtime())==UnlockDeadline.Cause.NONE;
+    }
+    private String addressVerificationLabel(boolean verified){
+        return getString(verified?verificationSource.equals("local")?R.string.verification_local:R.string.verification_fresh:previousVerification!=null?R.string.verification_changed:R.string.wallet_address_pending);
+    }
+    private void checkIncomingRecord(){
+        if(incoming==null||recordLoading||!screen.equals("unlock"))return;
+        final String payload=incoming,cardId=incomingCardId;final int token=epoch;recordLoading=true;render();
+        worker.execute(()->{
+            VerificationStore.Lookup result=null;boolean failed=false;
+            try{result=verificationStore.lookup(payload,cardId);}catch(Exception ex){failed=true;}
+            VerificationStore.Lookup lookup=result;boolean unavailable=failed;
+            runOnUiThread(()->{
+                if(epoch!=token||!resumed||!payload.equals(incoming)||!screen.equals("unlock"))return;
+                recordLoading=false;recordReadFailed=unavailable;
+                publicVerification=lookup==null?null:lookup.match;previousVerification=lookup==null?null:lookup.previous;
+                verificationSource=publicVerification==null?"":"local";render();
+            });
+        });
+    }
+    private void persistVerification(VerificationStore.Record record){
+        int token=epoch;worker.execute(()->{
+            boolean saved=true;try{verificationStore.save(record);}catch(Exception ex){saved=false;}
+            boolean failed=!saved;runOnUiThread(()->{if(epoch==token&&resumed&&publicVerification==record){recordSaveFailed=failed;if(failed){render();toast(getString(R.string.verification_save_failed));}}});
+        });
+    }
+    private void finishVerifiedUnlock(VerificationStore.Record record,boolean privateRequested,String addressType){
+        if(unlocked==null||expireUnlockedIfNeeded())return;
+        publicVerification=record;previousVerification=null;pendingVerification=null;verificationSource="fresh";recordSaveFailed=false;
+        screen="revealed";render();persistVerification(record);
+        if(privateRequested)showPrivateQr();else if(addressType!=null)showAddressQr(addressType,addressFor(record.addresses,addressType),true);
+    }
+    private String addressFor(BitcoinAddresses addresses,String type){
+        return type.equals("Legacy")?addresses.legacy:type.equals("P2SH")?addresses.nestedSegwit:type.equals("Taproot")?addresses.taproot:addresses.nativeSegwit;
+    }
+    private void confirmChangedRecord(PrivateSession sessionOwner,VerificationStore.Record record,boolean privateRequested,String addressType){
+        // The sealed session still expires while this confirmation is open. No WIF is materialized here.
+        Dialog dialog=new Dialog(this);sheet=dialog;int token=epoch;
+        ui.showSheet(dialog,getString(R.string.verification_review_title),p->{
+            ui.note(p,getString(R.string.verification_review_body));
+            VerificationStore.Record before=previousVerification;
+            if(before!=null){ui.text(p,getString(R.string.verification_previous),13,AppUi.FG,true);recordSummary(p,before);}
+            ui.text(p,getString(R.string.verification_current),13,AppUi.FG,true);recordSummary(p,record);
+            ui.action(p,getString(R.string.verification_accept),true,R.drawable.ic_record_check,()->{
+                if(epoch!=token||!resumed||sheet!=dialog||!dialog.isShowing()||unlocked!=sessionOwner||pendingVerification!=record||expireUnlockedIfNeeded())return;
+                pendingVerification=null;sheet=null;dialog.dismiss();finishVerifiedUnlock(record,privateRequested,addressType);
+            });
+            ui.action(p,copy.ui("cancel"),false,0,()->{if(sheet==dialog){sheet=null;dialog.dismiss();closeUnlocked();incoming=null;navigate("read");}});
+        });
+        dialog.setOnDismissListener(d->{if(pendingVerification==record){pendingVerification=null;closeUnlocked();}});secure(dialog);
+    }
+    private void recordSummary(LinearLayout parent,VerificationStore.Record record){
+        LinearLayout card=ui.card(parent);TextView note=ui.text(card,"",14,AppUi.FG,true);note.setText(record.note.isEmpty()?copy.ui("noRemark"):record.note);
+        for(String type:new String[]{"SegWit","Legacy","P2SH","Taproot"}){ui.text(card,type,11,AppUi.SUB,false);TextView value=ui.text(card,addressFor(record.addresses,type),12,AppUi.SUB,false);value.setTypeface(Typeface.MONOSPACE);}
+    }
+    private boolean creationRecordSaving;
+    private void rememberCreatedWallet(CreationSession owner){
+        if(owner==null||!owner.canFinish()||(recordedCreation==owner&&recordedCreationCards==owner.cardCount()))return;
+        recordedCreation=owner;recordedCreationCards=owner.cardCount();int count=recordedCreationCards;String[] cards=owner.writtenCardIds();creationRecordSaving=true;recordSaveFailed=false;int token=epoch;
+        worker.execute(()->{
+            boolean saved=true;
+            try{verificationStore.save(VerificationStore.Record.verified(owner.encrypted,owner.addresses,owner.note,Arrays.asList(cards)));}catch(Exception ex){saved=false;}
+            boolean failed=!saved;runOnUiThread(()->{if(session==owner&&recordedCreationCards==count){creationRecordSaving=false;recordSaveFailed=failed;if(epoch==token&&resumed&&screen.equals("done"))render();}});
+        });
+    }
+    private void showRecords(){
+        recordRows=java.util.Collections.emptyList();navigate("records");loadRecords();
+    }
+    private void loadRecords(){
+        int token=epoch;worker.execute(()->{
+            java.util.List<VerificationStore.Record> rows=null;try{rows=verificationStore.records();}catch(Exception ignored){}
+            java.util.List<VerificationStore.Record> result=rows;runOnUiThread(()->{if(epoch==token&&resumed&&screen.equals("records")){recordReadFailed=result==null;recordRows=result==null?java.util.Collections.emptyList():result;render();}});
+        });
+    }
+    private void recordsPage(){
+        ui.statusIcon(R.drawable.ic_record_check);
+        ui.heading(null,getString(R.string.verification_records_title),getString(R.string.verification_records_body));
+        if(recordReadFailed)ui.callout(ui.page,R.drawable.ic_warning,getString(R.string.verification_load_failed));
+        if(recordRows.isEmpty()&&!recordReadFailed)ui.note(ui.page,getString(R.string.verification_empty));
+        for(VerificationStore.Record record:recordRows){
+            LinearLayout card=ui.card(ui.page);TextView note=ui.text(card,"",16,AppUi.FG,true);note.setText(record.note.isEmpty()?copy.ui("noRemark"):record.note);
+            ui.text(card,getString(R.string.btc_mainnet),11,AppUi.SUB,false);ui.text(card,shortAddress(record.addresses.nativeSegwit),12,AppUi.SUB,false);
+            ui.link(card,getString(R.string.verification_view_public),R.drawable.ic_display,()->{closeSheet();sheet=ui.sheet(getString(R.string.verification_view_public),p->{recordSummary(p,record);ui.action(p,copy.ui("understand"),true,0,this::closeSheet);});});
+            ui.link(card,getString(R.string.verification_clear_one),R.drawable.ic_trash,()->confirmClearRecord(record.id));
+        }
+        ui.stretch();if(!recordRows.isEmpty()||recordReadFailed)ui.action(ui.page,getString(R.string.verification_clear_all),false,R.drawable.ic_trash,()->confirmClearRecord(null));
+        ui.action(ui.page,getString(R.string.verification_back_info),true,R.drawable.ic_back,()->navigate("verification"));
+    }
+    private void confirmClearRecord(String id){
+        closeSheet();sheet=ui.sheet(getString(R.string.verification_clear_title),p->{
+            ui.note(p,getString(R.string.verification_records_body));
+            ui.action(p,getString(R.string.verification_clear_action),true,R.drawable.ic_trash,()->{
+                closeSheet();closeUnlocked();dismissQr();clearIncomingVerification();recordRows=java.util.Collections.emptyList();int token=epoch;busy=true;
+                worker.execute(()->{boolean ok=true;try{if(id==null)verificationStore.clear();else verificationStore.remove(id);}catch(Exception ex){ok=false;}boolean success=ok;
+                    runOnUiThread(()->{if(epoch==token&&resumed){busy=false;toast(getString(success?R.string.verification_cleared:R.string.verification_records_failed));loadRecords();}});
+                });
+            });
+            ui.action(p,getString(R.string.verification_keep),false,0,this::closeSheet);
+        });
     }
     private void backupSheet(String then){
         if(session==null)return;closeSheet();
@@ -721,6 +911,7 @@ public final class MainActivity extends Activity implements NfcAdapter.ReaderCal
         if(job.kind==DocumentIo.Kind.BACKUP){
             if(session!=owner||owner==null||!owner.encrypted.equals(data))return;
             owner.markBackupSaved(data);
+            rememberCreatedWallet(owner);
             whenResumed(()->{if("copy".equals(then))anotherCard();else if("home".equals(then))leaveCreation();else render();toast("加密备份已保存并核对");});
         }else whenResumed(()->toast(privateImage?"私钥二维码图片已保存，请妥善保管":"收款地址二维码图片已保存"));
     }
@@ -731,12 +922,15 @@ public final class MainActivity extends Activity implements NfcAdapter.ReaderCal
         fileErrorDialog=owner;owner.setCancelable(false);owner.setOnDismissListener(d->{if(fileErrorDialog==owner)fileErrorDialog=null;});owner.show();secure(owner);
     }
     private void dismissFileError(){AlertDialog owner=fileErrorDialog;fileErrorDialog=null;if(owner!=null)owner.dismiss();}
-    private void arm(Mode desired){
-        if(nfc==null){error("此设备不支持 NFC，读取时可改用加密备份文件。");return;}
-        if(!nfc.isEnabled()){
-            closeSheet();sheet=ui.sheet("请开启 NFC",p->{ui.note(p,"开启 NFC 后返回，再点击操作按钮。");ui.action(p,"打开 NFC 设置",true,0,()->{closeSheet();startActivity(new Intent(android.provider.Settings.ACTION_NFC_SETTINGS));});});return;
-        }
-        showNfcPrompt(desired);
+    private void arm(Mode desired){showNfcPrompt(desired);}
+    @Override public void readerReady(long token,NfcReaderControl.State state){
+        if(token!=epoch||!resumed||mode==Mode.NONE||!readerPending)return;
+        readerPending=false;handler.removeCallbacks(expireReaderStart);
+        if(state==NfcReaderControl.State.READY)return;
+        cancelNfc();
+        if(state==NfcReaderControl.State.DISABLED){
+            closeSheet();sheet=ui.sheet("请开启 NFC",p->{ui.note(p,"开启 NFC 后返回，再点击操作按钮。");ui.action(p,"打开 NFC 设置",true,0,()->{closeSheet();startActivity(new Intent(android.provider.Settings.ACTION_NFC_SETTINGS));});});
+        }else showNfcError(state==NfcReaderControl.State.UNSUPPORTED?tr("此设备不支持 NFC，读取时可改用加密备份文件。"):getString(R.string.nfc_operation_busy));
     }
     private void showNfcPrompt(Mode desired){
         dismissNfc();mode=desired;updateReader();
@@ -744,45 +938,99 @@ public final class MainActivity extends Activity implements NfcAdapter.ReaderCal
         nfcDialog=new NfcScanDialog(ui,title,desired==Mode.WRITE?"贴回刚才检查的同一张卡片，保持贴合直到读回核对完成。":"将卡片贴近手机背面的 NFC 感应区。",
             desired==Mode.WRITE?"等待贴回同一张卡片…":"等待识别卡片…",this::cancelNfc);
     }
-    private void cancelNfc(){if(mode==Mode.LOCK||mode==Mode.VERIFY_LOCK){lockStatus="unknown";screen="done";}epoch++;mode=Mode.NONE;dismissNfc();updateReader();if(screen.equals("done"))render();}
+    private void cancelNfc(){
+        boolean uncertainWrite=mode==Mode.WRITE&&nfcJob!=null;
+        boolean uncertainLock=mode==Mode.LOCK||mode==Mode.VERIFY_LOCK;
+        String lockDetail=uncertainLock?lockDiagnostic(mode,nfcJob,new java.util.concurrent.CancellationException()):null;
+        if(uncertainLock){lockStatus="unknown";screen="done";}
+        if(mode==Mode.WRITE||mode==Mode.CHECK)clearCandidate();
+        epoch++;stopNfcJob();mode=Mode.NONE;dismissNfc();updateReader();if(screen.equals("done"))render();
+        if(uncertainWrite)showNfcError(getString(R.string.nfc_write_unconfirmed));
+        else if(uncertainLock)lockProblem(false,lockDetail);
+    }
+    private void expireReader(){
+        if(readerPending&&resumed&&mode!=Mode.NONE){String stage=nfcReader==null?"NFC-Q":nfcReader.diagnostic();readerPending=false;cancelNfc();showNfcError(getString(R.string.nfc_startup_timeout,stage));}
+    }
+    private void expireNfc(){
+        NfcIo.Job job=nfcJob;if(job==null)return;
+        if(job.expired())nfcFinished(job,null,new NfcIo.Expired());else handler.postDelayed(expireNfcTask,job.remainingMillis());
+    }
+    private void stopNfcJob(){
+        NfcIo.Job job=nfcJob;nfcJob=null;nfcBusy=false;nfcOperation=Mode.NONE;nfcOwner=null;
+        handler.removeCallbacks(expireNfcTask);if(job!=null)job.cancel();
+    }
     private void dismissNfc(){if(nfcDialog!=null){Dialog d=nfcDialog;nfcDialog=null;d.dismiss();}}
     private void updateReader(){
-        if(nfc==null||!resumed)return;
-        if(mode==Mode.NONE){nfc.disableReaderMode(this);return;}
-        nfc.enableReaderMode(this,this,NfcAdapter.FLAG_READER_NFC_A|NfcAdapter.FLAG_READER_NFC_B|NfcAdapter.FLAG_READER_NFC_F|NfcAdapter.FLAG_READER_NFC_V|NfcAdapter.FLAG_READER_NO_PLATFORM_SOUNDS,null);
+        if(nfcReader==null)return;
+        boolean enable=resumed&&mode!=Mode.NONE;
+        readerPending=enable;handler.removeCallbacks(expireReaderStart);
+        if(enable)handler.postDelayed(expireReaderStart,5000);
+        nfcReader.request(enable,epoch);
     }
-    @Override public synchronized void onTagDiscovered(Tag tag){
-        if(nfcBusy||mode==Mode.NONE)return;
-        Mode operation=mode;int token=epoch;CreationSession owner=session;String encrypted=owner==null?null:owner.encrypted;NfcCards.Candidate target=candidate;boolean protect=lockAfterWrite;
-        nfcBusy=true;
-        runOnUiThread(()->{if(epoch==token&&nfcDialog!=null)nfcDialog.processing((operation==Mode.LOCK||operation==Mode.VERIFY_LOCK)?copy.section("lockCopy").optString("scan"):operation==Mode.WRITE?"正在写入并核对":operation==Mode.CHECK?"正在检查卡片":"正在读取冷钱包",
-            operation==Mode.WRITE?"写入 → 读回 → 核对内容，请保持贴合…":"正在读取，请保持卡片贴合…");});
-        worker.execute(()->{
-            try{
-                if(epoch!=token)return;
-                if(operation==Mode.READ){String text=NfcCards.read(tag);runOnUiThread(()->{if(epoch==token&&resumed){mode=Mode.NONE;dismissNfc();updateReader();acceptIncoming(text);}});}
-                else if(operation==Mode.CHECK){
-                    if(owner==null)throw new IllegalStateException("请先生成冷钱包");
-                    if(copyWriting&&owner.containsCard(tag.getId()))throw new IllegalArgumentException("这张卡片已保存此钱包，请换另一张 NFC 卡");
-                    NfcCards.Candidate result=NfcCards.check(tag,encrypted,protect);
-                    runOnUiThread(()->{if(epoch==token&&resumed){epoch++;mode=Mode.NONE;dismissNfc();updateReader();candidate=result;confirmCard(result);}});
-                }else if(operation==Mode.WRITE){
-                    if(target==null||owner==null)throw new IllegalStateException("请先检查卡片");
-                    NfcCards.writeAndVerify(tag,target,encrypted);
-                    runOnUiThread(()->{if(epoch==token&&resumed&&owner==session){epoch++;mode=Mode.NONE;dismissNfc();updateReader();owner.markCardWritten(target.uid);copyWriting=false;screen="done";lockStatus=protect?"unprotected":"";render();haptic(true);if(protect)confirmReadOnly();}});
-                }else if(operation==Mode.LOCK){
-                    if(owner==null||target==null)throw new IllegalStateException("请先检查卡片");NfcCards.makeReadOnly(tag,target,encrypted);
-                    runOnUiThread(()->{if(epoch==token&&resumed){epoch++;mode=Mode.NONE;dismissNfc();updateReader();lockStatus="unknown";screen="done";render();arm(Mode.VERIFY_LOCK);}});
-                }else if(operation==Mode.VERIFY_LOCK){
-                    if(owner==null||target==null)throw new IllegalStateException("请先检查卡片");NfcCards.verifyReadOnly(tag,target,encrypted);
-                    runOnUiThread(()->{if(epoch==token&&resumed&&owner==session){epoch++;mode=Mode.NONE;dismissNfc();updateReader();lockStatus="locked";screen="done";render();haptic(true);}});
+    @Override public void onTagDiscovered(Tag tag){int token=epoch;Mode detected=mode;handler.post(()->{if(epoch==token&&mode==detected)startNfcOperation(tag);});}
+    private void startNfcOperation(Tag tag){
+        if(!resumed||nfcBusy||mode==Mode.NONE)return;
+        readerPending=false;handler.removeCallbacks(expireReaderStart);
+        nfcOperation=mode;nfcToken=epoch;nfcOwner=session;nfcProtect=lockAfterWrite;nfcBusy=true;
+        Mode operation=nfcOperation;CreationSession owner=nfcOwner;
+        if(nfcDialog!=null)nfcDialog.processing((operation==Mode.LOCK||operation==Mode.VERIFY_LOCK)?copy.section("lockCopy").optString("scan"):operation==Mode.WRITE?"正在写入并核对":operation==Mode.CHECK?"正在检查卡片":"正在读取冷钱包",
+            operation==Mode.WRITE?"写入 → 读回 → 核对内容，请保持贴合…":"正在读取，请保持卡片贴合…");
+        boolean duplicate=copyWriting&&owner!=null&&owner.containsCard(tag.getId());
+        NfcIo.Work task=NfcCards.task(tag,operation.name(),owner==null?null:owner.encrypted,candidate,nfcProtect,duplicate);
+        nfcJob=NfcIo.start(task,this,handler::post);
+        handler.postDelayed(expireNfcTask,nfcJob.remainingMillis());
+    }
+    @Override public void nfcFinished(NfcIo.Job job,Object value,Exception failure){
+        NfcCards.Result result=value instanceof NfcCards.Result?(NfcCards.Result)value:null;
+        if(nfcJob!=job){if(result!=null)result.clear();return;}
+        Mode operation=nfcOperation;int token=nfcToken;CreationSession owner=nfcOwner;boolean protect=nfcProtect;
+        boolean stale=epoch!=token||!resumed||(operation!=Mode.READ&&session!=owner);
+        if(job.expired())failure=new NfcIo.Expired();
+        nfcJob=null;nfcOwner=null;nfcOperation=Mode.NONE;nfcBusy=false;handler.removeCallbacks(expireNfcTask);
+        if(stale||failure!=null)job.cancel();
+        try{
+            if(stale)return;
+            epoch++;mode=Mode.NONE;dismissNfc();updateReader();
+            if(failure!=null){
+                if(operation==Mode.LOCK||operation==Mode.VERIFY_LOCK){lockStatus="unknown";screen="done";render();lockProblem(false,lockDiagnostic(operation,job,failure));}
+                else{
+                    if(operation==Mode.WRITE){clearCandidate();render();}else if(operation==Mode.CHECK)clearCandidate();
+                    if(operation==Mode.CHECK&&protect&&failure.getMessage()!=null&&(failure.getMessage().contains("不支持")||failure.getMessage().contains("镜像或访问")))lockProblem(true);
+                    else showNfcError(failure instanceof NfcCards.ReadOnlyCard?getString(R.string.nfc_card_read_only):failure instanceof NfcIo.Expired?getString(operation==Mode.WRITE?R.string.nfc_write_unconfirmed:R.string.nfc_operation_timeout):failure instanceof NfcIo.Unavailable?getString(R.string.nfc_operation_busy):nfcError(failure));
                 }
-            }catch(Exception ex){runOnUiThread(()->{if(epoch==token&&resumed){if(operation==Mode.LOCK||operation==Mode.VERIFY_LOCK){lockStatus="unknown";screen="done";render();}mode=Mode.NONE;dismissNfc();updateReader();if(operation==Mode.LOCK||operation==Mode.VERIFY_LOCK)lockProblem(false);else if(operation==Mode.CHECK&&protect&&ex.getMessage()!=null&&(ex.getMessage().contains("不支持")||ex.getMessage().contains("镜像或访问")))lockProblem(true);else error(nfcError(ex));}});}
-            finally{nfcBusy=false;}
+                return;
+            }
+            if(result==null){showNfcError(getString(R.string.nfc_operation_timeout));return;}
+            if(operation==Mode.READ)acceptIncoming(result.text,result.cardId);
+            else if(operation==Mode.CHECK){clearCandidate();candidate=result.takeCandidate();confirmCard(candidate);}
+            else if(operation==Mode.WRITE){owner.markCardWritten(result.uid);copyWriting=false;screen="done";lockStatus=protect?"unprotected":"";render();haptic(true);if(protect)confirmReadOnly();}
+            else if(operation==Mode.LOCK){lockStatus="unknown";screen="done";render();arm(Mode.VERIFY_LOCK);}
+            else if(operation==Mode.VERIFY_LOCK){lockStatus="locked";screen="done";render();haptic(true);}
+        }finally{if(result!=null)result.clear();}
+    }
+    private void showNfcError(String message){
+        closeSheet();sheet=ui.sheet(getString(R.string.nfc_operation_problem),p->{
+            ui.note(p,message);ui.action(p,getString(R.string.auto_lock_dismiss),true,0,this::closeSheet);
         });
     }
-    private void lockProblem(boolean unsupported){
-        closeSheet();org.json.JSONObject c=copy.section("lockCopy");sheet=ui.sheet(c.optString(unsupported?"unsupported":"issue"),p->{ui.note(p,c.optString(unsupported?"unsupportedBody":"issueBody"));ui.action(p,c.optString(unsupported?"back":"backup"),true,0,()->{closeSheet();if(unsupported){screen="write";render();}else backupSheet(null);});});
+    private String lockDiagnostic(Mode operation,NfcIo.Job job,Exception failure){
+        String kind;int reason;
+        if(failure instanceof NfcIo.Expired){kind="TIME";reason=R.string.nfc_lock_reason_timeout;}
+        else if(failure instanceof NfcIo.Unavailable){kind="BUSY";reason=R.string.nfc_lock_reason_busy;}
+        else if(failure instanceof android.nfc.TagLostException){kind="LOST";reason=R.string.nfc_lock_reason_lost;}
+        else if(failure instanceof java.util.concurrent.CancellationException){kind="CANCEL";reason=R.string.nfc_lock_reason_cancel;}
+        else if(failure instanceof java.io.IOException){kind="IO";reason=R.string.nfc_lock_reason_io;}
+        else{kind=failure instanceof IllegalArgumentException?"CARD":failure instanceof IllegalStateException?"STATE":"OTHER";reason=R.string.nfc_lock_reason_check;}
+        String code="NFC-"+(operation==Mode.VERIFY_LOCK?"VERIFY":"LOCK")+"-"+(job==null?NfcIo.Phase.START:job.phase()).code+"-"+kind;
+        return getString(R.string.nfc_lock_diagnostic,code,getString(reason));
+    }
+    private void lockProblem(boolean unsupported){lockProblem(unsupported,null);}
+    private void lockProblem(boolean unsupported,String diagnostic){
+        closeSheet();org.json.JSONObject c=copy.section("lockCopy");sheet=ui.sheet(c.optString(unsupported?"unsupported":"issue"),p->{
+            ui.note(p,c.optString(unsupported?"unsupportedBody":"issueBody"));
+            if(!unsupported&&diagnostic!=null)ui.callout(p,R.drawable.ic_warning,diagnostic);
+            ui.action(p,c.optString(unsupported?"back":"backup"),true,0,()->{closeSheet();if(unsupported){screen="write";render();}else backupSheet(null);});
+        });
     }
     private void confirmCard(NfcCards.Candidate result){
         closeSheet();sheet=ui.sheet(result.hasData?"卡片已有数据，是否覆盖？":copy.ui("cardReady"),p->{
@@ -847,7 +1095,7 @@ public final class MainActivity extends Activity implements NfcAdapter.ReaderCal
         if(screen.equals("setup")&&enhanced&&cameraEntropy==null){closeCreationDialog();render();}
         error(ex instanceof IllegalArgumentException?ex.getMessage():fallback);
     });}
-    private void closeSheet(){closeUnlockDialog();closeCreationDialog();if(sheet!=null){Dialog d=sheet;sheet=null;d.dismiss();}}
+    private void closeSheet(){if(pendingVerification!=null)closeUnlocked();closeUnlockDialog();closeCreationDialog();if(sheet!=null){Dialog d=sheet;sheet=null;d.dismiss();}}
     private void secure(Dialog dialog){WindowProtection.secure(dialog.getWindow());}
     private void error(String message){if(creationFeedback!=null){creationFeedback.setText(tr(message));creationFeedback.setVisibility(View.VISIBLE);}if(feedback!=null){feedback.setText(tr(message));feedback.setVisibility(View.VISIBLE);}toast(message);haptic(false);}
     private void toast(String message){Toast.makeText(this,tr(message),Toast.LENGTH_LONG).show();}
@@ -863,14 +1111,13 @@ public final class MainActivity extends Activity implements NfcAdapter.ReaderCal
     private void requestPrivateCopy(){
         if(!allowSecretOperation())return;
         if(expireUnlockedIfNeeded())return;
-        if(!PrivateClipboardPolicy.allowsCopy(Build.VERSION.SDK_INT)){error(getString(R.string.private_copy_legacy_notice));return;}
         if(unlocked==null||!resumed||copyConfirm!=null)return;
         closeQrSaveConfirm();Dialog owner=new Dialog(this);copyConfirm=owner;
         owner.setOnDismissListener(d->{if(copyConfirm==owner){copyConfirm=null;copyConfirmFeedback=null;}});
         ui.showSheet(owner,getString(R.string.copy_confirm_title),p->{
             TextView description=ui.text(p,getString(R.string.copy_confirm_description),14,AppUi.SUB,false);ui.line(description,1.8f);
             LinearLayout warning=ui.callout(p,R.drawable.ic_warning,null),box=(LinearLayout)warning.getParent();
-            android.graphics.drawable.GradientDrawable background=ui.shape(0xfffff0e9,13,false);background.setStroke(ui.dp(1),0xfff2d2c2);box.setBackground(background);
+            android.graphics.drawable.GradientDrawable background=ui.shape(0xfffff0e9,13,false);background.setStroke(ui.borderWidth(),0xfff2d2c2);box.setBackground(background);
             ((ImageView)box.getChildAt(0)).setImageDrawable(ui.drawable(R.drawable.ic_warning,0xff99412c,17));
             TextView caution=ui.text(warning,getString(R.string.copy_confirm_caution),14,0xff99412c,false);ui.line(caution,1.75f);
             ui.space(p,19);TextView transfer=ui.text(p,getString(R.string.copy_confirm_transfer),13,AppUi.SUB,false);ui.line(transfer,1.8f);ui.space(p,13);
@@ -890,7 +1137,6 @@ public final class MainActivity extends Activity implements NfcAdapter.ReaderCal
     private boolean copyPrivateKey(){
         if(!allowSecretOperation())return false;
         if(expireUnlockedIfNeeded())return false;
-        if(!PrivateClipboardPolicy.allowsCopy(Build.VERSION.SDK_INT)){error(getString(R.string.private_copy_legacy_notice));return false;}
         if(unlocked==null||!resumed||secretView==null||secretView.isCleared()||qrDialog==null||!qrDialog.isShowing())return false;ClipboardManager clipboard=(ClipboardManager)getSystemService(CLIPBOARD_SERVICE);
         if(clipboard==null){error("无法访问剪贴板，请重试");return false;}
         char[] text=secretView.copyCharacters();ClipData clip;
@@ -932,14 +1178,19 @@ public final class MainActivity extends Activity implements NfcAdapter.ReaderCal
     private void clearWalletSession(boolean clipboard){
         closeAccessNotice();
         dismissAutoLockDialog();dismissFileError();cancelDocumentOperation(true);
-        epoch++;mode=Mode.NONE;handler.removeCallbacksAndMessages(null);afterResume=null;clearCamera();setupNote="";enhanced=false;lockAfterWrite=false;lockStatus="";protectionReturn="home";
+        epoch++;stopNfcJob();mode=Mode.NONE;handler.removeCallbacksAndMessages(null);afterResume=null;clearCamera();setupNote="";enhanced=false;lockAfterWrite=false;lockStatus="";protectionReturn="home";
         closeSheet();dismissNfc();dismissWork();dismissQr();hideSecret.run();closeUnlocked();wipePendingPasswords();
         if(ui!=null){ui.clearInputs();ui.buttons.clear();}
-        clearCandidate();clearPendingQrImage();session=null;incoming=null;exportData=null;exportAction=null;copyWriting=false;
+        clearCandidate();clearPendingQrImage();clearIncomingVerification();recordedCreation=null;recordedCreationCards=0;creationRecordSaving=false;recordRows=java.util.Collections.emptyList();session=null;incoming=null;incomingCardId=null;exportData=null;exportAction=null;copyWriting=false;
         secretView=null;secretToggle=null;
         if(clipboard)clearOwnedClipboard();clipboardMarker=null;publicClipboardMarker=null;clipboardExpiry=0;ownedClipboardMarkers.clear();
     }
     private void showAddressQr(String type,String address,boolean verified){
+        if(!receivingAllowed(address,verified)){
+            if(session!=null&&(screen.equals("write")||screen.equals("done"))){if(session.cardCount()>0)backupSheet(null);else toast(getString(R.string.verification_finish_first));}
+            else if(incoming!=null&&screen.equals("unlock")){showUnlockDialog();pendingAddressType=type;}
+            return;
+        }
         try{
             dismissQr();int size=qrSize();
             showQrSheet(type,address,verified,false,QrCodeEncoder.address(address,size),size);
@@ -948,7 +1199,7 @@ public final class MainActivity extends Activity implements NfcAdapter.ReaderCal
     private int qrSize(){return Math.max(160,Math.min(ui.dp(240),getResources().getDisplayMetrics().widthPixels-ui.dp(104)));}
     private void showPrivateQr(){
         if(!allowSecretOperation())return;
-        if(expireUnlockedIfNeeded()||unlocked==null)return;
+        if(expireUnlockedIfNeeded()||unlocked==null||pendingVerification!=null)return;
         if(!resumed||privateOpening)return;dismissQr();PrivateSession owner=unlocked;int token=epoch;privateOpening=true;
         worker.execute(()->{
             char[] value=null;
@@ -988,7 +1239,7 @@ public final class MainActivity extends Activity implements NfcAdapter.ReaderCal
                 card.addView(secretView,new LinearLayout.LayoutParams(-1,-2));
                 if(Build.VERSION.SDK_INT>=34)qrImage.setAccessibilityDataSensitive(View.ACCESSIBILITY_DATA_SENSITIVE_YES);
                 qrImage.setImportantForAutofill(View.IMPORTANT_FOR_AUTOFILL_NO_EXCLUDE_DESCENDANTS);
-                if(Build.VERSION.SDK_INT>=30)qrImage.setImportantForContentCapture(View.IMPORTANT_FOR_CONTENT_CAPTURE_NO_EXCLUDE_DESCENDANTS);
+                qrImage.setImportantForContentCapture(View.IMPORTANT_FOR_CONTENT_CAPTURE_NO_EXCLUDE_DESCENDANTS);
             }else{
                 TextView value=ui.text(card,"",12,AppUi.FG,false);value.setText(address);value.setTypeface(Typeface.MONOSPACE);value.setGravity(Gravity.CENTER);
                 value.setSingleLine(false);value.setHorizontallyScrolling(false);value.setHyphenationFrequency(android.text.Layout.HYPHENATION_FREQUENCY_NONE);
@@ -997,20 +1248,17 @@ public final class MainActivity extends Activity implements NfcAdapter.ReaderCal
             }
             if(privateKey){
                 ui.callout(p,R.drawable.ic_key,getString(R.string.wallet_private_warning));
-                if(!PrivateClipboardPolicy.allowsCopy(Build.VERSION.SDK_INT))ui.callout(p,R.drawable.ic_lock,getString(R.string.private_copy_legacy_notice));
             }
             else if(!verified){ui.callout(p,R.drawable.ic_warning,copy.ui("qrUnverified"));}
             else{
                 LinearLayout status=ui.horizontal();status.setGravity(Gravity.CENTER);status.setPadding(0,ui.dp(12),0,ui.dp(12));p.addView(status);
                 ImageView check=new ImageView(this);check.setImageDrawable(ui.drawable(verified?R.drawable.ic_check:R.drawable.ic_lock,AppUi.ACCENT,17));
                 status.addView(check,new LinearLayout.LayoutParams(ui.dp(18),ui.dp(18)));
-                TextView text=new TextView(this);text.setText(tr(verified?"已与私钥核对，地址正确":"待解密核验"));text.setTextColor(AppUi.ACCENT);text.setTextSize(12);text.setPadding(ui.dp(8),0,0,0);status.addView(text);
+                TextView text=new TextView(this);text.setIncludeFontPadding(false);text.setText(verificationSource.equals("local")?getString(R.string.verification_local):tr("已与私钥核对，地址正确"));text.setTextColor(AppUi.ACCENT);text.setTextSize(12);text.setPadding(ui.dp(8),0,0,0);status.addView(text);
             }
             qrFeedback=ui.text(p,"",12,AppUi.ERROR,false);qrFeedback.setAccessibilityLiveRegion(View.ACCESSIBILITY_LIVE_REGION_POLITE);qrFeedback.setVisibility(View.GONE);
             ui.space(p,8);LinearLayout actions=ui.horizontal();actions.setBaselineAligned(false);p.addView(actions);
-            boolean copyUnavailable=privateKey&&!PrivateClipboardPolicy.allowsCopy(Build.VERSION.SDK_INT);
-            Button copy=ui.action(actions,copyUnavailable?getString(R.string.private_copy_unavailable):privateKey?MainActivity.this.copy.ui("copyWif"):MainActivity.this.copy.ui("copyAddress"),!privateKey,copyUnavailable?R.drawable.ic_lock:R.drawable.ic_copy,privateKey?this::requestPrivateCopy:()->copy("收款地址",address));
-            if(copyUnavailable){copy.setEnabled(false);copy.setTextColor(AppUi.SUB);copy.setBackground(ui.shape(0xfff0ebe4,15,false));}
+            Button copy=ui.action(actions,privateKey?MainActivity.this.copy.ui("copyWif"):MainActivity.this.copy.ui("copyAddress"),!privateKey,R.drawable.ic_copy,privateKey?this::requestPrivateCopy:()->{if(currentQr(owner)&&receivingAllowed(address,true))copy("收款地址",address);});
             Button save=ui.action(actions,"保存图片",privateKey,R.drawable.ic_download,()->requestQrImageSave(owner,privateKey,address,verified));
             LinearLayout.LayoutParams cp=new LinearLayout.LayoutParams(0,-2,1);cp.rightMargin=ui.dp(8);copy.setLayoutParams(cp);
             LinearLayout.LayoutParams sp=new LinearLayout.LayoutParams(0,-2,1);save.setLayoutParams(sp);
@@ -1037,6 +1285,7 @@ public final class MainActivity extends Activity implements NfcAdapter.ReaderCal
     }
     private boolean currentQr(Dialog owner){return qrDialog==owner&&owner.isShowing()&&qrBitmap!=null&&resumed&&!busy&&!fileBusy;}
     private void requestQrImageSave(Dialog qrOwner,boolean privateKey,String address,boolean verified){
+        if(!privateKey&&!receivingAllowed(address,verified))return;
         if(privateKey&&!allowSecretOperation())return;
         if(privateKey&&expireUnlockedIfNeeded())return;
         if(!currentQr(qrOwner)||pendingQrImage!=null||qrSaveConfirm!=null)return;
@@ -1057,6 +1306,7 @@ public final class MainActivity extends Activity implements NfcAdapter.ReaderCal
         },cancel,privateKey?0:R.drawable.ic_password_warning);secure(owner);
     }
     private void beginQrImageExport(boolean privateKey,String address,boolean verified){
+        if(!privateKey&&!receivingAllowed(address,verified))return;
         if(privateKey&&!allowSecretOperation())return;
         if(privateKey&&expireUnlockedIfNeeded())return;
         if(qrBitmap==null||!resumed||pendingQrImage!=null||(privateKey&&unlocked==null))return;
@@ -1097,7 +1347,7 @@ public final class MainActivity extends Activity implements NfcAdapter.ReaderCal
         if(qrBitmap!=null){qrBitmap.eraseColor(Color.WHITE);qrBitmap.recycle();qrBitmap=null;}qrDialog=null;
     }
     private void dismissQr(){if(qrDialog!=null)qrDialog.dismiss();clearQrBitmap();}
-    private void closeUnlocked(){privateOpening=false;wipePendingPrivateViews();unlockDeadline.clear();handler.removeCallbacks(checkUnlockDeadline);closeCopyConfirm();handler.removeCallbacks(hideSecret);hideSecret.run();if(unlocked!=null){unlocked.close();unlocked=null;}}
+    private void closeUnlocked(){pendingVerification=null;privateOpening=false;wipePendingPrivateViews();unlockDeadline.clear();handler.removeCallbacks(checkUnlockDeadline);closeCopyConfirm();handler.removeCallbacks(hideSecret);hideSecret.run();if(unlocked!=null){unlocked.close();unlocked=null;}}
     /** Called only by accepted touch/key events or semantic button actions, never by redraws. */
     private boolean privateInteraction(){
         if(unlocked==null||!unlockDeadline.active())return false;
@@ -1114,7 +1364,7 @@ public final class MainActivity extends Activity implements NfcAdapter.ReaderCal
             dismissAutoLockDialog();Dialog owner=new Dialog(this);autoLockDialog=owner;
             ui.statusSheet(owner,getString(R.string.auto_lock_title),R.drawable.ic_lock,p->{
                 TextView reason=ui.text(p,getString(cause==UnlockDeadline.Cause.IDLE?R.string.auto_lock_idle_body:R.string.auto_lock_max_body),15,AppUi.SUB,false);ui.line(reason,1.9f);
-                ui.callout(p,R.drawable.ic_shield,getString(R.string.auto_lock_cleared));ui.space(p,17);
+                ui.callout(p,R.drawable.ic_shield,getString(currentVerification()!=null?R.string.verification_locked_body:R.string.auto_lock_cleared));ui.space(p,17);
                 Button dismiss=ui.action(p,getString(R.string.auto_lock_dismiss),true,0,()->{});
                 dismiss.setOnClickListener(v->{if(autoLockDialog==owner&&owner.isShowing())owner.dismiss();});
             });
@@ -1131,5 +1381,5 @@ public final class MainActivity extends Activity implements NfcAdapter.ReaderCal
     private char[] chars(EditText input){char[] a=new char[input.length()];input.getText().getChars(0,input.length(),a,0);return a;}
     private void hideKeyboard(){InputMethodManager imm=(InputMethodManager)getSystemService(INPUT_METHOD_SERVICE);Dialog owner=workDialog!=null?workDialog:unlockDialog!=null?unlockDialog:creationDialog;View v=owner!=null?owner.getCurrentFocus():getCurrentFocus();if(imm!=null&&v!=null)imm.hideSoftInputFromWindow(v.getWindowToken(),0);}
     private void tap(){privateInteraction();getWindow().getDecorView().performHapticFeedback(HapticFeedbackConstants.KEYBOARD_TAP);}
-    private void haptic(boolean success){getWindow().getDecorView().performHapticFeedback(Build.VERSION.SDK_INT>=30?(success?HapticFeedbackConstants.CONFIRM:HapticFeedbackConstants.REJECT):HapticFeedbackConstants.LONG_PRESS);}
+    private void haptic(boolean success){getWindow().getDecorView().performHapticFeedback(success?HapticFeedbackConstants.CONFIRM:HapticFeedbackConstants.REJECT);}
 }
