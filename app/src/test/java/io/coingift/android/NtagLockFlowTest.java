@@ -46,8 +46,7 @@ public class NtagLockFlowTest {
     private interface Action{void run(NfcIo.Job job)throws Exception;}
     private static class Outcome{Exception error;NfcIo.Phase phase;}
     private Outcome run(Action action)throws Exception{
-        java.lang.reflect.Field f=NfcIo.class.getDeclaredField("IO");f.setAccessible(true);ThreadPoolExecutor pool=(ThreadPoolExecutor)f.get(null);
-        long end=System.nanoTime()+TimeUnit.SECONDS.toNanos(3);while(pool.getActiveCount()!=0&&System.nanoTime()<end)Thread.sleep(5);Thread.sleep(10);
+        NfcTestWorkers.awaitIdle(NfcIo.class,"IO");
         Outcome result=new Outcome();CountDownLatch done=new CountDownLatch(1);NfcIo.Listener listener=(j,v,e)->{result.error=e;result.phase=j.phase();done.countDown();};
         NfcIo.start(new NfcIo.Work(){public Object run(NfcIo.Job job)throws Exception{action.run(job);return null;}public void discard(Object ignored){}public void close(){}},listener,Runnable::run);
         assertTrue(done.await(3,TimeUnit.SECONDS));return result;

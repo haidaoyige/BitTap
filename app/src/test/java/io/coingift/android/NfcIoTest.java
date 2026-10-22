@@ -26,9 +26,7 @@ public class NfcIoTest {
         public void nfcFinished(NfcIo.Job job,Object result,Exception failure){this.result=result;this.failure=failure;delivered.countDown();}
     }
     private static void drain()throws Exception{
-        long end=System.nanoTime()+TimeUnit.SECONDS.toNanos(3);
-        while(System.nanoTime()<end){Work w=new Work(false);Listener l=new Listener();NfcIo.start(w,l,Runnable::run);await(l.delivered);if(l.failure==null)return;Thread.sleep(10);}
-        fail("NFC worker did not drain");
+        NfcTestWorkers.awaitIdle(NfcIo.class,"IO");
     }
     @Test public void ownedConnectionIsClosedAndResultDelivered()throws Exception{
         drain();Work work=new Work(false);Listener listener=new Listener();NfcIo.start(work,listener,Runnable::run);await(listener.delivered);

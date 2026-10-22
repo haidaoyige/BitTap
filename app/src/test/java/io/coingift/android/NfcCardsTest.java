@@ -17,8 +17,7 @@ public class NfcCardsTest {
     private static class Outcome {Object value;Exception failure;}
     private Outcome run(Action action)throws Exception{
         // Drain the shared worker from previous test callbacks before submitting.
-        java.lang.reflect.Field f=NfcIo.class.getDeclaredField("IO");f.setAccessible(true);ThreadPoolExecutor pool=(ThreadPoolExecutor)f.get(null);
-        long end=System.nanoTime()+TimeUnit.SECONDS.toNanos(3);while(pool.getActiveCount()>0&&System.nanoTime()<end)Thread.sleep(5);
+        NfcTestWorkers.awaitIdle(NfcIo.class,"IO");
         Outcome outcome=new Outcome();CountDownLatch done=new CountDownLatch(1);NfcIo.Listener listener=(j,v,e)->{outcome.value=v;outcome.failure=e;done.countDown();};
         NfcIo.start(new NfcIo.Work(){public Object run(NfcIo.Job job)throws Exception{return action.run(job);}public void discard(Object v){}public void close(){}},listener,Runnable::run);
         assertTrue(done.await(3,TimeUnit.SECONDS));return outcome;

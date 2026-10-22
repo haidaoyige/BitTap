@@ -8,18 +8,7 @@ import java.util.concurrent.atomic.*;
 public class NfcReaderControlTest {
     private static void await(CountDownLatch v)throws Exception{assertTrue(v.await(3,TimeUnit.SECONDS));}
     private static void drain()throws Exception{
-        java.lang.reflect.Field f=NfcReaderControl.class.getDeclaredField("IO");f.setAccessible(true);ThreadPoolExecutor pool=(ThreadPoolExecutor)f.get(null);
-        long end=System.nanoTime()+TimeUnit.SECONDS.toNanos(3);long idleSince=0;
-        // activeCount is approximate: a worker can dequeue before it becomes active.
-        // Require a stable idle interval instead of asserting two racing snapshots.
-        while(System.nanoTime()<end){
-            if(pool.getActiveCount()==0&&pool.getQueue().isEmpty()){
-                if(idleSince==0)idleSince=System.nanoTime();
-                if(System.nanoTime()-idleSince>=TimeUnit.MILLISECONDS.toNanos(20))return;
-            }else idleSince=0;
-            Thread.sleep(5);
-        }
-        fail("NFC control executor did not become idle within 3 seconds");
+        NfcTestWorkers.awaitIdle(NfcReaderControl.class,"IO");
     }
     @Test public void blockedEnableNeverBlocksCallerAndCancelCoalescesAllPendingRequests()throws Exception{
         drain();CountDownLatch entered=new CountDownLatch(1),release=new CountDownLatch(1),disabled=new CountDownLatch(1);AtomicInteger enables=new AtomicInteger(),callbacks=new AtomicInteger();Thread ui=Thread.currentThread();
