@@ -1,0 +1,107 @@
+{
+  "version": "0.7.0",
+  "versionCode": 50,
+  "commit": "53c281b5f3ba8fa47ac1c59e9166300b384aaf33",
+  "productModified": false,
+  "releaseToolTests": 10,
+  "newConfirmedExploitableVulnerabilities": 0,
+  "compatibilityRisks": [
+    {
+      "id": "R070-01",
+      "severity": "high impact conditional on legacy p=1 wallet ownership",
+      "status": "confirmed intentional incompatibility",
+      "proof": "cross-version.log",
+      "note": "v0.6.1 published recovery generates p=1; v0.7.0 rejects it; old recovery still succeeds"
+    }
+  ],
+  "reportUpdated": "2026-10-23",
+  "scope": "Code/host audit and Xiaomi Android15 software-device checks completed; physical NFC acceptance incomplete and stopped by owner.",
+  "unitTests": {
+    "core": {
+      "tests": 85,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "app": {
+      "tests": 46,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "recovery": {
+      "tests": 6,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    }
+  },
+  "softwareDevice": {
+    "assertionGroups": [
+      {
+        "name": "private-access",
+        "count": 109,
+        "passed": true
+      },
+      {
+        "name": "verification",
+        "count": 324,
+        "passed": true
+      },
+      {
+        "name": "current-flow",
+        "count": 46,
+        "passed": true
+      },
+      {
+        "name": "deadline-file",
+        "count": 64,
+        "passed": true
+      },
+      {
+        "name": "nfc-safety",
+        "count": 62,
+        "passed": true
+      },
+      {
+        "name": "readonly-anr",
+        "count": 41,
+        "passed": true
+      },
+      {
+        "name": "lock-diagnostics",
+        "count": 192,
+        "passed": true
+      }
+    ],
+    "countsNotAdditive": true,
+    "realIdleSeconds": 60,
+    "realAbsoluteMilliseconds": 120089,
+    "syntheticAcceptedTouchBatches": 5,
+    "officialCamera32FramesAndFinalCapture": true,
+    "officialSAFBackupReadbackAndIndependentFourAddressRecovery": true,
+    "officialRecordSurvivesProcessRestart": true
+  },
+  "physicalNfc": {
+    "status": "stopped_by_user",
+    "date": "2026-10-23",
+    "normalWriteAndAppReadback": "passed once",
+    "firstFailedWriteRecovery": "passed; first failure left NDEF absent; same wallet subsequently written with app readback success",
+    "deliberateRemoval": "app reported failure without false success; post-interruption original-card contents not verified because subsequent observed object differed",
+    "permanentLock": "not performed",
+    "physicalAcceptance": "not fully passed"
+  },
+  "residualRisks": [
+    "Guessable format-compliant passwords remain possible",
+    "v0.6.1 p=1 backups require a compatible legacy recovery tool; v0.7.0 rejects them",
+    "Repository protection details and security-mailbox delivery were not independently confirmed",
+    "Final original-card contents after deliberate removal were not verified; permanent lock was never performed",
+    "Other ROMs/Android versions, full accessibility attack combinations, external-wallet real-funds spending and sensor entropy certification are outside completed coverage"
+  ],
+  "publication": {
+    "rawDeviceLogsIncluded": false,
+    "privateRecoveryMaterialsIncluded": false,
+    "sourceOrReleaseChanged": false,
+    "notAbsoluteSafetyCertification": true
+  }
+}
