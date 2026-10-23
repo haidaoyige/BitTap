@@ -1,0 +1,412 @@
+{
+  "schema": 1,
+  "description": "Human-authored Markdown language coverage; raw licenses, logs, hashes and machine records retain original bytes.",
+  "documents": [
+    {
+      "source": "README.md",
+      "original_language": "zh-CN",
+      "zh": "README.md",
+      "en": "README.en.md",
+      "source_sha256": "6071b55d9cf5c74a0c8d267d70b3d6034e807f687545c3782d79c1e0649c3800"
+    },
+    {
+      "source": "SECURITY.md",
+      "original_language": "bilingual",
+      "zh": "SECURITY.md",
+      "en": "SECURITY.md",
+      "source_sha256": "3385ea99592c46ab2b0fc362729a95b1c6e21f33e2f7f3d05a458903f87b5299"
+    },
+    {
+      "source": "docs/BITTAP-IMPLEMENTATION.md",
+      "original_language": "zh-CN",
+      "zh": "docs/BITTAP-IMPLEMENTATION.md",
+      "en": "docs/BITTAP-IMPLEMENTATION.en.md",
+      "source_sha256": "84a7cde497fe7908ceac22918bb42736541ef7d51a1681f27c8e56ad384961ba"
+    },
+    {
+      "source": "docs/CHANGELOG.md",
+      "original_language": "zh-CN",
+      "zh": "docs/CHANGELOG.md",
+      "en": "docs/CHANGELOG.en.md",
+      "source_sha256": "605358a0a93b5c597c9771fbcbbfa8fbee23ef55f9bb7c9042e9350fff5f3e08"
+    },
+    {
+      "source": "docs/FORMAT.md",
+      "original_language": "en",
+      "zh": "docs/FORMAT.zh-CN.md",
+      "en": "docs/FORMAT.md",
+      "source_sha256": "2440a577df3012bebf7af2d93d684e8204a29c4387af8962befc5e08533f54a5"
+    },
+    {
+      "source": "docs/GITHUB-PUBLISH.md",
+      "original_language": "zh-CN",
+      "zh": "docs/GITHUB-PUBLISH.md",
+      "en": "docs/GITHUB-PUBLISH.en.md",
+      "source_sha256": "f68828d09f7cf8aa6f503beb6d10d26035fe7443259a5d9f6489fc5dcd56a6f2"
+    },
+    {
+      "source": "docs/RUNTIME-DEPENDENCIES.md",
+      "original_language": "en",
+      "zh": "docs/RUNTIME-DEPENDENCIES.zh-CN.md",
+      "en": "docs/RUNTIME-DEPENDENCIES.md",
+      "source_sha256": "a01d959013d872ba88563536b1a3fdf82caeab2b2bfec555efb1cc5938547e20"
+    },
+    {
+      "source": "docs/SECURITY-REVIEW-0.4.0.md",
+      "original_language": "zh-CN",
+      "zh": "docs/SECURITY-REVIEW-0.4.0.md",
+      "en": "docs/SECURITY-REVIEW-0.4.0.en.md",
+      "source_sha256": "376622aac0e7ff3a870588f792a0d3539f5c025c6cecb12ca54f5a0c2a3d1c7a"
+    },
+    {
+      "source": "docs/THIRD_PARTY.md",
+      "original_language": "en",
+      "zh": "docs/THIRD_PARTY.zh-CN.md",
+      "en": "docs/THIRD_PARTY.md",
+      "source_sha256": "bdc7fe6093c7b875fcbbafebdaca7fe1e39c386b5ad1cbd677c373e8015758f8"
+    },
+    {
+      "source": "docs/UI-PROTOTYPE-ALIGNMENT.md",
+      "original_language": "zh-CN",
+      "zh": "docs/UI-PROTOTYPE-ALIGNMENT.md",
+      "en": "docs/UI-PROTOTYPE-ALIGNMENT.en.md",
+      "source_sha256": "6c9b520f3d42755b36a03e61349c199ad97d35d173290dabbfae409b0ab038c7"
+    },
+    {
+      "source": "docs/VALIDATION.md",
+      "original_language": "zh-CN",
+      "zh": "docs/VALIDATION.md",
+      "en": "docs/VALIDATION.en.md",
+      "source_sha256": "b6b0e8898d287835dc805954c0c198dd80b1d08dac9d6e6651ccad98462ba3aa"
+    },
+    {
+      "source": "docs/design/README.md",
+      "original_language": "zh-CN",
+      "zh": "docs/design/README.md",
+      "en": "docs/design/README.en.md",
+      "source_sha256": "63233affcb62522dd17aad963c7036c01fc177d5a41d94b99e1698160500c333"
+    },
+    {
+      "source": "docs/design/qr-dialog-proposal.md",
+      "original_language": "zh-CN",
+      "zh": "docs/design/qr-dialog-proposal.md",
+      "en": "docs/design/qr-dialog-proposal.en.md",
+      "source_sha256": "66022b7ddd59b44a207452e32ab05152a539ff97201d0b19b70ab45900cf09aa"
+    },
+    {
+      "source": "docs/release/README.md",
+      "original_language": "zh-CN",
+      "zh": "docs/release/README.md",
+      "en": "docs/release/README.en.md",
+      "source_sha256": "0f14004a642d71b1ae4e2501b758711f648e11b35066934293c388b065046c3b"
+    },
+    {
+      "source": "docs/release/SECURITY-REVIEW.md",
+      "original_language": "zh-CN",
+      "zh": "docs/release/SECURITY-REVIEW.md",
+      "en": "docs/release/SECURITY-REVIEW.en.md",
+      "source_sha256": "71d7994cbb5cf9fcb50617ec6dbcd6d4a56300807cab053bc521bbe0f46d16c5"
+    },
+    {
+      "source": "docs/release/bittap-code10/VALIDATION.md",
+      "original_language": "zh-CN",
+      "zh": "docs/release/bittap-code10/VALIDATION.md",
+      "en": "docs/release/bittap-code10/VALIDATION.en.md",
+      "source_sha256": "cab8a3ea57228300cd668facfeac60db2f66cad73cea62cd9875aec51da2166c"
+    },
+    {
+      "source": "docs/release/bittap-code11/VALIDATION.md",
+      "original_language": "zh-CN",
+      "zh": "docs/release/bittap-code11/VALIDATION.md",
+      "en": "docs/release/bittap-code11/VALIDATION.en.md",
+      "source_sha256": "8a5c3280660ead0f6bb29e45b9e5a64451fff82c8ffdf9b72900171e73401c73"
+    },
+    {
+      "source": "docs/release/bittap-code12/VALIDATION.md",
+      "original_language": "zh-CN",
+      "zh": "docs/release/bittap-code12/VALIDATION.md",
+      "en": "docs/release/bittap-code12/VALIDATION.en.md",
+      "source_sha256": "b877ea1bd7248995f40f4e406df3f901c59b27ef1df687f6c8554b4c657c6d36"
+    },
+    {
+      "source": "docs/release/bittap-code13/VALIDATION.md",
+      "original_language": "zh-CN",
+      "zh": "docs/release/bittap-code13/VALIDATION.md",
+      "en": "docs/release/bittap-code13/VALIDATION.en.md",
+      "source_sha256": "45460a45c15956bf07cd5b34399ab562e17c4c1ea41ab9d0a316942745e71dd6"
+    },
+    {
+      "source": "docs/release/bittap-code14/VALIDATION.md",
+      "original_language": "zh-CN",
+      "zh": "docs/release/bittap-code14/VALIDATION.md",
+      "en": "docs/release/bittap-code14/VALIDATION.en.md",
+      "source_sha256": "4e02cc29e737cc587d08f936213a3044f4fecb6f2eab33e7958e1654f2539ed7"
+    },
+    {
+      "source": "docs/release/bittap-code7/README.md",
+      "original_language": "zh-CN",
+      "zh": "docs/release/bittap-code7/README.md",
+      "en": "docs/release/bittap-code7/README.en.md",
+      "source_sha256": "60743615f08ba0455274a4a1f6cd0d659f37088806602a61eaf31fb73b0de696"
+    },
+    {
+      "source": "docs/release/bittap-code8/README.md",
+      "original_language": "zh-CN",
+      "zh": "docs/release/bittap-code8/README.md",
+      "en": "docs/release/bittap-code8/README.en.md",
+      "source_sha256": "29e88239ff8342960a886a20039297a4acf01ccf27c89344e63031d6683d6f5b"
+    },
+    {
+      "source": "docs/release/bittap-code9/VALIDATION.md",
+      "original_language": "zh-CN",
+      "zh": "docs/release/bittap-code9/VALIDATION.md",
+      "en": "docs/release/bittap-code9/VALIDATION.en.md",
+      "source_sha256": "ce51ccf49ed631ada6c6e6fd2dfb74805569e635c066e8a11c10848120200d26"
+    },
+    {
+      "source": "docs/release/v0.5.0/VALIDATION.md",
+      "original_language": "zh-CN",
+      "zh": "docs/release/v0.5.0/VALIDATION.md",
+      "en": "docs/release/v0.5.0/VALIDATION.en.md",
+      "source_sha256": "c8dbc8639eb6332968886fb7659d09240468c9c066bde93732fb2bc29c4763fd"
+    },
+    {
+      "source": "docs/release/v0.6.0/RELEASE-NOTES.md",
+      "original_language": "zh-CN",
+      "zh": "docs/release/v0.6.0/RELEASE-NOTES.md",
+      "en": "docs/release/v0.6.0/RELEASE-NOTES.en.md",
+      "source_sha256": "e27aeb9581d3a5bf0cfce06b7b3bcf23d1b46b08954a6a8d289f066eba6c3b08"
+    },
+    {
+      "source": "docs/release/v0.6.1/RELEASE-NOTES.md",
+      "original_language": "zh-CN",
+      "zh": "docs/release/v0.6.1/RELEASE-NOTES.md",
+      "en": "docs/release/v0.6.1/RELEASE-NOTES.en.md",
+      "source_sha256": "9eb45d8f9f4823101a2db37a41ad88a0aea8c2915739fd1f170644177ca90dfc"
+    },
+    {
+      "source": "docs/release/v0.6.2/RELEASE-NOTES.md",
+      "original_language": "zh-CN",
+      "zh": "docs/release/v0.6.2/RELEASE-NOTES.md",
+      "en": "docs/release/v0.6.2/RELEASE-NOTES.en.md",
+      "source_sha256": "4bb29a21944450a59b3913e68e42dd00d72b316c4b9f56ee752be8794d06da93"
+    },
+    {
+      "source": "docs/release/v0.7.0/RELEASE-NOTES.md",
+      "original_language": "zh-CN",
+      "zh": "docs/release/v0.7.0/RELEASE-NOTES.md",
+      "en": "docs/release/v0.7.0/RELEASE-NOTES.en.md",
+      "source_sha256": "7c0951d0944e3fb5bc26b3c3c826f89a8b0b64c22d2a51fb23df4f074d5ca8fa"
+    },
+    {
+      "source": "docs/security/BACKEND-HARDENING.md",
+      "original_language": "zh-CN",
+      "zh": "docs/security/BACKEND-HARDENING.md",
+      "en": "docs/security/BACKEND-HARDENING.en.md",
+      "source_sha256": "ea177896369ace3d78aaf41c6241af7240479653587cf1fffe833664ade12bc4"
+    },
+    {
+      "source": "docs/security/BTA-01-08-12-code39.md",
+      "original_language": "en",
+      "zh": "docs/security/BTA-01-08-12-code39.zh-CN.md",
+      "en": "docs/security/BTA-01-08-12-code39.md",
+      "source_sha256": "b3a982c6ab7b960ef3738bcdd1cdfdde968c895eeb2fb4dc5551360ce05e58dd"
+    },
+    {
+      "source": "docs/security/BTA-04-code40.md",
+      "original_language": "zh-CN",
+      "zh": "docs/security/BTA-04-code40.md",
+      "en": "docs/security/BTA-04-code40.en.md",
+      "source_sha256": "4d9badd81c091315a4659941d2a5c74bdb8a5a7f8968bd5b6908255429178a62"
+    },
+    {
+      "source": "docs/security/LOCAL-REVIEW-code38-2026-10-20.md",
+      "original_language": "zh-CN",
+      "zh": "docs/security/LOCAL-REVIEW-code38-2026-10-20.md",
+      "en": "docs/security/LOCAL-REVIEW-code38-2026-10-20.en.md",
+      "source_sha256": "196ccf1ff250dd4903c18d31b5606fcda8fd3548778cdda6bb613360e45961a6"
+    },
+    {
+      "source": "docs/security/NFC-AND-PASSWORD-code45.md",
+      "original_language": "zh-CN",
+      "zh": "docs/security/NFC-AND-PASSWORD-code45.md",
+      "en": "docs/security/NFC-AND-PASSWORD-code45.en.md",
+      "source_sha256": "cfcf237f16a697f3b11eac168fce60f42bd40057a9a2c2bdcd901fec384d85cd"
+    },
+    {
+      "source": "docs/security/NFC-LOCK-DIAGNOSTIC-code48.md",
+      "original_language": "zh-CN",
+      "zh": "docs/security/NFC-LOCK-DIAGNOSTIC-code48.md",
+      "en": "docs/security/NFC-LOCK-DIAGNOSTIC-code48.en.md",
+      "source_sha256": "62b83116239b760204fbb0de5271f73f7b8120ed0bc58f2d805f97174bb545fa"
+    },
+    {
+      "source": "docs/security/NFC-NTAG-LOCK-code49.md",
+      "original_language": "zh-CN",
+      "zh": "docs/security/NFC-NTAG-LOCK-code49.md",
+      "en": "docs/security/NFC-NTAG-LOCK-code49.en.md",
+      "source_sha256": "ca58d1fa88640d8772913a7286edb684733bf4eb1c7a39c1105714a32d6b3b7d"
+    },
+    {
+      "source": "docs/security/NFC-READONLY-ANR-code46.md",
+      "original_language": "zh-CN",
+      "zh": "docs/security/NFC-READONLY-ANR-code46.md",
+      "en": "docs/security/NFC-READONLY-ANR-code46.en.md",
+      "source_sha256": "f2bacbf2ac2e72a8346875d46c7822744cb0b9e15340768d1565056c29bf2ab0"
+    },
+    {
+      "source": "docs/security/NFC-STARTUP-DIAGNOSTIC-code47.md",
+      "original_language": "zh-CN",
+      "zh": "docs/security/NFC-STARTUP-DIAGNOSTIC-code47.md",
+      "en": "docs/security/NFC-STARTUP-DIAGNOSTIC-code47.en.md",
+      "source_sha256": "0a80ca7e2b45b71e7ae84b41ff760b706ed9a5b6ed4d533bd5168f2f5dbd669d"
+    },
+    {
+      "source": "docs/security/PASSWORD-MINIMUM-10.md",
+      "original_language": "zh-CN",
+      "zh": "docs/security/PASSWORD-MINIMUM-10.md",
+      "en": "docs/security/PASSWORD-MINIMUM-10.en.md",
+      "source_sha256": "c70481616b169d07d3ce530ed43e03b70f7cc9976df1e521e25ea8736fefb0a6"
+    },
+    {
+      "source": "docs/security/RECOVERY-DIALOGS.md",
+      "original_language": "zh-CN",
+      "zh": "docs/security/RECOVERY-DIALOGS.md",
+      "en": "docs/security/RECOVERY-DIALOGS.en.md",
+      "source_sha256": "95219189eedbf291050d4b2ae4fac123957cf59889f2c618b9e4c90b25351267"
+    },
+    {
+      "source": "docs/security/REMEDIATION-STATUS.md",
+      "original_language": "zh-CN",
+      "zh": "docs/security/REMEDIATION-STATUS.md",
+      "en": "docs/security/REMEDIATION-STATUS.en.md",
+      "source_sha256": "ec2c5a84803d4ec45131a06df06af561c28da728779265125fedf03887b1727e"
+    },
+    {
+      "source": "docs/security/SENSITIVE-ACTIONS.md",
+      "original_language": "zh-CN",
+      "zh": "docs/security/SENSITIVE-ACTIONS.md",
+      "en": "docs/security/SENSITIVE-ACTIONS.en.md",
+      "source_sha256": "5a3a3589ceea05e5b0f113c434c10a5875b5464b01c7d67f26bc61595b472fc8"
+    },
+    {
+      "source": "docs/security/UNVERIFIED-ADDRESS-IMAGE-SAVE.md",
+      "original_language": "zh-CN",
+      "zh": "docs/security/UNVERIFIED-ADDRESS-IMAGE-SAVE.md",
+      "en": "docs/security/UNVERIFIED-ADDRESS-IMAGE-SAVE.en.md",
+      "source_sha256": "c41747dcf979851a6589db9da98511f65406a2d6b95b0fef191c5a967bfcfb26"
+    },
+    {
+      "source": "docs/security/WEAK-PASSWORD-CONFIRMATION.md",
+      "original_language": "zh-CN",
+      "zh": "docs/security/WEAK-PASSWORD-CONFIRMATION.md",
+      "en": "docs/security/WEAK-PASSWORD-CONFIRMATION.en.md",
+      "source_sha256": "03083f0b6c40ec2c5624f4e57ef1b660d4c1c1b22dba24b9dbd67af778447a62"
+    },
+    {
+      "source": "docs/security/address-image-export.md",
+      "original_language": "zh-CN",
+      "zh": "docs/security/address-image-export.md",
+      "en": "docs/security/address-image-export.en.md",
+      "source_sha256": "d5089896d7758dba3c460e391d6aa3c0be66c785b5d55745561fea511f2f32cd"
+    },
+    {
+      "source": "docs/security/android12-minimum.md",
+      "original_language": "zh-CN",
+      "zh": "docs/security/android12-minimum.md",
+      "en": "docs/security/android12-minimum.en.md",
+      "source_sha256": "9760fe05317a9854045b8ae77d4959c8a31cd97268f7a919d2902008d4127f03"
+    },
+    {
+      "source": "docs/security/audits/v0.7.0-2026-10-23/BitTap-0.7.0-安全复审报告.md",
+      "original_language": "zh-CN",
+      "zh": "docs/security/audits/v0.7.0-2026-10-23/BitTap-0.7.0-安全复审报告.md",
+      "en": "docs/security/audits/v0.7.0-2026-10-23/BitTap-0.7.0-安全复审报告.en.md",
+      "source_sha256": "f7d3948a0a33a65c72e0bb30aaf44049c166243fc1a362ab1a11ab3ad01243b6"
+    },
+    {
+      "source": "docs/security/audits/v0.7.0-2026-10-23/BitTap-0.7.0-实体卡测试停止记录.md",
+      "original_language": "zh-CN",
+      "zh": "docs/security/audits/v0.7.0-2026-10-23/BitTap-0.7.0-实体卡测试停止记录.md",
+      "en": "docs/security/audits/v0.7.0-2026-10-23/BitTap-0.7.0-实体卡测试停止记录.en.md",
+      "source_sha256": "12dfdece05e36d6ac2246e5b0e120bd287d7ccf1bea256b56d24a3a35ab92b46"
+    },
+    {
+      "source": "docs/security/audits/v0.7.0-2026-10-23/BitTap-0.7.0-软件真机补充审计.md",
+      "original_language": "zh-CN",
+      "zh": "docs/security/audits/v0.7.0-2026-10-23/BitTap-0.7.0-软件真机补充审计.md",
+      "en": "docs/security/audits/v0.7.0-2026-10-23/BitTap-0.7.0-软件真机补充审计.en.md",
+      "source_sha256": "4ea660c7562bac630ce7d12c2160c1e5e0a1841a1d7719006b89ce4019659f68"
+    },
+    {
+      "source": "docs/security/audits/v0.7.0-2026-10-23/README.md",
+      "original_language": "zh-CN",
+      "zh": "docs/security/audits/v0.7.0-2026-10-23/README.md",
+      "en": "docs/security/audits/v0.7.0-2026-10-23/README.en.md",
+      "source_sha256": "1c102813854939c0be609c5ab9a98faeb38576388e8dd6a4671c221aef7a9a93"
+    },
+    {
+      "source": "docs/security/local-address-verification.md",
+      "original_language": "zh-CN",
+      "zh": "docs/security/local-address-verification.md",
+      "en": "docs/security/local-address-verification.en.md",
+      "source_sha256": "b1885614e70088f3ae9f18264d8f5c4236d53ddc2b0936c04db0817f9e92f09a"
+    },
+    {
+      "source": "docs/security/password-policy.md",
+      "original_language": "zh-CN",
+      "zh": "docs/security/password-policy.md",
+      "en": "docs/security/password-policy.en.md",
+      "source_sha256": "23283148450c3171dffcd355e673f3ac9a8673e52a292a9cf4a488700a20621a"
+    },
+    {
+      "source": "docs/security/private-key-presentation.md",
+      "original_language": "zh-CN",
+      "zh": "docs/security/private-key-presentation.md",
+      "en": "docs/security/private-key-presentation.en.md",
+      "source_sha256": "972873c08a39c57518e4c5fdc4e65fbfab0f3ab8b171b050ce8910a242cb5309"
+    },
+    {
+      "source": "docs/security/random-password.md",
+      "original_language": "zh-CN",
+      "zh": "docs/security/random-password.md",
+      "en": "docs/security/random-password.en.md",
+      "source_sha256": "112872a7c58940ae3dd106f3e97e1f05cc7389cd79e5a47bd1162ee33d800c07"
+    },
+    {
+      "source": "docs/security/security-explanation-copy.md",
+      "original_language": "zh-CN",
+      "zh": "docs/security/security-explanation-copy.md",
+      "en": "docs/security/security-explanation-copy.en.md",
+      "source_sha256": "a563b5c19617f1a9183cb81e08af15b3a4218ab991c12af938f58be27ef6fca7"
+    },
+    {
+      "source": "docs/security/session-and-file-limits.md",
+      "original_language": "zh-CN",
+      "zh": "docs/security/session-and-file-limits.md",
+      "en": "docs/security/session-and-file-limits.en.md",
+      "source_sha256": "dc30798e967dcbea076b2ab6fd0e11e5f830f102aaa2d73c562be1c4faf36d19"
+    },
+    {
+      "source": "docs/ui/CREATION-PASSWORD-DIALOG.md",
+      "original_language": "zh-CN",
+      "zh": "docs/ui/CREATION-PASSWORD-DIALOG.md",
+      "en": "docs/ui/CREATION-PASSWORD-DIALOG.en.md",
+      "source_sha256": "c343bb37f810a5f3b5cfc1f12b89f9cd73618767b819f6c24c161522fbb0f087"
+    },
+    {
+      "source": "docs/user-guide/README.md",
+      "original_language": "bilingual",
+      "zh": "docs/user-guide/README.md",
+      "en": "docs/user-guide/README.md",
+      "source_sha256": "b3d9f5bc38a017107c8369461170cb245386eca6dba12d07f7aa3d16ec50a08b"
+    },
+    {
+      "source": "tools/README.md",
+      "original_language": "en",
+      "zh": "tools/README.zh-CN.md",
+      "en": "tools/README.md",
+      "source_sha256": "53da6455f5cdb7a111901b22611d3625540ee32bc035078aac60b886678d2aba"
+    }
+  ]
+}

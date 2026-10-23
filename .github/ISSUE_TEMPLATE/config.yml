@@ -1,5 +1,5 @@
 blank_issues_enabled: true
 contact_links:
-  - name: Security reporting policy
+  - name: Security reporting policy / 安全报告政策
     url: https://github.com/haidaoyige/BitTap/security/policy
-    about: Email ianzhangone@outlook.com for security reports. Follow the policy; never send real wallet secrets.
+    about: 安全问题请发邮件至 ianzhangone@outlook.com，勿发送真实钱包秘密。 Email this address for security reports; never send real wallet secrets.
