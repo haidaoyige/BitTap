@@ -22,6 +22,13 @@ BitTap 支持制作钱包、读取 NFC 卡与导入加密备份，并可导出 W
 - 查看 WIF 与私钥二维码前明确操作；收款地址与私钥图片支持四语言透明圆角 PNG，底部英文标语保持固定。
 - 解锁会话使用独立 Android Keystore 密钥封装；连续60秒无操作、解锁满120秒、切后台或返回首页时结束私钥会话。Android及密码学库的历史内存副本无法保证物理擦除。
 
+## 图解使用指南 / Visual guides
+
+按界面上的编号和箭头操作：制作与备份 → 读取与收款 → 恢复私钥。
+Follow the numbered screens: create and back up → read and receive → recover a private key.
+
+[中文长图](docs/user-guide/BitTap-Long-Guide-ZH.png) · [English visual guide](docs/user-guide/BitTap-Long-Guide-EN.png) · [查看双语指南 / View both guides](docs/user-guide/README.md)
+
 ## 制作与读取
 
 1. 点击“制作冷钱包”，填写可选备注；如开启相机增强，先完成采集。
