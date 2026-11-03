@@ -58,7 +58,7 @@ gradle.taskGraph.whenReady { graph ->
 }
 dependencies {
     implementation project(':core')
-    implementation 'com.google.zxing:core:3.5.3'
+    implementation 'com.google.zxing:core:3.5.4'
     testImplementation 'junit:junit:4.13.2'
     runtimeOnly 'org.slf4j:slf4j-nop:2.0.17'
 }
